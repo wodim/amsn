@@ -1,0 +1,616 @@
+amsn_lang_version 2
+about Info
+accept Nõustu
+acceptfile Nõustu failiga $1, suurus $2? Salvestatud $3
+actions Tegevused
+addacontact Lisa sõber
+addedyou $1 ($2) on lisanud sind enda sõbralisti
+addprofile Lisa uus profiil
+addprofiledesc "Sisesta kasutaja, kellele tahad profiili luua. \nKasutaja profiilid võimaldavad iga kasutaja jaoks erinevaid seadeid. \nIlma profiilita sa ei saa kasutada funktsioone Ajalugu, Alarmid ja "Salvesta parool"."
+addstate Lisa uus staatus
+addto Lisa $1-te
+addtocontacts Lisa sõbralisti
+addtoo Lisa see inimene oma sõbralisti
+admincontacts Halda sõpru
+admingroups Halda gruppe
+advanced Edasijõudnud
+advancedprefs Konfiguratsioonivalikud edasijõudnutele
+adverts Reklaamid
+alarmonconnect Käivita alarm kui kasutaja tuleb liinile
+alarmondisconnect Käivita alarm kui kasutaja lahkub/varjab
+alarmonmsg Käivita alarm kui kasutaja saadab sulle sõnumi
+alarmonstatus Käivita alarm kui kasutaja muudab staatust
+alarmpref Alarmi seaded kasutajale
+alarms Alarmid
+alarmstatus Alarm selle kasutaja puhul Sees/Väljas
+allfiles Kõik failid
+allowallbutbl Luba kõikidel kasutajatel väljaarvatud minu Blokk Listis olevatel võtta minuga ühendust
+allowbadwords Lülita välja nimede tsensuur
+allowlist Lubatud list (AL):
+allowonlyinal Luba ainult Lubatud Listis olevatel minuga kontakteeruda
+allowseen Luba sellel inimesel ennast ühendatuna näha
+allprofilesinuse Kõik olemasolevad profiilid on hetkel kasutuses
+animatedemoticon See emotikon on animeeritud
+animatedsmileys Luba animeeritud emotikonid
+animatenotify Animeeri teadvustusaken
+appearance Välimus
+appearoff Ilmu lahtiühendatuna
+areacode Piirkonnakood
+aretyping $1 trükivad mingit sõnumit
+autoaccepted Faili laadimine automaatselt lubatud
+autoacceptft Automaatselt nõustu faili laadimisega
+autoaway Näita mind "Eemal", kui pole tegevust
+autocheckver Käivitamisel kontrolli kas saadaval on uuem versioon
+autoconnect Ühenda aMSN'i käivitumisel
+autoconnect2 Logi automaatselt sisse, kui aMSN käivitub
+autodetectip Leia IP aadress automaatselt
+autohotmaillog Automaatne Hotmaili sisselogimine
+autoidle Automaatne "Pole tegevust" 
+autoip Automaatne IP
+automessage AutoTeade
+autonoact Näita mind "Pole tegevust", kui pole tegevust
+avoidseen Väldi seda inimest mind ühendatuna nägemast
+away Eemal
+awaymsg1 Küsi Eemal-teadet iga kord, kui sean oma staatuseks Eemal/Kohe tagasi/Kiire
+awaymsg2 Ära kunagi küsi ja alati kasuta järgnevat Eemal-teadet
+baduserpass Vale kasutajanimi või parool
+bgcolor Muuda aMSN'i taustavärvi
+blankdirect Jäta tühjaks otseühenduse puhul
+block Blokeeri
+blocked Blokeeritud
+blockedyougroup Näita erinevas grupis kasutajad, kes on sind blokeerinud
+blocking Blokeerimine
+blockinter1 Kui sa oled liinil kontrolli iga
+blockinter2 sekundi jooksul, vastasel juhul iga:
+blockinter3 iga
+blockinter4 sekundi jooksul.
+blocklist Blokeeritud list (BL):
+blockmessage Need kasutajad on liinil ja on sind blokeerinud
+blockusers Mitut kasutajat korraga kontrollida
+bouncedock Põrgata dokis aMSN'i ikooni kui tuleb uus sõnum
+broughtby  Toodud teieni järgnevate isikute poolt
+browse Brausi
+browser Brauser
+browserexample (\$url asendatakse URLiga). Näiteks: mozilla \$url
+busy Kiire
+cachedpics $1 varutud piti
+cancel Tühista
+cannotdeleteprofile Ei saa profiili kustutada, sest see on aMSNi poolt kasutuses
+cantexec Ei saa käivitada programmi: $1. Kontrolli seadeid
+cantremoveothers Ei saa eemaldada gruppi Muud
+casesensitive Kasuta tõusutundlikke päästikuid
+cfgalarm Seadista/Lisa/Eemalda alarm
+cfgalarmall Seadista/Lisa/Eemalda üldine alarm
+ch_to_state Lülita uude olekusse
+change Muuda
+changecustomstate Lülita
+changedisplaypic Vaheta pilt
+changefont Muuda fonti
+changeglobnick Muuda globaalset hüüdnime
+changenick Muuda hüüdnime
+changesize Muuda suurust
+changestate $1 muutis oma saatuse $2
+charscounter Trükitud tähtede loendur jutuaknas
+chat Vestlus
+chatack Nõustun vestlusega
+chatmaxmin Kui kontakt alustab vestlust ma tahan, et see oleks
+chatreq Palun vestlust
+chatsmileys Vestluse emotsioonid
+chatsmileys2 Näita emotsioone vestlusakendes
+checkblocking Kontrolli pidevalt, kas kasutajad blokeerivad sind
+checkemail Näita e-kirjast teavitavat rida kontaktide nimekirjas
+checkfilman Saadud failid salvestatakse $1. Palun kontrollige failihalduri seadeid Sätted-aknas
+checkingver Kontrollin uuendusi
+checkonfln Kontrolli kas kasutaja blokeeris sind kui ta läheb välja
+checkver Kontrolli uuendusi
+choosearq Vali oma süsteemi arhitektuur
+choosebasefont Vali fondi tüüp
+choosebgcolor Vali tausta värv
+choosecontact Palun vali kontakt listist
+choosefontcolor Vali fondi värv
+chooseskin Palun vali skin
+clear Puhasta
+clearlog Tühjenda logi
+clearlog2 Tühjenda kõikide kontaktide Ajalugu
+clearlog3 Tühjenda kõik logid
+clicktologin Vajuta siia, et sisse logida
+clientcaps Saada vestluskaaslase kliendile x-clientcap pakett
+clientname Kliendi nimi
+close Sulge
+closed Vestlus $1'ga suleti passiivsuse pärast
+closingdocks Sulgemisnupp minimeerib akna
+command Käsk
+commandstatus Käivita käsk
+confirm Oled kindel?
+confirmdelete Oled sa kindel et tahad seda kustutada $1?
+confirmdg Oled kindel, et soovid selle grupi kustutada ?
+confirmdu Oled kindel, et soovid selle kasutaja kustutada ?
+confirmeg Oled kindel, et soovid selle grupi tühjendada ?
+confirmpurge Kõik teiste ksautajate kuvapildid kustutatakse (sinu enda pildid säilivad). Soovid jätkata ?
+confirmrfl Oled kindel, et soovid kasutaja sellest grupist kustutada ?
+connected Sa oled nüüd ühendatud
+connectedwith Ühendus saavutatud $1
+connecterror Viga serveriga ühendamisel
+connecting Ühendan
+connection Ühendus
+connectionlost Ühendus katkestatud: Ühendus serveriga suletud
+contactadded Sõber lisatud
+contactdoesnotexist Seda sõpra ei eksisteeri!
+contactlist Kontaktide list (FL):
+continuously Järjepidevalt
+convertexplain Tee käivitatava failini CONVERT (ImageMagicki osa mis on vajalik kasutajate piltide näitamiseks).\n Jätte tühjaks kui CONVERT asub kataloogitees
+copy Kopeeri
+copytogroup Kopeeri gruppi
+corruptconfig Konfiguratsioon on rikutud. Loon uut. Vana fail salvestatakse nimega $1. Palun saada see meile, et me saaks seda analüüsides leida riknemise põhjuse.
+corruptstates Kohandatud oleku konfiguratsioon on rikutud. Loon uut. Vana fail salvestatakse nimega $1. Palun saada see meile, et me saaks seda analüüsides leida riknemise põhjuse.
+countrycode Minu riigi/regioonikood
+cprofile Loo profiil
+credits Tänud
+currentdate Jooksev kuupäev
+custnotifymsg Näita märguande akent kui tuleb uus sõnum
+custnotifyoffline Näita märguande akent kui see kasutaja läheb offline
+custnotifyonline Näita märguande akent kui see kasutaja tuleb online
+custnotifystatus Näita märguande akent kui see kasutaja muudab staatust
+custom_edit Muuda emotikoni
+custom_new Lisa uus emotikon
+customcolor Kohandatud värv
+customnick Kohandatud nimi
+customstyle Muudetud stiil
+cut Lõika
+date Kuupäev
+dateformat Muuda kuupäeva formaati
+day Päev
+days päeval
+dcprofile Ära loo profiili
+default Standardseadistus
+defaultloginradio Logi vaike seadistusega
+defchatwinsize Jutu akna standardsuurus (XsuurusxYsuurus)
+delete Kustuta
+deletecustomstate Kustuta muudetud olek
+delimiters Ajatempli piirajad:
+deliverfail Järgneva sõnumi edastamisega tekkis probleem
+delprofile Kustuta profiil
+delprofile2 Vali profiil, mida soovid eemaldada
+description Kirjeldus
+directconnection Mul on otse ühendus internetti (kasutab porti 1863)
+disabled Keelatud
+disableprofiles Keela profiilid (Kasulik avalikes kohtades)
+disablessl Keela SSL
+disableuserfonts Kasuta ka teise kasutaja fondi asemel enda oma
+disconnect Ühendus katkes kasutajaga $1
+disconnectedfrom Ühendus $1 katkestatud
+displaychat Kuvatava teksti häälestus
+displayeventconnect Näita kui kasutaja tuleb online
+displayeventdisconnect Näita kui kontakt läheb offline
+displayeventemail Näita kui uus kiri saabub
+displayeventstate Näita kui kontakt muudab olekut
+displayp4context Näita P4-Context välja sisu sõnumi saatjana
+displaypic Kuvapilt
+dockfreedesktop FreeDesktop (KDE3/Gnome2)
+dockgtk Gnome dokkimine
+docking Dokkimine
+dockingoff Dokkimine väljas
+dockkde KDE dokkimine
+dontdownload Ära salvesta TLSi, ma installeerin selle ise
+dontshow Ära näita
+downloadingtls Salvesta TLS moodul saidist:\n $1
+edit Toimeta
+editcustomstate Muuda kohandatud olekut
+editnewstate Uus personaalse automaatvastuse staatus
+editprofile Muuda profiili
+editstate Muuda eksisteerivad automaatvastuse staatust
+editvalue Muuda väärtust
+email Email
+emailsinlist Näita kontaktide nimekirjas nimede asemel e-maili aadresse
+emotisounds Mängi heli kindla emotikoniga
+emptygroup Tühjenda grupp
+enabled Lubatud
+enableproxy Võimalda proxy
+enableremote Luba kaughaldus
+enablesound Mängi heli
+encoding Vali kodeering
+encoding2 Muuda oma märkide kodeeringut
+entercontactemail Sisesta sõbra e-maili aadress
+enterfilename Sisesta failinimi
+enternick Sisesta oma hüüdnimi
+errortls Viga TLS mooduli instaleerimisel:
+eventhistory Vaata sündmuste ajalugu
+examples Näited
+exitamsn Oled kindel, et tahad väljuda?
+extras Lisateenused
+failed Ebaõnnestus
+faileddelete Ebaõnnestus kustutada
+faileddeleteperso Seda pilti ei saa kustutada, sest see ei ole isiklik pilt. Nii saab kustutada ainult pilte mis kuuluvad sinu isikliku profiili alla.
+faq KKK (Korduma Kippuvad Küsimused)
+file Fail
+filedoesnotexist Faili ei eksisteeri
+fileman Failihaldur
+filemanexample (\$location asendadakse kataloogiga) Näiteks: nautilus \$location
+filename Failinimi
+filetransfercancelled Faili edastamine tühistatud
+filetransfercomplete Faili edastamine õnnestunud!
+followtext Keri alla kui sisestatakse uus tekst
+friendlyname Sõbralik nimi
+ftaccepted Faili edastamisega nõustutud
+ftacceptedby $1 aksepteeris faili '$2' laadimise
+ftaccepting Aksepteerin faili laadimise
+ftconnecterror Viga ühenduse loomises teise arvutiga
+ftconnecting Ühendan $1 pordil $2
+ftconnectionlost Ühendus teise arvutiga katkes
+ftgotinvitation $1 soovib sulle saata faili '$2' ($3 baiti). See salvestatakse kataloogi $4. Kas sa soovid saada seda faili?
+ftportpref Käivitan pordi faili laadimiseks
+ftrejected Faili edastamisest keeldutud
+ftrejectedby $1 keeldus faili '$2' laadimisest.
+ftsendinvitation Faili '$2' ($3 baiti) saatmise teade saadetud kasutajale $1.
+fullcontactlist Kahjuks on sinu kontaktide nimekiri täis. Uute kontaktide lisamiseks pead eemaldama mõned vanemad.
+getdisppic Luba teiste kasutajate piltide vastuvõtt
+globalnick Sisesta mall kirjeldamaks kontaktide hüüdnimesid. Sa võid kasutada muutujaid \$user_login kontakti aadressina, \$nick kontakti hüüdnimena ja \$customnick kontakti kohandatud hüüdnimena. Näiteks: '\$user_login on \$nick' annaks 'kasutaja@msn.com on Kasutaja'
+globalnicktitle Globaalne hüüdnimi
+globaloverride Globaalsed hüüdnimed peaks tühistama kohandatud nime
+gonelunch Lõunale läinud
+group Grupp
+groupadd Lisa grupp
+groupdelete Kustuta grupp
+groupexists Grupp juba eksisteerib
+groupmissing Ei suuda gruppi leida
+groupnewname Uus nimi
+groupnotempty Grupp ei ole tühi!
+groupoldname Vana nimi
+grouprename Nimeta grupp ümber
+groups Grupid
+groupunknown Tundmatu grupp
+handle Nimi
+help Abi
+helpcontents Abi sisu
+hidedisplaypic Peida pilt
+hiden Peida emotikonid menüüst
+hidewindow Peida aken
+history Vaata Ajalugu
+home Kodu
+httpconnection Ühenda kasutades HTTP-d (kasutatakse HTTP protokolli pordil 80)
+hybrid Hübriid reziim
+ident Tuvastan
+identity Isiksus
+ignoreerrors Ignoreeri AMSNi veateateid kuni sessiooni lõpuni
+imagefiles Pildifailid
+inbox Postkast
+insertsmiley Sisesta emotikoon
+installconvert Sa pead installeerima ImageMagicku (konverteerimis programm), et kasutada ikoone ja emotikone. Sa saad laadida failid oma operatsiooni süsteemile aadressilt ftp://ftp.imagemagick.net/pub/ImageMagick/binaries/. Kui sul on see juba installeeritud, siis on see programmi viga ja palun teavita sellest. Need võimalused deaktiviseeritakse hetkel. Kui sa installeerid ImageMagiku hiljem siis saad taas aktiviseerida Seadete valikust.
+internalerror Sisemine serveri viga
+invalidfile "Fail $2 sisestatud väljale "$1" ei eksisteeri või ei ole loetav"
+invalidfile2 Ei saa luua faili $1. Kontrolli, et sul oleks vastavad õigused.
+invalidgroup Vigane grupp
+invalidpic Määratud pildifaili pole olemas
+invalidpicsize Valitud pilt on liiga suur, palun vali väiksem
+invalidsound Määratud helifaili pole olemas
+invalidusername Halb kasutajanimi
+invitationcancelled Faili laadmine katkestatud
+invite Kutsu
+ipaddress IP aadress
+ipdetect Määra õige IP failiülekanneteks kasutades HTTP-d
+ircstyle IRC stiilis vestlus
+istyping $1 kirjutab sõnumit
+joins $1 liitub vestlusega
+justonce Ainult korra
+keepalive Ülalhoidmine (NAT)
+keeplog Säilita vestluste logisid
+keeplog2 Logi kõik vestlused aMSN'i Ajalukku, et neid tulevikus vaadata
+language Keel
+lastlogin Viimati logis sisse
+lastlogout Viimati logis välja
+lastmsgedme Viimane sõnum
+lastmsgtime Viimane sõnum saadud $1
+lastseen Viimati nähtud
+lclosedwin $1 sulges akna $2
+lconftopriv Konverents muudetud privaatvestluseks isikuga $1
+lconvstarted Vestlust alustatud $1
+leaveblankforhotmail Jäta tühjaks, et kasutada Hotmaili veebi
+leavejoinsinchat Näita "liitus vestlusega/lahkus vestluselt" teateid jutu aknas
+leaves $1 lahkub vestluselt
+lenteredconf $1 liitus konverentsiga $2
+lineflushlog Joonda logi failid peale iga rida
+linprivate PRIVAATNE
+listeningon Kuulan porti $1
+listsmileys Emotsioonide nimekiri
+listsmileys2 Näita emotsioone aMSN'i peamises sõbranimekirjas
+ljoinedconf $1 liitus konverentsiga
+lleftconf $1 lahkus konverentsist
+loadcontacts Lae sõbranimekiri
+logbigger Logifailide suurus iga sõbraga ei ületa
+logeventconnect Logi ühendamised
+logeventdisconnect Logi lahtiühendamised
+logeventemail Logi uue kirja saabumine
+logeventstate Logi muudatused olekutes
+logfandexp Logifailide suurus ja Ajaloo kestvus
+loggedotherlocation Lahtiühendatud. Sisse logitud mujal
+loggingin Login sisse
+login Logi sisse
+loginas Logi sisse kui
+loging Logimine
+logolder Logi ainult vestlusi, mis toimunud viimasel
+logout Logi välja
+logsbydate Sorteeri logid kuupäeva järgi (Ajaloo näitamine laeb palju kiiremini)
+logsin logis sisse
+logsmileys Näitab emotsioone aMSN'i Ajaloo akendes
+logsout logis välja
+longnick Sinu nimi on pikem kui 130 märki. Ametlik MSN protokoll ei toeta nii pikki nimesid. Kindel, et tahad nime selliseks muuta ?
+longp4c Sinu Sõbralik nimi on pikem kui 130 märki. Ametlikus MSN versioonis näidatav nimi on $1. SOled kindel, et soovid selle seada ?
+lprivtoconf Privaatvestlus muudetud konverentsiks isikuga $1
+luclosedwin Sa sulgesid akna $1
+mailer E-posti klient
+mailerexample (\$recipient = Adresaat) Jäta tühjaks kui soovid kasutada Hotmaili
+maximised Maksimeeritud
+minimised Minimeeritud/Ikoniseeritud
+mins minutit
+mobile Mobiil
+month Kuu
+morepersonal Veel staatuseid ->
+move Tõsta
+movetogroup Liiguta gruppi
+msg Sõnum
+msgflicker Vilguta akna tiitlid kui uus sõnum saabub ja aken ei ole aktiivne
+msgmaxmin Kui uus sõnum saabub, peab see olema:
+msgmode Vali, kuidas käsitleda mitut sõnumiakent:
+msn AMSN
+msnstyle MSNi stiilis vestlus
+mustrestart Muudatuste rakendamiseks pead programmi uuesti käivitama.
+myfriendlyname Minu sõbralik nimi
+myhomephone Minu kodune telefon
+mymobilephone Minu mobiiltelefon
+mynick Minu hüüdnimi
+mypic Minu kuvapilt:
+mystatus Minu olek
+myworkphone Minu töötelefon
+natip IP määramine veebilehe kaudu
+natkeepalive Kui su ühendus pidevalt katkeb, võimalda see Ülalhoidmine
+needonline Sa oled/ilmud ikka lahtiühendatuna
+needwinico Plugins kataloogi on vaja panna winico03.dll, et Windowsi tray'mine töötaks
+never Mitte kunagi
+newmail $1 uut sõnumit postkastis
+newmailfolder Sul on Hotmaili kirjakastis $1 uut kirja
+newmailfrom Uus kiri saatjalt $1 ($2)
+newmailfromother Uus kiri teises kaustas aadressilt $1 ($2)
+newmsg Uus sõnum
+newstate Lisa oma olek
+newveravailable Uuem versioon $1 allalaadimiseks saadaval
+next Edasi
+nick Hüüdnimi
+no Ei 
+noactivity Pole tegevust
+nodataavailable $1 jaoks andmed puuduvad
+nogap Gruppide vahele ei jäeta ruumi
+nogroup Grupp puudub
+nologfile $1 jaoks logifail puudub
+noneavailable 
+nonewmail Postkastis pole uusi sõnumeid
+nonewver Pole uuemaid versioone allalaadimiseks saadaval.
+nopic Pilt puudub
+noprofileexists Hetkel ei ole ühtegi profiili, \nsa pead tegema ühe, kui tahad kasutada profiilidega logimist. \nKasuta Lisa uus profiil nuppu, et luua uus profiil
+normal Normaalne
+noskins Ei leidnud algse kesta kestade kataloogist. Ei saa AMSN käivitada
+nosystemtray 
+notificationserver Algne MSN teadvustus server (MSN Messengeri Server)
+notify Teata
+notify1 Näita teateakent, kui sõbrad tulevad online
+notify1_5 Näita märguande akent, kui kontakt logib välja
+notify1_75 Näita märguande akent, kui kontakt muudab oma staatust
+notify2 Näita teateakent, kui saabuvad uued sõnumid
+notify3 Näita teateakent, kui postkasti saabuvad uued kirjad
+notify4 Näita teadvustavat akent kui kiri saabub teise kausta
+notifyoffset Määra teateakna asukoht, andes ette asukoha nihked
+notifytimeout Mitu millisekundit teate akent kuvatakse
+notifytyping Näita teisele kasutajale, et ma trükin teadet
+notifywin Teateaken
+notinlist Sa ei ole tema kontaktide nimekirjas
+notls MSN protokoll 9 vajab TLS paketti. Tundub, et see pakett ei ole installeeritud. Kui see on installeeritud, siis tuleb kontrollida Seadete alt kas kataloog on määratud (näiteks: /opt/tls/lib). \n\nTLS on võimalik laadida aadressilt http://tls.sf.net playing Mängib: $1
+nousersinsession Ühtegi kasutajat sessioonis
+offline Offline
+ok Olgu
+onenewmail 1 uus sõnum postkastis
+online Online
+onphone Telefonil
+openreceived Ava saadud failid
+options Seaded
+ordercontactsby Sorteeri sõpru
+ordergroupsby Sorteeri gruppe
+original Esmane
+other Muu
+others Muud
+p4contextprefix Liida P4-Context sõnumi saatjale see eesliide
+pager Piipar
+pass Salasõna
+paste Kleebi
+personal Isiklik
+phone Telefon
+phones Telefoni numbrid
+picbrowser Kuvapiltide brauser
+picfile Pildifail (GIF < 500 x 500)
+picstatus Pildialarm
+playing Hetkel mängib: $1
+pluginselector Vali plugin
+port Port
+prefalerts Minu sündmuste hoiatused ja helid
+prefapps Programmid
+prefawaymsg Minu Eemal-teade
+prefblock1 Kontrolli ühenduse katkestamisel
+prefblock2 Kontrolli pidevalt
+prefblock3 "Sa oled blokeeritud kasutajate poolt" grupp
+prefconnection Ühenduse seaded
+prefemotic Emotsioonid
+preferences Sätted
+preffont Minu sõnumi tekst
+preffont2 Muuda, kuidas teised vestlustes minu teksti näevad
+preffont3 Muuda aMSN'i keskkonna fonti ja suurust
+prefft Failiedastus, peer-to-peer ja NAT seaded
+preflibs Library kataloogid
+preflog1 Minu Ajaloo ja logimise seaded
+preflogevent Minu sündmuste ajalugu
+preflook Minu aMSN Messengeri välimus
+prefmsging Minu sõnumikeskkond
+prefname Minu MSN Messengeri nimi/hüüdnimi
+prefphone Minu telefoninumbrid
+prefphone2 Sisesta telefoninumbrid, mida sa lubad inimestel \n oma lubatud-nimekirjas näha \n
+prefprivacy Kasutaja lubamise/Blokeerimise list
+prefprivacy2 Kasutaja kontaktid/Vastupidine list
+prefprofile Minu avalik profiil
+prefprofile2 Loo või Muuda oma avalik profiil (enda \n kirjeldus, mida teised saavad näha)
+prefprofile3 aMSN'i kasutajaseadete profiilid
+prefproxy Minu proxy seaded
+prefremote Kaug-ühenduse seaded
+prefsession Minu sisselogimine ja olek
+prefshared Jagatud ühendused (ainult NAT)
+prefsound Helid
+privacy Privaatsus
+profiledconfig Profiilide seaded
+profileexists Sa ei saa selle kasutajaga profiili luua, \nselline kasutaja juba eksisteerib. Vali teine kasutajatunnus
+profileinuse See profiil on kasutuses teise aMSNi sessiooni poolt, palin vali teine profiil.
+profileloginradio Logi kasutades eksisteerivat profiili
+profiles Profiilid
+properties Omadused
+proxy Olen proxy serveri taga (HTTP või SOCKS5)
+proxyconf Proxy seadistamine
+proxyconfhttp HTTP proxy toetuse seadistamine
+proxyconnection Ma kasutan interneti läbi proksi serveri:
+publishphones Avalda mu telefoni numbrid
+purge Puhasta
+raised tõstetud
+readonlymsgbox Faili laadimine katkestatud, sest kataloog on ainult loetav. Palun kontrolli kataloogi õigusi.
+readonlywarn TÄHELEPANU: Tõenäoliselt ei suudeta salvestada faili, sest kataloog "Vastuvõetud Failid" tundub olevat ainult loetav. Palun kontrolli enne faili laadimist, kas kataloogi $1 õigused on korras.
+receivedbytes Kätte saanud $1/$2 baiti
+receiveddir Vastuvõetud Failide kataloog
+receivefile Võta vastu fail
+recentmsg Väldi akna sulgemist siis kui sõnum on just saabunud
+reconnect Ootan $1 uuesti ühendumist
+reconnect2 Taasühenda kui ühendus katkeb
+reconnecting Uuesti ühendan serveriga
+reject Keeldu
+rememberpass Mäleta parooli
+removeempty Eemalda kontaktide nimekirjast tühjad grupid
+removefromlist Eemalda sellest listist
+rename Nimeta ümber
+reversed Vastupidine
+reverselist Vastupidine list (RL):
+rightback Kohe tagasi
+save Salvesta
+saveas Salvesta kui
+savechatwinsize Jutu akna suurust muutes salvesta selle suurus vaikeväärtusena
+savecontacts Salvesta sõbranimekiri
+savetofile Salvesta faili
+says $1 ütleb
+sbcon Ühendan "Switchboardiga"...
+selectplugins Palun vali plugin, mida soovin sisse lülitada
+selectskin Palun vali skin listist
+send Saada
+sendfile Saada fail
+sendmail Saada kiri
+sendmsg Saada sõnum
+sentbytes Saadetud $1/$2 baiti
+server Server
+serverbusy Server on hõivatud
+servergoingdown Lahtiühendatud: server sulgub
+serverunavailable Server pole saadavalis
+session Sessioon
+showbanner Näita aMSN'i bannerit
+showblockedlist Näita listi kasutajatest, kes on sind blokeerinud
+showcachedpics Näita varutud kuvapilte
+showdisplaypic Näita pilti
+showdisplaypic2 Näida pilti vaikimisi kui aken avatakse
+showmypic Minu pilt
+shownotify Mõndade sündmuste korral näita teadvustavat akent
+showuserpic $1'e pilt
+skin Skin
+skinselector Vali skin
+smileconfig Emotikonide konfigureerimine
+smilefile Emotikoni faili nimi
+smileintro Enda emotikooni loomiseks täida palun vajalikud väljad (abi jaoks vaata KKK)
+smileintro2 Selle emotikooni muutmiseks muuda palun vastavaid välju (abi jaoks vaata KKK)
+snackfailed Ebaõnnestus Snacki laadimine, lülitun tagasi vaikeväärtusele
+sngdblclick Kasuta uue sõnumi akna avamiseks ühte klikki
+sound Sündmusheli
+sound2 Mängi heli, kui sõbrad sisse logivad või sõnumi saadavad
+soundactive Mängi heli ka aktiivsesse aknasse saabuvate sõnumite korral
+soundcommand See peab olema play käsk (nt. esdplay)
+soundexample ( \$sound = helifail mida esitada) Näiteks: esdplay \$sound
+soundfile Helifail
+soundfiles Sündmusheli failid
+soundloop Korda heli
+soundserver Heliserver
+soundstatus Helialarm
+sourcecode Lähte kood (vajab kompileerimist ja installeerimist)
+splashstart Start
+sslwarning HOIATUS!! SSLi blokeerides ei krüpteerita enam teie paroole ja need saadetakse üle võrgu tavalise tekstina. Kasutada ainult väga keeruka proksi või võrgu konfiguratsiooni korral.
+startoffline Stardi lahtiühendatuna
+startoffline2 Logi sisse vaikselt olekuga Offline
+startontray Käivita AMSN ainult süsteemisalves
+state Ma soovin ilmuda kui
+stateautomsg Automaatvastus mida saata
+statechange staatus muudetud:
+stateedittext Palun muuda soovitud välju ja vajuta Salvesta
+stateinfo Isikliku oleku konfiguratsioon
+statename Personaalse staatuse nimi
+statenewtext Palun sisesta vajalik informatsioon,\net teha uus Personaalne Staatus\nLõpetuseks vajuta Salvesta
+statenick Kohandatud nimi (kui ei soovi muuta siis jäta tühjaks)
+status Olek
+stopalarm Peata alarm
+storenickname Taasta esialgne nimi peale kohandatud nimega ise tehtud olekust naasmist
+strictfonts Piira kõikide fontide suurus selliseks, nagu on valitud fondil (Olekuriba ja mujal)
+stylechat Sama välimus nagu vestlustel
+stylehist aMSN'i Ajaloo välimus
+stylelog Vali, kuidas soovid oma Ajalugu vaadata
+syntaxerror Süntaksi viga
+tabbed Kaartidena
+temp_state Ära salvesta (Ajutine seisund mida ei salvestata AMSNi sulgemisel)
+textsize Teksti suurus
+timeremaining Aega on jäänud
+timestamps Luba ajatemplid vestluse aknas
+title Al's Messenger
+tkerror TK töös ilmnes viga mis tähendab, et AMSN koodis on bug. Palun teata sellest saates aadressile amsn-bugs@lists.sf.net fail $1
+tlsdowncompleted Fail nimega $1 salvestati kataloogi $2. Sa pead selle lahti pakkima, kompileerima (juhul kui tõmbasid lähtekoodi) ja paigaldama $3 kataloogi.
+tlsexplain Otsitakse tcl TLS mooduli kataloogi. Kui AMSN ei suuda seda leida siis palun määra see käsitsi.\n(Vajalik SSLi kaudu autentimiseks).
+tlsinstall TLS mooduli installeerimise abiline
+tlsinstallexp aMSN kasutab nüüd MSNP9-t, mis vajab tööks krüptitud\nühendust kasutades SSL-i. Et ksutada SSL-i peab aMSN installeerima mooduli TLS,\nmis on sinu süsteemist puudu. See võlur aitab sul alla laadida ja installeerida TLS-i.\nPalun vali oma süsteemi tüüp, et me saaks automaatselt alla laadida vajalikud TLS failid.
+tlsinstcompleted TLS mooduli installeerimine õnnestus - sa peaksid nüüd saama kasutada MSNP9-t. Kui see ei tööta, siis tõenäoliselt valisid sa vale mooduli või sinu süsteemi jaoks ei ole kompileeritud moodulit.
+to Kellele
+today Täna
+tools Tööriistad
+tooltips Luba abistavad vihjed
+transnotexists Vajalikku faili pole veel eesti keelde tõlgitud.
+traynotcompiled Süsteemisalvikooni plugin ei ole kompileeritud. Kontrolli pluginaid/süsteemisalvedokki
+triggers Teksti päästikud
+truncatenames1 Lühenda nimed mis on laiemad kui pealkirja ja kontaktide nimekirja aknad
+truncatenames2 Lühenda nimed mis on laiemad kui vestlusaken
+truncatenicks Lühenda nimed mis on laiemad kui aken
+twonewmail $1 uut sõnumit postkastis
+unblock Ära blokeeri enam
+uoffline Offline
+uonline Online
+useother Kasuta muud programmi
+user Kasutaja
+useralreadyonlist Kasutaja on juba sõbranimekirjas
+userblocked Kasutaja on küll online, kuid sind blokeerinud
+userdata Kasutaja andmed
+usernotonline Kasutaja ei ole online
+userproperties Kasutaja $1 atribuudid
+useryourself Sa ei saa iseendaga vestelda
+usesnack Kasuta Snacki teeki (Tcl'i sisene)
+verifyblocked Kontrolli ega sind ei ole blokitud
+version Versioon
+view Vaade
+viewcontactsby Vaata kontakte sorteerides
+viewprofile Vaata profiili
+webcaminvite $1 kutsus sind alustama veebikaamera seanssi kuid aMSN ei toeta seda võimalust
+willjoin Ootan, et $1 liituks vestlusega
+work Töö
+wrongfields 
+wrongprofileversion Profiili konfiguratsiooni faili versioon on vale. Parandamiseks kustuta kataloog $1 või uuenda aMSN.
+xmmscurrent Näita mängiva loo nime
+xmmserr Miski ei mängi, või sul ei ole xmms-infopipe installeeritud.
+xmmssend Saada see lugu
+xoffset Horisontaalnihe
+year Aasta
+yes Jah
+yesterday Eile
+yoffset Vertikaalnihe
+youblocked Sind blokeeris kasutaja
+yousay Sa ütled
+youwant Sa tahad

@@ -1,0 +1,168 @@
+FAQ-fr 1.7beta
+--------------
+
+Q: Qu'est-ce que Amsn?
+R: Amsn est un clône de Microsoft Messenger. Il vous permet de rester en contact avec vos amis et d'échanger des messages instantanés et des fichiers.
+
+INSTALLATION ET LANCEMENT
+=========================
+
+Q: De quoi ai-je besoin pour lancer amsn?
+R: Amsn est écrit en tcl/tk, vous avez donc besoin d'un interpréteur Tcl/Tk, version 8.3 ou supérieure. Vous pouvez le trouver sur http://tcl.sourceforge.net. L'interpréteur est disponible sous Linux, Windows et MacOS. D'autres fonctions additionnelles peuvent nécessiter d'autres programmes, ou libraires, comme l'icône d'amarrage, les images d'affichage, ou la connexion SSL pour le protocole MSN 9.
+
+Q: Comme dois-je installer et lancer amsn ?
+R: Vous devez juste télécharger le fichier amsn-x_xx.tar.gz. Décompressez-le avec la commande suivante :
+	gzip -d amsn-x_xx.tar.gz
+	tar xvf amsn-x_xx.tar
+Celà créera le répertoire msn/, et amsn est installé et prêt à être lancé.
+Pour le lancer, faites :
+	cd msn
+	./amsn
+ou si cela ne fonctionne pas, essayez
+	wish amsn
+Si la commande wish n'existe pas, alors vous n'avez pas installé correctement tcl/tk.
+Si "wish amsn" fonctionne, mais pas "./amsn", éditez le fichier 'amsn' et inscrivez le chemin exact en premiére ligne. Par défaut :
+/usr/bin/wish
+
+Q: Aprés avoir téléchargé imagemagick, comment puis-je activer les images ?
+R: Aprés l'installation d'imagemagick, allez dans les Préférence d'AMSN. Cliquez sur "Autres", puis dans l'onglet "CONVERT", indiquez le chemin du fichier "CONVERT.EXE" (pour Windows) ou "CONVERT" pour Unix/Linux et MacOS.
+Sauvegardez les préférences, relancez AMSN. Retournez dans les préférences, et sélectionnez les options d'affichage des émoticons et icônes dans "Apparence" et l'option "Permettre la réception d'icônes des autres utilisateurs" dans "Connexion" du menu "Avancé".
+
+Q: Quand je double-clique sur le fichier "amsn" à partir d'un navigateur de fichiers graphique, comme konqueror ou nautilus, celà ouvre un éditeur de texte au lieu de lancer AMSN!
+R: AMSN est écrit en tcl/tk, un language interprété, aussi le fichier "amsn" est juste un fichier texte avec le code du programme. Le gestionnaire de fichier peut penser que c'est un fichier texte, aussi il lancera un éditeur de texte. Pour lancer AMSN, vous devrez choisir "Ouvrir avec ...", "Lancer avec ..." ou similaire, et utilisez le programme "wish" pour ouvrir le fichier "amsn". Encore, comme vu dans une question précédente, si la commande "wish" n'existe pas, vous avez besoin d'installer tcl/tk.
+
+Q: Comment je crée un raccourci de amsn sur mon bureau de travail ?
+R: Vous avez deux possibilités :
+1. Ajoutez une icône dans votre menu ou sur votre bureau de travail de gnome/kde, qui lance la commande :
+/ou/vous/avez/installé/amsn
+par exemple
+/home/votrenomdutilisateur/msn/amsn
+2. Autre moyen:
+En root, créez un lien dans /usr/bin du fichier amsn
+ln -s /ou/vous/avez/installé/amsn amsn
+Vous pouvez lancer amsn en tapant juste 'amsn' de n'importe où.
+Ensuite ajoutez un icône qui lance la commande 'amsn'.
+
+Q : Comment est-ce que j'obtiens l'amarrage de Gnome/KDE pour fonctionner?
+R: Vous devez lancer 'make' dans le répertoire plugins, pour construire le plugin de l'ancien Gnome1. Vous aurez besoin des librairies de développement de Gnome. Quand le plugin est construit, lancez juste amsn et sélectionnez l'ancrage à Gnome dans le menu d'options.
+Pour construire le nouvel ancrage dans freedesktop (compatible Gnome2 et KDE3), lisez le fichier README dans plugins/traydoc.
+
+UTILISATION
+===========
+
+Q: Que signifie les contacts en magenta dans ma liste de contacts?
+R: Cela signifie que vous n'êtes pas dans la liste de contacts de cette personne.
+
+Q: Puis-je copier l'adresse d'un contact dans le presse-papier ?
+R: Oui, clique droit sur le nom du contact dans la liste de contact, et cliquez cette adresse dans le menu pop-up. L'adresse email du contact sera copié dans le presse-papier.
+
+Q: Comment puis-je accéder à l'historique des messages que j'ai envoyé dans la fenêtre de dialogue ?
+R: Si vous voulez accéder aux messages précédents que vous avez envoyé dans la fenêtre de dialogue, vous avez seulement besoin d'utiliser les touches de contrôle avec les fléches. Cela fonctionne de la même façon que dans un shell avec Ctrl-Haut qui donne le message précédent et Ctrl-Bas qui donne le suivant.
+
+Q: Dans l'onglet Privé dans les préférences, à quoi servent les quatre listes ?
+R: Il y a quatre listes, connues comme Liste des Personnes Autorisées (LA), Liste des Personnes Bloquées (LB), Liste Inversée (LI) et Liste de Contacts (LC). La dernière liste est évidente, voici les explications sur les 3 autres listes :
+LA : cette liste contient les adresses email des personnes qui ont la permission de vous voir quand vous êtes en ligne et ils peuvent aussi dialoguer avec vous.
+LB : c'est la liste des bloquées qui contient la liste des personnes que vous avez bloquées. Aussi ils ne peuvent pas vous voir quand vous êtes en ligne, et ils ne peuvent pas dialoguer avec vous.
+LI : C'est la liste inversée, elle contient les adresses email qui vous ont ajouté dans leur liste. Les personnes apparaissant en vert dans cette liste sont les personnes qui ne sont pas dans votre liste de contact mais dont vous faites parti de la leur.
+
+Q: Je veux ajouter mes propres smileys, comment puis-je faire ?
+R: Il y a un nouveau bouton dans le menu des smileys qui permet de le faire. Cliquez sur "Ajouter un nouvel émoticon personnalisé" et une fenêtre apparaitra, vous devez y renseigner les champs. Le champs "description" sera renseigné avec ce que vous voulez, il sera seulement la description vue par le programme. Le champ "Textes déclencheurs" est ce que vous voulez taper pour que le smiley soit vu, par exemple, les smileys sont déclenchés par :) :-) ... d'autres avec :D :-D :> :-> ... pour en envoyer plusieurs, vous devez les écrire les uns après les autres, séparés par un espace. Si vous voulez un déclencheur qui a déjà un espace comme dans cette exemple "hello there", vous aurez à le mettre entre doubles guillements ...
+par exemple :
+"hello there" hi "what's up"
+cela fera trois déclencheurs pour le même smiley.
+Le champs "Nom du fichier de l'émoticon" est le nom du fichier gif. Il doit être de taille 19x19 pour que le menu des smileys ne soit pas difforme. Mais il peut avoir la taille que vous voulez, mais nous ne pouvons que vous prévenir sur d'éventuels problèmes qui peuvent arriver ... (menu de smileys corrompu, si vous ajoutez le smiley à votre surnom, la partie "Mon Status" peut aussi être corrompu, etc ...). Vous pouvez donner un chemin d'accès complet, utilisez le bouton de navigation, ou tapez juste le nom du fichier, si c'est un fichier dans ~/.amsn/<profile>/smileys ou dans le répertoire msn/skins/<skin>/smileys. Le fichier sera alors copié dans votre répertoire profil.
+Les mêmes propriétés peuvent être appliquées au champs "Fichier son associé à l'alarme" ... qui est utilisé pour jouer un son quand le smiley apparait ... par exemple le smiley LOL déclenché par LOL fait un son de rire. Le son peut être un fichier .wav ou autre extension supporté par votre playeur de son (à sélectionne dans l'onglet de préférences des applications ... plays, esdplay ou mpg123 si vous voulez des fichiers mp3). Pour que cette entrée soit valable, vous devez activer le bouton "Activer le son".
+Si le fichier GIF est animé, vous devez activé le bouton "Cet émoticon est animé".
+L'option "Cacher cet émoticon du menu" permet de ne pas afficher le smiley dans le menu des smileys, mais il reste toujours activable grâce au texte déclencheur.
+L'option "Utiliser des déclencheurs sensibles à la casse" activée fera la différence entre les déclencheurs "LOL" et "lol".
+Quand vous avez fini vos configurations, pressez le bouton OK, cela affichera des erreurs si vous avez oublié une des trois options (description, déclencheurs et fichier GIF) ou si les fichiers (GIF et/ou son) n'existent pas ou ne sont pas lisibles par l'utilisateur. Si aucun message d'erreur n'est visible, alors vous pouvez utiliser vos nouveaux smileys.
+
+Q: Les surnoms sont maintenant trunqués. Est-ce possible de revenir aux surnoms entiers?
+R: Oui. Vous devez modifier la configuration dans Outils->Préférences->Avancé. Il y a deux options :
+"Raccourcir les surnoms plus long que la largeur de la fenêtre dans le titre et la liste de contacts" et "Raccourcir les surnoms plus long que la largeur de la fenêtre dans les conversations". Après avoir sélectionné vos préférences, relancez amsn.
+
+Q: La détection de bloquage ne fonctionne pas très bien, pourquoi ?
+R: Le bug du protocole qui nous permet de détecter les personnes qui vous bloque a été corrigé. Il n'est donc plus possible de les détecter, aussi il n'est plus nécessaire d'inclure cette option.
+
+PROBLEMES
+=========
+
+Q: Des fois, amsn "accroche", pourquoi ?
+R: Quand amsn accroche, c'est généralement un problème avec la configuration sonore. Il se peut que vous jouez un son mais la carte son est bloqué, et la commande play s'arrête jusqu'à ce que la carte son soit disponible. Essayez de rendre indisponible le son ou de changer la configuration de commande du son.
+
+Q: J'essaye de lancer amsn mais j'ai cette erreur :
+bash: ./amsn: bad interpreter: No such file or directory
+R: vous avez besoin d'installer les packages tcl/tk, parce que vous avez besoin de l'interpréteur wish. Si vous pensez que vous l'avez, essayez "wish amsn" au lieu de "./amsn". Si ça fonctionne, éditez amsn et changez la première ligne :
+#!/usr/bin/wish
+avec la localisation de l'interpréteur wish.
+
+Q: Quand je lance amsn, j'ai cette erreur :
+Error in startup script: bad option "map": must be compare, first, index, last, length, match, range, tolower, toupper, trim, trimleft, trimright, wordend, or wordstart while executing "string map $map $md5body"
+(in namespace eval "::md5" script line 65)
+invoked from within "namespace eval ::md5 { ... etc
+R: Vous avez utilisé une version de tcl/tk qui est inférieure à la version 8.3. Mettez à jour tcl/tk.
+
+Q: Après avoir mis à jour amsn, j'ai cette erreur :
+Error in startup script: expected integer but got "" while executing "font create menufont -family $family -size $size -weight normal"
+(procedure "::amsn::initLook" line 5)
+invoked from within "::amsn::initLook $family $size $config(backgroundcolor)" (file "amsn" line 2184)
+R: Il y a eu des changements dans le fichier de configuration. Nous vous conseillons de détruire l'ancien fichier de configuration dans votre répertoire home.
+Détruisez /home/votrenomdutilisateur/.amsn/config et ça fonctionnera.
+
+Q: Je ne peux pas taper de caractères chinois, japonais ou autres dans amsn. Que puis-je faire ?
+R: C'est comme xcin ou autres programmes similaires qui ne sont pas supportés dans la version courante de tcl/tk, donc amsn ne travaille pas avec eux non plus. Vous devez attendre la prochaine version de tcl/tk et espérer le support de xcin. Pendant ce temps, vous pouvez taper le texte dans un autre éditeur, et faire un copier-coller dans la fenêtre de dialogue.
+Nouveauté : Internationalisation du copier-coller. Si vous avez un problème pour copier les caractères dans Amsn, téléchargez et installez cette version de Tcl/Tk depuis ce site :
+http://jfontain.free.fr/tcl-8.4a3-2.i386.rpm
+http://jfontain.free.fr/tk-8.4a3-2.i386.rpm
+http://jfontain.free.fr/tcl-thread-8.4a3-2.i386.rpm
+Veuillez noter que ceci pourrait être un travail autour, au cas où vous ne pouvez pas taper votre langue directement dans AMSN, par exemple le Chinois Traditionnel en utilisant xcin.
+
+Q: Puis-je utiliser AMSN derrière un serveur proxy ?
+R: Les serveurs proxy sont supportés depuis la version 0.61 de AMSN. Ceci signifie que vous pouvez seulement vous relier derrière un proxy HTTP (tel que squid par exemple). Si votre serveur proxy est socks5 alors vous ne pourrez pas encore vous relier, mais le support de socks5 est en cours.
+
+Q: Je suis derrière un proxy HTTP mais je ne peux pas encore me connecter !
+R: AMSN utilise une requête de CONNEXION à travers le proxy HTTP. Vous devez vous assurer que votre serveur proxy permet ce type de connexion (SSL). Demandez à votre administrateur de permettre des connexions de SSL à travers la requête CONNEXION.
+
+Q: Amsn semble connecté, mais quand j'essaye de dialoguer avec quelqu'un ou de changer mon status, je suis déconnecté. Ceci arrive souvent, après quelques minutes d'inactivité. Je suis probablement derrière un routeur ou un firewall.
+R: Essayez de choissir "Garder la connexion ouverte (NAT)" dans le menu outils->options. «a garde la connexion active en envoyant un paquet factice au serveur toutes les deux minutes.
+
+Q: Le son se répète régulièrement. Par exemple, si XMMS est lancé et que quelqu'un se connecte ou je suis en train de dialoguer avec quelqu'un, après que XMMS soit fermé, tous les évènements sonores ne peuvent plus être joués à cause de XMMS.
+R: Vous avez plusieurs solutions. Si vous utilisez KDE, vous pouvez configurer XMMS pour jouer les sons arts, et utiliser artsplay comme commande de son pour amsn. De cette façon, les sons seront mixés. Si vous utilisez Gnome, vous pouvez utiliser esdplay et configurer XMMS pour jouer les ESD. Ou au lieu d'utiliser la commande de lancement, vous devez juste faire un petit script qui vérifira si /dev/dsp est occupé, ou libre, avant d'appeler "play".
+
+Q: J'utilise amsn derrière un firewall, ou j'utilise IP-Masquerade. L'envoi de fichier ne fonctionne pas, puis-je y remédier ?
+R: Il se peut que le firewall bloque les connexions entrantes. Les transferts de fichiers travaillent de cette façon : quand vous voulez envoyer un fichier à quelqu'un, vous envoyez une invitation avec votre adresse IP et le numéro de port. Ensuite le client distant doit se connecter à votre IP:port pour commencer le transfert. Les numéros de ports utilisés sont généralement 6891 ou 6892 (le premier transfert est sur le port 6891, mais si vous débutez une nouveau transfert de fichier tant que le premier n'est pas encore fini, alors il utilisera le port 6892).
+Aussi, si vous utilisez un firewall, vous devrez être s˚r qu'il permette la connexion au port 6891 (et 6892 si vous voulez être capable de faire plus d'un transfert en même temps).
+Si vous êtes dans un réseau privé avec des adresses privées, comme 192.168.0.x, alors c'est plus difficile de faire des transferts de fichiers. Vous avez besoin d'envoyer l'adresse internet réelle (vous pouvez l'entrer manuellement ou dire à amsn de la supposer à partir d'une page web), au lieu de l'adresse interne, et dire au gateway (l'ordinateur avec la connexion directe à internet) de faire suivre les connexions entrantes du port 6891 de votre ordinateur à l'intérieur du réseau privé.
+
+Q: Comment ouvrir un port de transfert de fichiers sous Suse Linux ?
+R: Merci à John Hillier pour son guide
+1. Ouvrez Konqueror en mode Super Utilisateur (KMenu/Système/Plus de Programmes/Gestionnaire de Fichier - Mode Super Utilisateur)
+2. Entrez dans le champs d'url de Konqueror : /etc/sysconfig/SuSEfirewall2
+3. Cliquez sur le texte, clic droit avec la souris, ouvrez KWrite pour éditer le script du firewall
+4. Editez la section #9 ligne FW_SERVICES_EXT_TCP="6891" pour inclure le port 6891
+5. Sauvegardez et fermez toutes les fenêtres et redémarrez le firewall dans YaST.
+Une façon simple est d'ouvrir "YaST/Sécurité et  Utilisateurs/Firewall/Configuration du Firewall". Cliquez sur "Expert" dans "Services Additionnels" et ajoutez le port 6891.
+
+PROBLEMES SOUS WINDOWS
+======================
+
+Q: Puis-je exploiter le son sous Windows ?
+R: Oui, nous avons un petit programmme appelé plwav.exe qui joue les fichiers wav sous windows. Vous pouvez l'utiliser comme commande de son (amsn a besoin de programmes externes pour jouer les sons). Dans le menu, choissisez Options->Préférences->Son et entrez "plwav" comme commande de son.
+
+Q: Quand la fenêtre de notification s'affiche en pop-up, la barre des t‚ches s'efface partiellement, puis-je y remédier ?
+R: Oui, vous pouvez modifier les valeurs de la position de la fenêtre de notification avec X pixels pour la gauche et Y pixels pour le haut. Vous pouvez les changer dans Outils->Préférences->Apparence.
+
+AUTRES
+======
+
+Q: AMSN ouvre le port 60000. Est-ce normal ? C'est une porte dérobée ? Pourquoi cela arrive ?
+R: C'est normal. AMSN utilise les sockets comme un système fermé pour certifier que deux instances AMSN utilise le même profil (qui peut causer des problèmes). C'est la meilleur plateforme indépendante de système fermé que nous avons trouvé. Si vous trouvez une meilleure solution, dites-le nous :)
+Si vous regardez ~/.amsn/profiles, vous pouvez voir que le port est utilisé pour chaque profil.
+
+Q: J'ai d'autres questions, pouvez-vous m'aider ?
+R: Oui, nous pouvons. Mais, allez faire un tour sur la page du projet sur SourceForge, à l'adresse suivante http://sourceforge.net/projects/amsn, et vérifiez tous les bugs, lisez les forums pour vérifier si votre problème a déjà une réponse.
+Avant de soumettre un bug ou demander de l'aide, n'oubliez de rappeler ces informations :
+- version de Amsn.
+- version de Tcl et Tk.
+- la trace de la pile d'erreur soumise (si possible).
+- les derniers messages d'erreur dans la fenêtre de debug (Ctrl+D et Ctrl+S dans la liste de contact).

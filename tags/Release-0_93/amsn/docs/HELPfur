@@ -1,0 +1,25 @@
+File di jutori par amsn
+
+Carateristichis domandadis:
+Amsn al è scrit in tcl/tk, duncje tu âs bisugne di un interprit tcl/tk che al funsionedi, version 8.3 o plui atualizade.
+Tu puedis vêlu al recapit http://tcl.sourceforge.net.
+L' interprit al è dispunibil par linux, windows e macintosh.
+Cualchi fature in plui e podares vê bisugne di cualchi altri programe, o librariis, sicu le docking icon, le Display Picture, o le conession SSL par il protocol MSN 9.
+
+Guide di instalazion:
+Scjarie il file amsn-x_xx.tar.gz.
+Decomprimîlu cun il comant:
+ gzip -d amsn-x_xx.tar.gz
+ tar xvf amsn-x_xx.tar
+Al crearà une cartele msn/ e amsn al è instalât e pront par sedi inviât.
+Par inviâlu, scrîf:
+ cd msn
+ ./amsn
+o se nol vâ, prove
+ wish amsn
+Se il comant wish nol esist, alore no tu âs tcl/tk instalât coretementri.
+Se "wish amsn" al funsione, ma "./amsn" no, configure il file 'amsn' insedant le trate juste a 'wish' te prime rie.
+Le trate predefinide e je:
+/usr/bin/wish
+
+Se tu âs ancjemò berdeis, prove a doprâ le FAQ
