@@ -1,0 +1,216 @@
+amsn_lang_version 2
+about Tietoja
+acceptfile Hyväksy tiedosto $1, koko $2? Tallennettu $3
+actions Toiminnot
+addacontact Lisää henkilö
+addedyou $1 ($2) on lisännyt sinut yhteystietoihinsa
+addtocontacts Lisää yhteystietoihin
+addtoo Lisää henkilö yhteystietoluettelooni
+admincontacts Hallitse yhteystietoja
+admingroups Hallitse ryhmiä
+adverts Mainokset
+alarmpref Hälytysasetukset käyttäjälle
+alarmstatus Aseta hälytys päälle/pois 
+allowseen Anna tämän henkilön nähdä online-tilani ja ottaa yhteyttä minuun
+appearoff Näyttäydy muille offline-tilaisena
+aretyping $1 kirjoittavat viestiä
+autohotmaillog Automaattinen kirjautuminen Hotmail-palveluun
+autoidle Poissa-tila päälle määräajan kuluttua (5min) 
+autoip Automaattinen IP
+avoidseen Estä tätä henkilöä näkemästä yhteystilaani ja ottamasta yhteyttä minuun
+away Poissa
+baduserpass Virheellinen käyttäjänimi tai salasana
+blankdirect Jätä tyhjäksi, jos käytät suoraa yhteyttä
+blocked Estetty
+block Estä
+broughtby  Kehitetty seuraavien kehittäjien toimesta
+browser Selain
+browse Selaa
+busy Varattu
+cancel Peruuta
+cfgalarm Aseta/Lisää/Poista hälytys
+changenick Vaihda lempinimi
+chatack Hyväksytään keskustelupyyntöä
+chat Keskustele
+chatreq Pyydä keskusteluun
+chatsmileys Hymiöt
+checkingver Tarkistaa uusinta versiota
+checkver Tarkista uusin versio
+choosebasefont Valitse fontti
+choosebgcolor Valitse taustaväri
+choosefontcolor Valitse fontin väri
+clicktologin Klikkaa tästä kirjautuaksesi
+close Sulje
+closingdocks Sulje-painike pienentää ikkunan
+command Komento
+confirmdelete Haluatko varmasti poistaa $1?
+connecterror Virhe yhdistettäessä palvelimelle
+contactadded Yhteystieto lisätty
+contactdoesnotexist Yhteystietoa ei ole!
+copytogroup Kopio ryhmään
+date Päiväys
+delete Poista
+enableproxy Ota välityspalvelin käyttöön
+encoding Valitse tekstin koodaus
+entercontactemail Anna henkilön sähköpostiosoite
+enterfilename Anna tiedoston nimi
+enternick Anna lempinimesi
+examples Esimerkit
+exitamsn Haluatko varmasti lopettaa?
+extras Lisäpalvelut
+filedoesnotexist Tiedostoa ei ole
+fileman Tiedostonhallintaohjelma
+filename Tiedoston nimi
+filetransfercancelled Tiedoston siirto keskeytetty
+filetransfercomplete Tiedoston siirto valmis
+gonelunch Lounaalla
+groupadd Lisää ryhmä
+groupdelete Poista ryhmä
+groupexists Ryhmä on jo olemassa!
+groupmissing Ryhmää ei löydy
+groupnewname Uusi nimi
+groupnotempty Ryhmä ei ole tyhjä!
+groupoldname Vanha nimi
+grouprename Nimeä ryhmä uudelleen
+group Ryhmä
+groupunknown Tuntematon ryhmä
+handle Käsittele
+help Apua
+helpcontents Sisältö
+home Koti
+identity Henkilöllisyys
+ident Tunnistus käynnissä
+inbox Saapuneet
+invalidusername Virheellinen käyttäjänimi
+invite Kutsu
+ipaddress IP-osoite
+istyping $1 kirjoittaa viestiä
+joins $1 liittyy keskusteluun
+language Kieli
+lastmsgtime Viimeisin viesti saapunut $1
+leaveblankforhotmail Jätä tyhjäksi Hotmail web-palvelua varten
+leaves $1 poistui keskustelusta
+listeningon Kuuntelee porttia $1
+listsmileys Hymiöluettelo
+loadcontacts Lataa yhteystiedot
+loggedotherlocation Yhteys katkesi. Olet kirjautuneena toisesta paikasta.
+loggingin Kirjaudutaan sisälle
+loginas Kirjaudu lempinimellä
+login Kirjaudu sisälle
+logout Kirjaudu ulos
+logsin on juuri kirjautunut sisään
+mailer Sähköpostiohjelma
+mobile Matkapuhelin
+movetogroup Siirrä ryhmään
+msg Viesti
+msn AMSN
+mustrestart Sinun täytyy käynnistää ohjelma uudestaan, että muutokset tulevat voimaan
+mystatus Oma tila
+needonline Sinä olet/näyt vieläkin offline-tilaisena!
+newmail $1 uutta viestiä saapunut Saapuneisiin
+newmailfrom Uusi viesti $1 ($2)
+newmsg Uusi viesti
+newveravailable Uudempi versio $1 ladattavissa
+next Seuraava
+noactivity Ei toimintaa
+nonewmail Ei uusia viestejä Saapuneissa
+nonewver Uudempaa versiota ei ole saatavilla
+notify muistuta
+notifywin Muistutus-ikkuna
+nousersinsession Ei käyttäjiä
+offline Offline-tila
+ok Ok
+onenewmail 1 uusi viesti Saapuneissa
+online Online-tila
+onphone Puhelimessa
+openreceived Avaa vastaanotetut tiedostot
+options Asetukset
+ordercontactsby Järjestä yhteystiedot
+other Muu
+pager Hakulaite
+pass Salasana
+phone Puhelin
+picfile Hälytyksen kuva (GIF < 500 x 500)
+picstatus Kuvahälytys päälle/pois
+port Portti
+prefapps Sovellukset
+preferences Valinnat
+prefsound Äänet
+properties Ominaisuudet
+proxyconfhttp HTTP-välityspalvelin asetukset
+proxyconf Välityspalvelimen asetukset
+publishphones Julkaise puhelinnumeroni
+receivedbytes Vastaanotettu $1 / $2 tavusta
+receivefile Vastaanota tiedosto
+reconnecting Yhdistetään uudelleen palvelimeen
+reconnect Odottaa $1 uudelleen kirjautumista
+rememberpass Muista salasana
+rightback Tulen kohta takaisin
+saveas Tallenna nimellä
+savecontacts Tallenna yhteystiedot
+save Tallenna
+says $1 sanoo
+sbcon Otetaan yhteys Kytkintauluun
+sendfile Lähetä tiedosto
+send Lähetä
+sendmail Lähetä sähköpostiviesti
+sendmsg Lähetä viesti
+sentbytes Lähetetty $1 / $2 tavusta
+servergoingdown Yhteys katkaistu: palvelin sammutetaan
+server Palvelin
+soundfile Hälytyksen äänitiedosto
+soundloop Soita ääntä silmukassa
+sound Tapahtumien äänimerkki
+startoffline Aloita offline-tilassa
+status Tila
+syntaxerror Muotoiluvirhe
+textsize Tekstin koko
+title Al's Messenger
+tools Työkalut
+to Vastaanottaja
+unblock Päästä
+uoffline Offline-tilassa
+uonline Online-tilassa 
+useralreadyonlist Käyttäjä on jo yhteystiedoissa
+user Käyttäjä
+version Versio
+view Näkymä
+willjoin Odottaa $1 liittymistä keskusteluun
+work Työ
+yousay Sanot
+youwant Haluat
+accept Hyväksy
+autoconnect Yhdistä käynnistettäessä amsn
+clearlog Tyhjennä loki
+confirm Oletko varma?
+copy Kopioi
+cut Leikkaa
+deliverfail Seuraavaa viestiä ei voitu välittää
+edit Muokkaa
+faq UKK (Usein Kysytyt Kysymykset)
+ftaccepted Tiedoston siirto hyväksytty
+ftrejected Tiedoston siirto hylätty
+history Historia
+keeplog Pidä keskusteluista lokia
+lclosedwin $1 on sulkenut ikkunan $2
+lconftopriv Julkinen keskustelu muuttui yksityiseksi jossa mukana $1
+lconvstarted Keskustelu alkoi $1
+lenteredconf $1 on liittynyt keskusteluun $2
+linprivate YKSITYINEN KESKUSTELU
+ljoinedconf $1 liittyi keskusteluun
+lleftconf $1 poistui keskustelusta
+lprivtoconf Yksityinen keskustelu muuttui keskusteluksi jossa mukana $1
+luclosedwin Olet sulkenut ikkunan $1
+natip IP:n selvitys web-sivuston mukaan
+nologfile $1 varten ei lokitiedostoa
+normal Normaali
+ordergroupsby Järjestä ryhmät
+paste Liitä
+reject Hylkää
+reversed Käännetty
+savetofile Tallenna tiedostoon
+soundstatus Ääni hälytys
+stopalarm Keskeytä hälytys
+usernotonline Käyttäjä ei ole online-tilassa
+viewprofile Näytä profiili
+twonewmail $1 uutta viestiä saapunut Saapuneisiin

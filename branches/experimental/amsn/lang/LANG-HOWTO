@@ -1,0 +1,29 @@
+LANG-HOWTO - 06/01/04, Alberto Diaz
+
+This little document is a guide to translator and translators' manager that works or wants to work in AMSN.
+
+1. For Translators
+------------------
+
+When you add new keys, you should do a diff file or send the entire updated langXX file to the translators' manager. If not possible, or you're just translation a few keys, you can just send a text file attached to the mail, in the form:
+
+keyname1 translation1
+keyname2 translation2
+
+that is, the keyname, followed by ONE BLANK SPACE (no tabs or similar), and followed by the translated string, no need to include the original english string, or similar. One key per line, no extra blank lines in the middle. Including the keys directly in the email text is a bad idea, as mail clients usually split long lines, which leads to mistakes. 
+
+Other kinds of contribution will be rejected, in order to make the job easier to the manager. 
+
+I hope you understand, there's usually one person in charge of updating the translations, and there are more than 40 languages, so there are many translations and submission. Don't make it more difficult :)
+
+2. For Translators' Managers
+----------------------------
+
+When a new translation arrives to you, you should only accept it if is a diff file or a complete langXX file, or our users can send always translations as mail, and it's a big job :)
+Be sure of using a multilanguage editor and use de correct codepage for each language or you can corrup them. Encodings are in langlist file.
+If you reaches a translation by any reason, do it with politeness, explain arguments of why do you reject it and always: 'Thanks anyway' ;)
+
+What should I do if...
+-...I receive two lang files of the same language? Reject one, the oldest, or the less complete.
+
+When you get big contributions (not just 1 or 2 keys), or when you see a person usually send translation updates for a language, you should add him to the credits in the README file. You should tell him about this, and ask him if he wants to be removed (nobody wanted to be removed until now, but it's polite to ask :))

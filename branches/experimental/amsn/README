@@ -1,0 +1,298 @@
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+========================================================
+=== Alvaro's Messenger==================================
+
+CCMSN was great but unfortunately its original author
+abandoned the project. Although it was very functional it
+still needed major work to improve its look and feel
+as well as complete the protocol support among many
+other things. That's when we, originally two working on
+it separately, decided to join efforts and bring to you
+this fine (we hope) piece of work ;)
+
+Alvaro J. Iradier
+D. Emilio Grimaldo T.
+
+Please send bugs, comments, feedback or suggestions to
+Source Forge project page at:
+
+http://sourceforge.net/projects/amsn
+
+New versions, and homepage at:
+
+http://amsn.sourceforge.net
+
+
+
+========================================================
+=== Programmers ===============================
+
+Alvaro J. Iradier Muro - airadier@users.sourceforge.net
+Didimo E. Grimaldo T. - lordofscripts@users.sourceforge.net
+Khalaf G. Philippe - burgerman@users.sourceforge.net
+Alaoui Youness - kakaroto@users.sourceforge.net
+
+========================================================
+=== Multilanguage Support ==============================
+
+Added by Alvaro J. Iradier.
+
+Translations to:
+
+Albanian: by Fatos Shema
+	Astrit Zhushi
+
+Bosanski (Bosnian): by Alem Dizdarevic
+
+Brazilian: by Cristiano Leivas
+	Aurélio Couto Arruda
+	Henrique Cesar Ulbrich
+	Fernando Meyer Camargo
+	Mauricio Maciel
+	Fabricio Souza
+	Diógenes Guedes Rettori
+	Cleber P. de Souza
+	Marcelo Abondanza
+	Rafael Giorgetti
+
+Bulgarian: by Ioan Stoimenov Iliavanov
+	https://sourceforge.net/projects/gtlt
+
+Català: Agusti Dosaiguas
+	Albert Astals Cid
+	Lacetani
+	Miquel Serralta
+	Jaume Masvidal Olé
+	Noé Juan Roig
+
+Cymraeg (Welsh): http://www.meddal.org.uk
+
+Czech:	Landsfeld Petr
+
+
+Dansk (Danish): Anders Bach Nielsen
+	Thomas Petersen
+	Søren Louring
+	Kim H. Hansen
+	Kenneth Johansen
+	Alexander Dan Bartholdy
+	Mark Michelsen
+
+Deutsch (German): Jose H. Freidhof
+	Bernhard Heger
+	Harald Freidhof
+	Leo Spalteholz
+	Lars Ermert
+	Philipp Winter
+	Andreas Krüger
+	Bart W. Kemps
+	Peter Roediger
+
+	
+Dutch (Nederlands): by Jan Keirse
+	D. Emilio Grimaldo
+	Stèphan Eizinga
+	Wouter de Bie
+	Jurgen De Backer
+	R. Neleman
+	Jeroen Schaeken
+	Mernout
+	Lyts Famke
+	Harry Vennik
+	Olivier Jacquet
+	Koen Casier
+	Thijs Bruneel
+	Tomasz Nguyen
+	Bart W. Kemps	
+	Arjan Schrijver
+
+Eivissec (Ibiza local language):
+	by Noé Juan Roig
+	
+Ellinika (Greek): by Michail Dimitris	
+	
+English: by Alvaro J. Iradier
+	Gareth Ignatius
+	Jody Branter
+	D. Emilio Grimaldo
+
+Español (Spanish): by Alvaro J. Iradier
+	D. Emilio Grimaldo
+	Luis Llorente Campo
+
+Esperanto: by Mike Mintz
+
+Estonian: by Martin Leo-Kisand
+	Uwe Tallmeister
+	Jaanis Kaar
+
+Euskera: by Galder Segurola
+	Internet&Euskadi www.interneteuskadi.org
+	NOTE: just for testing, some words don't match, still need some
+	improvements. Mail suggestions and adittions.
+
+Français (French): by Guillaume Vaillant
+	Charles Castelain
+	JM Billaud
+	Frédéric Delrieu
+	Bernard Nauwelaerts
+	Raphael Michel
+	Alain Cabiran
+	Valère
+	Valéry Norrant
+	Kami Rousseau
+	Raphaël Slinckx
+	Aurélien Christman
+	Yves Dutrieux
+	Cyril Garcia
+	Patrick Legault
+	Borus Faure
+	Thibault North
+
+Français (French) Canadian: by Dominic Genest
+	Frédéric Delrieu
+	Olivier Lussier
+	Gavin Sharp
+	Martin Bchale
+	Patrick Legault
+
+Frysk (Frisian): by Jurjen Huisman
+	Lyts Famke
+
+Gallego: by David G. Outes
+
+Greeklish: by noki[a]
+
+Indonesian: by Rai S. Regawa
+
+Íslenska (Icelandic): by Einar Th. Einarsson
+	Ísak Ben
+
+
+Italiano (Italian): by Andrea Di Mento
+	Goffredo Baroncelli
+	Giuseppe Lanni
+	Adriano Varoli
+	Jacopo Lorenzini
+	Patrizio Silvestri
+	Isidoro Russo
+
+Japanese: Michimoto Nakahara
+	Ken Nonaka
+	Takahiro Hara
+
+Korean: by Baek, Seungsoon
+
+Macedonian: by Todor Tanevski
+
+Magyar (Hungarian): by Albert Szoldán
+
+Mongolian: by Zayabaatar Dagvatur
+
+
+Norsk (Norwegian): Gunnar Tjomlid
+	Erik Tørrissen / MrIron
+	tg90nor (Thomas Geirhovd)
+
+Polski (Polish): Michael Swoboda
+	Adrian Dzikowski
+
+Português (Portuguese): by Gustavo J.A.M. Carneiro
+	Mario Joao
+	Paulo Almeida
+	Manuel Silva
+	Francisco Neto
+	Joao Soares
+	Luis Abobora Filipe G. Figuereido
+	Paulo Oliveira
+	Nuno Alves
+	João Pedro Oliveira
+
+Romanian: by Craciun Attila
+	Arny - http://www.arny.ro/html/amsnro.html
+
+Russian: by Andrey Zakirov
+	Dr. Vladimir Dontsov, DDS
+	Vladimir Lazarenko
+
+Serbian: by Marko Kocic
+
+Simplified Chinese: by Changchun Zhao
+
+Slovak: by Nico Kovac
+
+Slovenscina (Slovenian): by Kostko
+	Janos Vidali
+
+South African: by Jaco Roeloffs
+
+Suomi (Finnish): by Kalle Kilpinen
+	Jonni Henttinen
+	Otto Parantainen
+
+
+Swahili: by Nsubis
+
+Svenka (Swedish): by Tom Widerström
+	Jimmy Svensson
+	Richard Strand
+
+Tamil: by S. Muguntharaj
+
+Traditional Chinese (Taiwan): by Stanley Chu
+
+Türkçe (Turkish): by Baris Cicek
+	Gurkan Bebek
+	Kemal Ilgar Eroglu
+
+Valenciano: Juan Arnal Arlandis
+	Juan José García Amaya
+
+
+========================================================
+=== Artwork help and icons =============================
+
+Bart W. Kemps
+Guillermo Lapresta
+Josué Rivera Ríos
+LadyMariu
+Henry Damewood
+James Houston
+Steels - Benjamin Grosse (aMac skin)
+
+========================================================
+=== More special thanks and credits ====================
+
+Martijn Stolk (Fix for tray icon dettaching)
+Juan Araya Robles (MSN6 animated emoticons)
+Ignacio Armenteros (plwav.exe for windows)
+Pieter van Beek (imagee label name bug patch)
+Martin Carr
+Baris Cicek
+Trevor Feney
+Daniel Gardner (View profile feature)
+Kenneth Henderick (Dutch FAQ translation)
+Gareth Hughes (MSN6 emoticons)
+Gareth Ignatius
+Lee Olson (Webdesign)
+David G. Outes (Debian Packages)
+Rafael Rodriguez
+Egbert van der Wal (Sort groups alphabetically patch)
+Marco Rodriguez M. (TLS for Linux-Sparc)
+R. Braun (TLS for NetBSD-Sparc64)
+Badlop (NSIS Windows Installer)
+ZoRoNaX (Documentation on MSNP2P)
