@@ -1,0 +1,299 @@
+FAQ 1.6
+--------
+
+Q: What is Amsn?
+A: Amsn is a Microsoft Messenger clone. It allows you to keep in touch with
+your friends and exchange instant messages and files.
+
+INSTALLING AND RUNNING
+=====================
+
+Q: What do I need to run amsn?
+A: Amsn is written in tcl/tk, so you just need a working tcl/tk interpreter
+(version 8.3 or later). You can get it at http://tcl.sourceforge.net. The
+interpreter is available for linux, windows and macintosh.Some additional
+features might require extra programs or libraries, like the docking icon,
+the Display Pictures or the SSL connection for MSN Protocol 9.
+
+Q: How do I install and run amsn on unix/linux?
+A: Just download the amsn-x_xx.tar.gz file. Untar it with the command:
+  gzip -d amsn-x_xx.tar.gz
+  tar xvf amsn-x_xx.tar
+It will create an msn/ directory, and amsn is installed and ready to run.
+To launch it, do:
+  cd msn
+  ./amsn
+or if this doesn't work, try
+  wish amsn
+If wish command doesn't exist, then you don't have tcl/tk correctly installed.
+If "wish amsn" works, but "./amsn" doesn't, edit 'amsn' file and set the
+correct path to 'wish' in the first line. By default it's set to:
+/usr/bin/wish
+
+Q: After downloading imagemagick, How do I enable Display Pictures?
+After you installed imagemagick, go to the AMSN's Preferences dialog. There,
+click on "Others". Go to a field named "CONVERT", and click the browse button.
+Then go to the folder where you installed imagemagick, and select the
+"CONVERT.EXE" file. 
+The, save preferences and restart AMSN. Then go to preferences again, and
+check that the option "Enable receiving Display Pictures from other users"
+is enabled, as it was disabled automatically because CONVERT.EXE couldn't
+be found.
+
+Q: When I double click "amsn" file from a graphical file browser, like
+konqueror or nautilus, it opens a text editor instead of running AMSN!
+A: AMSN is written in tcl/tk, an interpreted language, so the "amsn"
+file is just a text file with the program code. The file manager might
+think it's a text file, so it will launch the text editor. To run AMSN
+you should choose "Open with...", "Launch with..." or similar, and use
+the program "wish" to open the file "amsn". Again, as seen in the
+question above, if the "wish" command doesn't exist, you need to
+install tcl/tk.
+
+Q: How do I create a shortcut to amsn on my desktop?
+A: 1.- Add an icon to your gnome/kde desktop or menu, that
+launches the command:
+/wherever/you/have/amsn/installed/amsn
+ for example
+ /home/yourusername/msn/amsn
+ 2. Other way:
+ As root, create a link in /usr/bin to the amsn file
+ ln -s /wherever/you/have/amsn/installed/amsn amsn
+ This way, you can launch amsn by just typing 'amsn' from
+anywhere.
+ Then add an icon that launches the command 'amsn'.
+
+Q: How do I get the Gnome/KDE docking to work?
+A: You have to run 'make' inside the plugins directory, to build
+the OLD GNOME1 plugin. You'll need gnome development libraries. When
+the plugin is built, just run amsn and select Gnome Docking in the
+options menu.
+To build the NEWER freedesktop (Gnome2 and KDE3 compatible)
+docking, read README file in plugins/traydoc.
+
+USING IT
+========
+
+Q: What do the magenta contacts in my contact list mean?
+A: It means that you are not in that person's contact list.
+
+Q: Can I copy a contact address to the clipboard?
+A: Yes, right click on that contact name on the contact list, and
+click its address on the pop-up menu. The contact email address
+will be copied to the clipboard.
+
+Q: How can I access the history of the messages I sent in my chat windows?
+A: If you want to access previous messages you sent in your chat windows
+you only need to use the Control key with the arrows. It works the same way
+as in a shell so Ctrl-Up gives you the previous message sent and Ctrl-Down,
+the next one.
+
+Q: In the preferences' privacy tab, what do those four lists mean?
+A: There are four lists, known as Allow List(AL), Block List(BL), Reverse
+List(RL) and Contact List. The last one is obvious, I'll explain what
+other three lists mean :
+AL : This list contains the emails of people who are allowed to see you when
+you get online and they can also chat with you when you aren't offline
+BL : This is the block list, which means it contains the list of people you
+are blocking. So this means they can't see you when you are online, and they
+can't chat with you.
+RL : This is the reverse list, it contains the email addresses of people who
+added you to their list. People appearing in green in this list are people
+who aren't in your contact list but you are still in theirs.
+
+Q: I want to add my own custom smileys, how can I do it ?
+A: There is a new button in the smileys menu that allows you to do this.
+Click on the "Add new custom smiley" button and a window will appear, you must
+fill the required fields. The "description" field should be set to whatever
+you want, it will only be the description shown by the tooltip. The "text
+triggers" field is what you want typed for the smiley to be shown, for example,
+the regular smiley has triggers like :) :-) .. the big smile smiley has
+triggers like :D :-D :> :-> ... to set multiple triggers, you must type them
+one after the other, separated by a space. if you want a trigger that already
+has a space in it for example "hello there", you should put it between quotes..
+for example :
+"hello there" hi "what's up"
+this will be 3 triggers for the same smiley.
+The "smiley file" field is the filename of the gif file. it must be of size
+19x19 so the smileys menu won't be corrupted. but it can have any size you
+want, but we some weird things might happen... (smileys menu corrupted, if
+you add that smiley to your nickname, the "My status" part of the main amsn
+window might get corrupted too, etc..). You can give a full pathname, use the
+browse button, or just put the name of the file, if it is a file in the
+~/.amsn/<profile>/smileys or msn/skins/<skin>/smileys directory. The file
+will then be copied in your profile directory in case you move or rename the
+original file.
+The same properties may be considered for the "Sound file" field... this is
+used for playing a sound, when the smiley is shown.. for example the LOL
+smiley triggered on LOL makes a laughing sound. The sound must be a .wav file
+or any extension supported by your sound player (set in the application
+preferences tab... play, esdplay, or mpg123 if you want it to be an .mp3
+file...) . For that entry to be available, you must first activate the
+checkbutton that says "play sound"
+The check-button "animated" means that this GIF file is animated, if the GIF
+is animated and you don't set this option, then the smiley will be a still
+image.
+The "Hide from smileys menu" option, means that if you set this option on,
+then the smiley won't appear in the smileys menu, but will still be activated
+on triggers.
+The "case sensitive" option, means that the triggers should be considered
+case sensitive, that means, that a "LOL" trigger would be different from a
+"lol" trigger. if not set, then the lowercases/uppercases won't have any
+importance.
+When you finished your settings, press the OK button, it will prompt errors
+if you forgot to set one of the 3 first option (description, triggers and
+GIF file) or if the files (GIF and/or sound) does not exist or are not
+readable by the user. if no error message is shown, then you can already
+use your new smileys.
+Have fun.
+
+Q: Nicknames are now truncated. Is it possible to revert back to full nicknames?
+A: Yes. To have nicknames be displayed in their full length on the contact
+list, in the alerts and the chat window, go to the advanced preferences section,
+inside the preferences window, and disable it.
+
+Q: Blocking detection is not available anymore, why?
+A: The protocol bug that allowed us to detect blocking people has been fixed.
+It's no longer possible to detect them, so it makes no sense to include this
+option.
+
+
+TROUBLESHOOTING
+===============
+
+Q: Sometimes amsn "hangs", why?
+A: When amsn hangs it's usually a problem with the sound configuration. Maybe
+you're playing a sound but the sound card is blocked, and the play command
+stops until the sound card is available. Try disabling sound or changing the
+sound command configuration.
+
+Q: I try to run amsn but I get this error:
+bash: ./amsn: bad interpreter: No such file or directory
+A: you need to install the tcl/tk packages, because you need the wish
+interpreter. If you think you have it, try "wish amsn" instead of "./amsn". If
+this works, edit amsn and change the first line:
+ #!/usr/bin/wish
+ with the location of the wish interpreter.
+
+Q: When I run amsn I get this error:
+Error in startup script: bad option "map": must be
+compare, first, index, last, length, match, range,
+tolower, toupper, trim, trimleft, trimright, wordend,
+or wordstart
+while executing
+"string map $map $md5body"
+(in namespace eval "::md5" script line 65)
+invoked from within
+"namespace eval ::md5 { ... etc
+A: You're using a version of tcl/tk that is older than 8.3. Update tcl/tk.
+
+Q: After updating amsn, this is what I get when I run it:
+Error in startup script: expected integer but got ""
+while executing
+"font create menufont -family $family -size $size
+-weight normal"
+(procedure "::amsn::initLook" line 5)
+invoked from within
+"::amsn::initLook $family $size $config(backgroundcolor)"
+(file "amsn" line 2184)
+A: There have been some changes in the configuration file. A quick fix to have
+the new version working is to delete the old config file in your home dir.
+Delete /home/yourusername/.amsn/config and it should work now.
+
+Q: Can't type chinese / japanese / other languages in amsn. What can I do?
+A: It looks like xcin or similar programs are not supported in the current
+version of tcl/tk, so amsn doesn't work with them either. You should wait for
+next version of tcl/tk and hope it supports xcin. Meanwhile, you can type the
+text in another editor, and copy-paste it into the chat window .
+New:Internationalization copy and paste. If you have problems pasting characters
+in to AMSN, download and install this version of Tcl/Tk from this site:
+http://jfontain.free.fr/tcl-8.4a3-2.i386.rpm
+http://jfontain.free.fr/tk-8.4a3-2.i386.rpm
+http://jfontain.free.fr/tcl-thread-8.4a3-2.i386.rpm
+Please note that this could be a work around in case
+you can't type your language directly in to AMSN, for
+example Traditional Chinese using xcin.
+
+Q: Can I use AMSN behind a proxy server?
+A: As of the development version right after 0.61, HTTP proxy support is
+available. This means that you can only connect behind an HTTP proxy (such as
+squid for example). If your proxy server is socks5 then you will not be able
+to connect yet, but socks5 support is on the way.
+
+Q: Amsn looks connected, but when I try to chat with someone or change my state
+I get disconnected. This happens often, after some minutes of inactivity.
+Probably I'm behind a router or firewall.
+A: Try enabling "Keepalive (NAT)" in the tools->options menu, inside advanced
+preferences. It's a fix for shared internet connections that keeps sending a
+dummy packet to the server every 2 minutes, to keep the connection alive.
+
+Q: The sound event is repeating. For example if XMMS is running and someone
+logged in or you were chatting with someone, after XMMS is closed or the
+file is finished all the sound events that weren`t able to be played
+because of XMMS are now played in an annoying way.
+A: You have many solutions. If you're using KDE, you can configure XMMS
+to play sound through arts, and use artsplay as sound play command for amsn.
+This way sounds will be mixed. If you use gnome, you can use esdplay and
+configure xmms for playing through ESD. Or instead of using the play command,
+you could just make a small script that checks if /dev/dsp is busy, or free,
+before calling "play".
+
+Q: I'm using amsn behind a firewall, or using IP-Masquerade. Sending files
+won't work, can I fix it?
+A: Maybe the firewall is blocking incoming connections. File transfers work
+this way: When you want to send someone a file, you send an invitation with
+your IP address and a port number. Then the remote client must connect to
+your IP:port to start the transfer.
+The used port is usually 6891, 6892 and so on (first transfer is on port 6891,
+but if you start a new file transfer while the first one hasn't finished yet,
+then it will use 6892, and so on).
+So, if using a firewall, you must make sure that it allows incoming
+connections to port 6891 (and next ones if you want to be able to make more
+than one transfer at the same time).
+If you're inside a private network with private addresses, like 192.168.0.x,
+then it's more difficult to make file transfers work. You need to send the
+real internet address (you can enter it manually or tell amsn to guess it
+from a web page), instead of the internal address, and tell the gateway (the
+computer with direct connection to the internet) to forward incoming
+connections to port 6891 to your computer inside the private network.
+
+Running on Windows
+==============
+
+Q: Can I make the sound work under windows?
+A: Yes, we have a small program called plwav.exe that just plays a wav under
+windows. You can use it as sound command (amsn needs some external program
+to play sounds). Go to the Tools->options->preferences->applications menu and
+enter "plwav" as sound server command.
+
+Q: When notify window pops up, the windows taskbar partially hides it, can I
+fix this?
+A: Yes, you can move the notify window X pixels to the left and Y pixels to
+the top. You can change this in Tools->Options->Preferences, inside the
+"Advanced" preferences section.
+
+OTHER
+=====
+Q: I noticed AMSN is opening some ports over port 60000. Is it normal? Is it
+a backdoor? Why does this happen?
+A: It is normal. AMSN uses sockets as a locking system to avoid two AMSN
+instances use the same profile at once (which could cause trouble). This is
+the better platform independent locking system we found. If you find a better
+way of doing this, just tell us :)
+If you check ~/.amsn/profiles, you can see what port is used for each profile.
+
+
+Q: I have another question, can you help me?
+A: Yes, we can. But first, take a look at the sourceforge project page, located
+at http://sourceforge.net/projects/amsn, and check all the bugs, support
+request and general forums to check if your problem is already answered. Don't
+check only the messages marked as "Open". There's a drop down list where you
+can select "Closed", or "Pending" at the top of the messages list. Already answered
+questions are usually marked as Closed.
+Before submitting a bug or asking for support, get the following information:
+- Amsn version.
+- Tcl and Tk version.
+- Stack trace of the submitted error (if applicable).
+- Last error messages in debug windows (Ctrl+D and Ctrl+S in contact list).
+If you still have a question, you can mail me at
+airadier@users.sourceforge.net.
