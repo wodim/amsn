@@ -1,0 +1,630 @@
+amsn_lang_version 2
+about About
+accept Accept
+acceptfile Accept file $1, size $2? Saved in $3
+actions Actions
+addacontact Add a contact
+addedyou $1 ($2) has added you to his/her contact list
+addprofile Add New Profile
+addprofiledesc Enter the login which you would like to create a new profile for. \nProfiled logins allow you to have different configurations for each login.\nWithout profiles you cannot use the History, Alarms or "Remember Password" function.
+addstate Add New State
+addto Add to $1
+addtocontacts Add to contact list
+addtoo Add this person to my contact list
+admincontacts Admin contacts
+admingroups Admin groups
+advanced Advanced
+advancedprefs Advanced options configuration
+adverts Advertisements
+alarmonconnect Activate alarm when user comes online
+alarmondisconnect Activate alarm when user goes offline/invisible 
+alarmonmsg Activate alarm when user sends you a message
+alarmonstatus  Activate alarm when user changes state
+alarmpref Alarm Settings for user
+alarms Alarms
+alarmstatus Turn ON/OFF Alarm for this user
+allfiles All Files
+allowallbutbl Allow all users apart from those in my Block List to contact me
+allowbadwords Disable censorship on nicknames
+allowlist Allow list (AL):
+allowonlyinal Only allow users in my Accept List to contact me
+allowseen Allow this person to see when I'm online and contact me
+allprofilesinuse All existing profiles are currently in use
+animatedemoticon This emoticon is animated
+animatedsmileys Enable animated smileys
+animatenotify Animated Notify Window
+appearance Appearance
+appearoff Appear offline
+areacode Area Code
+aretyping $1 are typing a message
+author Author
+autoaccepted File transfer accepted automatically
+autoacceptft Automatically accept File Transfer requests
+autoaway Show me as "Away" when inactive for
+autocheckver Automatically check for newer versions on startup
+autoconnect2 Sign In automatically when aMSN is launched
+autoconnect Connect on amsn start
+autodetectip Detect IP address automatically
+autohotmaillog Auto Hotmail login
+autoidle Auto NoActivity
+autoip Automatic IP
+automessage AutoMessage
+autonoact Show me as "Not Active" when inactive for
+avoidseen Prevent this person from seeing when I'm online and contacting me
+away Away
+awaymsg1 Ask for away message each time I change my status to Away/BRB/Busy
+awaymsg2 Never ask and always use the away message below 
+baduserpass Wrong user name or password
+bgcolor Change aMSN's background color 
+blankdirect Leave blank for direct connection
+block Block
+blocked Blocked
+blockedyougroup Show a separate group for people who have blocked you
+blocking Blocking
+blockinter1 When your status is online check every 
+blockinter2 seconds, else check every:
+blockinter3 every 
+blockinter4 seconds.
+blocklist Block list (BL):
+blockmessage These people are online and blocked you
+blockusers Number of users to check at once 
+bouncedock Bounce aMSN's icon in the dock when a message is received
+broughtby  Brought to you by the following developers
+browse Browse
+browser Browser
+browserexample ( \$url will be replaced with the URL). Ex: mozilla \$url
+busy Busy
+cachedpics $1 cached pics
+cancel Cancel
+cannotdeleteprofile Cannot delete profile because it seems to be in use by an aMSN session
+cantexec Can't execute application: $1. Check preferences
+cantremoveothers Can't remove "Others" group
+casesensitive Use case-sensitive triggers
+cfgalarmall Configure/Add/Remove Global Alarm
+cfgalarm Configure/Add/Remove Alarm
+change Change
+changecustomstate Switch to
+changedisplaypic Change Display picture
+changefont Change font
+changeglobnick Change Global Nick
+changenick Change nick
+changesize Change size
+changestate $1 changes state to $2
+charscounter Typed characters counter in chat window
+chatack Accepting chat from
+chat Chat
+chatmaxmin When a contact opens a chat with me I want it to be:
+chatreq Requesting chat
+chatsmileys2 Display Emoticons and Smileys in chat windows
+chatsmileys Chat smileys
+checkblocking Continuously check if users are blocking you
+checkemail Show mail notification line (inbox) in contact list
+checkfilman Received files will be saved in $1. Please check file manager settings in preferences window.
+checkingver Checking for new versions
+checkonfln Check if a user blocked you when he gets offline
+checkver Check for new version
+choosearq Choose your system architecture
+choosebasefont Choose font type
+choosebgcolor Choose background color
+choosecontact Please choose a contact from the list
+choosefontcolor Choose font color
+chooseskin Please select the skin you would like to use
+ch_to_state Switch to new state
+clear Clear
+clearlog2 Clear the history for all your contacts
+clearlog3 Clear All Logs
+clearlog Clear Log
+clicktologin Click here to log in
+clientcaps Send x-clientcaps packet to others clients
+clientname Client Name
+close Close
+closed Conversation with $1 closed due to inactivity
+closingdocks Close button minimizes
+command Command
+commandstatus Execute command
+configure Configure
+confirm Are you sure?
+confirmbl Are you sure you want to block this contact?
+confirmdelete Are you sure you want to delete $1?
+confirmdg Are you sure you want to delete this group?
+confirmdu Are you sure you want to delete this user?
+confirmeg Are you sure you want to empty this group?
+confirmpurge All stored display pictures from other contacts (not your display pictures) will be erased. Are you sure?
+confirmrfl Are you sure you want to delte this user from this group?
+connectedwith Connected with $1
+connected You are now connected
+connecterror Error connecting to server
+connecting Connecting
+connection Connection
+connectionlost Disconnected: Connection with server closed
+contactadded Contact added
+contactdoesnotexist Contact does not exist!
+contactlist Contact list (FL):
+continuously Continuously
+convertexplain Path to CONVERT executable file, from ImageMagick (required for Display Pictures).\n Leave blanck if CONVERT is in the path
+copy Copy
+copytogroup Copy to group
+corruptconfig Configuration file is corrupt. Creating new one. Old file will be saved to $1. Please send it to us to check what happened.
+corruptstates Custom states config is corrupt. Creating new one. Old file will be saved to $1. Please send it to us to check what happened.
+countrycode My Country/Region code
+cprofile Create Profile
+credits Credits
+currentdate Current Date
+custnotifymsg Display notify window when a new user message is received
+custnotifyoffline Display notify window when this contact goes offline
+custnotifyonline Display notify window when this contact comes online
+custnotifystatus Display notify window when this contact changes status
+customcolor Custom color
+custom_edit Edit custom smiley
+custom_new Add new custom smiley
+customnick Custom Nick
+customstyle Customized style
+cut Cut
+date Date
+dateformat Change date format 
+day Day
+days Days
+dcprofile Don't Create Profile
+default Default Config
+defaultloginradio Login with default configuration
+defchatwinsize Default size for chat windows (XSIZExYSIZE)
+deletecustomstate Delete custom state
+delete Delete
+delimiters Timestamps' delimiters:
+deliverfail There was a problem delivering the following message
+delprofile2 Select the profile that you would like to remove 
+delprofile Delete Profile
+description Description
+directconnection I have a direct connection to the internet (uses port 1863)
+disabled Disabled
+disableprofiles Disable profiles (Useful for cyber-cafes or shared environments)
+disablessl Disable SSL
+disableuserfonts Ignore remote user font in chats, and use your own font type
+disconnect $1 has disconnected.
+disconnectedfrom Disconnected from $1
+displaychat Display text options
+displayeventconnect Display when contacts go online
+displayeventdisconnect Display when contacts go offline
+displayeventemail Display when an E-Mail is received
+displayeventstate Display when contacts change status
+displayp4context Display P4-Context field content as message sender
+displaypic Display Picture
+dockfreedesktop FreeDesktop (KDE3/Gnome2)
+dockgtk Gnome Dock
+docking Docking
+dockingoff Docking Off
+dockkde KDE Dock
+dontdownload Don't download TLS, I'll install it myself
+dontshow Don't show
+downloadingtls Downloading TLS module from:\n $1
+editcustomstate Edit custom state
+edit Edit
+editnewstate New Personal Automessage State
+editprofile Edit Profile
+editstate Edit Existing Automessage State
+editvalue Edit value
+email Email
+emailsinlist Show emails instead of nicknames in the contact list
+emotisounds Play sounds for certain emoticons
+emptygroup Empty group
+enabled Enabled
+enableproxy Enable proxy
+enableremote Enable remote controlling
+enablesound Play sound
+encoding2 Change the way your characters are encoded
+encoding Choose encoding
+entercontactemail Enter contact e-mail
+enterfilename Please enter a filename
+enternick Enter your nick
+errortls Error installing TLS module:
+eventhistory View events history
+examples Examples
+exitamsn Are you sure you want to quit?
+extras Extra Services
+faileddelete Failed to delete
+faileddeleteperso This picture cannot be deleted because it is not a personal picture file. Only pictures that belong to your personal profile can be removed this way.
+failed Failed
+faq FAQ (Frequently Answered Questions)
+filedoesnotexist File does not exist
+file File
+filemanexample ( \$location will be replaced with the directory ) Ex: nautilus \$location
+fileman File Manager
+filename Filename
+filetransfer File Transfer
+filetransfercancelled File transfer cancelled
+filetransfercomplete File transfer complete
+followtext Scroll down when new text is entered
+friendlyname Friendly Name
+ftacceptedby $1 accepted file transfer invitation for file '$2'.
+ftaccepted File transfer accepted
+ftaccepting Accepting file transfer invitation
+ftconnecterror Error connecting to remote peer
+ftconnecting Connecting to $1 port $2
+ftconnectionlost Connection with remote peer lost
+ftgotinvitation $1 wants to send you the file '$2' ($3 bytes). It will be saved in directory $4. Do you want to receive this file?
+ftportpref Starting port for file transfers
+ftrejectedby $1 rejected file transfer invitation for file '$2'.
+ftrejected File transfer rejected
+ftsendinvitation File transfer invitation for file '$2' ($3 bytes) has been sent to $1.
+fullcontactlist Sorry, your contact list if full. You'll need to remove some contacts in order to add new ones.
+getdisppic Enable receiving Display Pictures from other users
+globalnick Insert a pattern to form all your contacts' nicknames. You can use these variables: \$user_login for you contacts' address, \$nick for your contacts' nickname and \$customnick for your contacts' custom nickname. For example: '\$user_login is \$nick' will be 'contact@msn.com is Contact'
+globalnicktitle Global Nickname
+globaloverride Global nicknames pattern should override custom nicknames
+gonelunch Gone to lunch
+groupadd Add a group
+groupdelete Delete a group
+groupexists Group already exists
+group Group
+groupmissing Cannot find group
+groupnewname New name
+groupnotempty Group is not empty!
+groupoldname Old name
+grouprename Rename a group
+groups Groups
+groupunknown Unknown group
+handle Handle
+helpcontents Help contents
+help Help
+hidedisplaypic Hide Display Picture
+hiden Hide the emoticon from the smileys menu
+hidewindow Hide Window
+history View History
+home Home
+httpconnection Connect using HTTP method (uses HTTP protocol over port 80)
+hybrid Hybrid mode
+ident Identifying
+identity Identity
+ignoreerrors Silently ignore other AMSN errors until the end of session
+imagefiles Image Files
+inbox Inbox
+insertsmiley Insert emoticon
+installconvert You must install ImageMagick (convert program) in order to use Buddy Icons and Custom Emoticons. You can download the binaries for your Operating System ftp://ftp.imagemagick.net/pub/ImageMagick/binaries/ . If you already have it, then it is a bug, please report it. These features will now be disabled, if you install ImageMagik later on reenable these options from the Preferences. 
+internalerror Internal Server Error
+invalidfile2 Filename $1 could not be created, make sure you have the correct permissions for that target.
+invalidfile File $2 entered in field "$1" does not exist or is not readable
+invalidgroup Invalid group
+invalidpicsize The given picture is too big, please choose a smaller one
+invalidpic The given picture file doesn't exist
+invalidsound The given sound file doesn't exist
+invalidusername Invalid user name
+invitationcancelled The invitation was cancelled
+invite Invite
+ipaddress IP Address
+ipdetect Detect correct IP for File Transfers using HTTP
+ircstyle IRC style chat
+istyping $1 is typing a message
+joins $1 joins conversation
+justonce Just once
+keepalive Keepalive (NAT)
+keeplog2 Log all conversations to aMSN's History for future viewing
+keeplog Keep Logs of Chats
+language Language
+lastlogin Last Log In
+lastlogout Last Log Out
+lastmsgedme Last Message
+lastmsgtime Last message received at $1
+lastseen Last time online
+lclosedwin $1 has closed the window on $2
+lconftopriv Conference turned into Private chat with $1
+lconvstarted Conversation started on $1
+leaveblankforhotmail Leave blank to use Hotmail
+leavejoinsinchat Show "leaves/joins conversation" notifications inside the chat window
+leaves $1 leaves conversation
+lenteredconf $1 has entered into a conference on $2
+lineflushlog Flush log files after each line
+linprivate IN PRIVATE
+listeningon Listening on port $1
+listsmileys2 Display Emoticons and Smileys in aMSN's main contact list
+listsmileys List smileys
+ljoinedconf $1 has joined conference
+lleftconf $1 has left conference
+load Load
+loadcontacts Load contact list
+logbigger Log file sizes for each contact never exceeds 
+logeventconnect Log the connections
+logeventdisconnect Log the disconnections
+logeventemail Log when an email is received
+logeventstate Log the changements of status
+logfandexp Log File Sizes and History Expiry
+loggedotherlocation Disconnected. Logged in other location
+loggingin Logging In
+loginas Login as
+loging Logging
+login Log In
+logolder Only log chats that have taken place in the last
+logout Log Out
+logsbydate Sort logs by date (View history loads alot faster)
+logsin has just logged in
+logsmileys Displays Emoticons and Smileys in aMSN's history windows
+logsout has just logged out
+longnick Your nickname is longer than 130 characters. This is not officially supported by the MSN protocol. Are you sure you want to set it?
+longp4c Your Friendly Name is longer than 130 characters. The Friendly Name that will appear on the official MSN client will be $1. Are you sure you want to set it?
+lprivtoconf Private chat turned into Conference with $1
+luclosedwin You have closed the window on $1
+mailerexample ( \$recipient = Recipient ) Leave blank to use Hotmail
+mailer Mailer
+maintenance The server is going down for maintenance in $1 minutes
+maximised Maximised
+minimised Minimised/Iconified
+mins minutes
+mobile Mobile
+month Month
+morepersonal More States ->
+move Move
+movetogroup Move to Group
+msgflicker Flicker chat window title when new message is received on unfocused window.
+msgmaxmin When a new message arrives I want it to be:
+msg Message
+msgmode Select how to handle multiple message windows:
+msn aMSN
+msnstyle MSN style chat
+mustrestart You must restart the program to apply changes
+myfriendlyname My friendly name
+myhomephone My Home Phone
+mymobilephone My Mobile Phone
+mynick My Nickname
+mypic My Display Picture:
+mystatus My status
+myworkphone My Work Phone
+name Name
+natip IP detection by web page 
+natkeepalive If you are getting disconnected regularly, enable this KeepAlive
+needonline You still are/appear offline!
+needwinico Need winico03.dll in plugins directory for windows traydocking to work
+never Never
+new_ft_protocol Use new File Transfer protocol (some bugs remain)
+newmail $1 new messages in Inbox
+newmailfolder You have $1 new messages in other Hotmail folders
+newmailfrom New mail from $1 ($2)
+newmailfromother New mail in other folder from $1 ($2)
+newmsg New message
+newstate Add custom state
+newveravailable Newer version $1 available for download
+next Next
+nick Nick
+noactivity No activity
+nodataavailable No data available for $1
+nogap No space between groups
+nogroup No group
+nologfile No Log file for $1
+noneavailable None Available
+nonewmail No new messages in Inbox
+nonewver There are no new versions available to download
+no No
+nopic No picture
+noprofileexists There are currently no profiles, \n you must create one if you wish to use profiled logins. \nUse the Add New Profile button in this window to add a new profile.
+normal Normal
+noskins Couldn't found default skin in skins/ folder. Can't start AMSN
+nosystemtray System tray not available
+notificationserver Initial MSN Notification Server (MSN Messenger Server)
+notify1_5 Display notify window when contacts go offline
+notify1_75 Display notify window when contacts change status
+notify1 Display notify window when contacts come online
+notify2 Display notify window when new messages are received
+notify3 Display notify window when new emails arrive
+notify4 Display notify window when new emails arrive in other folders
+notify notify
+notifyoffset Offset the position of the notification pop-up
+notifytimeout Number of miliseconds before notify window dissapears
+notifytyping Send other users notifications when typing
+notifywin Notify Window
+notinlist You aren't on his/her contact list
+notls The MSN Protocol 9 requires the TLS package. This package does not seem to be installed on this machine. If it's installed, the path to the library directory should be specified in the Preferences window (ex: /opt/tls/lib). \n \n It's possible to download TLS from http://tls.sf.net.
+nousersinsession No users in session
+nudge $1 requests your attention
+offline Offline
+ok Ok
+onenewmail 1 new message in Inbox
+online Online
+onphone On phone
+openreceived Open received files
+options Options
+ordercontactsby Order contacts by
+ordergroupsby Order groups by
+original Original
+other Other
+others Others
+p4contextprefix Prefix P4-Context senders with this string
+pager Pager
+pass Password
+paste Paste
+personal Personal
+phone Phone
+phones Phone numbers
+picbrowser Display Pictures browser
+picfile Picture File (GIF < 500 x 500)
+picstatus Picture Alarm
+playing Playing: $1
+pluginselector Select Plugins
+port Port
+prefalerts My Event Alerts and Sounds
+prefapps Applications
+prefawaymsg My Away Message
+prefblock1 Check on disconnect
+prefblock2 Continuously check
+prefblock3 "You have been blocked by" group
+prefconnection Connection settings
+prefemotic Emotions Icons and Smileys 
+preferences Preferences
+preffont2 Change the way others see my text in chat sessions
+preffont3 Change aMSN's interface font and size
+preffont My Message Text
+prefft File transfer, peer-to-peer and NAT settings
+preflibs Libraries directories
+preflog1 My History and Logging Options
+preflogevent My Events History
+preflook My aMSN Messenger Look
+prefmsging My Messaging Interface
+prefname My MSN Messenger Name/NickName
+prefphone2 Type the phone numbers that you would like people \n on your Allow List to see \n
+prefphone My Phone Numbers
+prefprivacy2 User's Contact/Reverse lists
+prefprivacy User's Allow/Block lists
+prefprofile2 Create or modify your public profile (the \n description of yourself that others can see)
+prefprofile3 aMSN's User Configuration Profiles
+prefprofile My Public Profile
+prefproxy My Proxy Settings
+prefremote Remote Connection Preferences
+prefsession My Sign In and Status
+prefshared Shared Connections (only for NAT)
+prefsound Sounds
+privacy Privacy
+profiledconfig Profiled Config
+profileexists You cannot create a profile with this login \n because one already exists. Please chose another login.
+profileinuse This Profile is being used by another aMSN session, please choose another one
+profileloginradio Login using an existing Profile
+profiles Profiles
+properties Properties
+proxyconfhttp HTTP proxy support configuration
+proxyconf Proxy configuration
+proxyconnection I connect to the internet using a proxy server:
+proxy I am behind a proxy server (HTTP or SOCKS5)
+publishphones Publish my phone numbers
+purge Purge
+raised Raised/Deiconified
+readonlymsgbox The file transfer has been canceled due to the received directory being read-only. Please fix the permissions on this directory.
+readonlywarn WARNING: The file will probably NOT be saved correctly as the "Received files" directory seems to be write-protected. Please ensure that the permissions on the target directory ($1) are set correctly before transfering the file.
+receivedbytes Received $1 of $2 bytes
+receiveddir Received Files folder
+receivefile Receive file
+recentmsg Prevent closing a chat window when a message has just arrived
+reconnect2 Reconnect on loss
+reconnecting Reconnecting to server
+reconnect Waiting for $1 to reconnect
+reject Reject
+rememberpass Remember password
+removeempty Remove empty groups from the contact list
+removefromlist Remove from this list
+rename Rename
+required_version Unable to load this plugin. It requires, at least, aMSN version $1
+reversed Reversed
+reverselist Reverse list (RL):
+rightback Be right back
+saveas Save as
+savechatwinsize Save chat window size as default when resizing it
+savecontacts Save contact list
+save Save
+savetofile Save to File
+says $1 says
+sbcon Connecting to Switch Board
+selectplugins Please select the plugins you want enabled
+selectskin Please choose a skin from the list
+sendfile Send file
+sendmail Send mail
+sendmsg Send message
+send Send
+sentbytes Sent $1 of $2 bytes
+serverbusy Server is busy
+servergoingdown Disconnected: Server is going down
+server Server
+serverunavailable Server is unavailable
+session Session
+showbanner Show aMSN's banner
+showblockedlist Show list of people who blocked you
+showcachedpics Show cached display pictures
+showdisplaypic2 Show Display Picture by default when a chat window is opened
+showdisplaypic Show Display Picture
+showmypic My Display Picture
+shownotify Show notify window when some events happen
+showuserpic $1's Display Picture
+skinselector Select Skin
+skin Skin
+smileconfig Custom emoticon configuration
+smilefile Smiley filename
+smileintro2 Please edit the required fields to customize this smiley (see the FAQ for help)
+smileintro Please complete the required fields to create a new custom smiley (see the FAQ for help)
+snackfailed Snack failed to load, reverting to default
+sngdblclick Single click to open a new message window
+sound2 Play sounds when contacts sign in or send a message
+soundactive Play sounds when receiving incoming messages also in active windows
+soundcommand This has to be the play command (ex: esdplay)
+sound Event Sounds
+soundexample ( \$sound = Sound file to be played) Ex: esdplay \$sound
+soundfile Sound File
+soundfiles Sound Files
+soundloop Loop Sound
+soundserver Sound Server
+soundstatus Sound Alarm
+sourcecode Source Code (needs compiling and installing)
+splashstart Start
+sslwarning WARNING!! Disabling SSL will disable encryption, so your password will be sent as plain text over the network. Use only for really tricky proxies or network configurations.
+startoffline2 Sign in silently as "Appear Offline"
+startoffline Start Offline
+startontray Start AMSN on tray icon only
+stateautomsg AutoMessage to Send
+statechange status changed to: 
+stateedittext Please edit the fields you would like \n to modify and press Save
+stateinfo Personal State Configuration
+state I want to appear as	
+statename Name of Personal State
+statenewtext Please fill the required information to create \n your new Personal State and press Save
+statenick Custom nick (leave blank for no change)
+status Status
+stopalarm Stop Alarm
+storenickname Return to original nickname after a custom state with custom nickname
+strictfonts Restrict all fonts' size to the one I selected (Status bar and others)
+style Style
+stylechat Same look as chats
+stylehist aMSN's history look
+stylelog Select the format in which you would like to view your History
+syntaxerror Syntax Error
+tabbed Tabbed Windows
+temp_state Don't save (Temporary state, will be missed when close AMSN)
+textsize Text size
+timeremaining Time remaining
+timestamps Enable timestamps on chat windows
+title aMSN
+tkerror TK has brought an error, there is a bug in amsn, please report it. Send the file $1 to amsn-bugs@lists.sf.net
+tlsdowncompleted File $1 was downloaded to directory $2. You must extract it, build it (if you downloaded source code) and install it inside $3.
+tlsexplain Folder where the tcl TLS module is located. If AMSN can't locate it, please specify.\n(Required for SSL authentication).
+tlsinstallexp aMSN now uses MSNP9, which requires the use of a secure\nconnection using SSL. In order to use SSL, aMSN needs to install a module called TLS,\nwhich is missing from your system. This wizard will help you to download and\ninstall TLS. Please choose your system type so we can automatically download\nthe required TLS files.
+tlsinstall TLS Module installation wizard
+tlsinstcompleted TLS module installation was sucessful - you should now be able to use MSNP9. If this doesn't work, then you probably didn't select the right module, or a compiled module is not available for your system.
+today Today
+tools Tools
+tooltips Enable tooltips
+to To
+transnotexists The requested file has not been translated into the current language yet.
+traynotcompiled Tray icon plugin is not compiled. Check plugins/traydock
+triggers Text triggers
+truncatenames1 Truncate nicknames longer than window width in window titles and contact list
+truncatenames2 Truncate nicknames longer than window width inside conversations
+truncatenicks Truncate nicknames longer than window width
+twonewmail $1 new messages in Inbox
+unblock Unblock
+unknown Unknown
+unload Unload
+uoffline Offline
+uonline Online
+useother Use a different program
+useralreadyonlist User is already on contact list
+userblocked The user is online but blocked you
+userdata User Data
+usernotonline The user is not online
+userproperties User properties of $1
+user User
+useryourself You can't chat with yourself
+usesnack Use the Snack library (Tcl internal)
+verifyblocked Check for people blocking you
+version Version
+viewcontactsby View contacts by
+viewprofile View Profile
+view View
+webcaminvite $1 invited you to start an webcam session, but aMSN does not support this feature.
+willjoin Waiting $1 joins conversation
+winkreceived You have received a Wink from $1. This feature is not currently supported by aMSN.
+work Work
+wrongfields The "$1", "$2" and/or "$3" fields were not valid
+wrongprofileversion Wrong profile configuration file version. In order to fix it, please remove directory $1, or update aMSN
+xmmscurrent Display current song
+xmmserr Nothing is playing, or you dont have xmms-infopipe installed.
+xmmssend Send current song
+xoffset X Offset
+year Year
+yesterday Yesterday
+yes Yes
+yoffset Y Offset
+youblocked You have been blocked by
+yousay You say
+youwant You want

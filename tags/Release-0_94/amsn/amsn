@@ -1,0 +1,323 @@
+#!/usr/bin/env wish
+###
+###
+################################################################
+###                                              ###############
+###        Alvaro's Messenger - amsn             ###############
+###                                              ###############
+###       http://amsn.sourceforge.net            ###############
+###     amsn-users@lists.sourceforge.net         ###############
+###                                              ###############
+################################################################
+### airadier at users.sourceforge.net (airadier) ###############
+### Universidad de Zaragoza                      ###############
+### http://aim.homelinux.com                     ###############
+################################################################
+### grimaldo@panama.iaehv.nl (LordOfScripts)     ###############
+### http://www.coralys.com/linux/                ###############
+################################################################
+### Original ccmsn                               ###############
+### http://msn.CompuCreations.com/               ###############
+### Dave Mifsud <dave at CompuCreations dot com> ###############
+################################################################
+###
+###
+### This program is free software; you can redistribute it and/or modify
+### it under the terms of the GNU General Public License as published by
+### the Free Software Foundation; version 2 of the License
+###
+### This program is distributed in the hope that it will be useful,
+### but WITHOUT ANY WARRANTY; without even the implied warranty of
+### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+### GNU General Public License for more details.
+###
+### You should have received a copy of the GNU General Public License
+### along with this program; if not, write to the Free Software
+### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+###
+###
+
+############################################################
+### Hide the window until it has been fully displayed
+############################################################
+wm state . withdraw
+
+
+############################################################
+### Some global variables
+############################################################
+set version "0.94"
+set date "11/06/2004"
+set weburl "http://amsn.sourceforge.net"
+set program_dir "."
+set HOME ""
+set files_dir ""
+
+#=======================================================================
+
+
+############################################################
+### Look if we are launched from a link
+### and set the correct working dir
+############################################################
+
+#Fixed by Tomasz Nguyen
+set program_dir [file dirname [info script]]
+set program [file tail [info script]]
+
+while {[catch {file readlink [file join $program_dir $program]} program]== 0} {
+	if {[file pathtype $program] == "absolute"} {
+		set program_dir [file dirname $program]
+	} else {
+		set program_dir [file join $program_dir [file dirname $program]]
+	}
+
+	set program [file tail $program]
+}
+
+set starting_dir [pwd]
+cd $program_dir
+set program_dir [pwd]
+unset program
+#unset program_dir
+
+############################################################
+### Setup other important directory paths
+### depending on the platform
+############################################################
+
+if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
+	set HOME "[file join $env(HOME) Library/Application\ Support/amsn]"
+	set files_dir "[file join $env(HOME) Desktop/amsn\ received\ files]"
+} elseif {$tcl_platform(platform) == "unix"} {
+   set HOME "[file join $env(HOME) .amsn]"
+   set files_dir "[file join $env(HOME) amsn_received]"
+} elseif {$tcl_platform(platform) == "windows"} {
+  if {[info exists env(USERPROFILE)]} {
+     set HOME "[file join $env(USERPROFILE) amsn]"
+     set files_dir "[file join $env(USERPROFILE) amsn_received]"
+  } else {
+   set HOME "[file join [pwd] amsn_config]"
+   set files_dir "[file join [pwd] amsn_received]"
+  }
+} else {
+   set HOME "[file join [pwd] amsn_config]"
+   set files_dir "[file join [pwd] amsn_received]"
+}
+
+############################################################
+### And setup where to find optional packages
+############################################################
+
+lappend auto_path [file join plugins]
+lappend auto_path [file join ${HOME} plugins]
+
+set libtls ""
+
+catch { source [file join $HOME tlsconfig.tcl] }
+
+if { $libtls != "" && [lsearch $auto_path $libtls] == -1 } {
+    lappend auto_path $libtls
+}
+
+#TODO: Move this from here ??
+#///////////////////////////////////////////////////////////////////////
+#Notebook Pages (Buddies,News,Calendar,etc.)
+set pgBuddy ""
+set pgNews  ""
+#///////////////////////////////////////////////////////////////////////
+
+
+############################################################
+#### Load program modules
+############################################################
+set initialize_amsn 1
+
+proc reload_files { } {
+    foreach glob "[info globals] xmms" {
+	global $glob
+    }
+
+	source ctthemes.tcl
+	source progressbar.tcl	;# Progressbar Megawidget
+	source migmd5.tcl
+	source des.tcl		;# DES encryption
+	source sxml.tcl   	;# Simple XML parser
+	
+	source mutex.tcl
+	source lang.tcl
+	source automsg.tcl
+	source smileys.tcl
+	source skins.tcl	;# Used for skinning purposes
+	source remote.tcl	;# The remote control procedures
+	source chatwindow.tcl	;# Abstracted Chat Window code (::ChatWindow namespace)
+	source gui.tcl		;#gui.tcl must be at the beginning to make msg_box procedure available for errors
+        source plugins.tcl	;# Plugins system must be loaded before config
+	source config.tcl
+	source proxy.tcl
+	source abook.tcl	;# Handle buddy address book    
+	source protocol.tcl
+	source ctadverts.tcl
+	source preferences.tcl
+	source hotmail.tcl
+	source groups.tcl	;# Handle buddy groups
+	source anigif.tcl	;# Animated GIFS
+	if {$tcl_platform(platform) == "unix"} {
+		source xmms.tcl
+	}
+	if {$tcl_platform(os) == "Darwin"} {
+		source [file join plugins applescript ae.tcl];#AppleEvent support
+	}
+	source alarm.tcl	;# Alarms code (Burger)
+	source dock.tcl		;# Docking routines
+	source trayicon.tcl	;# Docking routines for freedesktop system tray compliant docks
+	source loging.tcl	;# Euh yeh it's for loging :P
+	source combobox.tcl	;# The all mighty combobox is here! (B. Oakley)
+	source blocking.tcl	;# The blocking users feature
+
+	source balloon.tcl	;# For the balloons tooltip
+	source png.tcl		;# PNG Parser and zlib deflate in pure TCL (KaKaRoTo)
+
+
+}
+
+proc check_imagemagick {} {
+
+	if {[::config::getKey convertpath] == ""} {
+		::config::setKey convertpath "convert"
+	}
+
+	set found -1
+
+	foreach path [list "[config::getKey convertpath]" "convert" "[file join utils convert]" ] {
+		# Check if ImageMagick is Installed, if so don't do nothing, otherwise disable display pics
+		status_log "Checking ImageMagick in $path...\n"
+		if { ![catch { exec $path } res] } {
+			set found $path
+			break
+
+		}
+	}
+	if  { $found != -1  } {
+		::config::setKey convertpath "$found"
+		::config::setKey getdisppic 1
+		return 1
+	} else {
+		#-1 means you want them enabled, but imagemagic is not installed...
+		::config::setKey getdisppic -1
+		return 0
+	}
+
+}
+
+#if {[package vcompare [package provide Tcl] 8.4] < 0} {
+#	proc K {a b} {return $a}
+#	proc lset {listName index val} {
+#		upvar $listName list
+#		set list [lreplace [K $list [set list {}]] $index $index $val]
+#	}
+#}
+
+reload_files
+
+set initialize_amsn 0
+#///////////////////////////////////////////////////////////////////////
+
+if { [catch {package require tls}] } {
+    # Either tls is not installed, or $auto_path does not point to it.
+    # Should now never happen; the check for the presence of tls is made
+    # before this point.
+#    status_log "Could not find the package tls on this system.\n"
+    set tlsinstalled 0
+} else {
+    set tlsinstalled 1
+}
+
+
+#create_dir $HOME
+set log_dir "[file join ${HOME} logs]"
+#create_dir $log_dir
+
+sb set ns name ns
+sb set ns sock ""
+sb set ns data [list]
+sb set ns serv [split [::config::getKey start_ns_server] ":"]
+sb set ns stat "d"
+
+set family [lindex [::config::getGlobalKey basefont] 0]
+set size [lindex [::config::getGlobalKey basefont] 1]
+
+::themes::Init
+if { $family == "" } { set family "Helvetica"}
+if { $size == "" } { set size "11"}
+::amsn::initLook $family $size [::config::getKey backgroundcolor]
+
+
+if { [::config::getKey encoding] != "auto" } {
+  set_encoding [::config::getKey encoding]
+}
+
+if { [::config::getKey receiveddir] != "" } {
+   set res [create_dir [::config::getKey receiveddir]]
+   if { $res >= 0} {
+      set files_dir [::config::getKey receiveddir]
+   } else {
+      create_dir $files_dir
+   }
+} else {
+	::config::setKey receiveddir $files_dir
+	create_dir $files_dir
+}
+
+cmsn_draw_main
+
+bind all <KeyPress> "set idletime 0"
+
+idleCheck
+
+degt_protocol_win
+degt_ns_command_win
+
+after 500 proc_ns
+after 750 proc_sb
+
+#If you are on any operating system (except Darwin), test if imagemagick is there. For darwin, the verification is in "proc ::ChatWindow::Open()"
+if {$tcl_platform(os) != "Darwin"} { 
+	if { [::config::getKey getdisppic] != 0 } {
+		check_imagemagick
+	}
+}
+
+
+
+
+if {$version != [::config::getGlobalKey last_client_version]} {
+   ::amsn::aboutWindow
+   catch {file delete [file join $HOME2 bugreport.amsn]}
+}
+
+update idletasks
+
+if { [::config::getKey autoconnect] == 1 } {
+  ::MSN::connect
+}
+
+if { [::config::getKey autocheckver] == 1 } {
+    set new [check_version_silent]
+}
+
+
+init_dock
+
+if {[::config::getKey startontray]} {
+	if {[::config::getKey dock]!=0} {
+		wm state . withdraw
+		set ishidden 1
+	} else {
+		wm state . iconic
+	}
+} else {
+	wm state . normal
+}
+
+vwait events
