@@ -1,0 +1,137 @@
+amsn_lang_version 2
+about Sobre
+acceptfile Acceptes l'arxiu $1, de tamany $2? Guardat a $3
+actions Accions
+addacontact Inclou un contacte
+addedyou t'ha inclòs a la seva llista de contactes
+addtoo Inclou aquesta persona a la meva llista de contactes
+admincontacts Administrar la llista de contactes
+admingroups Administrar grups
+adverts Anuncis
+allowseen Deixa que aquesta persona vegi si estic conectat i que contacti amb mi
+appearoff Simula Desconexió
+are són
+autohotmaillog Conectar-se a Hotmail automàticament
+avoidseen No deixis que aquesta persona vegi si estic conectat i que contacti amb mi
+away No hi és
+baduserpass Nom d'usuari o password incorrecte
+blankdirect Deixa-ho en blanc per a conectar-te directament
+block Bloquejar
+blocked Bloquejat
+browser Navegador
+busy Ocupat
+cancel Cancel·la
+changenick Canvia de nick
+chat Xat
+chatreq Demanant xat
+chatsmileys 'Smileys' al xat
+chatack Acceptant xat de
+checkver Busca una versió nova
+checkingver Buscant noves versions
+clicktologin Fes clic aquí per conectar-te
+close Tanca
+command Comanament
+contactadded Contacte inclòs
+connecterror Error conectant-se amb el servidor
+date Data
+delete Esborrar
+enableproxy Habilitar el Proxy
+entercontactemail Escriu l'adreça de correu del contacte
+enterfilename Introdueix el nom de l'arxiu
+enternick Escriu el teu nick
+examples Exemples
+filename Nom de l'arxiu
+filetransfercancelled S'ha cancel·lat la transferència
+filetransfercomplete La transferència del arxiu ha finalitzat
+gonelunch Estic dinant
+group Grup
+handle Manipula
+help Ajuda
+helpcontents Contiguts
+home Casa
+ident Identifica
+identity Identitat
+inbox Bustia
+invite Convida
+ipaddress Adreça IP
+is és
+joins $1 $2 s'uneix a la conversa
+language Idioma
+leaves $1 deixa la conversa
+listsmileys Llista de 'Smileys'
+loadcontacts Carregar una llista de contactes
+loggingin Conectant-se
+login Conectar-se
+loginas Conectar-se com
+logout Desconectar-se
+logsin s'acaba de conectar
+mailer Gestor de correu
+mobile Mòvil
+mustrestart Has de reiniciar el programa per a que els canvis tinguin efecte
+mystatus El meu estat
+msg Missatge
+msn AMSN
+needonline Encara ets/sembles desconectat!
+newmail $1 missatges nous a la bustia
+newmailfrom Nou missatge de correu de
+newmsg Nou missatge
+newveravailable Nova versió $1 està disponible per a baixar-se
+next Següent
+noactivity Sense activitat
+nonewmail No missatges nous a la bustia
+nonewver No hi ha cap nova versió per a baixar-se
+notify notificar
+nousersinsession No hi ha usuaris a la sessió
+ok Bé
+offline Desconectat
+onenewmail 1 missatge nou a la bustia
+online Conectat
+onphone Al telèfon
+openreceived Obrir arxius rebuts
+options Opcions
+ordercontactsby Ordenar els contactes per
+other Un altre
+pager Paginador
+pass Password
+phone Telèfon
+port Port
+prefapps Aplicacions
+preferences Preferències
+prefsound Só
+properties Propietats
+proxyconf Configuració Proxy
+proxyconfhttp Configuració del suport Proxy HTTP
+receivedbytes Rebuts $1 de $2 bytes
+receivefile Rebent arxiu
+reconnect Esperant a $1 a que es reconecti
+reconnecting Reconectant-se al servidor
+rememberpass Recordar password
+rightback Un moment
+save Guardar
+saveas Guardar com
+savecontacts Guardar la llista de contactes
+says $1 diu
+sbcon Conectant-se a la Switch Board
+send Enviar
+sendfile Enviar arxiu
+sendmail Enviar missatge de correu
+sendmsg Enviar missatge
+sentbytes Enviats $1 de $2 bytes
+server Servidor
+sound Só en un event
+startoffline Començar desconectat
+textsize Tamany del text
+title Al's Messenger
+to A
+tools Eines
+typing $1 està escribint un missatge
+yousay Dius
+youwant Vols
+unblock Desbloquejar
+uoffline Desconectats
+uonline Conectats
+user Ususari
+version Versió
+view Veure
+willjoin Esperant a $1 a que s'uneixi a la conversa
+work Treball

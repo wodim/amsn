@@ -1,0 +1,2100 @@
+#!/usr/bin/wish
+###############################################################
+### Alvaro's Messenger			        ###############
+###						###############
+### http://aim.homelinux.com/msn.htm            ###############
+### airadier@users.sourceforge.net              ###############
+###############################################################
+### grimaldo@panama.iaehv.nl (LordOfScripts)    ###############
+###############################################################
+### Original ccmsn				###############
+### http://msn.CompuCreations.com/		###############
+### Dave Mifsud <dave at CompuCreations dot com>###############
+###						###############
+### Version 0.3p3 20010926			###############
+### Modified 20020430 by Alvaro Iradier Muro    ###############
+###                   and D. Emilio Grimaldo T. ###############
+###############################################################
+###
+###
+###
+### COMENTARIO ORIGINAL:
+###
+### Compu's Messenger - ccmsn
+### Copyright (C) 2001 Dave Mifsud
+###
+### This program is free software; you can redistribute it and/or modify
+### it under the terms of the GNU General Public License as published by
+### the Free Software Foundation; version 2 of the License
+###
+### This program is distributed in the hope that it will be useful,
+### but WITHOUT ANY WARRANTY; without even the implied warranty of
+### MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+### GNU General Public License for more details.
+###
+### You should have received a copy of the GNU General Public License
+### along with this program; if not, write to the Free Software
+### Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+###
+### $Id$
+###
+
+set version "0.60"
+set date "07/02/2002"
+set weburl "http://amsn.sourceforge.net"
+
+
+#Look if we are launched from a link and set
+#the correct working dir
+
+if {[catch {file readlink [info script]} res]!=0} {
+  set program_dir [file dirname [info script]]
+} else {
+   set resdir [file dirname $res]
+   while {[catch {file readlink $res} res2]==0} {      
+     set res $res2
+     if { [string range $res2 0 0]=="/" } {
+       set resdir [file dirname $res2]
+     } else {
+       set resdir [file join $resdir [file dirname $res2]]
+     }
+   }
+   set program_dir $resdir
+
+}
+
+
+#=======================================================================
+set images_folder "[file join $program_dir i]"
+set sounds_folder "[file join $program_dir s]"
+#=======================================================================
+
+#-----------------------------------------------------------------------
+#Notebook Pages (Buddies,News,Calendar,etc.)
+set pgBuddy ""
+set pgNews  ""
+#-----------------------------------------------------------------------
+
+ proc Splash { { art tclpower.gif } { delay 2500 } { artdir "" } } {
+      catch { [ winfo ] } errmsg
+      if { [ string match invalid* $errmsg ] } {
+         return -code error "Splash requires Tk"
+         }
+      set logo [file join $artdir $art]
+      if { [ file exists $logo ] } {
+         frame .splash -borderwidth 4 -relief raised
+         set logo [ image create photo -file $logo ]
+         label .splash.logo -image $logo
+         pack  .splash.logo -fill both
+         place .splash -anchor c -relx .5 -rely .5
+         after $delay destroy .splash
+         update
+         } else {
+         set    msg "Too Bad, splash logo missing!\n"
+         append msg "(file: \"$logo\" not found)"
+         puts  $msg
+         }
+      return {}
+ }
+
+#Splash bonline.gif 3000 $images_folder
+
+#Load program modules
+source [file join $program_dir notebook.tcl]	;# Notebook Megawidget
+source [file join $program_dir notebook1.tcl]	;# Notebook Megawidget
+source [file join $program_dir progressbar.tcl]	;# Progressbar Megawidget
+source [file join $program_dir dkffont.tcl]	;# Font selection megawidget
+source [file join $program_dir migmd5.tcl]
+source [file join $program_dir config.tcl]
+source [file join $program_dir protocol.tcl]
+source [file join $program_dir ctadverts.tcl]
+source [file join $program_dir lang.tcl]
+source [file join $program_dir ctdegt.tcl]
+source [file join $program_dir hotmail.tcl]
+source [file join $program_dir checkver.tcl]
+source [file join $program_dir smileys.tcl]
+source [file join $program_dir groups.tcl]	;# Handle buddy groups
+source [file join $program_dir abook.tcl]	;# Handle buddy address book
+source [file join $program_dir gui.tcl]
+
+#by AIM
+set unread 0
+set notify_command ""
+set urlcount 0
+set urlstarts { "http://" "https://" "ftp://" "www." }
+set typing ""
+#end AIM
+
+#=======================================================================
+#Default look
+font create menufont -family Helvetica -size 11 -weight normal
+font create sboldf -family Helvetica -size 11 -weight bold
+font create splainf -family Helvetica -size 11 -weight normal
+font create bboldf -family Helvetica -size 12 -weight bold
+font create bplainf -family Helvetica -size 12 -weight normal
+font create bigfont -family Helvetica -size 13 -weight bold
+font create examplef -family Helvetica -size 10 -weight normal
+
+option add *Menu.font menufont
+
+set trid 0
+
+set user_info ""
+set user_stat "FLN"
+set list_fl [list]
+set list_rl [list]
+set list_al [list]
+set list_bl [list]
+set list_users [list]
+set list_notify [list]
+set list_cmdhnd [list]
+
+set sb_num 0
+set sb_list [list]
+set sb_list_cal [list]
+
+set status_show 0
+
+set list_states {{NLN online #0000FF online online bonline}
+		{IDL noactivity #0000A0 online away baway}
+		{BRB rightback #0000C0 online away baway}
+		{PHN onphone #0000C0 online busy bbusy}
+		{BSY busy #C00000 online busy bbusy}
+		{AWY away #00A000 online away baway}
+		{LUN gonelunch #00A000 online away baway}
+		{HDN appearoff #404040 offline offline boffline}
+		{FLN offline #404040 offline offline boffline}}
+
+#=======================================================================
+if {$tcl_platform(platform) == "unix"} {
+   set HOME "$env(HOME)/.amsn"
+   set files_dir "$env(HOME)/amsn_received"
+} elseif {$tcl_platform(platform) == "windows"} {
+   set HOME "$env(USERPROFILE)/amsn"
+   set files_dir "$env(USERPROFILE)/amsn_received"
+} else {
+   set HOME "amsn"
+   set files_dir "amsn_received"
+}
+
+set log_dir "${HOME}/logs"
+
+#=======================================================================
+
+proc msg_box {msg} {
+   tk_messageBox -type ok -icon info -message $msg -title "[trans title]" 
+}
+
+proc launch_browser { url } { 
+	global config
+	exec $config(browser) $url &
+}
+
+proc create_dir {path} {
+   global tcl_platform
+
+   if {[file isdirectory $path] == 0} {
+      file mkdir $path
+      if {$tcl_platform(platform) == "unix"} {
+         file attributes $path -permissions 00700
+      }
+   }
+}
+
+#=======================================================================
+proc cmsn_draw_about {} {
+   global program_dir
+   toplevel .about
+   wm title .about "Acerca de [trans title]"
+   wm transient .about .
+
+   text .about.info -background white -width 60 -height 30 -wrap word \
+      -yscrollcommand ".about.ys set" -font   examplef
+   scrollbar .about.ys -command ".about.info yview" 
+   pack .about.ys -side right -fill y
+   pack .about.info -expand true -fill both
+   set id [open "[file join $program_dir README]" r]
+   .about.info insert 1.0 [read $id]
+   close $id
+   .about.info configure -state disabled
+   update idletasks
+   set x [expr {([winfo vrootwidth .about] - [winfo width .about]) / 2}]
+   set y [expr {([winfo vrootheight .about] - [winfo height .about]) / 2}]
+   wm geometry .about +${x}+${y}
+}
+
+proc toggle_status {} {
+   global status_show
+
+   if {$status_show} {
+      wm state .status withdrawn
+      set status_show 0
+   } else {
+      wm state .status normal
+      set status_show 1
+   }
+}
+
+proc status_log {txt {colour ""}} {
+
+   set timestamp [clock format [clock seconds] -format %H:%M:%S]
+   .status.info insert end "\[$timestamp\] $txt" $colour
+   .status.info yview moveto 1.0
+#   puts -nonewline $txt
+
+}
+
+# configureMenuEntry .main_menu.file "[trans addcontact]" disabled|normal
+proc configureMenuEntry {m e s} {
+    $m entryconfigure $e -state $s
+}
+
+proc close_cleanup {} {
+  global HOME config
+  set config(wingeometry) [wm geometry .]
+  set config(showonline)  [::groups::IsExpanded online]
+  set config(showoffline) [::groups::IsExpanded offline]
+  save_config
+  catch {file delete [file join $HOME hotlog.htm]} res
+}
+
+proc cmsn_draw_main {} {
+   global images_folder emotion_files version date weburl lang_list \
+     password config HOME files_dir pgBuddy pgNews
+
+   #User status menu
+   menu .my_menu -tearoff 0 -type normal  
+   .my_menu add command -label [trans online] -command "::MSN::changeStatus NLN"
+   .my_menu add command -label [trans noactivity] -command "::MSN::changeStatus IDL"
+   .my_menu add command -label [trans busy] -command "::MSN::changeStatus BSY"
+   .my_menu add command -label [trans rightback] -command "::MSN::changeStatus BRB"
+   .my_menu add command -label [trans away] -command "::MSN::changeStatus AWY"
+   .my_menu add command -label [trans onphone] -command "::MSN::changeStatus PHN"
+   .my_menu add command -label [trans gonelunch] -command "::MSN::changeStatus LUN"
+   .my_menu add command -label [trans appearoff] -command "::MSN::changeStatus HDN"
+   .my_menu add separator
+   .my_menu add command -label "[trans changenick]..." -command cmsn_change_name
+
+   #Preferences dialog/menu
+   menu .pref_menu -tearoff 0 -type normal 
+	PreferencesMenu .pref_menu
+   
+   #Language selection menu
+   menu .lang_menu -tearoff 0 -type normal 
+
+   for {set i 0} {$i < [llength $lang_list]} {incr i} {
+     set langelem [lindex $lang_list $i]
+     set langshort [lindex $langelem 0] 
+     set langlong [lindex $langelem 1]
+     .lang_menu add command -label "$langlong" -command \
+       "set config(language) $langshort; load_lang;msg_box \"\[trans mustrestart\]\""
+   }
+
+   menu .user_menu -tearoff 0 -type normal  
+   menu .move_group_menu -tearoff 0 -type normal
+   menu .copy_group_menu -tearoff 0 -type normal
+
+   #Main menu
+   menu .main_menu -tearoff 0 -type menubar  \
+      -borderwidth 0 -activeborderwidth -0 
+#   .main_menu add cascade -label "[trans msn]" -menu .main_menu.msn
+#   .main_menu add cascade -label "[trans msg]" -menu .main_menu.msg -state disabled
+   .main_menu add cascade -label "[trans msn]" -menu .main_menu.file
+   .main_menu add cascade -label "[trans actions]" -menu .main_menu.actions
+   .main_menu add cascade -label "[trans tools]" -menu .main_menu.tools
+   .main_menu add cascade -label "[trans help]" -menu .main_menu.help
+
+
+   #File menu
+   menu .main_menu.file -tearoff 0 -type normal 
+   if { [string length $config(login)] > 0 } {
+     .main_menu.file add command -label "[trans login] $config(login)" \
+       -command "cmsn_ns_connect $config(login) $password" -state normal
+   } else {
+     .main_menu.file add command -label "[trans login]" \
+       -command "cmsn_ns_connect $config(login) $password" -state disabled
+   }
+   .main_menu.file add command -label "[trans login]..." -command \
+     cmsn_draw_login
+   .main_menu.file add command -label "[trans logout]" -command ::MSN::logout
+   .main_menu.file add cascade -label "[trans mystatus]" \
+     -menu .my_menu -state disabled
+   .main_menu.file add separator
+   .main_menu.file add command -label "[trans inbox]" -command \
+     "hotmail_login $config(login) $password"
+   .main_menu.file add separator
+   .main_menu.file add command -label "[trans savecontacts]..." -state disabled
+   .main_menu.file add command -label "[trans loadcontacts]..." -state disabled
+   .main_menu.file add separator
+   .main_menu.file add command -label "[trans sendfile]..." -state disabled
+   .main_menu.file add command -label "[trans openreceived]" \
+      -command "msg_box \"$files_dir\""
+   .main_menu.file add separator
+   .main_menu.file add command -label "[trans close]" -command "close_cleanup;exit"
+
+   #Actions menu
+   set dummy_user "recipient@somewhere.com"
+   menu .main_menu.actions -tearoff 0 -type normal 
+   .main_menu.actions add command -label "[trans sendmsg]..." -command \
+      "user_choose \"[trans sendmsg]\" online cmsn_chat_user"
+   .main_menu.actions add command -label "[trans sendmail]..." -command \
+      "user_choose \"[trans sendmail]\" both send_mail"
+   .main_menu.actions add command -label "[trans changenick]..." -command \
+     cmsn_change_name
+   .main_menu.actions add separator
+   .main_menu.actions add command -label "[trans checkver]..." -command \
+     "check_version"
+   
+
+   #Order Contacts By submenu
+   menu .order_by -tearoff 0 -type normal 
+   .order_by add radio -label "[trans status]" -value 0 \
+   	-variable config(orderbygroup) -command "cmsn_draw_online"
+   .order_by add radio -label "[trans group]" -value 1 \
+   	-variable config(orderbygroup) -command "cmsn_draw_online"
+
+   #Tools menu
+   menu .main_menu.tools -tearoff 0 -type normal 
+   .main_menu.tools add command -label "[trans addacontact]..." -command \
+     cmsn_draw_addcontact
+   .main_menu.tools add cascade -label "[trans admincontacts]" -menu .admin_contacts_menu
+   
+   menu .admin_contacts_menu -tearoff 0 -type normal   
+   .admin_contacts_menu add command -label "[trans delete]..." \
+      -command  "user_choose \"[trans delete]\" both delete_user "
+   .admin_contacts_menu add command -label "[trans properties]..." \
+      -command "user_choose \"[trans properties]\" both ::abookGui::showEntry"
+
+   ::groups::Init .main_menu.tools
+   set ::groups::bShowing(online) $config(showonline)
+   set ::groups::bShowing(offline) $config(showoffline)
+
+   .main_menu.tools add separator
+   .main_menu.tools add cascade -label "[trans ordercontactsby]" \
+     -menu .order_by
+   .main_menu.tools add separator
+   .main_menu.tools add cascade -label "[trans options]" -menu .options
+
+   #Options menu
+   menu .options -tearoff 0 -type normal 
+   .options add command -label "[trans changenick]..." -state disabled \
+      -command cmsn_change_name -state disabled
+   .options add command -label "[trans publishphones]..." -state disabled \
+      -command "::abookGui::showEntry $config(login) -edit"
+   .options add cascade -label "[trans preferences]..." -menu .pref_menu
+   .options add separator
+   .options add cascade -label "[trans language]" -menu .lang_menu
+   .options add checkbutton -label "[trans sound]" -onvalue 1 -offvalue 0 -variable config(sound)
+   .options add checkbutton -label "[trans adverts]" -onvalue 1 -offvalue 0 -variable config(adverts) \
+     -command "msg_box \"[trans mustrestart]\""
+   .options add checkbutton -label "[trans autohotmaillog]" -onvalue 1 -offvalue 0 -variable config(autohotlogin)
+   .options add checkbutton -label "[trans startoffline]" -onvalue 1 -offvalue 0 \
+     -variable config(startoffline) 
+   .options add checkbutton -label "[trans chatsmileys]" -onvalue 1 -offvalue 0 \
+     -variable config(chatsmileys)
+   .options add checkbutton -label "[trans listsmileys]" -onvalue 1 -offvalue 0 \
+     -variable config(listsmileys) 
+   .options add checkbutton -label "[trans closingdocks]" -onvalue 1 -offvalue 0 \
+     -variable config(closingdocks) 
+#   .options add checkbutton -label "[trans extras]" -onvalue 1 -offvalue 0 \
+#     -variable config(withnotebook) 
+
+   #Help menu
+   menu .main_menu.help -tearoff 0 -type normal  
+
+   .main_menu.help add command -label "[trans helpcontents]..." -command cmsn_draw_about
+   .main_menu.help add separator
+   .main_menu.help add command -label "[trans about]..." -command cmsn_draw_about
+   .main_menu.help add command -label "[trans version]..." -command \
+     "msg_box \"[trans version]: $version - [trans date]: $date\n$weburl\""
+
+
+   image create photo mainback -file [file join ${images_folder} back.gif]
+
+#   toplevel .main
+   wm title . "[trans title] - [trans offline]"
+   wm geometry . $config(wingeometry)
+   wm iconname . "[trans title]"
+   wm iconbitmap . @[file join ${images_folder} amsn.xbm]
+   . conf -menu .main_menu
+
+   frame .main 
+   pack .main -expand true -fill both
+   # Create the Notebook and initialize the page paths. These
+   # page paths must be used for adding new widgets to the
+   # notebook tabs.
+   if {$config(withnotebook)} {
+   	notebook:create .main.nb -bgcolor #AABBCC -font sboldf \
+		-pappend "Buddies" -pappend "News"
+       set pgBuddy [notebook:getpage .main.nb 0]
+       set pgNews  [notebook:getpage .main.nb 1]
+       pack .main.nb -fill both -expand 1
+   } else {
+       set pgBuddy .main
+       set pgNews  ""
+       pack .main -fill both -expand 1
+   }
+   # End of Notebook Creation/Initialization
+
+   image create photo online -file [file join ${images_folder} online.gif]
+   image create photo offline -file [file join ${images_folder} offline.gif]
+   image create photo away -file [file join ${images_folder} away.gif]
+   image create photo busy -file [file join ${images_folder} busy.gif]
+
+   image create photo bonline -file [file join ${images_folder} bonline.gif]
+   image create photo boffline -file [file join ${images_folder} boffline.gif]
+   image create photo baway -file [file join ${images_folder} baway.gif]
+   image create photo bbusy -file [file join ${images_folder} bbusy.gif]
+
+   image create photo notifico -file [file join ${images_folder} notifico.gif]
+
+   image create photo blocked -file [file join ${images_folder} blocked.gif]
+   
+   image create photo colorbar -file [file join ${images_folder} colorbar.gif]
+   image create photo mailbox -file [file join ${images_folder} unread.gif]
+
+   image create photo contract -file [file join ${images_folder} contract.gif]
+   image create photo expand -file [file join ${images_folder} expand.gif]
+
+   image create photo globe -file [file join ${images_folder} globe.gif]
+
+   image create photo typingimg -file [file join ${images_folder} typing.gif]
+
+
+   image create photo butsmile -file [file join ${images_folder} butsmile.gif]
+   image create photo butfont -file [file join ${images_folder} butfont.gif]
+   image create photo butblock -file [file join ${images_folder} butblock.gif]
+
+
+   text $pgBuddy.text -background white -width 30 -height 30 -wrap none \
+      -yscrollcommand "$pgBuddy.ys set" -cursor left_ptr -font splainf \
+      -selectbackground white -selectborderwidth 0 -exportselection 0
+   scrollbar $pgBuddy.ys -command "$pgBuddy.text yview" 
+#   text .main.status  -width 30 -height 1 -wrap none
+
+   #This shouldn't go here
+   if ($config(withproxy)) {
+     ::MSN::initProxy $config(proxy)
+   }
+   
+   adv_initialize .main
+   
+   # This one is not a banner but a branding. When adverts are enabled
+   # they share this space with the branding image. The branding image
+   # is cycled in between adverts.
+   adv_show_banner  file ${images_folder}/logolinmsn.gif
+
+#   pack .main.status -side bottom -fill x
+   pack $pgBuddy.ys -side right -fill y
+   pack $pgBuddy.text -expand true -fill both
+
+#   .main.status configure -state disabled
+#   bind .main.status <Double-Button-3> toggle_status
+   bind . <Control-s> toggle_status
+   bind .main <Destroy> "::amsn::close "
+
+   wm protocol . WM_DELETE_WINDOW {::amsn::closeOrDock $config(closingdocks)}
+
+   cmsn_draw_status
+   cmsn_draw_offline
+}
+
+proc cmsn_draw_status {} {
+   toplevel .status
+   wm state .status withdrawn
+   wm title .status "status log - [trans title]"
+
+   text .status.info -background white -width 60 -height 30 -wrap word \
+      -yscrollcommand ".status.ys set" -font splainf
+   scrollbar .status.ys -command ".status.info yview" 
+   entry .status.enter -background white
+
+   pack .status.enter -side bottom -fill x
+   pack .status.ys -side right -fill y
+   pack .status.info -expand true -fill both
+
+   .status.info tag configure green -foreground darkgreen -background white
+   .status.info tag configure red -foreground red -background white
+   .status.info tag configure white -foreground white -background black
+   .status.info tag configure blue -foreground blue -background white
+
+   bind .status.enter <Return> ns_enter
+   wm protocol .status WM_DELETE_WINDOW { toggle_status }
+}
+
+proc cmsn_draw_offline {} {
+
+   global sboldf config password pgBuddy
+
+   wm title . "[trans title] - [trans offline]"
+
+#   .main.status configure -state normal -font splainf
+#   .main.status delete 0.0 end
+#   .main.status insert end "[trans offline]"
+
+
+#   .main.status configure -state disabled 
+
+   $pgBuddy.text configure -state normal 
+   $pgBuddy.text delete 0.0 end
+
+   #Iniciar sesion
+
+   $pgBuddy.text tag conf check_ver -fore #777777 -underline true \
+   -font splainf -justify left
+   $pgBuddy.text tag bind check_ver <Enter> \
+	    "$pgBuddy.text tag conf check_ver -fore #0000A0 -underline false;\
+	    $pgBuddy.text conf -cursor hand2"
+   $pgBuddy.text tag bind check_ver <Leave> \
+	    "$pgBuddy.text tag conf check_ver -fore #000000 -underline true;\
+	    $pgBuddy.text conf -cursor left_ptr"
+   $pgBuddy.text tag bind check_ver <Button1-ButtonRelease> \
+	    "check_version"
+
+   $pgBuddy.text tag conf lang_sel -fore #777777 -underline true \
+   -font splainf -justify left
+   $pgBuddy.text tag bind lang_sel <Enter> \
+	    "$pgBuddy.text tag conf lang_sel -fore #0000A0 -underline false;\
+	    $pgBuddy.text conf -cursor hand2"
+   $pgBuddy.text tag bind lang_sel <Leave> \
+	    "$pgBuddy.text tag conf lang_sel -fore #000000 -underline true;\
+	    $pgBuddy.text conf -cursor left_ptr"
+   $pgBuddy.text tag bind lang_sel <Button1-ButtonRelease> \
+	    "tk_popup .lang_menu %X %Y"
+
+
+   $pgBuddy.text tag conf start_login -fore #000000 -underline true \
+      -font sboldf -justify center
+   $pgBuddy.text tag bind start_login <Enter> \
+	    "$pgBuddy.text tag conf start_login -fore #0000A0 -underline false;\
+	    $pgBuddy.text conf -cursor hand2"
+   $pgBuddy.text tag bind start_login <Leave> \
+	    "$pgBuddy.text tag conf start_login -fore #000000 -underline true;\
+	    $pgBuddy.text conf -cursor left_ptr"
+    $pgBuddy.text tag bind start_login <Button1-ButtonRelease> \
+        "cmsn_ns_connect $config(login) $password"
+
+
+   $pgBuddy.text tag conf start_loginas -fore #000000 -underline true \
+   -font sboldf -justify center
+   $pgBuddy.text tag bind start_loginas <Enter> \
+	    "$pgBuddy.text tag conf start_loginas -fore #0000A0 -underline false;\
+	    $pgBuddy.text conf -cursor hand2"
+   $pgBuddy.text tag bind start_loginas <Leave> \
+	    "$pgBuddy.text tag conf start_loginas -fore #000000 -underline true;\
+	    $pgBuddy.text conf -cursor left_ptr"
+    $pgBuddy.text tag bind start_loginas <Button1-ButtonRelease> \
+        "cmsn_draw_login"    
+
+   $pgBuddy.text image create end -image globe -pady 5 -padx 5
+   $pgBuddy.text insert end "[trans language]\n" lang_sel
+
+
+
+   $pgBuddy.text insert end "\n\n\n\n"
+ 
+   if { $config(login) != "" } {
+     $pgBuddy.text insert end "$config(login)\n" start_login
+     $pgBuddy.text insert end "[trans clicktologin]" start_login
+     $pgBuddy.text tag bind start_login <Button1-ButtonRelease> \
+	"cmsn_ns_connect $config(login) $password"
+
+     $pgBuddy.text insert end "\n\n\n\n\n"
+ 
+     $pgBuddy.text insert end "[trans loginas]...\n" start_loginas
+     $pgBuddy.text insert end "\n\n\n\n\n\n\n\n\n"
+     
+   } else {
+     $pgBuddy.text insert end "[trans clicktologin]..." start_loginas
+
+     $pgBuddy.text insert end "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"	
+
+   }
+
+
+   $pgBuddy.text insert end "   "
+   $pgBuddy.text insert end "[trans checkver]...\n" check_ver
+   
+   $pgBuddy.text configure -state disabled
+
+
+   #Log in   
+   .main_menu.file entryconfigure 0 -state normal
+   .main_menu.file entryconfigure 1 -state normal
+   #Log out
+   .main_menu.file entryconfigure 2 -state disabled 
+   #My status
+   .main_menu.file entryconfigure 3 -state disabled
+   #Add a contact
+   .main_menu.tools entryconfigure 0 -state disabled
+   .main_menu.tools entryconfigure 1 -state disabled
+   .main_menu.tools entryconfigure 4 -state disabled   
+   #Change nick
+   configureMenuEntry .main_menu.actions "[trans changenick]..." disabled
+   configureMenuEntry .options "[trans changenick]..." disabled
+   
+   configureMenuEntry .main_menu.actions "[trans sendmail]..." disabled
+   configureMenuEntry .main_menu.actions "[trans sendmsg]..." disabled
+
+
+   #Publish Phone Numbers
+   configureMenuEntry .options "[trans publishphones]..." disabled
+#   .options entryconfigure 1 -state disabled	;# Publish
+}
+
+proc cmsn_draw_signin {} {
+    global config pgBuddy
+#   .main.status configure -state normal -font splainf
+#   .main.status delete 0.0 end
+#   .main.status insert end "[trans loggingin]..."
+#   .main.status configure -state disabled
+
+   wm title . "[trans title] - $config(login)"
+
+   $pgBuddy.text configure -state normal -font splainf
+   $pgBuddy.text delete 0.0 end
+   $pgBuddy.text tag conf signin -fore #000000 \
+   -font sboldf -justify center
+   $pgBuddy.text insert end "\n\n\n\n\n\n\n"
+   $pgBuddy.text insert end "[trans loggingin]..." signin
+   $pgBuddy.text insert end "\n"
+   $pgBuddy.text configure -state disabled
+
+}
+
+proc cmsn_draw_login {} {
+   global config password login_request
+
+   if {[info exists login_request]} {
+      raise .login
+      return 0
+   }
+
+   set login_request true
+   toplevel .login
+   bind .login <Destroy> {if {"%W" == ".login"} { unset login_request } }
+
+   wm geometry .login
+   wm title .login "[trans login] - [trans title]"
+   wm transient .login .
+   canvas .login.c -width 400 -height 150
+   pack .login.c -expand true -fill both
+
+   entry .login.c.signin -width 20 -bg #FFFFFF -bd 1 -font splainf
+   entry .login.c.password -width 20 -bg #FFFFFF -bd 1 \
+      -font splainf -show "*"
+      
+   button .login.c.ok -text [trans ok] -command login_ok  -font sboldf
+   button .login.c.cancel -text [trans cancel] \
+      -command "grab release .login;destroy .login" -font sboldf
+
+   checkbutton .login.c.remember -variable config(save_password) \
+      -text "[trans rememberpass]" -font sboldf \
+      -highlightthickness 0 -activeforeground #FFFFFF -selectcolor #FFFFFF
+
+   .login.c create text 133 12 -font sboldf -anchor ne \
+	-text "[trans user]: "
+   .login.c create text 133 82 -font sboldf -anchor ne \
+	-text "[trans pass]: "
+   .login.c create text 133 32 -font examplef -anchor ne \
+	-text "[trans examples]: "
+   .login.c create text 133 32 -font examplef -anchor nw \
+	-text "gudidu@hotmail.com\nmyname@msn.com\nexample@passport.com"
+   .login.c create window 133 10 -window .login.c.signin -anchor nw
+   .login.c create window 133 80 -window .login.c.password -anchor nw
+   .login.c create window 133 100 -window .login.c.remember -anchor nw
+   .login.c create window 195 120 -window .login.c.ok -anchor ne
+   .login.c create window 205 120 -window .login.c.cancel -anchor nw
+
+   .login.c.signin insert 0 $config(login)
+   .login.c.password insert 0 $password
+
+   bind .login.c.password <Return> "login_ok"
+
+   tkwait visibility .login
+   grab set .login
+}
+
+proc clickableImage {tw name image command {padx 0} {pady 0}} {
+   label $tw.$name -image $image
+   $tw.$name configure -cursor hand2 -borderwidth 0 
+   bind $tw.$name <Button1-ButtonRelease> $command
+   $tw window create end -window $tw.$name -padx $padx -pady $pady
+}
+
+proc toggleGroup {tw name image id {padx 0} {pady 0}} {
+   label $tw.$name -image $image
+   $tw.$name configure -cursor hand2 -borderwidth 0 
+   bind $tw.$name <Button1-ButtonRelease> "::groups::ToggleStatus $id; cmsn_draw_online"
+   $tw window create end -window $tw.$name -padx $padx -pady $pady
+}
+
+proc cmsn_draw_online {} {
+   global emotions user_stat login list_users list_states user_info list_bl\
+    unread config showonline password pgBuddy
+
+   set my_name [urldecode [lindex $user_info 4]]
+   set my_state_no [lsearch $list_states "$user_stat *"]
+   set my_state [lindex $list_states $my_state_no]
+   set my_state_desc [trans [lindex $my_state 1]]
+   set my_colour [lindex $my_state 2]
+   set my_image_type [lindex $my_state 5]
+
+   # Decide which grouping we are going to use
+   if {$config(orderbygroup)} {
+       set glist [lsort [::groups::GetList]]
+       set gcnt [llength $glist]
+       # Now setup each of the group's defaults
+       for {set i 0} {$i < $gcnt} {incr i} {
+	   set gid [lindex $glist $i]
+	   set ::groups::uMemberCnt($gid) 0
+       }
+   } else {	# Order by Online/Offline
+       # Defaults already set in setup_groups
+       set glist [list online offline]
+       set gcnt 2
+   }
+
+   $pgBuddy.text configure -state normal -font splainf
+   $pgBuddy.text delete 0.0 end
+
+
+   $pgBuddy.text tag conf mystatus -fore $my_colour -underline false \
+     -font bboldf
+
+    $pgBuddy.text tag bind mystatus <Enter> \
+      "$pgBuddy.text tag conf mystatus -under true;$pgBuddy.text conf -cursor hand2"
+    $pgBuddy.text tag bind mystatus <Leave> \
+      "$pgBuddy.text tag conf mystatus -under false;$pgBuddy.text conf -cursor left_ptr"
+
+   $pgBuddy.text tag bind mystatus <Button1-ButtonRelease> "tk_popup .my_menu %X %Y"
+   $pgBuddy.text tag bind mystatus <Button3-ButtonRelease> "tk_popup .my_menu %X %Y"
+
+
+   $pgBuddy.text tag conf mail -fore black -underline true -font splainf
+   $pgBuddy.text tag bind mail <Button1-ButtonRelease> "hotmail_login $config(login) $password"
+   $pgBuddy.text tag bind mail <Enter> \
+   	"$pgBuddy.text tag conf mail -under false;$pgBuddy.text conf -cursor hand2"
+   $pgBuddy.text tag bind mail <Leave> \
+   	"$pgBuddy.text tag conf mail -under true;$pgBuddy.text conf -cursor left_ptr"
+
+   # Configure bindings/tags for each named group in our scheme
+   for {set gidx 0} {$gidx < $gcnt} {incr gidx} {
+       set gname [lindex $glist $gidx]
+       if {$gname != "online" && $gname != "offline"} {
+           set gtag  "tg$gname"
+       } else {
+           set gtag $gname
+       }
+       $pgBuddy.text tag conf $gtag -fore #000000 -font sboldf
+       $pgBuddy.text tag bind $gtag <Button1-ButtonRelease> \
+	 "::groups::ToggleStatus $gname;cmsn_draw_online"
+       $pgBuddy.text tag bind $gtag <Enter> \
+	    "$pgBuddy.text tag conf $gtag -under true;$pgBuddy.text conf -cursor hand2"
+       $pgBuddy.text tag bind $gtag <Leave> \
+	    "$pgBuddy.text tag conf $gtag -under false;$pgBuddy.text conf -cursor left_ptr"
+
+   }
+
+   $pgBuddy.text insert end "\n"
+
+   # Display MSN logo with user's handle. Make it clickable so
+   # that the user can change his/her status that way
+   clickableImage $pgBuddy.text bigstate $my_image_type {tk_popup .my_menu %X %Y}
+   bind $pgBuddy.text.bigstate <Button3-ButtonRelease> {tk_popup .my_menu %X %Y}
+   
+   $pgBuddy.text insert end "   "
+   $pgBuddy.text insert end " $my_name " mystatus
+   $pgBuddy.text insert end "($my_state_desc) \n" mystatus
+   $pgBuddy.text image create end -image colorbar 
+   $pgBuddy.text insert end "\n"
+
+   # Show Mail Notification status 
+   clickableImage $pgBuddy.text mailbox mailbox {hotmail_login $config(login) $password} 5 0
+
+   if {$unread == 0} {
+      $pgBuddy.text insert end "[trans nonewmail]\n" mail
+   } elseif {$unread == 1} {
+      $pgBuddy.text insert end "[trans onenewmail]\n" mail
+   } else {
+      $pgBuddy.text insert end "[trans newmail $unread]\n" mail
+   }
+
+#end AIM
+
+   $pgBuddy.text insert end "\n"
+   # For each named group setup its heading where >><< image
+   # appears together with the group name and total nr. of handles
+   # [<<] My Group Name (n)
+   for {set gidx 0} {$gidx < $gcnt} {incr gidx} {
+       set gname [lindex $glist $gidx]
+       set gtag  "tg$gname"
+       if { [::groups::IsExpanded $gname] } {
+	   toggleGroup $pgBuddy.text contract$gname contract $gname 5 0
+       } else {
+	   toggleGroup $pgBuddy.text expand$gname expand $gname 5 0
+       }
+
+       # Show the group's name/title
+       if {$config(orderbygroup)} {
+           # For user defined groups we don't have/need translations
+	   set gtitle [::groups::GetName $gname]
+           $pgBuddy.text insert end $gtitle $gtag
+       } else {
+	    if {$gname == "online"} {
+	        $pgBuddy.text insert end "[trans uonline]" online
+	    } else {
+	        $pgBuddy.text insert end "[trans uoffline]" offline
+	    }
+       }
+       $pgBuddy.text insert end "\n"
+   }
+
+   ::groups::UpdateCount online clear
+   ::groups::UpdateCount offline clear
+
+   foreach user $list_users {
+      set user_login [lindex $user 0]
+      set user_name [lindex $user 1]
+      set user_state_no [lindex $user 2]
+      set state [lindex $list_states $user_state_no]
+      set state_code [lindex $state 0]
+
+      set colour [lindex $state 2]
+      set section [lindex $state 3]; # Used in online/offline grouping
+
+      if { $section == "online"} {
+	   ::groups::UpdateCount online +1
+      } elseif {$section == "offline"} {
+	   ::groups::UpdateCount offline +1
+      }
+
+
+      # Rename the section if we order by group
+      set user_group [::abook::getGroup $user_login -id]
+      if {$config(orderbygroup)} {
+          set section $user_group
+	  set section "tg$section"
+	  ::groups::UpdateCount $user_group +1
+      }
+      
+      # Check if the group/section is expanded, display accordingly
+      if {$config(orderbygroup)} {
+	  set myGroupExpanded [::groups::IsExpanded $user_group]
+      } else {
+	  set myGroupExpanded [::groups::IsExpanded $section]
+      }
+ 
+      if {$myGroupExpanded} {
+	  ShowUser $user_name $user_login $state $state_code $colour $section
+       }
+   }
+
+   if {$config(listsmileys)} {
+     smile_subst $pgBuddy.text
+   }  
+
+   if {$config(orderbygroup)} {
+        for {set gidx 0} {$gidx < $gcnt} {incr gidx} {
+	    set gname [lindex $glist $gidx]
+	    set gtag  "tg$gname"
+	   $pgBuddy.text insert $gtag.last " ($::groups::uMemberCnt($gname))\n" $gtag
+ 	}
+   } else {
+       $pgBuddy.text insert online.last " ($::groups::uMemberCnt(online))\n" online
+       $pgBuddy.text insert offline.last " ($::groups::uMemberCnt(offline))\n" offline
+   }
+
+   $pgBuddy.text configure -state disabled
+}
+
+proc ShowUser {user_name user_login state state_code colour section} {
+    global list_bl list_rl pgBuddy
+
+         if {($state_code != "NLN") && ($state_code !="FLN")} {
+            set state_desc " ([trans [lindex $state 1]])"
+	 } else {
+            set state_desc ""
+         }
+
+	 # If user is not in the Reverse List it means (s)he has not
+	 # yet added/approved us. Show their name in yellow. A way
+	 # of knowing how has a) not approved you yet, or b) has
+	 # removed you from their contact list even if you still 
+	 # have them...
+         if {[lsearch $list_rl "$user_login *"] == -1} {
+	     set colour #FF00FF
+	 }
+
+         set image_type [lindex $state 4]
+         if {[lsearch $list_bl "$user_login *"] != -1} {
+            set image_type "blocked"
+      	    if {$state_desc == ""} {set state_desc " ([trans blocked])"}
+         }
+           $pgBuddy.text tag conf $user_login -fore $colour
+
+
+         $pgBuddy.text mark set new_text_start end
+         $pgBuddy.text insert $section.last " $user_name$state_desc \n" $user_login
+	
+	 set imgname "img[expr {$::groups::uMemberCnt(online)+$::groups::uMemberCnt(offline)}]"
+         label $pgBuddy.text.$imgname -image $image_type
+         $pgBuddy.text.$imgname configure -cursor hand2 -borderwidth 0 
+         $pgBuddy.text window create $section.last -window $pgBuddy.text.$imgname -padx 3 -pady 1
+
+#         $pgBuddy.text image create $section.last -image $image_type -pady 1 -padx 3
+         $pgBuddy.text insert $section.last "      "
+
+         $pgBuddy.text tag bind $user_login <Enter> \
+             "$pgBuddy.text tag conf $user_login -under true;$pgBuddy.text conf -cursor hand2"
+         $pgBuddy.text tag bind $user_login <Leave> \
+            "$pgBuddy.text tag conf $user_login -under false;$pgBuddy.text conf -cursor left_ptr"
+
+         $pgBuddy.text tag bind $user_login <Button3-ButtonRelease> "show_umenu $user_login %X %Y"
+          bind $pgBuddy.text.$imgname <Button3-ButtonRelease> "show_umenu $user_login %X %Y"
+
+          if { $state_code !="FLN" } {
+             bind $pgBuddy.text.$imgname <Double-Button-1> "cmsn_chat_user $user_login"
+            $pgBuddy.text tag bind $user_login <Double-Button-1> \
+	        "cmsn_chat_user $user_login"
+         }
+}
+
+proc block_user {user_login} {
+   ::MSN::blockUser ${user_login}
+}
+
+proc unblock_user {user_login} {
+   ::MSN::unblockUser ${user_login}
+}
+
+proc delete_user {user_login} {
+
+   set answer [tk_messageBox -message "[trans confirmdelete ${user_login}]" -type yesno -icon question]
+   
+   if {$answer == "yes"} {
+
+      ::MSN::deleteUser ${user_login}
+   } 
+}
+
+proc send_mail {user_login} {
+  global config password
+
+  set mail_param $user_login ;#By default, just the address
+  if {[string first "balsa" $config(mailcommand)] != -1} {
+      set mail_param "--compose=$user_login"
+  } elseif {[string first "mozilla" $config(mailcommand)] != -1} {
+      set mail_param "-compose mailto:$user_login"
+  } elseif {[string first "sylpheed" $config(mailcommand)] != -1} {
+      set mail_param "--compose $user_login"
+  } elseif {[string length $config(mailcommand)]==0} {
+     hotmail_compose $user_login $config(login) $password
+     return 0
+  }
+
+  exec $config(mailcommand) $mail_param &
+  return 0
+}
+
+proc menuCmdMove {newgid {paramlist ""}} {
+    set passport [lindex $paramlist 0]
+    set currgid  [::abook::getGroup $passport -id]
+    puts "menuCmdMove $passport from $currgid to $newgid"
+#    ::MSN::moveUser $passport $currgid $newgid
+}
+
+proc user_choose {title online command {userslist ""}} {
+   global list_users list_states userchoose_req
+
+   if { $userslist == "" } {
+     set userslist $list_users
+   }
+
+   if {[info exists userchoose_req]} {
+      raise .userchoose
+      return 0
+   }
+
+   set userchoose_req true
+   
+   toplevel .userchoose -width 400 -height 300
+   bind .userchoose <Destroy> {
+      if {"%W" == ".userchoose"} {
+         unset userchoose_req
+      }
+   }
+
+   wm title .userchoose $title
+   wm transient .userchoose .
+   wm geometry .userchoose 400x300
+ 
+   frame .userchoose.list
+   frame .userchoose.buttons
+
+    
+   listbox .userchoose.list.userlist -yscrollcommand ".userchoose.list.ys set"
+   scrollbar .userchoose.list.ys -command ".userchoose.list.userlist yview" 
+   
+   button  .userchoose.buttons.ok -text "[trans ok]" -command "$command \[string range \[lindex \[.userchoose.list.userlist get active\] end\] 1 end-1\]\n;destroy .userchoose"
+   button  .userchoose.buttons.cancel -text "[trans cancel]" -command "destroy .userchoose"
+
+   pack .userchoose.list.ys -side right -fill y   
+   pack .userchoose.list.userlist -side left -expand true -fill both
+   pack .userchoose.list -side top -expand true -fill both
+   pack .userchoose.buttons -side bottom
+   pack .userchoose.buttons.cancel .userchoose.buttons.ok -padx 10 -side right   
+
+   foreach user $userslist {
+      set user_login [lindex $user 0]
+      set user_name [lindex $user 1]
+      set user_state_no [lindex $user 2]
+      set state [lindex $list_states $user_state_no]
+      set state_code [lindex $state 0]
+      
+      if {($online != "online") || ($state_code != "FLN")} {
+         .userchoose.list.userlist insert end "$user_name <$user_login>"
+      }	 
+
+   }
+}
+
+proc show_umenu {user_login x y} {
+   global list_bl config
+
+   set blocked [lsearch $list_bl "${user_login} *"]
+   .user_menu delete 0 end
+   .user_menu add command -label "[trans sendmsg]" \
+      -command "cmsn_chat_user ${user_login}"
+   .user_menu add command -label "[trans sendmail] \($user_login\)" \
+      -command "send_mail $user_login"
+   .user_menu add separator
+   if {$blocked == -1} {
+      .user_menu add command -label "[trans block]" -command  "block_user ${user_login}"
+   } else {
+      .user_menu add command -label "[trans unblock]" \
+         -command  "unblock_user ${user_login}"
+   }
+
+      ::groups::updateMenu menu .move_group_menu ::groups::menuCmdMove $user_login
+      ::groups::updateMenu menu .copy_group_menu ::groups::menuCmdCopy $user_login
+
+
+   if {$config(orderbygroup)} {
+
+   #   .user_menu add cascade -label "[trans movetogroup]..." -menu .move_group_menu 
+#      .user_menu add command -label "[trans copytogroup]..." -command "tk_popup .copy_group_menu $x $y"
+      .user_menu add command -label "[trans movetogroup]..." -command "tk_popup .move_group_menu $x $y"
+   #   .user_menu add command -label "[trans deletefromgroup]..." -command "delete_from_group"
+   } else {
+   #   .user_menu add cascade -label "[trans movetogroup]..." -menu .move_group_menu -state disabled
+#      .user_menu add command -label "[trans copytogroup]..." -command "tk_popup .copy_group_menu $x $y" -state disabled
+      .user_menu add command -label "[trans movetogroup]..." -command "tk_popup .move_group_menu $x $y" -state disabled
+   #   .user_menu add command -label "[trans deletefromgroup]..." -command "delete_from_group" -state disabled
+   }
+   .user_menu add command -label "[trans delete]" -command "delete_user ${user_login}"
+   .user_menu add command -label "[trans properties]" \
+      -command "::abookGui::showEntry $user_login"
+
+
+   tk_popup .user_menu $x $y
+}
+
+proc login_ok {} {
+   global config password
+
+   set config(login) [.login.c.signin get]
+   set password [.login.c.password get]
+   grab release .login
+   destroy .login
+
+   ::MSN::connect $config(login) $password
+
+}
+
+proc copypaste_menu {text x y delete} {
+
+   $text.copypaste delete 0 end
+   $text.copypaste add command -label "Copy" \
+      -command "clipboard clear; catch { \"\[$text get \[lindex \[$text tag ranges sel\] 0\] \[lindex \[$text tag ranges sel\] 1\]\]\" } res"
+
+    if {!$delete} {
+     $text.copypaste add command -label "Cut" \
+        -command "msg_box cy" -state disabled
+     $text.copypaste add command -label "Delete" \
+        -command "msg_box delete" -state disabled
+    } else {
+     $text.copypaste add command -label "Cut" \
+        -command "msg_box cy"
+     $text.copypaste add command -label "Delete" \
+        -command "msg_box delete"
+    }
+   $text.copypaste add separator
+   $text.copypaste add command -label "Paste" \
+      -command "msg_box paste"
+
+   tk_popup $text.copypaste $x $y
+}
+
+proc cmsn_draw_msgwin {} {
+   global images_folder sb_num sb_list config HOME files_dir
+
+   incr sb_num
+   set name "sb$sb_num"
+   set win_name "msg_[string tolower ${name}]"
+
+   lappend sb_list "$name"
+   sb set $name name $name
+   sb set $name sock ""
+   sb set $name data [list]
+   sb set $name users [list]
+   sb set $name typers [list]
+   sb set $name title "[trans chat]"
+   sb set $name flickering 0
+
+
+   toplevel .${win_name}
+   wm title .${win_name} "[trans chat]"
+   wm iconify .${win_name}
+   wm state .${win_name} withdrawn
+   wm group .${win_name} ""
+   wm iconbitmap . @${images_folder}/amsn.xbm
+   
+   menu .${win_name}.menu -tearoff 0 -type menubar  \
+      -borderwidth 0 -activeborderwidth -0 
+   .${win_name}.menu add cascade -label "[trans msn]" -menu .${win_name}.menu.msn
+   .${win_name}.menu add cascade -label "[trans view]" -menu .${win_name}.menu.view
+   .${win_name}.menu add cascade -label "[trans actions]" -menu .${win_name}.menu.actions
+
+   menu .${win_name}.menu.msn -tearoff 0 -type normal  
+   .${win_name}.menu.msn add command -label "[trans save]" \
+      -command " ChooseFilename .${win_name}.text ${name} " 
+   .${win_name}.menu.msn add command -label "[trans saveas]..." \
+      -command " ChooseFilename .${win_name}.text ${name} " 
+   .${win_name}.menu.msn add separator
+   .${win_name}.menu.msn add command -label "[trans sendfile]..." \
+      -command "::amsn::fileTransferSend ${name} ${name} " -state disabled
+   .${win_name}.menu.msn add command -label "[trans openreceived]..." \
+      -command "msg_box \"Files saved in\n$files_dir\"" 
+   .${win_name}.menu.msn add separator
+   .${win_name}.menu.msn add command -label "[trans close]" \
+      -command "destroy .${win_name}" 
+
+   menu .${win_name}.menu.view -tearoff 0 -type normal  
+   .${win_name}.menu.view add command -label "[trans textsize]" \
+      -command " "  -state disabled
+   .${win_name}.menu.view add separator
+   .${win_name}.menu.view add checkbutton -label "[trans chatsmileys]" \
+     -onvalue 1 -offvalue 0 -variable config(chatsmileys)
+   
+   menu .${win_name}.menu.actions -tearoff 0 -type normal  
+   .${win_name}.menu.actions add command -label "[trans addtocontacts]" \
+      -command "show_chatuserlist \"[trans addtocontacts]\" $name ::MSN::addUser" 
+   .${win_name}.menu.actions add command -label "[trans block]" \
+      -command "show_chatuserlist \"[trans block]\" $name block_user" 
+#   .${win_name}.menu.actions add command -label "[trans seeprofile]" -command "" -state disabled
+   .${win_name}.menu.actions add command -label "[trans properties]" \
+      -command "show_chatuserlist \"[trans properties]\" $name ::abookGui::showEntry"
+   .${win_name}.menu.actions add separator
+   .${win_name}.menu.actions add command -label "[trans invite]..." -command "user_choose \"[trans invite]\" online \"cmsn_invite_user $name\""
+   .${win_name}.menu.actions add command -label "[trans sendfile]..." \
+      -command "::amsn::fileTransferSend ${name} ${name} "  -state disabled
+   .${win_name}.menu.actions add separator
+   .${win_name}.menu.actions add command -label [trans sendmail] -command "cmsn_msgwin_sendmail $name"
+#   menu .${win_name}.menu.actions.invite -tearoff 0 -type normal 
+#   .${win_name}.menu.actions.invite add separator
+#   .${win_name}.menu.actions.invite add command -label "[trans other]..." -state disabled
+
+   
+#   bind .${win_name}.menu.actions <Enter> "cmsn_msgwin_umenu $name"
+
+   .${win_name} conf -menu .${win_name}.menu
+
+   frame .${win_name}.top
+   text .${win_name}.top.text  -borderwidth 0 -width 45 \
+      -height 1 -wrap word -yscrollcommand ".${win_name}.top.ys set"
+   scrollbar .${win_name}.top.ys -command ".${win_name}.top.text yview" \
+      
+   text .${win_name}.text -background white -width 45 -height 15 -wrap word \
+      -yscrollcommand ".${win_name}.ys set" -exportselection 1
+      #-selectforeground white \
+      #-selectbackground darkblue -selectborderwidth 1 
+   scrollbar .${win_name}.ys -command ".${win_name}.text yview" \
+      
+   text .${win_name}.status  -width 30 -height 1 -wrap none\
+   -font bplainf
+   frame .${win_name}.in
+   text .${win_name}.in.input -background white -width 15 -height 3 -wrap word\
+   -font bboldf
+  
+   button .${win_name}.in.send  -text [trans send] -width 5 \
+      -command "sb_enter $name .${win_name}.in.input" -font bboldf
+
+   frame .${win_name}.buttons 
+
+   button .${win_name}.buttons.smileys  -image butsmile -relief flat -padx 5
+   button .${win_name}.buttons.fontsel -image butfont -relief flat -padx 5
+   button .${win_name}.buttons.block -image butblock -relief flat -padx 5
+   pack .${win_name}.buttons.block .${win_name}.buttons.fontsel .${win_name}.buttons.smileys -side left
+
+   pack .${win_name}.top -side top -fill x
+   pack .${win_name}.status -side bottom -fill x
+   pack .${win_name}.in -side bottom -fill x
+   pack .${win_name}.buttons -side bottom -fill x
+   pack .${win_name}.ys -side right -fill y
+   pack .${win_name}.text -expand true -fill both
+
+   pack .${win_name}.top.text -side left -expand true -fill x
+   pack .${win_name}.in.send -side right -fill y
+   pack .${win_name}.in.input -side left -expand true -fill x
+
+   .${win_name}.top.text configure -state disabled
+   .${win_name}.text configure -state disabled
+   .${win_name}.status configure -state disabled
+   .${win_name}.in.send configure -state disabled
+   .${win_name}.in.input configure -state disabled
+
+
+#   .${win_name}.text tag configure sel -foreground white -background darkblue
+   .${win_name}.text tag configure green -foreground darkgreen -background white -font bboldf 
+   .${win_name}.text tag configure red -foreground red -background white -font bboldf
+   .${win_name}.text tag configure blue -foreground blue -background white -font bboldf
+   .${win_name}.text tag configure gray -foreground #808080 -background white
+   .${win_name}.text tag configure white -foreground white -background black
+   .${win_name}.text tag configure url -foreground darkblue -background white -font bboldf -underline true
+
+
+   bind .${win_name}.in.input <Return> "sb_enter $name %W; break"
+   bind .${win_name}.in.input <Key-KP_Enter> "sb_enter $name %W; break"
+
+   bind .${win_name}.in.input <Alt-s> "sb_enter $name %W; break"
+   bind .${win_name}.in.input <Tab> "focus .${win_name}.in.send; break"
+
+   bind  .${win_name}.buttons.smileys  <Button1-ButtonRelease> "smile_menu %X %Y .${win_name}.in.input"   
+#   bind  .${win_name}.buttons.fontsel  <Button1-ButtonRelease> "tk_chooseFont"   
+
+
+   bind .${win_name}.in.send <Return> \
+      "sb_enter $name .${win_name}.in.input; break"
+   bind .${win_name}.in.input <Control-Return> {%W insert end "\n"; break}
+   bind .${win_name} <Destroy> "cmsn_destroyed_msgwin $name %W"
+   
+#   menu .${win_name}.text.copypaste -tearoff 0 -type normal  
+#   menu .${win_name}.in.copypaste -tearoff 0 -type normal  
+
+#   bind .${win_name}.text <Button-3> "copypaste_menu .${win_name}.text %X %Y 0"
+#   bind .${win_name}.in <Button-3> "copypaste_menu .${win_name}.in %X %Y 1"
+
+   focus .${win_name}.in.input
+
+   return ${name}
+
+}
+
+proc cmsn_destroyed_msgwin {name winpath} {
+   global sb_list ${name}_info config
+   set win_name "msg_[string tolower ${name}]"
+
+   if {"${winpath}" != ".${win_name}"} {
+      return 0
+   }
+
+   set idx [lsearch -exact $sb_list $name]
+   if {$idx == -1} {
+      status_log "tried to destroy unknown SB $name\n" white
+      return 0
+   }
+
+   set sb_list [lreplace $sb_list $idx $idx]
+   if {[sb get $name stat] != "d"} {
+      catch {
+      puts [sb get $name sock] "OUT"
+      close [sb get $name sock]
+      } res
+   }
+   if {$config(keep_logs) && [sb exists $name log_fcid]} {		;# LOGS!
+      close [sb get $name log_fcid]
+   }
+   unset ${name}_info
+
+}
+
+proc cmsn_show_typers {name} {
+   global list_users
+
+   set win_name "msg_[string tolower ${name}]"
+   .${win_name}.status configure -state normal
+   .${win_name}.status delete 0.0 end
+
+   after cancel ".${win_name}.status configure -state normal;\
+     .${win_name}.status delete 0.0 end;\
+     .${win_name}.status configure -state disabled"
+
+
+   set num_typers [sb length $name typers]
+   if {$num_typers == 0} {
+      #TODO last msg received
+      set statusmsg ""
+   } else {
+      if {$num_typers == 1} {
+         set is_are "[trans is]"
+      } else {
+         set is_are "[trans are]"
+      }
+      
+      upvar #0 [sb name $name typers] typers_list
+      set statusmsg ""
+      
+      foreach login $typers_list {
+         set idx [sb search $name users "$login *"]
+         set usrinfo [sb index $name users $idx]
+         set user_name [lindex $usrinfo 1]
+         set statusmsg "${statusmsg}${user_name}, "
+         after 10000 "catch {.${win_name}.status configure -state normal;\
+           .${win_name}.status delete 0.0 end;\
+           .${win_name}.status configure -state disabled} res"
+      }
+      
+      .${win_name}.status image create end -image typingimg -pady 0 -padx 1
+      set statusmsg [string replace $statusmsg end-1 end " [trans typing $is_are]."]
+   }
+
+   .${win_name}.status insert end $statusmsg
+   .${win_name}.status configure -state disabled
+}
+
+proc cmsn_msgwin_sendmail {name} {
+   upvar #0 [sb name $name users] users_list
+   set win_name "msg_[string tolower ${name}]"
+
+   if {[llength $users_list]} {
+      set recipient ""
+      foreach usrinfo $users_list {
+         if { $recipient != "" } {
+            set recipient "${recipient}, "	 
+	 }
+         set user_login [lindex $usrinfo 0]
+         set recipient "${recipient}${user_login}"
+      }
+      set title [string replace $title end-1 end " - [trans chat]"]
+      set topmsg [string replace $topmsg end-1 end]
+   } else {
+      set recipient "recipient@somewhere.com"
+   }
+   
+   send_mail $recipient
+}
+
+proc cmsn_msgwin_title {name} {
+   upvar #0 [sb name $name users] users_list
+   set win_name "msg_[string tolower ${name}]"
+
+   if {[llength $users_list]} {
+      set title ""
+      set topmsg "[trans to]: "
+      foreach usrinfo $users_list {
+         set user_login [lindex $usrinfo 0]
+         set user_name [lindex $usrinfo 1]
+         set title "${title}${user_name}, "
+         set topmsg "${topmsg}${user_name} <${user_login}>, "
+      }
+      set title [string replace $title end-1 end " - [trans chat]"]
+      set topmsg [string replace $topmsg end-1 end]
+   } else {
+      set title "[trans chat]"
+      set topmsg "[trans nousersinsession]"
+   }
+   wm title .${win_name} ${title}
+   sb set $name title ${title}
+
+   cmsn_msgwin_top $name $topmsg
+
+}
+
+proc sonido {sound} {
+  global config sounds_folder config
+  if { $config(sound) == 1 } {
+    set archivo [file join $sounds_folder $sound.wav]
+    catch {exec $config(soundcommand) $archivo} res
+  }
+}
+
+proc cmsn_msgwin_flicker {name count} {
+   set win_name "msg_[string tolower ${name}]"
+
+  after cancel cmsn_msgwin_flicker $name 0
+  after cancel cmsn_msgwin_flicker $name 1
+
+   if { [string first $win_name [focus]] != 1 } {
+
+        set count  [expr {( $count +1 ) % 2}]
+	if {![catch {
+	  if { $count == 1 } {
+  	     wm title .${win_name} "[trans newmsg]"
+  	  } else {
+	     wm title .${win_name} [sb get $name title]
+	  }
+	} res]} {	
+ 	  after 300 cmsn_msgwin_flicker $name $count
+	} 
+  } else {
+  
+	  ##TODO: revisar si se ha cerrado la ventana
+	  catch {wm title .${win_name} [sb get $name title]} res
+  }
+   
+}
+
+proc cmsn_msgwin_top {name txt} {
+   set win_name "msg_[string tolower ${name}]"
+
+   .${win_name}.top.text configure -state normal -font splainf
+   .${win_name}.top.text delete 0.0 end
+   .${win_name}.top.text insert end $txt
+   .${win_name}.top.text configure -state disabled
+}
+
+proc cmsn_win_write {name txt {colour ""}} {
+   global emotions urlstarts config urlcount
+
+   set win_name "msg_[string tolower ${name}]"
+
+  .${win_name}.text configure -state normal -font splainf
+
+
+   set text_start [.${win_name}.text index end]
+   set posyx [split $text_start "."]   
+   set text_start "[expr {[lindex $posyx 0]-1}].[lindex $posyx 1]"
+   
+   #.${win_name}.text mark set new_text_start end
+
+   .${win_name}.text insert end "$txt" $colour
+
+   if {$config(keep_logs) && [sb exists $name log_fcid]} {	;# LOGS!
+      puts -nonewline [sb get $name log_fcid] $txt
+   }
+
+
+
+#New by AIM
+
+   
+   set endpos $text_start
+
+   foreach url $urlstarts {
+
+      #puts "  Buscando $url"
+
+      while { $endpos != [.${win_name}.text index end] && [set pos [.${win_name}.text search -forward -exact -nocase \
+                              $url $endpos end]] != "" } {
+		
+	
+	set urltext [.${win_name}.text get $pos end]
+	
+	set final 0
+	set caracter [string range $urltext $final $final]
+	while { $caracter != " " && $caracter != "\n" } {
+		set final [expr {$final+1}]
+		set caracter [string range $urltext $final $final]
+	}
+	
+	set urltext [string range $urltext 0 [expr {$final-1}]]
+
+        set posyx [split $pos "."]
+        set endpos "[lindex $posyx 0].[expr {[lindex $posyx 1] + $final}]"
+
+
+	#puts "    Encontrado url $urltext en $pos-$endpos"
+
+	set urlcount "[expr {$urlcount+1}]"
+	set urlname "url_$urlcount"
+
+	.${win_name}.text tag configure $urlname \
+	  -foreground darkblue -background white -font bboldf -underline true
+	.${win_name}.text tag bind $urlname <Enter> \
+	  ".${win_name}.text tag conf $urlname -underline false;\
+	  .${win_name}.text conf -cursor hand2"
+	.${win_name}.text tag bind $urlname <Leave> \
+	  ".${win_name}.text tag conf $urlname -underline true;\
+	  .${win_name}.text conf -cursor left_ptr"
+	.${win_name}.text tag bind $urlname <Button1-ButtonRelease> \
+	  "launch_browser \"$urltext\""
+
+  	.${win_name}.text delete $pos $endpos
+	.${win_name}.text insert $pos "$urltext" $urlname	  
+	  
+     }
+
+
+   }
+#end by AIM
+ 
+   if {$config(chatsmileys)} {
+     smile_subst .${win_name}.text $text_start
+   }  
+
+   
+   .${win_name}.text yview moveto 1.0
+   .${win_name}.text configure -state disabled
+
+}
+
+proc cmsn_draw_addcontact {} {
+   global addcontact_request lang
+
+   if {[info exists addcontact_request]} {
+      raise .addcontact
+      return 0
+   }
+
+   set addcontact_request true
+   toplevel .addcontact -width 400 -height 150 
+   bind .addcontact <Destroy> {
+      if {"%W" == ".addcontact"} {
+         unset addcontact_request
+      }
+   }
+
+   wm geometry .addcontact -0+100
+   wm title .addcontact "[trans addacontact] - [trans title]"
+   wm transient .addcontact .
+   canvas .addcontact.c -width 320 -height 150 
+   pack .addcontact.c -expand true -fill both
+
+   entry .addcontact.c.email -width 30 -bg #FFFFFF -bd 1 \
+      -font splainf
+   button .addcontact.c.next -text "[trans next]->" \
+     -command addcontact_next -font sboldf
+   button .addcontact.c.cancel -text [trans cancel]  \
+      -command "grab release .addcontact;destroy .addcontact" -font sboldf
+
+   .addcontact.c create text 5 10 -font sboldf -anchor nw \
+	-text "[trans entercontactemail]:"
+   .addcontact.c create text 70 60 -font examplef -anchor ne \
+	-text "[trans examples]: "
+   .addcontact.c create text 70 60 -font examplef -anchor nw \
+	-text "gudidu@hotmail.com\nmyname@msn.com\nexample@passport.com"
+   .addcontact.c create window 5 35 -window .addcontact.c.email -anchor nw
+   .addcontact.c create window 195 120 -window .addcontact.c.next -anchor ne
+   .addcontact.c create window 205 120 -window .addcontact.c.cancel -anchor nw
+
+   bind .addcontact.c.email <Return> "addcontact_next"
+
+   tkwait visibility .addcontact
+   grab set .addcontact
+}
+
+proc addcontact_next {} {
+   set tmp_email [.addcontact.c.email get]
+   if { $tmp_email != ""} {
+      ::MSN::addUser "$tmp_email"
+      grab release .addcontact
+      destroy .addcontact
+   } 
+}
+
+proc cmsn_proxy {} {
+   global configuring_proxy config
+
+   if {[info exists configuring_proxy]} {
+      raise .proxy_conf
+      return 0
+   }
+
+   set configuring_proxy true
+   toplevel .proxy_conf -width 400 -height 150 
+   bind .proxy_conf <Destroy> {
+      if {"%W" == ".proxy_conf"} {
+         unset configuring_proxy
+      }
+   }
+
+   wm geometry .proxy_conf -0+100
+   wm title .proxy_conf "[trans proxyconf] - [trans title]"
+   wm transient .proxy_conf .
+   canvas .proxy_conf.c -width 400 -height 150 
+   pack .proxy_conf.c -expand true -fill both
+
+   checkbutton .proxy_conf.c.enable -relief flat -text [trans enableproxy] \
+   	-variable config(withproxy)
+   entry .proxy_conf.c.server -width 20 -bg #FFFFFF -bd 1 \
+      -font splainf
+   entry .proxy_conf.c.port -width 5 -bg #FFFFFF -bd 1 \
+      -font splainf
+   button .proxy_conf.c.ok -text [trans ok] -command proxy_conf_ok
+   button .proxy_conf.c.cancel -text [trans cancel] \
+      -command "grab release .proxy_conf;destroy .proxy_conf"
+
+   .proxy_conf.c create text 200 15 -font bigfont -anchor center \
+	-text "[trans proxyconfhttp]"
+   .proxy_conf.c create text 133 35 -font sboldf -anchor ne \
+	-text "[trans server]: "
+   .proxy_conf.c create text 133 60 -font sboldf -anchor ne \
+	-text "[trans port]: "
+   .proxy_conf.c create text 133 105 -font splainf -anchor nw \
+	-text "[trans blankdirect]"
+   .proxy_conf.c create window 133 35 -window .proxy_conf.c.server -anchor nw
+   .proxy_conf.c create window 133 60 -window .proxy_conf.c.port -anchor nw
+   .proxy_conf.c create window 133 80 -window .proxy_conf.c.enable -anchor nw
+   .proxy_conf.c create window 195 120 -window .proxy_conf.c.ok -anchor ne
+   .proxy_conf.c create window 205 120 -window .proxy_conf.c.cancel -anchor nw
+
+   set proxy_data [split $config(proxy) ":"]
+   .proxy_conf.c.server insert 0 [lindex $proxy_data 0]
+   .proxy_conf.c.port insert 0 [lindex $proxy_data 1]
+
+   tkwait visibility .proxy_conf
+   grab set .proxy_conf
+}
+
+proc proxy_conf_ok {} {
+   global config
+
+   set p_server [string trim [.proxy_conf.c.server get]]
+   set p_port   [string trim [.proxy_conf.c.port get]]
+   if { ($p_server != "") && ($p_port != "") } {
+       set config(proxy) [join [list $p_server $p_port] ":"]
+   } else {
+       set config(proxy) ""
+       set config(withproxy) 0
+   }
+   grab release .proxy_conf
+   destroy .proxy_conf
+}
+
+proc newcontact {new_login new_name} {
+   global newc_allow_block newc_add_to_list newc_exit list_fl
+
+   set newc_allow_block "allow"
+   set newc_exit ""
+
+   if {[lsearch $list_fl "$new_login *"] != -1} {
+      set add_stat "disabled"
+      set newc_add_to_list 0
+   } else {
+      set add_stat "normal"
+      set newc_add_to_list 1
+   }
+   toplevel .newc
+ 
+   wm geometry .newc -0+100
+   wm title .newc "$new_name - [trans title]"
+   wm transient .newc .
+   canvas .newc.c -width 500 -height 150 
+   pack .newc.c -expand true -fill both
+ 
+   button .newc.c.ok -text [trans ok]  \
+      -command "set newc_exit OK;grab release .newc;destroy .newc"
+   button .newc.c.cancel -text [trans cancel]  \
+      -command "grab release .newc;destroy .newc"
+
+  radiobutton .newc.c.allow -variable newc_allow_block \
+     -text [trans allowseen] \
+      -highlightthickness 0 \
+     -activeforeground #FFFFFF -selectcolor #FFFFFF -value allow
+  radiobutton .newc.c.block -variable newc_allow_block \
+     -text [trans avoidseen] \
+      -highlightthickness 0 \
+     -activeforeground #FFFFFF -selectcolor #FFFFFF -value block
+   checkbutton .newc.c.add -var newc_add_to_list -state $add_stat \
+      -text [trans addtoo] \
+      -highlightthickness 0 -activeforeground #FFFFFF -selectcolor #FFFFFF
+
+ 
+   .newc.c create text 30 5 -font splainf -anchor nw -justify left \
+        -text "$new_name ($new_login) [trans addedyou]." \
+        -width 460
+   .newc.c create text 30 40 -font splainf -anchor nw \
+        -text "[trans youwant]:"
+   .newc.c create window 40 58 -window .newc.c.allow -anchor nw
+   .newc.c create window 40 76 -window .newc.c.block -anchor nw
+   .newc.c create window 30 94 -window .newc.c.add -anchor nw
+   .newc.c create window 245 120 -window .newc.c.ok -anchor ne
+   .newc.c create window 255 120 -window .newc.c.cancel -anchor nw
+
+   tkwait visibility .newc
+   grab set .newc
+}
+
+
+proc cmsn_change_name {} {
+   global change_name user_info
+
+   if {[info exists change_name]} {
+      raise .change_name
+      return 0
+   }
+
+   set change_name true
+   toplevel .change_name -width 400 -height 150 
+   bind .change_name <Destroy> {
+      if {"%W" == ".change_name"} {
+         unset change_name
+      }
+   }
+   wm geometry .change_name -0+100
+   wm title .change_name "[trans changenick] - [trans title]"
+   wm transient .change_name .
+   canvas .change_name.c -width 300 -height 100 
+   pack .change_name.c -expand true -fill both
+
+   entry .change_name.c.name -width 40 -bg #FFFFFF -bd 1 \
+      -font splainf
+   button .change_name.c.ok -text [trans ok] -command change_name_ok
+   button .change_name.c.cancel -text [trans cancel] \
+      -command "destroy .change_name"
+
+   .change_name.c create text 5 10 -font sboldf -anchor nw \
+	-text "[trans enternick]:"
+   .change_name.c create window 5 35 -window .change_name.c.name -anchor nw
+   .change_name.c create window 195 65 -window .change_name.c.ok -anchor ne
+   .change_name.c create window 205 65 -window .change_name.c.cancel -anchor nw
+
+   bind .change_name.c.name <Return> "change_name_ok"
+
+   .change_name.c.name insert 0 [urldecode [lindex $user_info 4]]
+
+   tkwait visibility .change_name
+   grab set .change_name
+}
+
+proc change_name_ok {} {
+   global config
+
+   set new_name [.change_name.c.name get]
+   if {$new_name != ""} {
+      ::MSN::changeName $config(login) $new_name
+   }
+   destroy .change_name
+}
+
+
+#=======================================================================
+
+proc show_chatuserlist {title name command} {
+   global list_users
+   set win_name "msg_[string tolower ${name}]"
+
+   set userlist [list]
+
+   foreach user_info $list_users {
+      set user_login [lindex $user_info 0]
+      set user_state_no [lindex $user_info 2]
+      if {($user_state_no < 7) && 
+          ([sb search $name users "$user_login *"] != -1)} {
+          set user_name [lindex $user_info 1]
+	  lappend userlist [list $user_login $user_name $user_state_no]
+      }
+   }
+   
+   if {[llength $userlist] == 1} {      
+     eval "$command [lindex [lindex $userlist 0] 0]"
+   } elseif {[llength $userlist] > 0} {      
+     user_choose $title both $command $userlist
+   }
+
+}
+
+#obsolete proc
+proc cmsn_msgwin_umenu {name} {
+   global list_users
+   set win_name "msg_[string tolower ${name}]"
+
+   .${win_name}.menu.actions.invite delete 0 end
+#   .${win_name}.menu.actions.invite add separator
+#   .${win_name}.menu.actions.invite add command -label "[trans other]..." -state disabled
+
+   foreach user_info $list_users {
+      set user_login [lindex $user_info 0]
+      set user_state_no [lindex $user_info 2]
+      if {($user_state_no < 7) && 
+          ([sb search $name users "$user_login *"] == -1)} {
+         set user_name [lindex $user_info 1]
+	 .${win_name}.menu.actions.invite insert 0 command \
+            -command "cmsn_invite_user $name $user_login;puts $user_login" \
+	    -label "$user_name <$user_login>"
+      }
+   }
+}
+
+proc cmsn_sb_sessionclosed {sbn} {
+   set win_name "msg_[string tolower ${sbn}]"
+
+   status_log "$sbn: SESSION CLOSED\n" red
+   sb set $sbn stat "d"
+   
+   .${win_name}.menu.msn entryconfigure 3 -state disabled
+   .${win_name}.menu.actions entryconfigure 5 -state disabled
+   
+   set items [expr {[sb length $sbn users] -1}]
+   sb set $sbn last_user [sb index $sbn users 0]
+   for {set idx $items} {$idx >= 0} {incr idx -1} {
+      set user_info [sb index $sbn users $idx]
+      sb ldel $sbn users $idx
+      .${win_name}.in.send configure -state disabled
+      cmsn_win_write $sbn "[trans leaves [lindex $user_info 0]]\n" green
+      cmsn_msgwin_title $sbn
+      bind .${win_name}.in.input <Key> "cmsn_reconnect ${sbn}"
+      bind .${win_name}.in.input <Return> "cmsn_reconnect ${sbn}; break"
+   }
+}
+
+
+proc cmsn_update_users {sb_name recv} {
+   global config
+
+
+   switch [lindex $recv 0] {
+      BYE { if {[sb get $sb_name stat] != "d"} {
+         cmsn_win_write $sb_name "[trans leaves [lindex $recv 1]]\n" green
+	 set leaves [sb search $sb_name users "[lindex $recv 1] *"]
+	 sb ldel $sb_name users $leaves
+	 sb set $sb_name last_user [lindex $recv 1]
+      } }
+      IRO {
+         sb set $sb_name stat "o"
+	 set usr_login [lindex $recv 4]
+	 set usr_name [urldecode [lindex $recv 5]]
+	 sb append $sb_name users [list $usr_login $usr_name]
+         cmsn_win_write $sb_name "[trans joins $usr_name ($usr_login)]\n" green
+      }
+      JOI {
+         sb set $sb_name stat "o"
+	 set usr_login [lindex $recv 1]
+	 set usr_name [urldecode [lindex $recv 2]]
+	 sb append $sb_name users [list $usr_login $usr_name]
+         cmsn_win_write $sb_name "[trans joins $usr_name ($usr_login)]\n" green
+      }
+   }
+
+   if {[sb exists $sb_name log_fcid]} {
+      close [sb get $sb_name log_fcid]
+      sb unset $sb_name log_fcid
+   }
+   if {$config(keep_logs) && [sb length $sb_name users]} {	;# LOGS!
+      global log_dir
+      upvar #0 [sb name $sb_name users] tmp_users_list
+      set users_list [lsort $tmp_users_list]
+      set file_name ""
+      foreach usrinfo $users_list {
+         set user_email [split [lindex $usrinfo 0] "@"]
+	 set user_login [lindex $user_email 0]
+         set file_name "${file_name}-${user_login}"
+      }
+      set file_name [string range ${file_name} 1 end]
+      sb set $sb_name log_fcid [open "[file join ${log_dir} ${file_name}]" a+]
+   }
+
+   cmsn_msgwin_title $sb_name
+   set win_name "msg_[string tolower ${sb_name}]"
+   if {[sb length $sb_name users] > 0} {
+      .${win_name}.in.input configure -state normal
+      .${win_name}.in.send configure -state normal
+
+     .${win_name}.menu.msn entryconfigure 3 -state normal
+     .${win_name}.menu.actions entryconfigure 5 -state normal
+
+      bind .${win_name}.in.input <Key> "sb_change $sb_name"
+      bind .${win_name}.in.input <Return> "sb_enter $sb_name %W; break"
+   } else {
+
+     .${win_name}.menu.msn entryconfigure 3 -state disabled
+     .${win_name}.menu.actions entryconfigure 5 -state disabled   
+
+      if {[sb get $sb_name stat] != "d"} { sb set $sb_name stat "n" }
+      .${win_name}.in.send configure -state disabled
+      bind .${win_name}.in.input <Key> "cmsn_reconnect ${sb_name}"
+      bind .${win_name}.in.input <Return> "cmsn_reconnect ${sb_name}; break"
+   }
+}
+
+
+proc cmsn_change_state {recv} {
+   global list_fl list_users
+
+
+   if {[lindex $recv 0] == "FLN"} {
+      set user [lindex $recv 1]
+      set user_name ""
+      set substate "FLN"
+   } else {
+      if {[lindex $recv 0] == "ILN"} {
+         set user [lindex $recv 3]
+         set user_name [urldecode [lindex $recv 4]]
+         set substate [lindex $recv 2]
+      } else {
+         set user [lindex $recv 2]
+         set user_name [urldecode [lindex $recv 3]]
+         set substate [lindex $recv 1]
+      }
+   }
+
+   set idx [lsearch $list_users "$user *"]
+   if {$idx != -1} {
+      global list_users list_states
+
+      set user_data [lindex $list_users $idx]
+      if {$user_name == ""} {
+         set user_name [urldecode [lindex $user_data 1]]
+      }
+
+      if {$user_name != [lindex $user_data 1]} {
+      	#Nick differs from the one on our list, so change it
+	#in the server list too
+	::MSN::changeName $user $user_name
+      }
+
+      
+      if {[lindex $user_data 2] < 7} {		;# User was online before
+         set oldusername [string map {\\ \\\\ \[ \\\[ * \\* ? \\?} \
+	   [urldecode [lindex $user_data 1]]]
+
+#         status_log "Deleting <$oldusername> from menu\n" white
+#         if [catch {.main_menu.msg delete "$oldusername <$user>"} res] {
+#	   status_log " ERROR deleting <$oldusername> from message menu\n" white
+#	 }
+      } elseif {[lindex $recv 0] == "NLN"} {	;# User was offline, now online
+         ::amsn::notifyAdd "$user_name\n[trans logsin]." "cmsn_chat_user $user" online
+#            cmsn_notify_add $user_name\n[trans logsin]. "cmsn_chat_user $user"
+#	    sonido online
+      }
+
+      if {$substate != "FLN"} {
+#      	 status_log "Inserting <$user_name> in menu\n" white
+#         .main_menu.msg insert 0 command -label "$user_name <$user>" \
+#            -command "cmsn_chat_user $user"
+      }
+
+      set state_no [lsearch $list_states "$substate *"]
+
+      set list_users [lreplace $list_users $idx $idx [list $user $user_name $state_no]]
+      set list_users [lsort -decreasing -index 2 [lsort -decreasing -index 1 $list_users]]
+
+      cmsn_draw_online
+   } else {
+      puts "PANIC!"
+   }
+
+}
+
+proc list_users_refresh {} {
+   global list_fl list_users list_states
+
+   set list_users_new [list]
+   set fln [lsearch $list_states "FLN *"]
+
+   foreach user $list_fl {
+      set user_login [lindex $user 0]
+      set user_name [lindex $user 1]
+      set idx [lsearch $list_users "$user_login *"]
+      if {$idx != -1} {
+         lappend list_users_new [lindex $list_users $idx]
+      } else {
+         lappend list_users_new [list $user_login $user_name $fln]
+      }
+   }
+
+   set list_users [lsort -decreasing -index 2 [lsort -decreasing -index 1 $list_users_new]]
+   cmsn_draw_online
+
+}
+
+proc lists_compare {} {
+   global list_fl list_al list_bl list_rl
+   global newc_allow_block newc_add_to_list newc_exit
+   set list_albl [lsort [concat $list_al $list_bl]]
+   set list_rl [lsort $list_rl]
+
+   foreach x $list_rl {
+      if {[lsearch $list_albl "[lindex $x 0] *"] == -1} {
+         status_log "$x in your RL list but not in your AL/BL list!\n" white
+	 newcontact [lindex $x 0] [lindex $x 1]
+         tkwait window .newc 
+         if {$newc_exit == "OK"} {
+	    if {$newc_allow_block == "allow"} {
+	       ::MSN::WriteNS "ADD" "AL [lindex $x 0] [urlencode [lindex $x 1]]"
+	    } else {
+	       ::MSN::WriteNS "ADD" "BL [lindex $x 0] [urlencode [lindex $x 1]]"
+	    }
+	    if {$newc_add_to_list} {
+	       ::MSN::WriteNS "ADD" "FL [lindex $x 0] [urlencode [lindex $x 1]]"
+	    }
+	 } else {;# if clicked on OK, by default Accept List	  
+	       ::MSN::WriteNS "ADD" "AL [lindex $x 0] [urlencode [lindex $x 1]]"
+	 }
+
+      } ;# NOT in AL/BL
+   }
+}
+
+proc cmsn_listupdate {recv} {
+   global list_fl list_al list_bl list_rl
+
+   set list_name "list_[string tolower [lindex $recv 2]]"
+
+   if {([lindex $recv 4] <= 1) && ([lindex $recv 0] == "LST")} {
+      set $list_name [list]
+      status_log "clearing $list_name\n"
+       if {$list_name == "list_al"} { # Here we have the groups already
+	   ::groups::Enable
+       }
+   }
+   
+   if {[lindex $recv 0] == "ADD"} {		;# FIX: guess I should really
+      set recv [linsert $recv 4 "1" "1"]	;# get it out of here!!
+   }
+
+   if {[lindex $recv 4] != 0} {
+      set contact_info ""
+      set user [lindex $recv 6]
+      lappend contact_info $user
+      lappend contact_info [urldecode [lindex $recv 7]]
+      lappend $list_name $contact_info
+      status_log "adding to $list_name $contact_info\n"
+   }
+
+   if {[lindex $recv 4] == [lindex $recv 5]} {
+      lists_compare		;# FIX: hmm, maybe I should not run it always!
+      list_users_refresh
+   }
+}
+
+proc show_list {list_name} {
+   upvar #0 $list_name the_list
+
+   status_log "$list_name\n" red
+   foreach x $the_list {
+      status_log "$x\n"
+   }
+}
+
+###############################################################
+create_dir $HOME
+create_dir $log_dir
+create_dir $files_dir
+
+sb set ns name ns
+sb set ns sock ""
+sb set ns data [list]
+sb set ns serv [split $config(start_ns_server) ":"]
+sb set ns stat "d"
+
+load_config						;# CONFIG
+scan_languages
+load_lang
+
+cmsn_draw_main
+#cmsn_draw_notify
+
+degt_protocol_win
+degt_ns_command_win
+
+after 500 proc_ns
+after 750 proc_sb
+
+if {$version != $config(last_client_version)} {
+   cmsn_draw_about
+  
+}
+# These menus are disabled until implemented
+#configureMenuEntry .main_menu.tools "[trans ordercontactsby]" disabled

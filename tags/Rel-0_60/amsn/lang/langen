@@ -1,0 +1,165 @@
+amsn_lang_version 2
+about About
+acceptfile Accept file $1, size $2? Saved in $3
+actions Actions
+addacontact Add a contact
+addedyou has added you to his/her contact list
+addtocontacts Add to contact list
+addtoo Add this person to my contact list
+admincontacts Admin contacts
+admingroups Admin groups
+adverts Advertisements
+allowseen Allow this person to see when I'm online and contact me
+appearoff Appear offline
+are are
+autohotmaillog Auto Hotmail login
+autoip Automatic IP
+avoidseen Avoid this person can see when I'm online and contact me
+away Away
+baduserpass Wrong user name or password
+blankdirect Leave blank for direct connection
+block Block
+blocked Blocked
+browser Browser
+busy Busy
+cancel Cancel
+changenick Change nick
+chat Chat
+chatreq Requesting chat
+chatsmileys Chat smileys
+chatack Accepting chat from
+checkver Check for new version
+checkingver Checking for new versions
+clicktologin Click here to log in
+close Close
+closingdocks Close button docks window
+command Command
+confirmdelete Are you sure you want to delete $1?
+contactadded Contact added
+contactdoesnotexist Contact does not exist!
+connecterror Error connecting to server
+copytogroup Copy to group
+date Date
+delete Delete
+enableproxy Enable proxy
+entercontactemail Enter contact e-mail
+enterfilename Please enter a filename
+enternick Enter your nick
+examples Examples
+exitamsn Are you sure you want to quit?
+extras Extra Services
+filedoesnotexist File does not exist
+filename Filename
+filetransfercancelled File transfer cancelled
+filetransfercomplete File transfer complete
+gonelunch Gone to lunch
+group Group
+groupadd Add a group
+groupdelete Delete a group
+grouprename Rename a group
+groupoldname Old name
+groupnewname New name
+groupunknown Unknown group
+groupexists Group already exists
+groupmissing Cannot find group
+groupnotempty Group is not empty!
+handle Handle
+help Help
+helpcontents Help contents
+home Home
+ident Identifying
+identity Identity
+inbox In-Box
+invalidusername Invalid user name
+invite Invite
+ipaddress IP Address
+is is
+joins $1 $2 joins conversation
+language Language
+leaveblankforhotmail Leave blank for using hotmail web
+leaves $1 leaves conversation
+listeningon Listening on port $1
+listsmileys List smileys
+loadcontacts Load contact list
+loggedotherlocation Disconnected. Logged in other location
+loggingin Logging In
+login Log In
+loginas Login as
+logout Log Out
+logsin has just logged in
+mailer Mailer
+mobile Mobile
+movetogroup Move to Group
+mustrestart You must restart the program to apply changes
+mystatus My status
+msg Message
+msn AMSN
+needonline You still are/appear offline!
+newmail $1 new messages in In-Box
+newmailfrom New mail from
+newmsg New message
+newveravailable Newer version $1 available for download
+next Next
+noactivity No activity
+nonewmail No new messages in In-Box
+nonewver There are no new versions available to download
+notify notify
+nousersinsession No users in session
+ok Ok
+offline Offline
+onenewmail 1 new message in In-Box
+online Online
+onphone On phone
+openreceived Open received files
+options Options
+ordercontactsby Order contacts by
+other Other
+pager Pager
+pass Password
+phone Phone
+port Port
+prefapps Applications
+preferences Preferences
+prefsound Sounds
+properties Properties
+proxyconf Proxy configuration
+proxyconfhttp HTTP proxy support configuration
+publishphones Publish my phone numbers
+receivedbytes Received $1 of $2 bytes
+receivefile Receive file
+reconnect Waiting for $1 to reconnect
+reconnecting Reconnecting to server
+rememberpass Remember password
+rightback Be right back
+save Save
+saveas Save as
+savecontacts Save contact list
+says $1 says
+sbcon Connecting to Switch Board
+send Send
+sendfile Send file
+sendmail Send mail
+sendmsg Send message
+sentbytes Sent $1 of $2 bytes
+server Server
+servergoingdown Disconnected: Server is going down
+sound Event Sound
+startoffline Start Offline
+status Status
+syntaxerror  Syntax Error
+textsize Text size
+title Al's Messenger
+to To
+tools Tools
+typing $1 typing a message
+yousay You say
+youwant You want
+unblock Unblock
+uoffline Offline
+uonline Online
+user User
+useralreadyonlist User is already on contact list
+version Version
+view View
+willjoin Waiting $1 joins conversation
+work Work

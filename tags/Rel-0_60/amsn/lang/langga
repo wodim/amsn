@@ -1,0 +1,147 @@
+amsn_lang_version 2
+about Acerca de
+acceptfile ¿Aceptar arquivo $1, tamaño $2 bytes? gardarase en $3
+actions Accións
+addacontact Engadir un contacto
+addedyou engadiute á súa lista de contactos
+addtoo Engadir esta persoa á miña lista de contactos
+admincontacts Administrar contactos
+admingroups Administrar grupos
+adverts Anuncios
+allowseen Permitir a esta persoa ver cando estás conectado e contactar
+appearoff Sen conexión
+are están
+autohotmaillog Login hotmail automático
+avoidseen Evitar que esta persoa vexa a túa conexión e contacte contigo
+away Ausente
+baduserpass Nome de usuario ou contrasinal incorrectos
+blankdirect Deixar en branco para conexión directa
+blocked Bloqueado
+block Non admitir
+browser Navegador
+busy Non dispoñible
+cancel Cancelar
+changenick Cambiar alcume
+chatack Aceptando conversa de
+chat Conversa
+chatreq Solicitando unha conversa
+chatsmileys Smileys no chat
+chatack Aceptando conversa de
+checkingver Buscando se hai dispoñible unha nova versión
+checkver Buscar novas versións
+clicktologin Fai click aquí para inicia-la sesión
+close Cerrar
+command Comando
+contactadded Contacto engadido
+date Data
+delete Eliminar
+enableproxy Activa-lo proxy
+entercontactemail Introduce o email do contacto
+enterfilename Introduce o nombre do arquivo
+enternick Introduce o teu nick
+examples Exemplos
+filedoesnotexist O arquivo non existe
+filename Nome do Arquivo
+filetransfercancelled Transferencia do arquivo cancelada
+filetransfercomplete Transferencia do arquivo completada
+gonelunch Saín comer
+group Grupo
+groupadd Engadir un grupo
+groupdelete Borrar un grupo
+grouprename Cambiar nome ó grupo
+groupoldname Nombre antigo
+groupnewname Novo nome
+groupunknown Grupo descoñecido
+groupexists O grupo xa existe
+groupmissing Non se pode atopa-lo grupo
+help Axuda
+helpcontents Temas de axuda
+home Casa
+ident Identificándose
+identity Identificación
+inbox Bandexa de entrada
+invite Invitar
+ipaddress Dirección IP
+is está
+joins $1 $2 únese á conversa
+language Linguaxe
+leaves $1 deixa a conversa
+listeningon Escoitando no porto $1
+listsmileys Smileys nos contactos
+loadcontacts Cargar lista de contactos
+loggingin Iniciando sesión
+loginas Iniciar sesión como
+login Iniciar sesión
+logout Cerrar sesión
+logsin acaba de iniciar sesión
+mailer Comando de email
+mobile Celular
+msg Mensaxe
+msn AMSN
+mustrestart Debes reiniciar-lo programa para aplica-los cambios
+mystatus Meu estado
+needonline Vostede aínda está/aparece desconectado!
+newmail $1 mensaxes novas na bandexa de entrada
+newmailfrom Novo correo de
+newmsg Nova mensaxe
+newveravailable Nova versión $1 dispoñible para descarga
+next Seguinte
+noactivity Sen actividade
+nonewver Non hai versións máis actuais dispoñibles
+notify aviso
+nonewmail Non mensaxes novas na bandexa de entrada
+nousersinsession Non hai usuarios na sesión
+offline Desconectado
+ok Aceptar
+onenewmail 1 mensaxe nova na bandexa de entrada
+online Conectado
+onphone Ó teléfono
+openreceived Abrir arquivos recibidos
+options Opcións
+ordercontactsby Ordenar contactos por
+other Outro
+pager Paxinador
+pass Contrasinal
+phone Teléfono
+port Porto
+prefapps Aplicacións
+preferences Preferencias
+prefsound Sons
+properties Propiedades
+proxyconf Configuración proxy
+proxyconfhttp Configurar soporte de proxy http
+publishphones Publica-los meus números telefónicos
+receivedbytes Recibidos $1 de $2 bytes totais
+receivefile Recibir arquivo
+reconnect Agardando que $1 reconecte
+reconnecting Reconectando ó servidor
+rememberpass Lembrar contrasinal
+rightback Volvo nun intre
+savecontacts Gardar lista de contactos
+save Gardar
+saveas Gardar como
+says $1 dí
+sbcon Conectando a Switch Board
+send Enviar
+sendfile Enviar arquivo
+sendmail Enviar email
+sendmsg Enviar mensaxe
+sentbytes Enviados $1 de $2 bytes totais
+server Servidor
+sound Son eventos
+startoffline Comezar Desconectado
+textsize Tamaño do texto
+title Al's Messenger
+tools Ferramentas
+to Para
+typing $1 escribindo unha mensaxe
+unblock Admitir
+uoffline Desconectados
+uonline Conectados
+user Usuario
+version Versión
+view Ver
+willjoin Agardando que $1 se una á conversa
+work Traballo
+yousay Ti dis
+youwant Queres

@@ -1,0 +1,166 @@
+amsn_lang_version 2
+about Acerca de
+acceptfile ¿Aceptar archivo $1, tamaño $2 bytes? Se guardará en $3
+actions Acciones
+actions Acciones
+addacontact Añadir un contacto
+addedyou te ha añadido a su lista de contactos
+addtocontacts Añadir a contactos
+addtoo Añadir esta persona a mi lista de contactos
+admincontacts Administrar contactos
+admingroups Administrar grupos
+adverts Anuncios
+allowseen Permitir a esta persona ver cuándo estás conectado y contactar
+appearoff Sin conexión
+are están
+autohotmaillog Login hotmail automático
+autoip IP Automática
+avoidseen Evitar que esta persona vea tu conexión y te contacte
+away Ausente
+baduserpass Nombre de usuario o contraseña incorrectos
+blankdirect Dejar en blanco para conexión directa
+blocked Bloqueado
+block No admitir
+browser Navegador
+busy No disponible
+cancel Cancelar
+changenick Cambiar apodo
+chatack Aceptando conversación de
+chat Conversación
+chatreq Solicitando una conversación
+chatsmileys Smileys en chat
+checkingver Buscando si hay disponible una nueva versión
+checkver Buscar nuevas versiones
+clicktologin Haga click aquí para iniciar la sesión
+close Cerrar
+closingdocks Botón de cerrar minimiza
+command Comando
+confirmdelete ¿Seguro que deseas borrar a $1?
+connecterror Error conectandose al servidor
+contactadded Contacto añadido
+contactdoesnotexist El contacto que intentas añadir no existe
+copytogroup Copiar al grupo
+date Fecha
+delete Eliminar
+enableproxy Activar proxy
+entercontactemail Introduce el email del contacto
+enterfilename Introduce el nombre del archivo
+enternick Introduce tu nick
+examples Ejemplos
+exitamsn ¿Estás seguro de que desear salir?
+extras Servicios Adicionales
+filedoesnotexist El archivo no existe
+filename Nombre de Archivo
+filetransfercancelled Transferencia de archivo cancelada
+filetransfercomplete Transferencia de archivo completada
+gonelunch Salí a comer
+group Grupo
+groupadd Añadir un grupo
+groupdelete Borrar un grupo
+grouprename Cambiar nombre a grupo
+groupoldname Nombre antiguo
+groupnewname Nuevo nombre
+groupunknown Grupo desconocido
+groupexists El grupo ya existe
+groupmissing No se puede encontrar el grupo
+groupnotempty El grupo no esta vacio
+handle Nick
+help Ayuda
+helpcontents Temas de ayuda
+home Casa
+ident Identificándose
+identity Identificación
+inbox Bandeja de entrada
+invalidusername Nombre de usuario no válido
+invite Invitar
+ipaddress Dirección IP
+is está
+joins $1 $2 se une a la conversación
+language Lenguaje
+leaveblankforhotmail Dejar en blanco para usar hotmail
+leaves $1 deja la conversación
+listeningon Escuchando en el puerto $1
+listsmileys Smileys en contactos
+loadcontacts Cargar lista de contactos
+loggedotherlocation Desconectado: Se inició la sesión en otra ubicación
+loggingin Iniciando sesión
+loginas Iniciar sesión como 
+login Iniciar sesión
+logout Cerrar sesión
+logsin acaba de iniciar sesión
+mailer Comando de email
+mobile Celular
+msg Mensaje
+msn AMSN
+movetogroup Mover al grupo
+mustrestart Debes reiniciar el programa para aplicar los cambios
+mystatus Mi estado
+needonline Todavía estas/apareces desconectado 
+newmail $1 mensajes nuevos en bandeja de entrada
+newmailfrom Nuevo correo de
+newmsg Nuevo mensaje
+newveravailable Nueva versión $1 disponible para descarga
+next Siguiente
+noactivity Sin actividad
+nonewmail No hay mensajes nuevos en bandeja de entrada
+nonewver No hay versiones más actuales disponibles
+notify aviso
+nousersinsession No hay usuarios en la sesión
+offline Desconectado
+ok Aceptar
+onenewmail 1 mensaje nuevos en bandeja de entrada
+online Conectado
+onphone Al teléfono
+openreceived Abrir archivos recibidos
+options Opciones
+ordercontactsby Ordenar contactos por
+other Otro
+pager Paginador
+pass Contraseña
+phone Telefono
+port Puerto
+prefapps Aplicaciones
+preferences Preferencias
+prefsound Sonidos
+properties Propiedades
+proxyconf Configuración proxy
+proxyconfhttp Configurar soporte de proxy http
+publishphones Publicar mis numeros telefónicos
+receivedbytes Recibidos $1 de $2 bytes totales
+receivefile Recibir archivo
+reconnect Esperando que $1 se reconecte
+reconnecting Reconectando al servidor
+rememberpass Recordar contraseña
+rightback Vuelvo enseguida
+savecontacts Guardar lista de contactos
+save Guardar
+saveas Guardar como
+says $1 dice
+sbcon Conectando a Switch Board
+send Enviar
+sendfile Enviar archivo
+sendmail Enviar email
+sendmsg Enviar mensaje
+sentbytes Enviados $1 de $2 bytes totales
+server Servidor
+servergoingdown Desconectado: El servidor se va a apagar para mantenimiento
+sound Sonido eventos
+startoffline Comenzar Desconectado
+status Estado
+textsize Tamaño del texto
+title Al's Messenger
+tools Herramientas
+tools Herramientas
+to Para
+typing $1 escribiendo un mensaje
+unblock Admitir
+uoffline Desconectados
+uonline Conectados
+user Usuario
+useralreadyonlist El usuario ya se encuentra en la lista de contactos.
+version Versión
+view Ver
+willjoin Esperando que $1 se una a la conversación
+work Trabajo
+yousay Tú dices
+youwant Quieres
