@@ -1,0 +1,185 @@
+amsn_lang_version 2
+about Lidhje me
+acceptfile Pranoje skedën $1, madhësia $2? E ruajtur në $3
+accept pranoj
+actions Akcionet
+addacontact Shto një kontakt
+addedyou $1 ($2) Të ka shtuar listën e kontakteve të tij/a
+addtocontacts Shto kontakte
+addtoo Shtoje këtë person në listën e kontakteve të mija
+admincontacts Rregullo kontaktet
+admingroups Rregullo grupet
+adverts Reklamat
+alarmpref Alarmoj Mjedis për përdorues
+alarmstatus ndez/fik Alarmoj për kjo përdorues
+allowseen Lejoje këtë person të më shohë dhe të më kontaktojë kur unë jam në linjë
+appearoff Paraqitu si jasht linjës
+aretyping $1 janë duke shtypur porosi
+autohotmaillog Automatikisht kyçu në Hotmail
+autoip IP Automatike
+avoidseen Mos e lejoje këtë person të më shohë dhe të më kontaktojë kur unë jam në linjë
+away Jasht
+baduserpass Useri apo fjalëkalimi i gabuar
+blankdirect Lëre të zbrazët për lidhje direkte
+block Bllokoje
+blocked I/e Bllokuar
+broughtby Sjellur tek ju nga
+browse hedh një sy
+browser Shfletues
+busy I zënë
+cancel Anulo
+cfgalarm Configure/Shtoj/Heq Alarmoj
+changenick Ndërro nikun
+chatack Duke pranuar bisedën
+chat Bisedo
+chatreq Requesting chat
+chatsmileys :) e bisedave
+checkingver Duke shikuar për version të ri
+checkver Shiko për version të ri
+choosebasefont Zgjedh llojin e shkronjave
+choosebgcolor Zgjedh ngjyren e prapavise
+choosefontcolor Zgjedh font e ngjyrë
+clicktologin Kliko këtu për të hyrë
+close Mbylle
+closingdocks Close button docks window
+command Komandë
+confirmdelete A jeni i sigurtë që do ta fshini $1?
+connecterror Nuk mund të lidhet me serverin
+contactadded Kontakti u shtua
+contactdoesnotexist Kontakti nuk ekziston!
+copytogroup Krypto Grupi
+date Data
+delete Fshije
+enableproxy Mundëso proxin
+encoding Enkodimi
+entercontactemail Shkruaje e-mail-ine kontaktit
+enterfilename Ju lutem shkruane emrin e skedës
+enternick Shkruaje nikun tuaj
+examples Shembuj
+exitamsn a jeni të sigurtë që doni të dilni?
+extras Servise ekstra
+filedoesnotexist Skeda nuk ekziston
+filename Emri i skedës
+filetransfercancelled Transferi i skedës u anulua
+filetransfercomplete Transferi i skedës përfundoi
+ftaccepted Transferi i skedës pranuar
+ftrejected Transferi i skedës refuzoj
+gonelunch Gone to lunch
+groupadd Shto një grup
+groupdelete Fshije një grup
+groupexists Grupi ekziston
+group Grupi
+groupmissing Nuk mund ta gjej grupin
+groupnewname emri i ri
+groupnotempty Grupi nuk është i zbrazët!
+groupoldname Emri i vjetër
+grouprename Riemërtoje grupin
+groupunknown Group i panjohur
+handle Handle
+helpcontents Përmbajtja e ndihmës
+help Ndihmë
+home Shtëpi
+ident Identifying
+identity Identiteti
+inbox In-Box
+invalidusername Emër i gabuar i shfrytëzuesit
+invite Ftoje
+ipaddress IP Adresa
+istyping $1 është duke shtypur porosi
+joins $1 i bashkangjitet bisedës
+language Gjuha
+lastmsgtime i/e Fundit mesazh marrura në $1
+leaveblankforhotmail Lëre zbrazët për hotmail web
+leaves $1 e la bisedën
+listeningon Duke dëgjuar në portin $1
+listsmileys List smileys
+loadcontacts Ngarkoje listën e kontakteve
+loggedotherlocation U ç'kyç. Kyçja është bërë nga ndonjë lokacion tjetër
+loggingin Duke u kyçur
+loginas Kyçu
+login Kyçu
+logout Ç'kyçu
+logsin Vetëm sa u kyç
+mailer Mail
+mobile Mobil
+movetogroup Lëviz grupin
+msg Porosi
+msn AMSN-Shqip
+mustrestart Duhet ta startoni përsëri programin që t'i merr parasysh ndryshimet
+mystatus Statusi im
+needonline Ju ende jeni i paraqitur si jashtë linjës!
+newmail $1 Mesazhe të reja në In-Box
+newmailfrom Masazh të ri nga $1 ($2)
+newmsg Mesazh i ri
+newveravailable Është e mundshme ta merrni versionin e ri $1
+next Tjetra
+noactivity Nuk ka aktivitet
+nonewmail Nuk ka Mail te ri
+nonewver Nuk ka version të ri për ta marrë
+notify Lajmëro
+nousersinsession Nuk ka shfrytëzues në sesion
+offline Jashtë linjës
+ok Ok
+onenewmail 1 Mesazhe të reja në In-Box
+online Në Linjë
+onphone Në telefon
+openreceived Hapi Skedat e marrura
+options Opcionet
+ordercontactsby Rradhit kontaktet nga
+other Tjëter
+pager Pejgjer
+pass Fjalëkalim
+phone Telefon
+picfile Alarmoj Pikturë Dosje (GIF < 500 x 500)
+picstatus ndez/fik Alarmoj Pikturë
+port Port
+prefapps Aplikacion
+preferences Preferencat
+prefsound Zërat
+properties Karakteristikat
+proxyconfhttp HTTP proxy support configuration
+proxyconf Knfigurimi i proksit
+publishphones Publiko numrat e telefonit
+receivedbytes U pranua $1 nga $2 bajt
+receivefile Prano skedën
+reconnect Duke pritur $1 që të lidhet prap
+reconnecting Duke u lidhur prap me serverin
+reject Refuzoj
+rememberpass Mbaje në mend fjalëkalimin
+rightback Kthehm së shpejti
+saveas Ruaje si
+savecontacts Ruaje listën e kontakteve
+save Ruaje
+says $1 thot
+sbcon Duke u lidhur në Switch Board
+send Dërgo
+sendfile Dërgo skedën
+sendmail Dërgo postën
+sendmsg Dërgo mesazhin
+sentbytes $1 u dërgua $2 bajt
+servergoingdown U ç'kyç: Serveri u ndal
+server Serveri
+sound Event Sound
+soundfile Alarmoj Tingull Dosje
+soundloop Unazë Tingull
+soundstatus ndez/fik Alarmoj Tingull
+startoffline Lëshoje jasht linjës
+status Statusi
+stopalarm Pushoj Alarmoj
+syntaxerror  Error sintaksor
+textsize Madhësia e tekstit
+title Al's Messenger
+tools Veglat
+to Te
+unblock Ç'bllokoje
+uoffline Jashtë linjës
+uonline Në linjë
+useralreadyonlist Shfrytëzuesi është në listën e kontakteve
+user Shfrytëzuesi
+version Versioni
+view Shiko
+willjoin Duke pritur $1 t'i bashkangjitet bisedës
+work Punë
+yousay Ju thuani
+youwant Ju doni
+twonewmail $1 Mesazhe të reja në In-Box

@@ -1,0 +1,142 @@
+0.90 TODO LIST
+DONE We must finish MSNP2P (Sending files throught MSNP2P and do transfer 
+dialogs)
+DONE We must send to waste all MSNP7 code
+- We should do a GUI cleanup (alarms...)
+- We must do proxys work...
+-It doesn't update with the new people that enters the chat... it doesn't give you a chance to talk to certain people...
+-In logging/preferences, look at disabled items (add features or remove this items from GUI)
+
+BugList / TODO list
+
+Hey maybe we should restart using this thing...? (23/11/03)
+
+>Ok here is a new version of the TODO list (04/01/03)
+
+>>It's big, it's bad! It's the all mighty bug/todo list! 
+>>Here are the stuff we wanna implement and bugs we want to fix...
+>>Feel free to tell us about any options that aren't here that would interest you...
+>>Feel free to inform us of any bugs that aren't here (we just ordered 4 boxes of ZAP!)
+
+Burger * burger@mwvision.com
+Alvaro * airadier@users.sourceforge.net
+kakaroto * zyffe@hotmail.com
+
+	*********************************************************
+	***Bug Fixes and TODO before next release (priority 1)***
+	*********************************************************
+
+-	Make sure everything is installed correctly and FAQ and HELP are in the amsn directory.
+-	Make good RPMs, for Redhat, Suse, Mandrake, etc.
+-	Improve font selection (unify with color selection)
+-	When selecting a new color for the font in a chat, don't change only
+	the color of the text send but the color of the text being writen too (for all window).
+-	When queue is cleared, NAK every message in queue
+-	Check for connection state, make sure amsn disconnects if connection goes down. -> add timeouts to changestates and keepalive
+-	When we get a NAK from a message, try to enqueue it again, as probably it will success.
+-	Fix focus and children things with list window. (For example add_user from chat window), and dialogs in general.
+-	Add receivedir to preferences, replace NAT section with File Transfer
+DONE	Remove old config file (we now only need the .xml, backward compatibilty is redundant since oct15th)
+-	Check functionality of all proxies with new MSNP9 protocol (socks, not keep-alive http proxies)
+DONE	Get rid of all MSNP7 code.. it sure is useless now
+-	We sometimes get double pasting, just bind our paste procedure to the <<Paste>> event, instead of to <Ctrl-Key-V>
+-	Phone numbers seem to be screwed up again :P getting erased for some reason
+
+
+	************************************************
+	***Existing Feature Improvements (priority 2)***
+	************************************************
+
+	** General issues **
+-	Option to display or not the chat button bar
+DONE	Option to enable/disable showing timestamps
+-	Add option to modify keepalive interval (in seconds)
+DONE	Add a "typed characters" counter in chat window.
+DONE	Add an option to remove the amsn banner on contact list.
+DONE	Make Advanced buttons in preferences (maybe a Key - Value type of list for advanced users)
+DONE	Make a Pure PNG Reader (will be used for buddy icons + filetransfer previews, and maybe other stuff)
+-	In the Privacy tab, if 2 users have exactly the same nickname in a listbox, we can control only the first user 
+	(we can't delete the second user with that nick from the list ...)
+-	If user blocks you directly after getting connected, doesn't automaticaly detect him
+-	Improve truncation to check picture widths, instead of using fixed values
+-	Load AMSN faster (load pictures on demand -> GetImage wrapper? Maybe use GetSkinFile?)
+-	Get rid of all global config, make a config namespace. Only have a few global options (languages, skin, etc)
+-	Get rid of global variables list_al, list_bl, make use of ::abook:: namespace (avatars, custom nicknames, etc)
+-	Improve contextual menu for groups (right click menu) (we should have Delete THIS group type of entries)
+-	Clean ugly GUI code (long window names xx.xx.xxx.xx, use -Class instead of repeated options all the time)
+
+	** Remote Control issues **
+-	If text sent over socket contains the color word, it disappears from the text (change the string map call)
+-	make it possible to send more than one space between each words in messages
+
+	** Dock Issues **
+-	New message alert 
+DONE	Dock is "detaching" from notification area whenever any other icon is removed from notification area
+
+	** File Transfer issues **
+-	File Transfer AUTH protocol fix
+-	Display link to received file and click to open
+-	Send files through server with MSNP2P if behind NAT
+-	Make Progress bar work with MSNP2P file receiving/sending
+
+	** Alarm system improvements and bugs **
+DONE	Allow alarms to run a command
+-	JPG Support (use same as for MSN6 Pictures)
+
+	** Loging system improvements and bugs **
+-	Use XML instead of custom syntax to speed up things
+-	Add date limit or file size limit for log files
+-	Add option for partial loging of only certain users
+-	Save to LOG (if loging disabled, allows to log certain conversations only)
+-	Compress log files with optimal algorithm for txt files
+-	Loging syntax options (timestamps, email or nics, etc)
+-	Display by day/month/year
+-	Display last X lines of the log in the window when opening a chat window with someone
+
+	** WindowsXP issues **
+-	Problem with URLs
+-	Problem with sound
+-	Selections dont appear
+-	Ugly program icons (WISH icon, not ours)
+-	Fonts dialog all messed up
+-	Dosen't connect if msn installed in path with spaces (ex. Documents and Settings), add quotes
+-	Alarms options (paths) aren't saved correctly if they contain spaces
+-	ImageMagick is never detected since there is a convert.exe program in the System32 DIR and exec looks for that one first
+-	Browser problems in windows when URL contains wierd characters
+
+	** MSNP2P Stuff **
+-	Do checksum checking, understand error message, send error messages, etc...
+DONE	Get custom emoticons working (send and receive them)
+-	Check if there is a way to receive pictures from ppl not on your contact list
+-	We only check for buddy icon changes of the first person in a conference, if others change we don't update buddy icon.
+
+
+	*********************************
+	***Extra Features (priority 3)***
+	*********************************
+
+-	Have status always on top of contact list
+-	Finish the plugins system
+-	Menu accelerators
+-	Be able to change thers font in chat (same as you, or different)
+-	Autoconnect (when connection detected)
+-	Notebook like chat windows (as an option)
+-	Resume File Transfers
+-	Socks5 Proxy Support with UserName/Password
+-	Better management of special characters and \n in nicks
+-	Make video/audio conferencing work with GbnomeMeeting, check for embeding possibilities
+
+	
+	****************************************
+	***Eye Candy and Gadgets (priority 4)***
+	****************************************
+
+-	Background image
+-	Make games work (should be rather simple, some special parameters passed to the browser i'm guessing)
+-	Make notify window size configurable
+-	Transparent background message windows (is it possible now with 8.4?)
+-	AutoUpgrade AMSN
+-	Direct connection between amsn clients, without sb, real time chat
+-	Baloons in privacy lists (show email)
+-	GUI for translations, automatic updates from amsn GUI (no website)
+-	Have support for multiple sessions (tabs for each session)	
