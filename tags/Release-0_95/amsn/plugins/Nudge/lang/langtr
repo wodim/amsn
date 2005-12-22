@@ -1,0 +1,13 @@
+shake_receive Titreþim alýnýnca pencereyi titret
+shake_send Titreþim gönderirken pencereyi titret
+shake_nudge Pencere titreþim sayýsý
+popup_nudge Titreþimlerde uyarý penceresi çýksýn
+notify_send Titreþim gönderince sohbet penceresinde belirt
+notify_receive Titreþim alýnýnca sohbet penceresinde belirt
+sound_send Titreþim gönderirken ses çýkar
+sound_receive Titreþim alýnýnca ses çýkar
+add_button Sohbet penceresine titreþim gönderme düðmesi ekle
+send_nudge Titreþim gönder!
+no_nudge_support Baðlantýnýzýn istemcisi desteklemediði için titreþim gönderilemedi.
+nudge_sent Titreþim gönderdiniz.
+

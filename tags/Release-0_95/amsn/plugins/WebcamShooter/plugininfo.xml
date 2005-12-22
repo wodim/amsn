@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>Cam Shooter</name>
+	<author>Jerome Gagnon-Voyer (mac code), Le Philousophe (lin/win code) and Karel Demeyer (plugin maintainer)</author>
+	<description>With this plugin you can take shoots of your webcam to use as display picture.</description>
+	<amsn_version>0.94</amsn_version>
+	<plugin_version>0.1</plugin_version>
+	<plugin_file>camshoot.tcl</plugin_file>
+	<plugin_namespace>camshoot</plugin_namespace>
+	<init_procedure>Init</init_procedure>
+
+	<cvs_version>1.11</cvs_version>
+
+	<lang>
+		<langcode>en</langcode>
+		<version>1.1</version>
+	</lang>
+
+	<URL>
+		<main>http://cvs.sourceforge.net/viewcvs.py/amsn/msn/plugins/WebcamShooter/camshoot.tcl?rev=$version&content-type=text/plain</main>
+		<plugininfo>http://cvs.sourceforge.net/viewcvs.py/amsn/msn/plugins/WebcamShooter/plugininfo.xml?rev=HEAD&content-type=text/plain</plugininfo>
+		<lang>http://cvs.sourceforge.net/viewcvs.py/amsn/msn/plugins/WebcamShooter/lang/lang$langcode?rev=$version&content-type=text/plain</lang>
+	</URL>
+
+</plugin>
