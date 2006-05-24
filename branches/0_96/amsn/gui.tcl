@@ -2970,26 +2970,93 @@ namespace eval ::amsn {
 
 	}
 
-#	proc closeAmsn {} {
-#		set answer [::amsn::messageBox [trans exitamsn] yesno question [trans title]]
-#		if { $answer == "yes"} {
-#			exit
-#		}
-#	}
-
 	proc closeOrDock { closingdocks } {
-		global systemtray_exist statusicon ishidden
-		if {$closingdocks} {
-			wm iconify .
-			if { $systemtray_exist == 1 && $statusicon != 0 } {
-				status_log "Hiding\n" white
-				wm state . withdrawn
-				set ishidden 1
+###
+### $closingdocks:	1 = dock
+###			2 = close
+###			0 /unexistant = ask
+
+		global rememberdock
+		set rememberdock 0
+
+		
+		if {$closingdocks == 1} {
+			closeOrDockDock
+		} elseif { $closingdocks == 2} {
+			exit
+		} else {
+#TODO
+			set w .closeordock
+
+			if { [winfo exists $w] } {
+				raise $w
+				return
 			}
 
-		} else {
-			exit	 ;# WAS:	::amsn::closeAmsn
+			toplevel $w
+			wm title $w "[trans closeordock]"
+			
+			#Create the 2 frames
+			frame $w.top
+			frame $w.buttons
+			
+			#Create the picture of warning (at left)
+			label $w.top.bitmap -image [::skin::loadPixmap warning]
+			pack $w.top.bitmap -side left -pady 5 -padx 10
+			
+			label $w.top.question -text "[trans askcloseordock]" -font bigfont
+			pack $w.top.question -pady 5 -padx 10
+			
+		
+			checkbutton $w.top.remember -text [trans remembersetting] -variable rememberdock
+			pack $w.top.remember -pady 5 -padx 10 -side left
+			
+			#Create the buttons
+			button $w.buttons.quit -text "[trans quit]" -command "::amsn::closeOrDockClose"
+			button $w.buttons.dock -text "[trans dock]" -command "::amsn::closeOrDockDock"
+			button $w.buttons.cancel -text "[trans cancel]" -command "destroy $w"
+			pack $w.buttons.quit -pady 5 -padx 5 -side right
+			pack $w.buttons.cancel -pady 5 -padx 5 -side left
+			pack $w.buttons.dock -pady 5 -padx 5 -side right
+			
+			#Pack frames
+			pack $w.top -pady 5 -padx 5 -side top
+			pack $w.buttons -pady 5 -padx 5 -fill x
+
+			moveinscreen $w 30
+			bind $w <<Escape>> "destroy $w"
+
+			
 		}
+		
+	}
+	
+	proc closeOrDockDock {} {
+		global systemtray_exist statusicon ishidden rememberdock
+
+		if {$rememberdock} {
+			::config::setKey closingdocks 1
+		}
+		wm iconify .
+		if { $systemtray_exist == 1 && $statusicon != 0 && [::config::getKey closingdocks] } {
+			status_log "Hiding\n" white
+			wm state . withdrawn
+			set ishidden 1
+		}	
+		destroy .closeordock
+		unset rememberdock
+	}
+
+	proc closeOrDockClose {} {
+		global rememberdock
+
+		if {$rememberdock} {
+			::config::setKey closingdocks 2
+		}
+
+		destroy .closeordock
+		unset rememberdock
+		exit		
 	}
 
 
@@ -3305,7 +3372,7 @@ proc cmsn_draw_main {} {
 		#Minimize to tray
 		$accnt add command -label "[trans minimize]" -command "::amsn::closeOrDock 1"
 		#Terminate aMSN
-		$accnt add command -label "[trans quit]" -command "::amsn::closeOrDock 0" -accelerator "Ctrl-Q"
+		$accnt add command -label "[trans quit]" -command "::amsn::closeOrDock [::config::getKey closingdocks]" -accelerator "Ctrl-Q"
 	}
 
 
