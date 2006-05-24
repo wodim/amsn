@@ -1,0 +1,82 @@
+   -------------- AMSNPLUS -------------
+by Mark (markitus@catmail.homelinux.org)
+forum at http://catweb.homelinux.org/forums
+
+This is an amsn (http://amsn.sourceforge.net/) plugin.
+This will be (i hope) a powerful plugin that will
+allow to do all you can do in messenger plus, to
+provide extra functionality.
+
+Features:
+  Colour Nicks:
+    Status: only deletes ·$<num> codification because
+            pgBuddy only allows one colour
+	    if set in the config, it colours with the last color set in the codification
+  Chat Window Commands:
+    Status: adding commands when implemented (now taking
+            a look at msg plus commands list for ideas)
+    Command list (alphabetical):
+      /add user_login		add user_login to a contact list
+      /all string		sends string to all conversations opened
+      /addgroup groupname	add a new group of contacts
+      /block user_login		block user_login
+      /clear			clears the chat window
+      /config			opens the preferences window
+      /delete user_login	deletes a contact from list (without confirmation)
+      /deletegroup groupname	delete a group of contacts
+      /help			displays this help
+      /info field		displays your current value from field, possibilities:
+      		color	your chat font color
+		font	your chat font
+		nick	your nick
+		state	your state
+		style	your chat font style
+      /invite user_login	invite user_login to the current conversation
+      /kill			this closes amsn without comfirmation
+      /leave			leave the conversation without closing the chat window
+      /login			connect with the last login
+      /logout			disconnect from server
+      /nick new_nick		set nick to new_nick
+      /sendfile (file)		if file is set then makes an invitation, otherwise opens a box dialog to choose the file
+      /shell string		executes string in the system shell (see particularities en tcl documentation for windows platform)
+      /speak user_login		opens a conversation with user_login
+      /state new_state		sets your state to new_state
+      /text string		it shows string without parsing it
+      /unblock user_login	unblocks user_login
+      /whois user_login		gives information about a contact specified by the user_login
+    Mini How-To:
+      Most of the commands are cummulative but this are the exceptions: addgroup, kill, leave, logout, nick, sendfile.
+      So if you send /leave asdfg /logout, asdfg will be lost and logout command also.
+      But if you send /clear asdfg you will clear the chat window and after you will send asdfg.
+      You have to note that the first is resolved are the commands and then the text is sent
+      and the commands are resolved in order.
+      So if you send /color blue text /color red, you'll see text in red.
+  Multiple colours in chat window:
+    Mini How-To:
+      You can notice that you can use the button on the chat window (at left, above the text input). If
+      you click, you'll see a colour chooser, when you're done, click ok and you'll see that some text has been added, don't
+      remove this text or you won't see the color. That's all!
+  Multi-formatted text in chat window:
+    Mini How-To:
+      You can do this by the action menu in the chat window. Very easy.
+  Quick Texts:
+    Status: the configurator gui needs improvement
+    Mini How-To:
+      To enter the configurator you have to use the /qtconfig command. In the configurator you have 10 rows of 2 inputs
+      for each row. The left input is the keyword and the right one is the text that will be displayed for that keyword.
+      Let's see an example:
+        if you have "hi" as a keyword and "hi guys!!" as a text
+	if you type "/hi" in the chat window and click enter
+	"/hi" will be replaced by "hi guys!!" like emotes plugin does with "/me" occurrences
+      None of that quick texts can replace any existing command so check your keyword is not a command, otherwise
+      you would execute the command and not the quick text.
+      You can also use them by the action menu of the chat window.
+  Sound commands (like quick text but with sound)
+
+Contact:
+  If you have a suggestion or some else, write to markitus@catmail.homelinux.org
+
+Thanks:
+  Thanks to all AMSN Team for helping me. Without you I couldn't have done it. :-D
+  Thanks to manuc66 for the sound commands.
+  Thanks to jerome for the gui of quick text.

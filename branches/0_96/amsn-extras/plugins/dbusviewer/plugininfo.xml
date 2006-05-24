@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>DbusViewer</name>
+	<author>Jonne Zutt</author>
+	<description>This plugin enables you to monitor dbus messages using the event log of aMSN.</description>
+	<amsn_version>0.95</amsn_version>
+	<plugin_version>0.1</plugin_version>
+	<plugin_file>DbusViewer.tcl</plugin_file>
+	<plugin_namespace>DbusViewer</plugin_namespace>
+	<init_procedure>Init</init_procedure>
+	<deinit_procedure>DeInit</deinit_procedure>
+	<cvs_version>1.2</cvs_version>
+
+	<file>
+		<path>Readme</path>
+		<version>1.1</version>
+	</file>
+
+	<URL>
+		<main>http://amsn.sourceforge.net/autoupdater/plugins/dbusviewer/DbusViewer.tcl</main>
+		<plugininfo>http://amsn.sourceforge.net/autoupdater/plugins/dbusviewer/plugininfo.xml</plugininfo>
+		<lang>http://amsn.sourceforge.net/autoupdater/plugins/dbusviewer/lang/lang$langcode</lang>
+		<file>http://amsn.sourceforge.net/autoupdater/plugins/dbusviewer/$file</file>
+	</URL>
+
+</plugin>
