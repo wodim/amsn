@@ -3375,7 +3375,7 @@ proc cmsn_draw_main {} {
 		#Minimize to tray
 		$accnt add command -label "[trans minimize]" -command "::amsn::closeOrDock 1"
 		#Terminate aMSN
-		$accnt add command -label "[trans quit]" -command "::amsn::closeOrDock [::config::getKey closingdocks]" -accelerator "Ctrl-Q"
+		$accnt add command -label "[trans quit]" -command "::amsn::closeOrDock 2" -accelerator "Ctrl-Q"
 	}
 
 
