@@ -1360,6 +1360,11 @@ namespace eval ::abookGui {
 		moveinscreen $w 30
 	}
 	
+	proc showUserAlarmSettings { email } {
+		showUserProperties $email
+		.user_[::md5::md5 $email]_prop.nb raise alarms
+	}
+
 	proc showCustomNickScreen { email } {
 		set w ".user_[::md5::md5 $email]_cnick"
 		if { [winfo exists $w] } {
