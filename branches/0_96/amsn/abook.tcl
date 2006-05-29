@@ -1315,15 +1315,12 @@ namespace eval ::abookGui {
 		label $nbUserDPs.titlepic2 -text "[trans otherdisplaypic]" \
 			-font bboldunderf
 
-#		ScrolledWindow $nbUserDPs.otherpics
-#		ScrollableFrame $nbUserDPs.otherpics.sf
-#		set mainFrame [$nbUserDPs.otherpics.sf getframe]
-#		$nbUserDPs.otherpics setwidget $nbUserDPs.otherpics.sf
-
+		#Other display pictures get loaded when the dp tab is raised
+		#See proc userDPs_raise_cmd
+		
 		pack $nbUserDPs.titlepic1 -anchor w -padx 5 -pady 5
 		pack $nbUserDPs.displaypic -anchor w -padx 7 -pady 5
 		pack $nbUserDPs.titlepic2 -anchor w -padx 5 -pady 5
-#		pack $nbUserDPs.otherpics -expand true -fill both
 
 		##########
 		#Common
@@ -1364,7 +1361,7 @@ namespace eval ::abookGui {
 		showUserProperties $email
 		.user_[::md5::md5 $email]_prop.nb raise alarms
 	}
-
+	
 	proc showCustomNickScreen { email } {
 		set w ".user_[::md5::md5 $email]_cnick"
 		if { [winfo exists $w] } {
@@ -1451,7 +1448,7 @@ namespace eval ::abookGui {
 	
 	proc ChangeColor { email w } {
 		global colorval_$email
-		set color  [SelectColor $w.customcolor.dialog  -type dialog  -title "[trans customcolor]" -parent $w]
+		set color  [SelectColor $w.customcolordialog  -type dialog  -title "[trans customcolor]" -parent $w]
 		if { $color == "" } { return }
 
 		set colorval_$email $color
@@ -1461,7 +1458,7 @@ namespace eval ::abookGui {
 	proc RemoveCustomColor { email w } {	
 	   	global colorval_$email	
 		set colorval_$email ""
-		$w.fNick.fColor.col configure -background [$w.customcolorf cget -background] -highlightthickness 0
+		$w.fNick.fColor.col configure -background [$w.fNick.fColor cget -background] -highlightthickness 0
 	}
 
 	proc SetGlobalNick { } {
