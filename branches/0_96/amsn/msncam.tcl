@@ -1869,8 +1869,10 @@ namespace eval ::CAMGUI {
 
 	proc Grab_Windows {grabber socket encoder img} {
 
-		set encoder [::Webcamsn::NewEncoder HIGH]
-		setObjOption $socket codec $encoder
+		if { $encoder == "" } {
+			set encoder [::Webcamsn::NewEncoder HIGH]
+			setObjOption $socket codec $encoder
+		}
 
 		if { ![catch { $grabber picture $img} res] } {
 			::MSNCAM::SendFrame $socket $encoder $img
@@ -1903,7 +1905,10 @@ namespace eval ::CAMGUI {
 
 	proc Grab_Mac { grabber socket encoder img } {
 
-		set encoder [::Webcamsn::NewEncoder HIGH]
+		if { $encoder == "" } {
+			set encoder [::Webcamsn::NewEncoder HIGH]
+			setObjOption $socket codec $encoder
+		}
 
 		if {[winfo ismapped $grabber]} {
 			set socker_ [getObjOption $img socket]
