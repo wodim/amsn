@@ -518,17 +518,14 @@ namespace eval ::autoupdate {
 
 		if { [::http::status $token] == "ok" && [::http::ncode $token] == 200 } {
 			set tmp_data [string map {"\n" "" "\r" ""} $tmp_data]
-			set lastver [split $tmp_data "."]
-			set yourver [split $version "."]
-
-			for {set x 0} {$x<[llength "$lastver"]} {incr x} {
-				if {[lindex $lastver $x] > [lindex $yourver $x]} {
-					set newer 1
-					break
-				}
+			if { [string first "b" $version] != -1 } {
+				#We are on CVS
+			} elseif { $tmp_data != $version } {
+				set newer 1
 			}
 
-			catch {status_log "check_web_ver: Current= $yourver New=$lastver ($tmp_data)\n"}
+			catch {status_log "check_web_ver: Current= $version New=$tmp_data\n"}
+
 			#Time in second when the user clicked to not have an alert before 3 days
 			set weekdate [::config::getKey weekdate]
 			#Actual time in seconds
