@@ -3071,6 +3071,8 @@ namespace eval ::CAMGUI {
 			if { [catch { ::Webcamsn::Decode $decoder $img $data} res] } {
 				status_log "Play : Decode error $res" red
 				set ::seek_val($img) [getNextKeyframeOffset $filename $::seek_val($img)]
+				::Webcamsn::Close $decoder
+				set decoder [::Webcamsn::NewDecoder]
 			} else {
 				incr ::seek_val($img) $size
 				incr ::seek_val($img) +24
