@@ -212,7 +212,8 @@ if { $initialize_amsn == 1 } {
 	#Set the default option for canvas -highlightthickness
 	option add *Canvas.highlightThickness 0
 
-	if { [OnUnix] } {
+	#OnUnix is defined later on so for 0.96 just use this, trunk has OnUnix here
+	if { ![catch {tk windowingsystem} wsystem] && $wsystem  == "x11" } {
 		#Mappings for Shift-BackSpace
 		bind Entry <Terminate_Server> [bind Entry <BackSpace>]
 		bind Text <Terminate_Server> [bind Text <BackSpace>]
