@@ -3791,7 +3791,7 @@ proc cmsn_draw_main {} {
 		bind . <Command-m> "catch {carbon::processHICommand mini .}"
 		bind . <Command-M> "catch {carbon::processHICommand mini .}"
 		#Help
-		bind all <Command-?> ::amsn::showHelpFileWindow HELP [list [trans helpcontents]]
+		bind all <Command-?> ::amsn::showHelpFileWindow\ HELP\ [list [trans helpcontents]]
 		#Exit
 		bind all <Command-q> "exit"
 		bind all <Command-Q> "exit"
