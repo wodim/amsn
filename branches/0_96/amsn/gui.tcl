@@ -4542,6 +4542,18 @@ proc cmsn_draw_reconnect { error_msg } {
 
 	pack forget $pgBuddyTop
 	$pgBuddy.text configure -state normal -font splainf
+
+	$pgBuddy.text tag conf cancel_reconnect -fore #000000 -underline true \
+		-font splainf -justify center
+	$pgBuddy.text tag bind cancel_reconnect <Enter> \
+		"$pgBuddy.text tag conf cancel_reconnect -fore #0000A0 -underline false;\
+		$pgBuddy.text conf -cursor hand2"
+	$pgBuddy.text tag bind cancel_reconnect <Leave> \
+		"$pgBuddy.text tag conf cancel_reconnect -fore #000000 -underline true;\
+		$pgBuddy.text conf -cursor left_ptr"
+	$pgBuddy.text tag bind cancel_reconnect <Button1-ButtonRelease> \
+		"::MSN::cancelReconnect"
+
 	$pgBuddy.text delete 0.0 end
 	$pgBuddy.text tag conf signin -fore #000000 \
 		-font sboldf -justify center
@@ -4615,7 +4627,8 @@ proc cmsn_draw_signin {} {
 
 	$pgBuddy.text insert end "\n\n"
 	$pgBuddy.text insert end "[trans loggingin]..." signin
-	$pgBuddy.text insert end "\n"
+	$pgBuddy.text insert end "\n\n\n\n"
+	$pgBuddy.text insert end "[trans cancel]" cancel_reconnect
 	$pgBuddy.text configure -state disabled
 
 
