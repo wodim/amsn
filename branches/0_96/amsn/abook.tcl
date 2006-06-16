@@ -755,7 +755,7 @@ namespace eval ::abook {
 	#possible types: csv, amsn
 	proc saveToDisk { {filename ""} {type "amsn"} } {
 		
-		if { ![isConsistent] } {
+		if { ![isConsistent] || ![LoginList lockexists "" [::config::getKey login]] } {
 			return
 		}
 	
@@ -819,8 +819,12 @@ namespace eval ::abook {
 
 	
 	proc loadFromDisk { {filename ""} } {
-	
+
 		global HOME
+
+		if {![LoginList lockexists "" [::config::getKey login]]} {
+			file delete [file join $HOME abook.xml]
+		}
 		
 		if { $filename == "" } {
 			set filename [file join $HOME abook.xml]
