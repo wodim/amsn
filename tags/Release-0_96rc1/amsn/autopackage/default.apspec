@@ -9,7 +9,7 @@ Packager: Taj Morton <tajmorton@gmail.com>
 Summary: AMSN is a multiplatform MSN client
 URL: http://amsn.sourceforge.net
 License: GNU General Public License, Version 2
-SoftwareVersion: 0.95
+SoftwareVersion: 0.96RC1
 # SoftwareVersion: @VERSION@
 PackageVersion: 1
 
@@ -17,7 +17,7 @@ PackageVersion: 1
 AMSN is a multiplatform clone of MSN Messenger.
 
 [BuildPrepare]
-./configure --prefix=$build_root
+./configure --prefix=$build_root --enable-static
 make
 make install
 
