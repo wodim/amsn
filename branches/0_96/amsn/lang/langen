@@ -307,8 +307,8 @@ filetransfer File Transfer
 filters Filters
 filtersselect Select the filters you want to use\n(Note: none selected means 'show all')
 filtersx Filter Selection
-find Find
 findasyoutype Find as you type
+find Find
 findnext Find Next
 findprev Find Previous
 firewalled You are firewalled or behind a router
@@ -339,6 +339,7 @@ gotink $1 sent you an ink.
 goto Go to $1
 gotoinbox Go to Inbox
 groupadd Add Group
+groupcontacts Group contacts
 groupdelete Delete Group
 groupexists Group already exists
 group Group
@@ -479,8 +480,8 @@ natkeepalive If you are getting disconnected regularly, enable this KeepAlive
 needonline You still are/appear offline!
 needwinico2 Need winico05.dll in the utils/windows directory for windows traydocking to work
 never Never
-new_ft_protocol Use new File Transfer protocol (some bugs remain)
 newchat New Chat
+new_ft_protocol Use new File Transfer protocol (some bugs remain)
 newline Newline
 newmail $1 new message(s) in Inbox
 newmailfolder You have $1 new message(s) in other Hotmail folders
@@ -668,13 +669,14 @@ servergoingdown Disconnected: Server is going down
 server Server
 serverunavailable Server is unavailable
 session Session
+setasmydp Set as my display picture
 shareswebcam Shares webcam
 showbanner Show aMSN's banner
 showblockedlist Show list of people who blocked you
 showcachedpics Show cached display pictures
+show_contactdps_in_cl Show thumbnails of contacts Display Pictures in Contact List
 showcontactemail Show Contacts with E-mail
 showcontactnick Show Contacts with Nickname
-show_contactdps_in_cl Show thumbnails of contacts Display Pictures in Contact List
 showdisplaypic2 Show Display Picture by default when a chat window is opened
 showdisplaypic Show Display Picture
 showmailicon Show mail icon on traydock when new emails arrive
@@ -694,11 +696,11 @@ smiletoobig The smiley you choose is bigger than normal size. Do you want to res
 snackfailed Snack failed to load, reverting to default
 snapshot Snapshot
 sngdblclick Single click to open a new message window
-sortgroupsasc Sort Groups Ascending
-sortgroupsdesc Sort Groups Descending
 sortcontactgroup Sort Contacts by Group
 sortcontacthybrid Sort Contacts in Hybrid Mode
 sortcontactstatus Sort Contacts by Status
+sortgroupsasc Sort Groups Ascending
+sortgroupsdesc Sort Groups Descending
 sound2 Play sounds when contacts sign in or send a message
 soundactive Play sounds when receiving incoming messages also in active windows
 soundcommand This has to be the play command (ex: esdplay)
@@ -789,7 +791,6 @@ useralreadyonlist User is already on contact list
 userblocked The user is online but blocked you
 userdata User Data
 userdps User display pictures
-setasmydp Set as my display picture
 usernotonline The user is not online
 userproperties User properties of $1
 usersettings Settings
