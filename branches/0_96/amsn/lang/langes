@@ -339,6 +339,7 @@ gotink $1 le envió una ink
 gotoinbox Ir a Bandeja de entrada
 goto Ir a $1
 groupadd Añadir un grupo
+groupcontacts Contactos del grupo
 groupdelete Borrar un grupo
 groupexists El grupo ya existe
 group Grupo
@@ -353,6 +354,8 @@ handle Nick
 help Ayuda
 helpcontents Temas de ayuda
 hidedisplaypic Ocultar imagen para mostrar
+hidemenumessage ¿Seguro que deseas ocultar los menús?\nPuedes recuperarlos en cualquier momento usando la combinación de mostrar/ocultar menús Ctrl-M.
+hidemenu Mostrar/Ocultar menús
 hiden No mostrar en el menú de emoticonos
 hidewindow Ocultar ventana
 history Ver historial
@@ -497,6 +500,7 @@ nocacheddps No almacenar las imágenes para mostrar de este usuario en cache
 nocacheddpsNo hay imágenes en la caché para mostrar de este usuario
 nodataavailable No hay datos disponibles para $1
 nodevices No tienes dispositivos instalados
+noftpreview Desactivar el envío de previsualización en las transferencias de archivos.
 nogap No dejar espacio entre los grupos en lista de contactos
 nogroup Sin grupo
 nologfile No existe archivo de historial para $1
