@@ -768,7 +768,7 @@ namespace eval ::ChatWindow {
 			# message, until we re-click on aMSN icon (or get back to aMSN)
 			if { (([::config::getKey dockbounce] == "unlimited" && $usr_name != [::config::getKey login]) \
 				&& [focus] == "") && $msg != "" } {
-				if {[catch {tclCarbonNotification 1 ""} res]} {
+				if {[catch {carbon::notification "" 1} res]} {
 					status_log $res
 				}
 			}
@@ -777,10 +777,10 @@ namespace eval ::ChatWindow {
 			# in aMSN and receive a message (default)
 			if { (([::config::getKey dockbounce] == "once" && $usr_name != [::config::getKey login]) \
 				&& [focus] == "") && $msg != "" } {
-				if {[catch {tclCarbonNotification 1 ""} res]} {
+				if {[catch {carbon::notification "" 1} res]} {
 					status_log $res
 				}
-				after 1000 [list catch [list tclEndCarbonNotification]]
+				after 1000 [list catch [list carbon::endNotification]]
 			}
 		}
 
