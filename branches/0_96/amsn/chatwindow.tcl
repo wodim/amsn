@@ -1031,8 +1031,11 @@ namespace eval ::ChatWindow {
 				"::amsn::ShowChatList \"[trans history]\" \[::ChatWindow::GetCurrentWindow $w\] ::log::OpenLogWin"
 			bind $w <Control-w> "::ChatWindow::CloseTab \[set ::ChatWindow::win2tab(\[::ChatWindow::GetCurrentWindow $w\])\]"
 			bind $w <Control-W> "::ChatWindow::CloseTab \[set ::ChatWindow::win2tab(\[::ChatWindow::GetCurrentWindow $w\])\]"
-			bind $w <Control-Next> "::ChatWindow::GoToNextTab $w"
-			bind $w <Control-Prior> "::ChatWindow::GoToPrevTab $w"
+			bind $w <Command-Right> "::ChatWindow::GoToNextTab $w"
+			bind $w <Command-Left> "::ChatWindow::GoToPrevTab $w"
+			
+			bind $w <Control-Tab> "::ChatWindow::GoToNextTab $w"
+			bind $w <Control-Shift-Tab> "::ChatWindow::GoToPrevTab $w"
 		}
 
 		searchdialog $w.search
@@ -1988,7 +1991,7 @@ namespace eval ::ChatWindow {
 		# Change shortcuts on Mac OS X (TKAqua). ALT=Option Control=Command on Mac
 		if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
 			bind $text <Command-Return> {%W insert insert "\n"; %W see insert; break}
-			bind $text <Command-Option-space> BossMode
+			bind $text <Command-Shift-space> BossMode
 			bind $text <Command-a> {%W tag add sel 1.0 {end - 1 chars};break}
 			bind $text <Command-A> {%W tag add sel 1.0 {end - 1 chars};break}
 		} else {

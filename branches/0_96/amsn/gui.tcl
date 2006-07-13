@@ -3510,31 +3510,27 @@ proc cmsn_draw_main {} {
 
 	if {[OnMac]} {
 		# The help menu on a mac should be given the Command-? accelerator.
-		$help add command -label "[trans helpcontents]" \
-			-command "::amsn::showHelpFileWindow HELP [list [trans helpcontents]]" \
+		$help add command -label "[trans onlinehelp]" \
+			-command "launch_browser http://amsn.sourceforge.net/userwiki/index.php/Main_Page" \
 			-accelerator "Command-?"
 	} else {
-		$help add command -label "[trans helpcontents]" \
-		-command "::amsn::showHelpFileWindow HELP [list [trans helpcontents]]"
+		$help add command -label "[trans onlinehelp]" \
+			-command "launch_browser http://amsn.sourceforge.net/userwiki/index.php/Main_Page" \
 	}
 
 	set lang [::config::getGlobalKey language]
 	$help add command -label "[trans faq]" \
 	    -command "launch_browser \"http://amsn.sourceforge.net/faq.php?lang=$lang\""
-    
-	$help add command -label "[trans onlinehelp]" \
-			-command "launch_browser http://amsn.sourceforge.net/wiki/tiki-index.php?"
-
 	$help add separator
-	
 	$help add command -label "[trans msnstatus]" \
 	    -command "launch_browser \"http://messenger.msn.com/Status.aspx\""
-	
 	$help add command -label "[trans sendfeedback]" -command "launch_browser \"http://amsn.sourceforge.net/forums/index.php\""
 
-	$help add separator
-
-	$help add command -label "[trans about]" -command ::amsn::aboutWindow
+	# About is in the app menu on Mac
+	if {![OnMac]} {
+		$help add separator
+		$help add command -label "[trans about]" -command ::amsn::aboutWindow
+	}
 
 
 

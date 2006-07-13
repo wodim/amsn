@@ -1253,7 +1253,7 @@ proc process_custom_smileys_SB { txt {animated 0} } {
 			     (!$animated && (! [ info exists emotion(animated) ] || ! [ is_true $emotion(animated) ]))} {
 				if { [info exists emotion(casesensitive)] && [is_true $emotion(casesensitive)] } {
 					if {  [string first $symbol $txt] != -1 } {
-						append msg "$symbol	[create_msnobj [::config::getKey login] 2 [::skin::GetSkinFile smileys [filenoext $file].png]]	"
+						append msg "$symbol\t[create_msnobj [::config::getKey login] 2 [::skin::GetSkinFile smileys [filenoext $file].png]]\t"
 					}
 				} else {
 					set msnobj ""
@@ -1266,7 +1266,7 @@ proc process_custom_smileys_SB { txt {animated 0} } {
 						set idx [string first $symbol2 $txt2 $startidx]
 						set startidx [expr {$idx + [string length $symbol2]}]
 						set symbol [string range $txt $idx [expr {$startidx - 1}]]
-						append msg "$symbol	$msnobj	"
+						append msg "$symbol\t$msnobj\t"
 					}
 				}
 			}

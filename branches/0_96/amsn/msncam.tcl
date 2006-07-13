@@ -1623,6 +1623,7 @@ namespace eval ::CAMGUI {
 
 		set window [getObjOption $sid window]
 		set decoder [getObjOption $sid codec]
+	        set img [getObjOption $sid image]
 
 		if { $decoder == "" } {
 			set decoder [::Webcamsn::NewDecoder]
@@ -1649,7 +1650,6 @@ namespace eval ::CAMGUI {
 			$window.paused configure -text ""
 		}
 
-		set img [getObjOption $sid image]
 
 		catch {::Webcamsn::Decode $decoder $img $data}
 
@@ -1672,8 +1672,11 @@ namespace eval ::CAMGUI {
 
 		if { [getObjOption $socket state] == "END" } { return }
 
+		set chatid [getObjOption $sid chatid]
+
 		set window [getObjOption $sid window]
 		set img [getObjOption $sid image]
+
 		set encoder [getObjOption $socket codec]
 		set source [getObjOption $sid source]
 
@@ -1703,7 +1706,6 @@ namespace eval ::CAMGUI {
 			}
 		}
 
-		set chatid [getObjOption $sid chatid]
 
 		set grab_proc [getObjOption $sid grab_proc]
 
