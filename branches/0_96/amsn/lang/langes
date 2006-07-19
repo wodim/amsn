@@ -227,6 +227,7 @@ default Configuración por defecto
 defaultloginradio Usar configuración por defecto
 defchatwinsize Tamaño por defecto para las ventanas de chat (HORIZONTAL x VERTICAL)
 deleteall Borrar todo
+deleteblock Eliminar y bloquear
 deletecustomstate Eliminar estado personalizado
 delete Eliminar
 delimiters Delimitadores de la hora:
