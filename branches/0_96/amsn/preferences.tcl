@@ -2194,11 +2194,9 @@ proc Preferences { { settings "personal"} } {
 	pack $lfname.pshared -side left -anchor nw
 	frame $lfname.1 -class Degt
 	pack $lfname.1 -anchor w -side left -padx 0 -pady 5 -expand 0 -fill both
-	label $lfname.1.lbrowser -text "[trans browser] :" -padx 5 -font sboldf
-	entry $lfname.1.browser -bg #FFFFFF   -width 40 -textvariable [::config::getVar browser]
-	label $lfname.1.lbrowserex -text "[trans browserexample]" -font examplef
 	if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
 		#Empty because we don't change filemanager and open file manager on Mac OS X
+		#And we don't want browser neither
 	} else {
 		#file manager
 		label $lfname.1.lfileman -text "[trans fileman] :" -padx 5 -font sboldf
@@ -2208,6 +2206,10 @@ proc Preferences { { settings "personal"} } {
 		label $lfname.1.lopenfile -text "[trans openfilecommand] :" -padx 5 -font sboldf
 		entry $lfname.1.openfile -bg #FFFFFF   -width 40 -textvariable [::config::getVar openfilecommand]
 		label $lfname.1.lopenfileex -text "(gnome : gnome-open \$file)(kde : kfmclient exec \$file)" -font examplef
+		label $lfname.1.lbrowser -text "[trans browser] :" -padx 5 -font sboldf
+		entry $lfname.1.browser -bg #FFFFFF   -width 40 -textvariable [::config::getVar browser]
+		label $lfname.1.lbrowserex -text "[trans browserexample]" -font examplef
+
 	}
 	
 	label $lfname.1.lmailer -text "[trans mailer] :" -padx 5 -font sboldf
