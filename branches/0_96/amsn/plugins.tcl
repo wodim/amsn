@@ -192,18 +192,17 @@ namespace eval ::plugins {
 	}
 
 	###############################################################
-        # calledFrom ()
-        #
-        # Finds out if a proc was called by a plugin.
+	# calledFrom ()
+	#	
+	# Finds out if a proc was called by a plugin.
 	#
-        # Arguments
-        # none
-        #
-        # Return
-        # -1 - not called by a plugin
+	# Arguments
+	# none
+	#
+	# Return
+	# -1 - not called by a plugin
 	# $pluginnamespace - the namespace of the plugin calling the proc
-        #
-
+	#
 	proc calledFrom {} {
 	    set namespace [string trimleft "[uplevel 2 namespace current]" "::"]
 	    
@@ -216,18 +215,17 @@ namespace eval ::plugins {
 	}
 
 	###############################################################
-        # namespaceExists (namespace)
-        #
+	# namespaceExists (namespace)
+	#
 	# finds out if a namespace belongs to a plugin
-        #
-        # Arguments
-        # namespace - namespace to check for (without ::)
-        #
-        # Return
+	#	
+	# Arguments
+	# namespace - namespace to check for (without ::)
+	#	
+	# Return
 	# -1 - nope
 	# 1 - yup
-        #
-
+	#
 	proc namespaceExists {namespace} {
 		variable plugins
 		# go through each namespace
@@ -252,8 +250,7 @@ namespace eval ::plugins {
 	#
 	# Return
 	# string - the value of the parameter, empty if not found
-	#
-	
+	#	
 	proc getInfo {plugin param} {
 		variable plugins
 		plugins_log core "Getting $plugin and $param"
@@ -269,10 +266,10 @@ namespace eval ::plugins {
 	}
 
 	###############################################################
-        # getPlugins ()
-        #
+	# getPlugins ()
+	#
 	# Returns a list of existing plugins
-        #
+	#
 	# Arguments
 	# none
 	#
@@ -288,18 +285,17 @@ namespace eval ::plugins {
 	}
 
 	###############################################################
-        # updatePluginsArray ()
-        #
-        # Updates the plugins array which holds info about plugins
+	# updatePluginsArray ()
+	#
+	# Updates the plugins array which holds info about plugins
 	# by searching possible plugin directories
-        #
-        # Arguments
-        # none
-        #
-        # Return
-        # none
-        #
-	
+	#
+	# Arguments
+	# none
+	#	
+	# Return
+	# none
+	#	
 	proc updatePluginsArray { } {
 
 	       	global HOME HOME2
@@ -377,7 +373,6 @@ namespace eval ::plugins {
 	# Return
 	# none
 	#
-
 	proc XMLInfo { cstack cdata saved_data cattr saved_attr args } {
 
 		variable plugins
@@ -568,6 +563,9 @@ namespace eval ::plugins {
 		variable mF
 
 		# find the id of the currently selected plugin
+		if { [ $w.plugin_list curselection ] == "" } {
+			return
+		}
 		set selection [$w.plugin_list get [$w.plugin_list curselection]]
 		# if the selection is empty, end proc
 		if { $selection == "" } {
@@ -1038,8 +1036,8 @@ namespace eval ::plugins {
 	# plugin - The plugin to load (name)
 	# required_version - Required aMSN version for the plugin to load
 	# file - The plugin's TCL main file
-        # namespace - The plugin's main namespace
-        # init_proc - The plugin's init procedure
+	# namespace - The plugin's main namespace
+	# init_proc - The plugin's init procedure
 	#
 	# Return
 	# 1 - success
@@ -1984,7 +1982,6 @@ namespace eval ::plugins {
 	# Return
 	# 1 if a plugin has been updated, 0 else
 	#
-
 	proc UpdatedPlugins { } {
 
 		variable plugins
