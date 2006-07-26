@@ -1262,7 +1262,7 @@ namespace eval ::ChatWindow {
 
 		#new chat
 		$chatmenu add command -label "[trans newchat]..." \
-			-command [list ::amsn::ShowSendMsgList [trans sendmsg] ::amsn::chatUser]
+			-command [list ::amsn::ShowUserList [trans sendmsg] ::amsn::chatUser]
 			
 		if {[OnMac]} {
 			$chatmenu add command -label "[trans close]" \
