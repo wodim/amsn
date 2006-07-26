@@ -227,6 +227,7 @@ default Default Config
 defaultloginradio Login with default configuration
 defchatwinsize Default size for chat windows (XSIZExYSIZE)
 deleteall Delete all
+deleteblock Delete and Block
 deletecustomstate Delete custom state
 delete Delete
 delimiters Timestamp delimiters:
@@ -307,8 +308,8 @@ filetransfer File Transfer
 filters Filters
 filtersselect Select the filters you want to use\n(Note: none selected means 'show all')
 filtersx Filter Selection
-findasyoutype Find as you type
 find Find
+findasyoutype Find as you type
 findnext Find Next
 findprev Find Previous
 firewalled You are firewalled or behind a router
@@ -339,7 +340,6 @@ gotink $1 sent you an ink.
 goto Go to $1
 gotoinbox Go to Inbox
 groupadd Add Group
-groupcontacts Group contacts
 groupdelete Delete Group
 groupexists Group already exists
 group Group
@@ -354,6 +354,8 @@ handle Handle
 helpcontents Help Contents
 help Help
 hidedisplaypic Hide Display Picture
+hidemenu Show/Hide menus
+hidemenumessage Are you sure you want to hide the menus ?\nYou can restore them any time by using the show/hide menus hotkey 'Ctrl-M'.
 hiden Hide the emoticon from the smileys menu
 hidewindow Hide Window
 history View History
@@ -480,8 +482,8 @@ natkeepalive If you are getting disconnected regularly, enable this KeepAlive
 needonline You still are/appear offline!
 needwinico2 Need winico05.dll in the utils/windows directory for windows traydocking to work
 never Never
-newchat New Chat
 new_ft_protocol Use new File Transfer protocol (some bugs remain)
+newchat New Chat
 newline Newline
 newmail $1 new message(s) in Inbox
 newmailfolder You have $1 new message(s) in other Hotmail folders
@@ -493,17 +495,18 @@ newtabbedfeature aMSN has a new feature for managing conversation, you can now h
 newveravailable Newer version $1 available for download
 next Next
 nick Nick
+no No
 noactivity No activity
 nocacheddps No Display Pictures in cache for this user
 nodataavailable No data available for $1
 nodevices Currently, no devices are installed
+noftpreview Disable sending a preview of images in file transfers
 nogap No space between groups
 nogroup No group
 nologfile No Log file for $1
 noneavailable None Available
 nonewmail No new messages in Inbox
 nonewver There are no new versions available to download
-no No
 nopic No picture
 noprofileexists There are currently no profiles, \n you must create one if you wish to use profiled logins. \nUse the Add New Profile button in this window to add a new profile.
 normal Normal
@@ -669,14 +672,13 @@ servergoingdown Disconnected: Server is going down
 server Server
 serverunavailable Server is unavailable
 session Session
-setasmydp Set as my display picture
 shareswebcam Shares webcam
 showbanner Show aMSN's banner
 showblockedlist Show list of people who blocked you
 showcachedpics Show cached display pictures
-show_contactdps_in_cl Show thumbnails of contacts Display Pictures in Contact List
 showcontactemail Show Contacts with E-mail
 showcontactnick Show Contacts with Nickname
+show_contactdps_in_cl Show thumbnails of contacts Display Pictures in Contact List
 showdisplaypic2 Show Display Picture by default when a chat window is opened
 showdisplaypic Show Display Picture
 showmailicon Show mail icon on traydock when new emails arrive
@@ -696,11 +698,11 @@ smiletoobig The smiley you choose is bigger than normal size. Do you want to res
 snackfailed Snack failed to load, reverting to default
 snapshot Snapshot
 sngdblclick Single click to open a new message window
+sortgroupsasc Sort Groups Ascending
+sortgroupsdesc Sort Groups Descending
 sortcontactgroup Sort Contacts by Group
 sortcontacthybrid Sort Contacts in Hybrid Mode
 sortcontactstatus Sort Contacts by Status
-sortgroupsasc Sort Groups Ascending
-sortgroupsdesc Sort Groups Descending
 sound2 Play sounds when contacts sign in or send a message
 soundactive Play sounds when receiving incoming messages also in active windows
 soundcommand This has to be the play command (ex: esdplay)
@@ -791,6 +793,7 @@ useralreadyonlist User is already on contact list
 userblocked The user is online but blocked you
 userdata User Data
 userdps User display pictures
+setasmydp Set as my display picture
 usernotonline The user is not online
 userproperties User properties of $1
 usersettings Settings
@@ -839,3 +842,4 @@ youblocked You have been blocked by
 yousay You say
 youwant You want
 zoom Zoom
+groupcontacts Group contacts

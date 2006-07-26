@@ -655,56 +655,54 @@ namespace eval ::amsn {
 
 		#Create the picture of warning (at left)
 		label $w.top.bitmap -image [::skin::loadPixmap warning]
-		pack $w.top.bitmap -side left -pady 5 -padx 10
+		pack $w.top.bitmap -side left -pady 0 -padx [list 0 12 ]
+			
 		#Text to show to delete the user
-		label $w.top.question -text "[trans confirmdu]" -font bigfont
-		pack $w.top.question -pady 5 -padx 10
+		label $w.top.question -text "[trans confirmdu]" -wraplength 400 -justify left
+		pack $w.top.question -pady 0 -padx 0 -side top
 
 		#Create the three buttons, Yes and block / Yes / No
-
-		checkbutton $w.top.yesblock -text "[trans yesblock]" -variable variableblock
-
-		button $w.buttons.yes -text "[trans yes]" -command \
-			"::amsn::deleteUserAction $w $user_login $grId" -default active -width 6
-		button $w.buttons.no -text "[trans no]" -command "destroy $w" -width 6
+		button $w.buttons.block -text "[trans deleteblock]" -command \
+			"set variableblock 1; ::amsn::deleteUserAction $w $user_login $grId"
+		button $w.buttons.cancel -text "[trans cancel]" -command "destroy $w"
+		button $w.buttons.delete -text "[trans delete]" -command \
+			"::amsn::deleteUserAction $w $user_login $grId"
 
 		#Pack buttons
-		pack $w.buttons.yes -pady 5 -padx 5 -side right
-		pack $w.buttons.no -pady 5 -padx 5 -side left
-
-		# if already blocked don't show 'Yes and Block' button
+		pack $w.buttons.delete -pady 0 -padx 0 -side right
+		pack $w.buttons.cancel -pady 0 -padx [list 0 6 ] -side right
+				
+		# If already blocked don't show 'Delete and Block' button
 		if {[lsearch [::abook::getLists $user_login] BL] == -1} {
-			pack $w.top.yesblock -pady 5 -padx 10 -side left
+			pack $w.buttons.block -pady 0 -padx [list 0 6 ] -side right
 		}
 
-
 		#Pack frames
-		pack $w.top -pady 5 -padx 5 -side top
-		pack $w.buttons -pady 5 -padx 5 -side right
+		pack $w.top -pady 12 -padx 12 -side top
+		pack $w.buttons -pady 12 -padx 12 -fill x
 
 		moveinscreen $w 30
-		bind $w <<Escape>> "catch {destroy $w}"
-		#This function will be executed when the button is pushed
-
+		bind $w <<Escape>> "destroy $w"
 	}
+
 	#///////////////////////////////////////////////////////////////////////////////
 	# deleteUserAction {w user_login answer grId}
 	# Action to do when someone click delete a user
 	proc deleteUserAction {w user_login {grId ""} } {
 		global variableblock
-		#If he wants to delete AND block a user
+		
+		#Destroy the window first
+		destroy $w
+		
+		#If the user wants to delete AND block a user
 		if { $variableblock == "1"} {
 			set name [::abook::getNick ${user_login}]
 			::MSN::blockUser ${user_login} [urlencode $name]
-			::MSN::deleteUser ${user_login} $grId
-			::abook::setContactData $user_login alarms ""
-		#Just delete the user
-		} elseif { $variableblock == "0"} {
-			::MSN::deleteUser ${user_login} $grId
-			::abook::setContactData $user_login alarms ""
 		}
-		#Remove .deleteUserWindow window
-		destroy $w
+		
+		::MSN::deleteUser ${user_login} $grId
+		::abook::setContactData $user_login alarms ""
+		
 		return
 	}
 
@@ -3803,8 +3801,11 @@ proc cmsn_draw_main {} {
 		bind . <Control-q> exit
 		#Boss mode
 		bind . <Control-Alt-space> BossMode
-		#Show/hide menu
-		bind . <Control-m> Showhidemenu
+
+		# Show/hide menu binding with toggle == 1
+		bind . <Control-m> "Showhidemenu 1"
+		# Make sure we restore the previous setting
+		Showhidemenu 0
 	}
 
 	if { [OnMac] } {
@@ -3953,15 +3954,28 @@ proc loggedOutGuiConf { event } {
 
 }
 
+proc ShowFirstTimeMenuHidingFeature { parent } {
+    return [expr [tk_messageBox -default no -icon warning -title [trans hidemenu] -message [trans hidemenumessage] -parent $parent -type yesno] == yes]
+}
 
 
-proc Showhidemenu { } {
+proc Showhidemenu { {toggle 0} } {
 
-	if { [string length [. cget -menu] ] == 0 } {
-		. configure -menu .main_menu
-	} else {
-		. configure -menu ""
+    if {$toggle} { 
+	if { [::config::getKey showmainmenu -1] == -1 } {
+	    if { [ShowFirstTimeMenuHidingFeature .] == 0 } {
+		return
+	    }
 	}
+	::config::setKey showmainmenu [expr ![::config::getKey showmainmenu -1]] 
+	
+    } 
+
+    if { [::config::getKey showmainmenu -1]} {
+	. configure -menu .main_menu
+    } else {
+	. configure -menu ""
+    }
 
 }
 
