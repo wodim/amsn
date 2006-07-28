@@ -578,6 +578,7 @@ namespace eval ::MSNCAM {
 
 	proc ReadFromSock { sock } {
 
+		status_log "receiving from socket"
 
 		set sid [getObjOption $sock sid]
 
