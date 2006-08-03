@@ -7360,7 +7360,7 @@ proc show_umenu {user_login grId x y} {
 
 	.user_menu add command -label "[trans cfgalarm]" -command "::abookGui::showUserProperties $user_login; .user_[::md5::md5 $user_login]_prop.nb raise alarms"
 
-#	.user_menu add command -label "[trans note]" -command "::notes::Display_Notes $user_login"
+	.user_menu add command -label "[trans note]" -command "::notes::Display_Notes $user_login"
 
 	.user_menu add command -label "[trans properties]" \
 	-command "::abookGui::showUserProperties $user_login"
