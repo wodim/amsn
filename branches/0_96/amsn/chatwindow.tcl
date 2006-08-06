@@ -2275,7 +2275,7 @@ namespace eval ::ChatWindow {
 		}
 	}
 	proc SetWebcamText {} {
-		if {[::config::getKey webcamDevice] != ""} {
+		if {[::config::getKey webcamDevice] != "" || [OnMac]} {
 			return "[trans sendwebcaminvite]"
 
 		} else {
