@@ -8,6 +8,7 @@ notify_receive Notify received nudges in the chatwindow
 sound_send Play a sound upon sending a nudge
 sound_receive Play a sound upon receiving a nudge.
 add_button Add a button to send a nudge in the chatwindow
+add_blockbutton Add a button to block incoming nudges in the chatwindow
 send_nudge Send nudge
 nudge_sent You have just sent a Nudge
 limit Activate Nudge receive limitation
