@@ -439,7 +439,7 @@ logsbydate Ordina log per data (L'apertura della cronologia è velocizzata)
 logschats Sta loggando le chat
 logsin si è appena connesso/a
 logsmileys Mostra le emoticon e le facine nella finestra dell'History di aMSN
-logsout è appena uscito/a
+logsout si è appena sconnesso/a
 logwebcam Salva tutte le sessioni della webcam nel diario di aMSN per una visione futura
 longnick Il tuo nick è lungo più di 130 caratteri. Il protocollo ufficiale di MSN non lo consente. Vuoi impostarlo ugualmente?
 longp4c Il tuo soprannome è più lungo di 130 caratteri. Il Soprannome che apprarirà nella versione ufficiale di MSN sarà $1. Sei sicuro di salvare le impostazioni?
