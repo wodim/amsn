@@ -335,7 +335,7 @@ proc secureSocket { args } {
 #		variable proxy_queued_data
 #		variable proxy_session_id
 #		variable proxy_gateway_ip
-#		variable options(-proxy_writing)
+#		variable options
 
 		#Cancel any previous attemp to write or POLL
 		after cancel "$self PollPOST $name"
@@ -689,7 +689,7 @@ proc secureSocket { args } {
 	}
 
 	method RetryWrite { name } {
-#		variable options(-proxy_writing)
+#		variable options
 		status_log "Retrying write\n" blue
 		catch {fileevent [$name cget -sock] writable ""}
 		if { [catch {puts -nonewline [$name cget -sock] $options(-proxy_writing)} res] } {
@@ -710,7 +710,7 @@ proc secureSocket { args } {
 		variable proxy_session_id
 #		variable proxy_gateway_ip
 		variable proxy_data
-		variable options(-proxy_writing)
+		variable options
 
 		after cancel "$self HTTPPoll $name"
 
@@ -816,7 +816,7 @@ proc secureSocket { args } {
 #		variable proxy_session_id
 #		variable proxy_gateway_ip
 #		variable proxy_queued_data
-#		variable options(-proxy_writing)
+#		variable options
 
 		if { ![info exists options(-proxy_session_id)]} {
 			return
