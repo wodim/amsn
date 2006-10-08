@@ -234,8 +234,6 @@ namespace eval ::remote {
 proc write_remote { dataout {colour "normal"} } {
 	global remote_sock
 
-	set dataout [string map [list "\n" " $colour\n"]  $dataout]
-  
 	catch {puts $remote_sock [list $dataout $colour]}
 }
 
