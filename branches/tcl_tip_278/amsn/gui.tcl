@@ -1043,6 +1043,7 @@ namespace eval ::amsn {
 
 
 	proc SaveAsFT {chatid cookie {varlist ""} } {
+		global HOME
 		if {$cookie != -1} {
 			set initialfile [::MSNFT::getFilename $cookie]
 		} {
@@ -1050,7 +1051,7 @@ namespace eval ::amsn {
 		}
 		if {[catch {set filename [tk_getSaveFile -initialfile $initialfile -initialdir [::config::getKey receiveddir]]} res]} {
 			status_log "Error in SaveAsFT: $res \n"
-			set filename [tk_getSaveFile -initialfile $initialfile -initialdir [set ::HOME]]
+			set filename [tk_getSaveFile -initialfile $initialfile -initialdir [set HOME]]
 		
 		}
 		if {$filename != ""} {
@@ -3091,7 +3092,7 @@ namespace eval ::amsn {
 #///////////////////////////////////////////////////////////////////////
 proc cmsn_draw_main {} {
 	global emotion_files date weburl lang_list \
-	password HOME pgBuddy pgBuddyTop pgNews argv0 argv langlong
+	password pgBuddy pgBuddyTop pgNews argv0 argv langlong
 
 	#User status menu
 	menu .my_menu -tearoff 0 -type normal
@@ -7543,7 +7544,7 @@ proc pictureDeleteFile { {filename ""} {widget .picbrowser.mypic} } {
 
 
 proc pictureChooseFile { } {
-	global selected_image image_names
+	global HOME selected_image image_names
 
 	set file [chooseFileDialog "" "" "" "" open [list [list [trans imagefiles] [list *.gif *.GIF *.jpg *.JPG *.bmp *.BMP *.png *.PNG]] [list [trans allfiles] *]]]
 
@@ -7568,7 +7569,6 @@ proc pictureChooseFile { } {
 			.picbrowser.mypic configure -image $image_name
 			set selected_image "[filenoext [file tail $file]].png"
 
-			global HOME
 			set desc_file "[filenoext [file tail $file]].dat"
 			set fd [open [file join $HOME displaypic $desc_file] w]
 			status_log "Writing description to $desc_file\n"

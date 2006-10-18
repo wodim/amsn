@@ -4813,7 +4813,7 @@ proc cmsn_update_users {sb recv} {
 
 #TODO: ::abook system
 proc cmsn_change_state {recv} {
-	global ns remote_auth
+	global ns remote_auth HOME
 
 	if {[lindex $recv 0] == "FLN"} {
 		#User is going offline
@@ -5080,7 +5080,6 @@ proc cmsn_change_state {recv} {
 			}
 		} else {
 			if { [::MSN::myStatusIs] != "FLN" && [::MSN::myStatusIs] != "HDN"} {
-				global HOME
 				if { ![file readable "[file join $HOME displaypic cache ${newPic}].png"] } {
 					set chat_id [::MSN::chatTo $user]
 					::MSN::ChatQueue $chat_id [list ::MSNP2P::loadUserPic $chat_id $user]
@@ -6677,6 +6676,7 @@ namespace eval ::MSN6FT {
 
 
 	proc SendFT { chatid filename filesize} {
+		global HOME
 
 		status_log "Sending File $filename with size $filesize to $chatid\n"
 
@@ -6719,14 +6719,14 @@ namespace eval ::MSN6FT {
 
 		if { $nopreview == 0 } {
 			#Here we resize the picture and save it in /FT/cache for the preview (we send it and we see it)
-			create_dir [file join [set ::HOME] FT cache]
+			create_dir [file join $HOME FT cache]
 			if {[catch {set image [image create photo [TmpImgName] -file $filename]}]} {
 				set image [::skin::getNoDisplayPicture]
 			}
 			if {[catch {::picture::ResizeWithRatio $image 96 96} res]} {
 				status_log $res
 			}
-			set file  "[file join [set ::HOME] FT cache ${callid}.png]"
+			set file  "[file join $HOME FT cache ${callid}.png]"
 			if {[catch {::picture::Save $image $file cxpng} res] } {
 				status_log $res
 			}
@@ -7337,6 +7337,7 @@ namespace eval ::MSN6FT {
 
 
 	proc GotFileTransferRequest { chatid dest branchuid cseq uid sid context } {
+		global HOME
 		binary scan [string range $context 0 3] i size
 		binary scan [string range $context 8 11] i filesize
 		binary scan [string range $context 16 19] i nopreview
@@ -7352,7 +7353,7 @@ namespace eval ::MSN6FT {
 
 		if { $nopreview == 0 } {
 			set previewdata [string range $context $size end]
-			set dir [file join [set ::HOME] FT cache]
+			set dir [file join $HOME FT cache]
 			create_dir $dir
 			set fd [open "[file join $dir ${sid}.png ]" "w"]
 			fconfigure $fd -translation binary
