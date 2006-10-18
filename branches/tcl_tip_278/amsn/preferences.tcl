@@ -2981,7 +2981,7 @@ proc setCfgFonts {path value} {
 
 
 proc SavePreferences {} {
-	global myconfig proxy_server proxy_port list_BLP temp_BLP Preftabs libtls proxy_user proxy_pass pager
+	global ns myconfig proxy_server proxy_port list_BLP temp_BLP Preftabs libtls proxy_user proxy_pass pager
 
 	set nb .cfg.notebook
 
@@ -3179,7 +3179,7 @@ proc RestorePreferences { {win ".cfg"} } {
 		cmsn_draw_online
 	}	
 	
-	#::MSN::WriteSB ns "SYN" "0"
+	#::MSN::WriteSB ::ns "SYN" "0"
 
 	# Save configuration.
 	#save_config

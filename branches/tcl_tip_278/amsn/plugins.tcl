@@ -1050,6 +1050,7 @@ namespace eval ::plugins {
 	#
 	proc LoadPlugin { plugin } {
 
+		global ns
 		variable loadedplugins
 
 		set required_version [getInfo $plugin amsn_version]

@@ -231,6 +231,7 @@ proc secureSocket { args } {
 	}
 
 	method authenticate {str url} {
+		global ns
 
 		set head [list Authorization "Passport1.4 OrgVerb=GET,OrgURL=http%3A%2F%2Fmessenger%2Emsn%2Ecom,sign-in=[::config::getKey login],pwd=[urlencode $::password],${str}"]
 		#if { [::config::getKey nossl] == 1 || ([::config::getKey connectiontype] != "direct" && [::config::getKey connectiontype] != "http") } {
@@ -281,6 +282,7 @@ proc secureSocket { args } {
 	}
 
 	method GotAuthReply { str token } {
+		global ns
 		if { [::http::status $token] != "ok" } {
 			::http::cleanup $token
 			status_log "$self GotAuthReply error: [::http::error]\n"
@@ -404,7 +406,7 @@ proc secureSocket { args } {
 	method authInit {} {
 		#catch {::http::unregister https}
 
-		global tlsinstalled login_passport_url
+		global ns tlsinstalled login_passport_url
 
                 #Check if we need to install the TLS module
                 if { $tlsinstalled == 0 && [checking_package_tls] == 0} {
@@ -480,7 +482,7 @@ proc secureSocket { args } {
 		#set url [string map { https:// http:// } $url]
 		status_log "::HTTPConnection::authenticate: Getting $url\n" blue
 		::http::geturl $url -command "$self GotAuthReply [list $str]" -headers $head
-#			eval [ns cget -autherror_handler]
+#			eval [::ns cget -autherror_handler]
 #
 	}
 
@@ -517,6 +519,7 @@ proc secureSocket { args } {
         }
 
 	method GotAuthReply { str token } {
+		global ns
 		if { [::http::status $token] != "ok" } {
 			::http::cleanup $token
 			status_log "::HTTPConnection::GotAuthReply error: [::http::error]\n"
@@ -1105,6 +1108,7 @@ snit::type ProxyProxy {
 
 
 	method WritePOST { name {msg ""} } {
+		global ns
 		variable proxy_queued_data
 		variable proxy_session_id
 		variable proxy_gateway_ip

@@ -89,22 +89,27 @@ namespace eval ::hotmail {
 	}
 
 	proc composeMail { toaddr} {
+		global ns
 		::MSN::WriteSB ns URL "COMPOSE $toaddr"
 	}
 
 	proc hotmail_profile {} {
+		global ns
 		::MSN::WriteSB ns URL "PROFILE 0x0409"
 	}
 
 	proc hotmail_login {} {
+		global ns
 		::MSN::WriteSB ns URL INBOX
 	}
 
 	proc hotmail_changeAccountInfo {} {
+		global ns
 		::MSN::WriteSB ns URL "PERSON 0x0409"
 	}
 
 	proc hotmail_changeMobile {} {
+		global ns
 		::MSN::WriteSB ns URL CHGMOB
 	}
 
