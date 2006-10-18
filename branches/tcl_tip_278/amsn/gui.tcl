@@ -5709,14 +5709,14 @@ proc paste { window {middle 0} } {
 
 #///////////////////////////////////////////////////////////////////////
 proc cmsn_draw_addcontact {} {
-	global lang 
+	global lang pcc
 
 	if {[winfo exists .addcontact]} {
 		catch {
 			raise .addcontact
 			focus .addcontact.email
 		}
-		set ::pcc 0
+		set pcc 0
 		return 0
 	}
 
@@ -5744,8 +5744,8 @@ proc cmsn_draw_addcontact {} {
 	frame .addcontact.b
 	button .addcontact.b.next -text "[trans next]->" -command addcontact_next
 	button .addcontact.b.cancel -text [trans cancel] \
-		-command "set ::pcc 0; destroy .addcontact"
-	bind .addcontact <<Escape>> "set ::pcc 0; destroy .addcontact"
+		-command "set pcc 0; destroy .addcontact"
+	bind .addcontact <<Escape>> "set pcc 0; destroy .addcontact"
 	pack .addcontact.b.next .addcontact.b.cancel -side right -padx 5
 
 	pack .addcontact.l -side top -anchor sw -padx 10 -pady 3

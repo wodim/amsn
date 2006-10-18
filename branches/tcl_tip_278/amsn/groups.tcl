@@ -310,7 +310,6 @@ namespace eval ::groups {
 	#
 	# ----------------- Callbacks -------------------
 	proc RenameCB {pdu} {  # REG 25 12066 15 New%20Name 0
-		global pgc
 		#variable groups
 		array set groups [::abook::getContactData contactlist groups]
 	
@@ -614,6 +613,7 @@ namespace eval ::groups {
 	}
 
 	proc Rename { old new {ghandler ""}} {
+		global pgc
 		set old [string trim $old]
 		set new [string trim $new]
 	

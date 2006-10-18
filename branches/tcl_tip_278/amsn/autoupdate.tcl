@@ -511,8 +511,8 @@ namespace eval ::autoupdate {
 	package require http
 
 	proc check_web_version { token } {
-		global rcversion weburl
-		if { ![info exists rcversion] } { set rcversion $::version }
+		global version rcversion weburl
+		if { ![info exists rcversion] } { set rcversion $version }
 
 		set newer 0
 

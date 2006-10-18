@@ -1181,7 +1181,7 @@ proc GroupSelectedIs { lfgroup lfcontact } {
 proc RefreshGroupList { lfgroup lfcontact } {
 	global pgc
 	if { $pgc == 1 } {
-		vwait ::pgc
+		vwait pgc
 	}
 	set pgc 1
 	destroy $lfgroup.lbgroup.fix
@@ -1279,7 +1279,7 @@ proc DeleteContactList { lfcontact } {
 proc RefreshContactList { lfcontact } {
 	global pcc
 	if { $pcc == 1 } {
-		vwait ::pcc
+		vwait pcc
 	}
 	set pcc 1
 	DeleteContactList $lfcontact
