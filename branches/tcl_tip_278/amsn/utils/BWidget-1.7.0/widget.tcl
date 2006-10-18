@@ -59,25 +59,25 @@
 package require Tcl 8.1.1
 
 namespace eval Widget {
+    variable _optiontype
+    variable _class
+    variable _tk_widget
 
-variable _optiontype
-variable _class
-variable _tk_widget
+    array set _optiontype {
+        TkResource Widget::_test_tkresource
+        BwResource Widget::_test_bwresource
+        Enum       Widget::_test_enum
+        Int        Widget::_test_int
+        Boolean    Widget::_test_boolean
+        String     Widget::_test_string
+        Flag       Widget::_test_flag
+        Synonym    Widget::_test_synonym
+        Color      Widget::_test_color
+        Padding    Widget::_test_padding
+    }
 
-array set _optiontype {
-	TkResource _test_tkresource
-	BwResource _test_bwresource
-	Enum       _test_enum
-	Int        _test_int
-	Boolean    _test_boolean
-	String     _test_string
-	Flag       _test_flag
-	Synonym    _test_synonym
-	Color      _test_color
-	Padding    _test_padding
+    proc use {} {}
 }
-
-proc use {} {}
 
 
 
@@ -89,7 +89,7 @@ proc use {} {}
 #  subpath    subpath to configure
 #  args       additionnal args for included options
 # ----------------------------------------------------------------------------
-proc tkinclude { class tkwidget subpath args } {
+proc Widget::tkinclude { class tkwidget subpath args } {
     foreach {cmd lopt} $args {
         # cmd can be
         #   include      options to include            lopt = {opt ...}
@@ -196,7 +196,7 @@ proc tkinclude { class tkwidget subpath args } {
 #  subpath  subpath to configure
 #  args     additionnal args for included options
 # ----------------------------------------------------------------------------
-proc bwinclude { class subclass subpath args } {
+proc Widget::bwinclude { class subclass subpath args } {
     foreach {cmd lopt} $args {
         # cmd can be
         #   include      options to include            lopt = {opt ...}
@@ -305,7 +305,7 @@ proc bwinclude { class subclass subpath args } {
 #  Command Widget::declare
 #    Declares new options to BWidget class.
 # ----------------------------------------------------------------------------
-proc declare { class optlist } {
+proc Widget::declare { class optlist } {
     variable _optiontype
 
     namespace eval $class {}
@@ -399,7 +399,7 @@ proc declare { class optlist } {
 }
 
 
-proc define { class filename args } {
+proc Widget::define { class filename args } {
     variable ::BWidget::use
     set use($class)      $args
     set use($class,file) $filename
@@ -411,14 +411,14 @@ proc define { class filename args } {
 	interp alias {} ::${class} {} ${class}::create
 	proc ::${class}::use {} {}
 
-	bind $class <Destroy> [list ::Widget::destroy %W]
+	bind $class <Destroy> [list Widget::destroy %W]
     }
 
     foreach class $args { ${class}::use }
 }
 
 
-proc create { class path {rename 1} } {
+proc Widget::create { class path {rename 1} } {
     if {$rename} { rename $path ::$path:cmd }
     proc ::$path { cmd args } \
     	[subst {return \[eval \[linsert \$args 0 ${class}::\$cmd [list $path]\]\]}]
@@ -429,7 +429,7 @@ proc create { class path {rename 1} } {
 # ----------------------------------------------------------------------------
 #  Command Widget::addmap
 # ----------------------------------------------------------------------------
-proc addmap { class subclass subpath options } {
+proc Widget::addmap { class subclass subpath options } {
     upvar 0 ${class}::opt classopt
     upvar 0 ${class}::optionExports exports
     upvar 0 ${class}::optionClass optionClass
@@ -458,7 +458,7 @@ proc addmap { class subclass subpath options } {
 # ----------------------------------------------------------------------------
 #  Command Widget::syncoptions
 # ----------------------------------------------------------------------------
-proc syncoptions { class subclass subpath options } {
+proc Widget::syncoptions { class subclass subpath options } {
     upvar 0 ${class}::sync classync
 
     foreach {option realopt} $options {
@@ -473,7 +473,7 @@ proc syncoptions { class subclass subpath options } {
 # ----------------------------------------------------------------------------
 #  Command Widget::init
 # ----------------------------------------------------------------------------
-proc init { class path options } {
+proc Widget::init { class path options } {
     variable _inuse
 	variable _class
 	variable _optiontype
@@ -563,10 +563,9 @@ proc init { class path options } {
 # ----------------------------------------------------------------------------
 #  Command Widget::copyinit
 # ----------------------------------------------------------------------------
-proc copyinit { class templatepath path options } {
+proc Widget::copyinit { class templatepath path options } {
 	variable _class
 	variable _optiontype
-
     upvar 0 ${class}::opt classopt \
 	    ${class}::$path:opt	 pathopt \
 	    ${class}::$path:mod	 pathmod \
@@ -622,9 +621,8 @@ proc copyinit { class templatepath path options } {
 #	result	keyed list of portions of the megawidget and that segment of
 #		the command line in which that portion is interested.
 
-proc parseArgs {class options} {
+proc Widget::parseArgs {class options} {
 	variable _optiontype
-
     upvar 0 ${class}::opt classopt
     upvar 0 ${class}::map classmap
     
@@ -641,7 +639,7 @@ proc parseArgs {class options} {
         }
 	if { [string equal $type "TkResource"] } {
 	    # Make sure that the widget used for this TkResource exists
-	    _get_tkwidget_options [lindex [lindex $optdesc 3] 0]
+	    Widget::_get_tkwidget_options [lindex [lindex $optdesc 3] 0]
 	}
 	set val [$_optiontype($type) $option $val [lindex $optdesc 3]]
 		
@@ -669,7 +667,7 @@ proc parseArgs {class options} {
 # Results:
 #	None.
 
-proc initFromODB {class path options} {
+proc Widget::initFromODB {class path options} {
     variable _inuse
     variable _class
 
@@ -730,7 +728,7 @@ proc initFromODB {class path options} {
 # ----------------------------------------------------------------------------
 #  Command Widget::destroy
 # ----------------------------------------------------------------------------
-proc destroy { path } {
+proc Widget::destroy { path } {
     variable _class
     variable _inuse
 
@@ -766,7 +764,7 @@ proc destroy { path } {
 # ----------------------------------------------------------------------------
 #  Command Widget::configure
 # ----------------------------------------------------------------------------
-proc configure { path options } {
+proc Widget::configure { path options } {
     set len [llength $options]
     if { $len <= 1 } {
         return [_get_configure $path $options]
@@ -823,10 +821,9 @@ proc configure { path options } {
 # ----------------------------------------------------------------------------
 #  Command Widget::cget
 # ----------------------------------------------------------------------------
-proc cget { path option } {
+proc Widget::cget { path option } {
 	variable _class
-
-    if { ![info exists _class($path)] } {
+    if { ![info exists ::Widget::_class($path)] } {
         return -code error "unknown widget $path"
     }
 
@@ -854,9 +851,8 @@ proc cget { path option } {
 # ----------------------------------------------------------------------------
 #  Command Widget::subcget
 # ----------------------------------------------------------------------------
-proc subcget { path subwidget } {
+proc Widget::subcget { path subwidget } {
 	variable _class
-
     set class $_class($path)
     upvar 0 ${class}::$path:opt pathopt
     upvar 0 ${class}::map$subwidget submap
@@ -875,23 +871,21 @@ proc subcget { path subwidget } {
 # ----------------------------------------------------------------------------
 #  Command Widget::hasChanged
 # ----------------------------------------------------------------------------
-proc hasChanged { path option pvalue } {
+proc Widget::hasChanged { path option pvalue } {
 	variable _class
-
     upvar    $pvalue value
     set class $_class($path)
     upvar 0 ${class}::$path:mod pathmod
 
-    set value   [cget $path $option]
+    set value   [Widget::cget $path $option]
     set result  $pathmod($option)
     set pathmod($option) 0
 
     return $result
 }
 
-proc hasChangedX { path option args } {
+proc Widget::hasChangedX { path option args } {
 	variable _class
-
     set class $_class($path)
     upvar 0 ${class}::$path:mod pathmod
 
@@ -909,27 +903,26 @@ proc hasChangedX { path option args } {
 # ----------------------------------------------------------------------------
 #  Command Widget::setoption
 # ----------------------------------------------------------------------------
-proc setoption { path option value } {
+proc Widget::setoption { path option value } {
 #    variable _class
 
 #    set class $_class($path)
 #    upvar 0 ${class}::$path:opt pathopt
 
 #    set pathopt($option) $value
-    configure $path [list $option $value]
+    Widget::configure $path [list $option $value]
 }
 
 
 # ----------------------------------------------------------------------------
 #  Command Widget::getoption
 # ----------------------------------------------------------------------------
-proc getoption { path option } {
-#	 variable _class
-#    set class $_class($path)
+proc Widget::getoption { path option } {
+#    set class $::Widget::_class($path)
 #    upvar 0 ${class}::$path:opt pathopt
 
 #    return $pathopt($option)
-    return [cget $path $option]
+    return [Widget::cget $path $option]
 }
 
 # Widget::getMegawidgetOption --
@@ -945,7 +938,7 @@ proc getoption { path option } {
 # Results:
 #	value	option value.
 
-proc getMegawidgetOption {path option} {
+proc Widget::getMegawidgetOption {path option} {
 	variable _class
     set class $_class($path)
     upvar 0 ${class}::${path}:opt pathopt
@@ -966,7 +959,7 @@ proc getMegawidgetOption {path option} {
 # Results:
 #	value	option value.
 
-proc setMegawidgetOption {path option value} {
+proc Widget::setMegawidgetOption {path option value} {
 	variable _class
     set class $_class($path)
     upvar 0 ${class}::${path}:opt pathopt
@@ -977,7 +970,7 @@ proc setMegawidgetOption {path option value} {
 #  Command Widget::_get_window
 #  returns the window corresponding to widget path
 # ----------------------------------------------------------------------------
-proc _get_window { class path } {
+proc Widget::_get_window { class path } {
     set idx [string last "#" $path]
     if { $idx != -1 && [string equal [string range $path [expr {$idx+1}] end] $class] } {
         return [string range $path 0 [expr {$idx-1}]]
@@ -992,7 +985,7 @@ proc _get_window { class path } {
 #  returns the configuration list of options
 #  (as tk widget do - [$w configure ?option?])
 # ----------------------------------------------------------------------------
-proc _get_configure { path options } {
+proc Widget::_get_configure { path options } {
     variable _class
 
     set class $_class($path)
@@ -1054,7 +1047,7 @@ proc _get_configure { path options } {
 # ----------------------------------------------------------------------------
 #  Command Widget::_configure_option
 # ----------------------------------------------------------------------------
-proc _configure_option { option altopt } {
+proc Widget::_configure_option { option altopt } {
     variable _optiondb
     variable _optionclass
 
@@ -1081,7 +1074,7 @@ proc _configure_option { option altopt } {
 # ----------------------------------------------------------------------------
 #  Command Widget::_get_tkwidget_options
 # ----------------------------------------------------------------------------
-proc _get_tkwidget_options { tkwidget } {
+proc Widget::_get_tkwidget_options { tkwidget } {
     variable _tk_widget
     variable _optiondb
     variable _optionclass
@@ -1133,7 +1126,7 @@ proc _get_tkwidget_options { tkwidget } {
 # ----------------------------------------------------------------------------
 #  Command Widget::_test_tkresource
 # ----------------------------------------------------------------------------
-proc _test_tkresource { option value arg } {
+proc Widget::_test_tkresource { option value arg } {
 #    set tkwidget [lindex $arg 0]
 #    set realopt  [lindex $arg 1]
     foreach {tkwidget realopt} $arg break
@@ -1150,7 +1143,7 @@ proc _test_tkresource { option value arg } {
 # ----------------------------------------------------------------------------
 #  Command Widget::_test_bwresource
 # ----------------------------------------------------------------------------
-proc _test_bwresource { option value arg } {
+proc Widget::_test_bwresource { option value arg } {
     return -code error "bad option type BwResource in widget"
 }
 
@@ -1158,14 +1151,14 @@ proc _test_bwresource { option value arg } {
 # ----------------------------------------------------------------------------
 #  Command Widget::_test_synonym
 # ----------------------------------------------------------------------------
-proc _test_synonym { option value arg } {
+proc Widget::_test_synonym { option value arg } {
     return -code error "bad option type Synonym in widget"
 }
 
 # ----------------------------------------------------------------------------
 #  Command Widget::_test_color
 # ----------------------------------------------------------------------------
-proc _test_color { option value arg } {
+proc Widget::_test_color { option value arg } {
     if {[catch {winfo rgb . $value} color]} {
         return -code error "bad $option value \"$value\": must be a colorname \
 		or #RRGGBB triplet"
@@ -1178,7 +1171,7 @@ proc _test_color { option value arg } {
 # ----------------------------------------------------------------------------
 #  Command Widget::_test_string
 # ----------------------------------------------------------------------------
-proc _test_string { option value arg } {
+proc Widget::_test_string { option value arg } {
     set value
 }
 
@@ -1186,7 +1179,7 @@ proc _test_string { option value arg } {
 # ----------------------------------------------------------------------------
 #  Command Widget::_test_flag
 # ----------------------------------------------------------------------------
-proc _test_flag { option value arg } {
+proc Widget::_test_flag { option value arg } {
     set len [string length $value]
     set res ""
     for {set i 0} {$i < $len} {incr i} {
@@ -1205,7 +1198,7 @@ proc _test_flag { option value arg } {
 # -----------------------------------------------------------------------------
 #  Command Widget::_test_enum
 # -----------------------------------------------------------------------------
-proc _test_enum { option value arg } {
+proc Widget::_test_enum { option value arg } {
     if { [lsearch $arg $value] == -1 } {
         set last [lindex   $arg end]
         set sub  [lreplace $arg end end]
@@ -1223,7 +1216,7 @@ proc _test_enum { option value arg } {
 # -----------------------------------------------------------------------------
 #  Command Widget::_test_int
 # -----------------------------------------------------------------------------
-proc _test_int { option value arg } {
+proc Widget::_test_int { option value arg } {
     if { ![string is int -strict $value] || \
 	    ([string length $arg] && \
 	    ![expr [string map [list %d $value] $arg]]) } {
@@ -1237,7 +1230,7 @@ proc _test_int { option value arg } {
 # -----------------------------------------------------------------------------
 #  Command Widget::_test_boolean
 # -----------------------------------------------------------------------------
-proc _test_boolean { option value arg } {
+proc Widget::_test_boolean { option value arg } {
     if { ![string is boolean -strict $value] } {
         return -code error "bad $option value \"$value\": must be boolean"
     }
@@ -1250,7 +1243,7 @@ proc _test_boolean { option value arg } {
 # -----------------------------------------------------------------------------
 #  Command Widget::_test_padding
 # -----------------------------------------------------------------------------
-proc _test_padding { option values arg } {
+proc Widget::_test_padding { option values arg } {
     set len [llength $values]
     if {$len < 1 || $len > 2} {
         return -code error "bad pad value \"$values\":\
@@ -1281,8 +1274,8 @@ proc _test_padding { option values arg } {
 #
 # Results:
 #	Return a numeric value that can be used for padding.
-proc _get_padding { path option {index 0} } {
-    set pad [cget $path $option]
+proc Widget::_get_padding { path option {index 0} } {
+    set pad [Widget::cget $path $option]
     set val [lindex $pad $index]
     if {$val == ""} { set val [lindex $pad 0] }
     return $val
@@ -1293,7 +1286,7 @@ proc _get_padding { path option {index 0} } {
 #  Command Widget::focusNext
 #  Same as tk_focusNext, but call Widget::focusOK
 # -----------------------------------------------------------------------------
-proc focusNext { w } {
+proc Widget::focusNext { w } {
     set cur $w
     while 1 {
 
@@ -1339,7 +1332,7 @@ proc focusNext { w } {
 #  Command Widget::focusPrev
 #  Same as tk_focusPrev, but call Widget::focusOK
 # -----------------------------------------------------------------------------
-proc focusPrev { w } {
+proc Widget::focusPrev { w } {
     set cur $w
     while 1 {
 
@@ -1384,7 +1377,7 @@ proc focusPrev { w } {
 #  Command Widget::focusOK
 #  Same as tk_focusOK, but handles -editable option and whole tags list.
 # ----------------------------------------------------------------------------
-proc focusOK { w } {
+proc Widget::focusOK { w } {
     set code [catch {$w cget -takefocus} value]
     if { $code == 1 } {
         return 0
@@ -1425,7 +1418,7 @@ proc focusOK { w } {
 }
 
 
-proc traverseTo { w } {
+proc Widget::traverseTo { w } {
     set focus [focus]
     if {![string equal $focus ""]} {
 	event generate $focus <<TraverseOut>>
@@ -1438,7 +1431,7 @@ proc traverseTo { w } {
 
 # Widget::varForOption --
 #
-#	Retrieve a relative variable name for the option specified.
+#	Retrieve a fully qualified variable name for the option specified.
 #	If the option is not one for which a variable exists, throw an error 
 #	(ie, those options that map directly to widget options).
 #
@@ -1449,7 +1442,7 @@ proc traverseTo { w } {
 # Results:
 #	varname	name of the variable, fully qualified, suitable for tracing.
 
-proc varForOption {path option} {
+proc Widget::varForOption {path option} {
     variable _class
     variable _optiontype
 
@@ -1459,7 +1452,7 @@ proc varForOption {path option} {
     if { ![info exists pathopt($option)] } {
 	error "unable to find variable for option \"$option\""
     }
-    set varname "${class}::$path:opt($option)"
+    set varname "::Widget::${class}::$path:opt($option)"
     return $varname
 }
 
@@ -1474,7 +1467,7 @@ proc varForOption {path option} {
 #
 # Results:
 #	Creates a reference to newVarName in the calling proc.
-proc getVariable { path varName {newVarName ""} } {
+proc Widget::getVariable { path varName {newVarName ""} } {
     variable _class
     set class $_class($path)
     if {![string length $newVarName]} { set newVarName $varName }
@@ -1493,7 +1486,7 @@ proc getVariable { path varName {newVarName ""} } {
 #
 # Results:
 #	Returns list of options as: -option value -option value ...
-proc options { path args } {
+proc Widget::options { path args } {
     if {[llength $args]} {
         foreach option $args {
             lappend options [_get_configure $path $option]
@@ -1529,10 +1522,10 @@ proc options { path args } {
 # Results:
 #	Returns the value of the given option to use.
 #
-proc getOption { option default args } {
+proc Widget::getOption { option default args } {
     for {set i [expr [llength $args] -1]} {$i >= 0} {incr i -1} {
 	set widget [lindex $args $i]
-	set value  [cget $widget $option]
+	set value  [Widget::cget $widget $option]
 	if {[string equal $value $default]} { continue }
 	return $value
     }
@@ -1540,16 +1533,14 @@ proc getOption { option default args } {
 }
 
 
-proc nextIndex { path node } {
-    getVariable $path autoIndex
+proc Widget::nextIndex { path node } {
+    Widget::getVariable $path autoIndex
     if {![info exists autoIndex]} { set autoIndex -1 }
     return [string map [list #auto [incr autoIndex]] $node]
 }
 
 
-proc exists { path } {
+proc Widget::exists { path } {
     variable _class
     return [info exists _class($path)]
 }
-
-} ;# end of namespace Widget
