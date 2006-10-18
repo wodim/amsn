@@ -5881,7 +5881,7 @@ proc newcontact {new_login new_name} {
 #///////////////////////////////////////////////////////////////////////
 
 proc newcontact_ok { w x0 x1 } {
-	global ns newc_allow_block_$w newc_add_to_list_$w
+	global newc_allow_block_$w newc_add_to_list_$w
 	set newc_allow_block [set newc_allow_block_$w]
 	set newc_add_to_list [set newc_add_to_list_$w]
 
@@ -6161,7 +6161,6 @@ proc create_users_list_popup { path list x y} {
 }
 
 proc AddToContactList { user path } {
-	global ns
 	if { [NotInContactList "$user"] } {
 		if { [::config::getKey protocol] == 11 } {
 			::MSN::WriteSB ns "ADC" "FL N=$user F=$user"
@@ -6174,7 +6173,6 @@ proc AddToContactList { user path } {
 }
 
 proc Remove_from_list { list user } {
-	global ns
 	if { [::config::getKey protocol] == 11 && $list == "contact" } {
 		set user [::abook::getContactData $user contactguid]
 	}
@@ -6188,7 +6186,6 @@ proc Remove_from_list { list user } {
 }
 
 proc Add_To_List { path list } {
-	global ns
 	set username [$path.adding.enter get]
 
 	if { [string match "*@*" $username] == 0 } {
@@ -6250,7 +6247,7 @@ proc AllowAllUsers { state } {
 }
 
 proc updateAllowAllUsers { } {
-	global ns list_BLP
+	global list_BLP
 
 	if { $list_BLP == 1 } {
 		::MSN::WriteSB ns "BLP" "AL"

@@ -101,7 +101,6 @@ namespace eval ::abook {
 	# for the user and not for the buddies!
 	# The value is urlencoded by this routine
 	proc setPhone { item value } {
-		global ns
 		switch $item {
 			home { ::MSN::WriteSB ns PRP "PHH $value" }
 			work { ::MSN::WriteSB ns PRP "PHW $value" }
@@ -204,7 +203,6 @@ namespace eval ::abook {
 
 	# This proc will get the localip (private ip, NAT or not)
 	proc getLocalIP { } {
-		global ns
 		set sk [ns cget -sock]
 
 		if { $sk != "" } {
@@ -947,8 +945,6 @@ namespace eval ::abook {
 	}
 	
 	proc importContactList { ImportedContact } {
-		global ns
-	
 		foreach contact $ImportedContact {
 			status_log "Importation of contacts : $contact\n" red
 			if { [::config::getKey protocol] >= 11 } {

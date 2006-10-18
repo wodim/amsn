@@ -920,11 +920,8 @@ namespace eval ::MSN {
 
 
 	proc connect { {passwd ""}} {
-		global ns
-
 		#Cancel any pending reconnect
 		after cancel ::MSN::connect
-
 
 		if { [ns cget -stat] != "d" } {
 			return
@@ -954,8 +951,6 @@ namespace eval ::MSN {
 
 
 	proc logout {} {
-		global ns
-
 		::abook::lastSeen
 
 		::log::eventlogout
@@ -1055,7 +1050,6 @@ namespace eval ::MSN {
 
 	#Callback procedure called when a ADC message is received
 	proc GotADCResponse { recv } {
-		global ns
 		set username ""
 		set nickname ""
 		set contactguid ""
@@ -1154,8 +1148,6 @@ namespace eval ::MSN {
 
 	#Handler when we're setting our nick, so we check if the nick is allowed or not
 	proc badNickCheck { userlogin newname recv } {
-		global ns
-
 		switch [lindex $recv 0] {
 			PRP {
 				ns handlePRPResponse $recv
@@ -1176,8 +1168,6 @@ namespace eval ::MSN {
 
 	#Change a users nickname
 	proc changeName { userlogin newname { nourlencode 0 } } {
-		global ns
-
 		if { $userlogin == "" } {
 			return
 		}
@@ -1205,7 +1195,6 @@ namespace eval ::MSN {
 
 	#Change a users personal message
 	proc changePSM { newpsm { forcechange 0 } } {
-		global ns
 		#TODO: encode XML etc
 		if { [::config::getKey protocol] == 11 } {
 			if { [::abook::getPersonal PSM] != $newpsm || $forcechange } {
@@ -1233,7 +1222,6 @@ namespace eval ::MSN {
 	#format: A formatter string ala .Net; For example: {0} - {1}
 	#args: list with the other things, first will match {0} in format	
 	proc changeCurrentMedia { type enabled format args } {
-		global ns
 		set psm [::abook::getPersonal PSM]
 		set psm [::sxml::xmlreplace $psm]
 		if {$enabled == 1} {
@@ -1250,7 +1238,7 @@ namespace eval ::MSN {
 
 	#Procedure called to change our status
 	proc changeStatus {new_status} {
-		global ns autostatuschange
+		global autostatuschange
 
 #		set clientid 805306412
 		if {[::config::getKey displaypic] == "" } {
@@ -1380,7 +1368,6 @@ namespace eval ::MSN {
 	}
 
 	proc blockUser { userlogin username} {
-		global ns
 		::MSN::WriteSB ns REM "AL $userlogin"
 		if {[::config::getKey protocol] == 11} {
 			::MSN::WriteSB ns ADC "BL N=$userlogin"
@@ -1392,7 +1379,6 @@ namespace eval ::MSN {
 	}
 
 	proc unblockUser { userlogin username} {
-		global ns
 		::MSN::WriteSB ns REM "BL $userlogin"
 		if {[::config::getKey protocol] == 11} {
 			::MSN::WriteSB ns ADC "AL N=$userlogin"
@@ -1405,7 +1391,6 @@ namespace eval ::MSN {
 
 	# Move user from one group to another group
 	proc moveUser { passport oldGid newGid {userName ""}} {
-		global ns
 		if { $userName == "" } {
 			set userName $passport
 		}
@@ -1427,7 +1412,6 @@ namespace eval ::MSN {
 
 	#Copy user from one group to another
 	proc copyUser { passport newGid {userName ""}} {
-		global ns
 		if { $userName == "" } {
 			set userName $passport
 		}
@@ -1445,7 +1429,6 @@ namespace eval ::MSN {
 
 	#Add user to our Forward (contact) list
 	proc addUser { userlogin {username ""} {gid 0} } {
-		global ns
 		set userlogin [string map {" " ""} $userlogin]
 		if {[string match "*@*" $userlogin] < 1 } {
 			set domain "@hotmail.com"
@@ -1509,7 +1492,6 @@ namespace eval ::MSN {
 	}
 
 	proc MOVHandler { oldGid contactguid passport item } {
-			global ns
 			::MSN::GotADCResponse $item
                         if { $oldGid != "0" } {
                                 set rtrid [::MSN::WriteSB ns "REM" "FL $contactguid $oldGid"]
@@ -1521,7 +1503,6 @@ namespace eval ::MSN {
 
 	#Delete user (from a given group $grID, or from all groups)
 	proc deleteUser { userlogin {grId ""}} {
-		global ns
 		if { [::config::getKey protocol] == 11 } {
 			if { $grId == "0" } {
 				#We remove from every where
@@ -1571,7 +1552,6 @@ namespace eval ::MSN {
 
 	#Send a keepalive message
 	proc PollConnection {} {
-		global ns
 		variable pollstatus
 		#Let's try to keep the connection alive... sometimes it gets closed if we
 		#don't do send or receive something for a long time
@@ -1620,8 +1600,6 @@ namespace eval ::MSN {
 	}
 
 	proc WriteSBRaw {sbn cmd} {
-		global ns
-
 		if { $sbn == 0 } {
 			return
 		}
@@ -1778,8 +1756,6 @@ namespace eval ::MSN {
 	#Called when we find a "" (empty string) in the SB buffer. This means
 	#the SB is closed. Proceed to clear everything related to it
 	proc ClearSB { sb } {
-		global ns
-
 		status_log "::MSN::ClearSB $sb called\n" green
 
 		set oldstat [$sb cget -stat]
@@ -1855,8 +1831,6 @@ namespace eval ::MSN {
 	########################################################################
 	#Answer the server challenge. This is a handler for CHL message
 	proc AnswerChallenge { item } {
-		global ns
-
 		if { [lindex $item 1] != 0 } {
 			status_log "Invalid challenge\n" red
 		} else {
@@ -3717,7 +3691,7 @@ namespace eval ::Event {
 	}
 
 	method handleLST { command } {
-		global ns contactlist_loaded
+		global contactlist_loaded
 		global loading_list_info
 
 		set contactlist_loaded 0
@@ -4530,8 +4504,6 @@ proc cmsn_connected_sb {sb recv} {
 
 
 proc cmsn_reconnect { sb } {
-	global ns
-
 	switch [$sb cget -stat] {
 		"n" {
 
@@ -4813,7 +4785,7 @@ proc cmsn_update_users {sb recv} {
 
 #TODO: ::abook system
 proc cmsn_change_state {recv} {
-	global ns remote_auth HOME
+	global remote_auth HOME
 
 	if {[lindex $recv 0] == "FLN"} {
 		#User is going offline
@@ -5113,7 +5085,7 @@ proc cmsn_change_state {recv} {
 
 
 proc cmsn_ns_handler {item {message ""}} {
-	global ns list_cmdhnd password
+	global list_cmdhnd password
 
 	set ret_trid [lindex $item 1]
 	set idx [lsearch $list_cmdhnd "$ret_trid *"]
@@ -5566,7 +5538,7 @@ proc cmsn_listdel {recv} {
 
 
 proc cmsn_auth {{recv ""}} {
-	global ns HOME info
+	global HOME info
 
 	status_log "cmsn_auth starting, stat=[ns cget -stat]\n" blue
 
@@ -5798,28 +5770,21 @@ proc initial_syn_handler {recv} {
 }
 
 proc msnp9_userpass_error {} {
-	global ns
-
 	ns configure -stat "closed"
 	::MSN::logout
 	status_log "Error: User/Password\n" red
 	::amsn::errorMsg "[trans baduserpass]"
-
 }
 
 proc msnp9_auth_error {} {
-
 	status_log "Error connecting to server\n"
 	::MSN::logout
 	::amsn::errorMsg "[trans connecterror]"
-
 }
 
 
 
 proc msnp9_authenticate { ticket } {
-	global ns
-
 	if {[ns cget -stat] == "u" } {
 		::MSN::WriteSB ns "USR" "TWN S $ticket"
 		set ::authentication_ticket $ticket
@@ -5886,7 +5851,6 @@ proc ::MSN::SendRecordingUserNotification { chatid } {
 
 
 proc ns_enter {} {
-	global ns
 	set command "[.status.enter get]"
 	.status.enter delete 0 end
 	status_log "Executing : $command\n"
@@ -6005,8 +5969,6 @@ proc cmsn_socket {name} {
 }
 
 proc cmsn_ns_connected {sock} {
-	global ns
-
 	fileevent $sock writable ""
 	set error_msg ""
 	set therewaserror [catch {set error_msg [fconfigure [ns cget -sock] -error]} res]
@@ -6029,8 +5991,6 @@ proc cmsn_ns_connected {sock} {
 
 #TODO: ::abook system
 proc cmsn_ns_connect { username {password ""} {nosignin ""} } {
-	global ns
-
 	if { ($username == "") || ($password == "")} {
 		cmsn_draw_login
 		return -1
@@ -8000,7 +7960,6 @@ namespace eval ::MSNMobile {
     }
 
     proc MessageSend { chatid txt } {
-		global ns
 
 	set name [string range $chatid 7 end]
 

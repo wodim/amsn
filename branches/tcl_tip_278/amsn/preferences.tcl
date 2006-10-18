@@ -2982,7 +2982,7 @@ proc setCfgFonts {path value} {
 
 proc SavePreferences {} {
 	global auto_path HOME2 tlsinstalled
-	global ns myconfig proxy_server proxy_port list_BLP temp_BLP Preftabs libtls proxy_user proxy_pass pager
+	global myconfig proxy_server proxy_port list_BLP temp_BLP Preftabs libtls proxy_user proxy_pass pager
 
 	set nb .cfg.notebook
 

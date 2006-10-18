@@ -613,7 +613,7 @@ namespace eval ::groups {
 	}
 
 	proc Rename { old new {ghandler ""}} {
-		global pgc ns
+		global pgc
 		set old [string trim $old]
 		set new [string trim $new]
 	
@@ -659,7 +659,7 @@ namespace eval ::groups {
 	}
 
 	proc Add { gname {ghandler ""}} {
-		global pgc ns
+		global pgc
 		if {[::groups::Exists $gname]} {
 			if {$ghandler != ""} {
 				set retval [eval "$ghandler \"[trans groupexists]!\""]
@@ -705,7 +705,7 @@ namespace eval ::groups {
 
         
 	proc Delete { gid {ghandler ""}} {
-		global pgc ns
+		global pgc
 		set gname [::groups::GetName $gid]
 		if {![::groups::Exists $gname]} {
 		if {$ghandler != ""} {
