@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>Music</name>
+	<author>Jerome Gagnon-Voyer, Boris Faure (billiob) and Le Philousophe</author>
+	<description>Music plugin compatible with iTunes, XMMS, Amarok and Winamp. Show current playing song in nickname and show/send current playing song from the chatwindow. Mac OS X, Linux or Windows</description>
+	<description_fr>Le plugin Music est compatible avec plusieurs lecteurs audio (configurez le plugin pour de plus amples informations). Il affiche la chanson jouée dans le pseudonyme, et permet de l'afficher ou de l'envoyer dans la fenêtre de conversation. Fonctionne sous Mac OS X, Linux ou Windows</description_fr>
+	<amsn_version>0.95</amsn_version>
+	<plugin_version>1.5</plugin_version>
+	<plugin_file>music.tcl</plugin_file>
+	<plugin_namespace>music</plugin_namespace>
+	<init_procedure>InitPlugin</init_procedure>
+	<deinit_procedure>DeInit</deinit_procedure>
+	<cvs_version>7257</cvs_version>
+
+	<lang>
+		<langcode>en</langcode>
+		<version>6846</version>
+	</lang>
+
+	<lang>
+		<langcode>fr</langcode>
+		<version>6846</version>
+	</lang>
+
+	<lang>
+		<langcode>fr_CA</langcode>
+		<version>6846</version>
+	</lang>
+
+	<lang>
+		<langcode>ee</langcode>
+		<version>6846</version>
+	</lang>
+
+	<lang>
+		<langcode>da</langcode>
+		<version>6846</version>
+	</lang>
+	
+	<lang>
+		<langcode>hu</langcode>
+		<version>6846</version>
+	</lang>
+
+	<lang>
+		<langcode>sv</langcode>
+		<version>7018</version>
+	</lang>
+	
+	<file>
+		<path>display_and_send.scpt</path>
+		<version>6998</version>
+	</file>
+
+	<file>
+		<path>infoamarok</path>
+		<version>6846</version>
+	</file>
+	
+	<file>
+		<path>inforhythmbox</path>
+		<version>6846</version>
+	</file>
+		
+	<file>
+		<path>infobanshee</path>
+		<version>6846</version>
+	</file>
+	<file>
+		<path>infolisten</path>
+		<version>7215</version>
+	</file>
+	
+	<file>
+		<path>MusicWA.exe</path>
+		<version>6846</version>
+	</file>
+	<file>
+		<path>readme.txt</path>
+		<version>6846</version>
+	</file>
+	<file>
+		<path>pixmaps/notesdispic.gif</path>
+		<version>6846</version>
+	</file>
+	<file>
+		<path>pixmaps/notespic.gif</path>
+		<version>6846</version>
+	</file>
+
+	<URL>
+		<main>http://amsn.sourceforge.net/autoupdater/plugins/music/music.tcl</main>
+		<plugininfo>http://amsn.sourceforge.net/autoupdater/plugins/music/plugininfo.xml</plugininfo>
+		<lang>http://amsn.sourceforge.net/autoupdater/plugins/music/lang/lang$langcode</lang>
+		<file>http://amsn.sourceforge.net/autoupdater/plugins/music/$file</file>
+	</URL>
+
+</plugin>

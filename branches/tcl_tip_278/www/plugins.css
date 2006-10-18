@@ -1,0 +1,41 @@
+ul.plugins
+{
+  margin: 0px;
+  padding: 0px;
+  background: #6e8cbf;
+  list-style: none
+}
+
+ul.plugins img
+{
+  width: 200px;
+  height: 200px;
+  margin-right: 10px;
+  padding: 0px;
+  color: #000;
+  background: #ececec
+}
+
+ul.plugins li
+{
+
+  margin: 0px;
+  padding: 5px 2px 5px 3px
+}
+
+li.plugintitle
+{
+  color: #fff;
+  background: #6e8cbf;
+  font-weight: bold
+}
+
+li.lg
+{
+  background: #ececec
+}
+
+li.dg
+{
+  background: #dfdfdf
+}

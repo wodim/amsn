@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>aMSN Plus</name>
+	<author>Mark & Jerome Gagnon-Voyer & Fred</author>
+	<description>aMSN Extension (commands in chat window, coloring nicks...)</description>
+	<amsn_version>0.94</amsn_version>
+	<plugin_version>2.6</plugin_version>
+	<plugin_file>amsnplus.tcl</plugin_file>
+	<plugin_namespace>amsnplus</plugin_namespace>
+	<init_procedure>amsnplusStart</init_procedure>
+	<deinit_procedure>amsnplusStop</deinit_procedure>
+
+	<cvs_version>7060</cvs_version>
+
+	<lang>
+		<langcode>ca</langcode>
+		<version>5039</version>
+	</lang>
+
+	<lang>
+		<langcode>en</langcode>
+		<version>5039</version>
+	</lang>
+
+	<lang>
+		<langcode>es</langcode>
+		<version>4158</version>
+	</lang>
+
+	<lang>
+		<langcode>fr</langcode>
+		<version>4956</version>
+	</lang>
+
+	<lang>
+		<langcode>it</langcode>
+		<version>5776</version>
+	</lang>
+
+	<lang>
+		<langcode>nl</langcode>
+		<version>4158</version>
+	</lang>
+
+	<lang>
+		<langcode>pt</langcode>
+		<version>4158</version>
+	</lang>
+
+	<file>
+		<path>pixmaps/multiple_colors.gif</path>
+		<version>3478</version>
+	</file>
+
+	<file>
+		<path>readme</path>
+		<version>5043</version>
+	</file>
+	
+	<file>
+		<path>Makefile</path>
+		<version>4956</version>
+	</file>
+
+	<file>
+		<path>snapshot.c</path>
+		<version>7045</version>
+	</file>
+	
+	<file>
+		<path>Snapshot.exe</path>
+		<version>4986</version>
+	</file>
+
+	<URL>
+		<main>http://amsn.sourceforge.net/autoupdater/plugins/amsnplus/amsnplus.tcl</main>
+		<plugininfo>http://amsn.sourceforge.net/autoupdater/plugins/amsnplus/plugininfo.xml</plugininfo>
+		<lang>http://amsn.sourceforge.net/autoupdater/plugins/amsnplus/lang/lang$langcode</lang>
+		<file>http://amsn.sourceforge.net/autoupdater/plugins/amsnplus/$file</file>
+	</URL>
+
+</plugin>

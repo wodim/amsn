@@ -1,0 +1,11 @@
+#! /bin/sh
+
+if [ -z `/sbin/pidof rhythmbox` ]; then
+	echo ""
+	echo ""
+	echo ""
+	echo -1
+else 
+		rhythmbox --print-playing --print-playing-artist --print-playing-path --print-song-length --no-focus
+fi
+exit 0
