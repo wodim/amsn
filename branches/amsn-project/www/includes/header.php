@@ -57,6 +57,8 @@ print ((stristr($navigator_user_agent, "konqueror")) || (stristr($navigator_user
       &nbsp;
 
 
+    <div id="blurb">
+       &nbsp;  <!--Spacing fix--> <br />
 
 <div class="top_ad">
 <script type="text/javascript"><!--
@@ -74,6 +76,6 @@ google_ad_channel ="7037776257";
 
 </div>
 
-    <div id="blurb">
-       &nbsp;  <!--Spacing fix--> <br />
+<!--    <div id="blurb">
+       &nbsp;  <!--Spacing fix--> <br /> -->
 

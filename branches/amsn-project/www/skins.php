@@ -13,9 +13,9 @@
 	and one way to customise it is to change its "skin". A skin changes the
 	look of aMSN. Here you can download skins developed by aMSN and by
 	contributors. <br /><br />
-        You can find instructions on how to install skins in our <a href="http://amsn.sourceforge.net/wiki/tiki-index.php?page=Installing+Plugins+and+Skins">skin and plugin installation guide</a>.
+        You can find instructions on how to install skins in our <a href="http://www.amsn-project.net/wiki/tiki-index.php?page=Installing+Plugins+and+Skins">skin and plugin installation guide</a>.
         <br /><br />
-        If you would like to submit your skin to this page, please read the <a href="http://amsn.sourceforge.net/wiki/tiki-index.php?page=Skin+and+plugin+submitting+guide">skin submitting guide</a>.
+        If you would like to submit your skin to this page, please read the <a href="http://www.amsn-project.net/wiki/tiki-index.php?page=Skin+and+plugin+submitting+guide">skin submitting guide</a>.
 	<br /><br />
 
 <a name="top">
@@ -52,7 +52,7 @@ if (!mysql_num_rows(($q = mysql_query("SELECT *  FROM `amsn_skins` ORDER BY `nam
 <?php 
 		if ($skin['screen']>0) {
 ?>
-    <li class="lg"><a href="http://amsn.sourceforge.net/wiki/show_image.php?id=<?php echo $skin['screen']?>"><strong>Screenshot</strong></a></li>
+    <li class="lg"><a href="http://www.amsn-project.net/wiki/show_image.php?id=<?php echo $skin['screen']?>"><strong>Screenshot</strong></a></li>
 <?php 
 		}
 		else {
