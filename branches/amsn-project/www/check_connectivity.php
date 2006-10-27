@@ -23,7 +23,7 @@ if(!isset($_GET['port']) || !is_numeric($_GET['port'])) {
 		return;
 	}
 
-	@socket_set_option( $socket, SOL_SOCKET, SO_SNDTIMEO, array("sec"=>10,"usec"=>0) );
+	@socket_set_option( $socket, SOL_SOCKET, SO_SNDTIMEO, array("sec"=>5,"usec"=>0) );
 
 	$result = @socket_connect($socket, addr(), $_GET['port']);
 
