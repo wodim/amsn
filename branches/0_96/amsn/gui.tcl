@@ -3780,9 +3780,10 @@ proc cmsn_draw_main {} {
 		bind . <Option-p> ::pluginslog::toggle
 		bind . <Option-P> ::pluginslog::toggle
 		#Minimize contact list
-		bind . <Command-m> "catch {carbon::processHICommand mini .}"
-		bind . <Command-M> "catch {carbon::processHICommand mini .}"
+		bind . <Command-m> "catch {wm state %W normal; carbon::processHICommand mini .}"
+		bind . <Command-M> "catch {wm state %W normal; carbon::processHICommand mini .}"
 		#Help
+		bind all <Command-/> "::amsn::showHelpFileWindow HELP [list [trans helpcontents]]"
 		bind all <Command-?> "::amsn::showHelpFileWindow HELP [list [trans helpcontents]]"
 		#Exit
 		bind all <Command-q> "exit"
