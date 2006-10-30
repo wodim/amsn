@@ -1459,7 +1459,7 @@ proc connection_check { lfname } {
 	if { [::abook::getFirewalled] == "Direct-Connect"} {
 		$lfname.1.ftport.test configure -text "[trans ok]"
 	} else {
-		$lfname.1.ftport.test configure -text "[trans failed]"
+		$lfname.1.ftport.test configure -text "[trans firewalled]"
 	}
 }
 

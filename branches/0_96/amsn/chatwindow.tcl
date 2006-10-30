@@ -1210,8 +1210,6 @@ namespace eval ::ChatWindow {
 	proc ShowHideChatWindowMenus { {window .} {toggle 0} } {
 	    variable chatWindowMenus
 
-	    puts "showhide"
-
 	    if {$toggle} { 
 		if { [::config::getKey showcwmenus -1] == -1 } {
 		    if { [ShowFirstTimeMenuHidingFeature $window] == 0 } {
