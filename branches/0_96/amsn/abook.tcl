@@ -229,38 +229,71 @@ namespace eval ::abook {
 	}
 
 	# This will create a server, and try to connect to it in order to see if firewalled or not
-	proc getFirewalled { port } {
+	proc getFirewalled { {port ""} } {
 		global connection_success
+		variable random_id
+
+		set random_id [expr rand()]
+		set random_id [expr {$random_id * 10000}]
+		set random_id [expr {int($random_id)}]
+
+		if { $port == "" } { set port $::config(initialftport) }
+
 		while { [catch {set sock [socket -server "abook::dummysocketserver" $port] } ] } {
 			incr port
 		}
 		status_log "::abook::getFirewalled: Connecting to [getDemographicField clientip] port $port\n" blue
 		
 		#Need this timeout thing to avoid the socket blocking...
-		set connection_success 0
-		if {[catch {set clientsock [socket -async [getDemographicField clientip] $port]}]} {
-			catch {close $sock}
-			return "Firewall"
-		}
+		set connection_success -2
+		
+		status_log "Connecting to http://www.amsn-project.net/check_connectivity.php?port=$port&id=$random_id" blue
+		set tok [::http::geturl "http://www.amsn-project.net/check_connectivity.php?port=$port&id=$random_id" -command "::abook::gotConnectivityReply"]
+		after 10000 [list catch [list ::http::reset $tok] ::abook::connectionTimeout]
+		tkwait variable connection_success
 
-		fileevent $clientsock readable [list ::abook::connectionHandler $clientsock]
-		after 1000 ::abook::connectionTimeout
-		vwait connection_success
-		if { $connection_success == 0 } {
-			catch {close $sock}
-			catch { close $clientsock }
-			return "Firewall"
-		} else {
-			catch {close $sock}
-			catch { close $clientsock }
+		status_log "::abook::getFirewalled: connection_success ($connection_success)\n" blue
+		
+		if { $connection_success == -1 } {
+			set connection_success -2
+			if {[catch {set clientsock [socket -async [getDemographicField clientip] $port]}] == 0} {
+				fileevent $clientsock readable [list ::abook::connectionHandler $clientsock]
+				after 1000 ::abook::connectionTimeout
+				tkwait variable connection_success
+				catch { close $clientsock }
+			}
+		}
+		
+		status_log "::abook::getFirewalled: connection_success ($connection_success)\n" blue
+		catch {close $sock}
+
+		if { $connection_success == 1 } {
 			return "Direct-Connect"
+		} else {
+			return "Firewall"
 		}
 	}
-	
+
+	proc gotConnectivityReply { token} {
+		global connection_success
+		if { [::http::status $token] != "ok" || [::http::ncode $token ] != 200 } {
+			set connection_success -1
+			status_log "::abook::gotConnectivityReply error : [http::status $token] - [::http::ncode $token]" green
+		} else {
+			set connection_success [::http::data $token]
+			status_log "::abook::gotConnectivityReply ok : [::http::data $token]" green
+		} 
+		::http::cleanup $token
+	}
+
 	proc connectionTimeout {} {
 		global connection_success
 		status_log "::abook::connectionTimeout\n"
-		set connection_success 0
+		if { $connection_success == -2 } {
+			set connection_success -1
+		} else {
+			set connection_success $connection_success
+		}
 	}
 	
 	proc connectionHandler { sock } {
@@ -272,8 +305,11 @@ namespace eval ::abook {
 			status_log "::abook::connectionHandler: connection failed\n" red
 			set connection_success 0
 		} else {
+			# TODO : We need to check here byte per byte because we might connect to an emule server for example which sends binary data
+			# and the [gets] will be blocking until there is a newline in the data... which might never happen... 
+			# this will cause amsn to hang...
 			gets $sock server_data
-			if { "$server_data" != "AMSNPING" } {
+			if { [string first "AMSNPING" "$server_data"] == 0 } {
 				status_log "::abook::connectionHandler: port in use by another application!\n" red
 				set connection_success 0
 			} else {
@@ -295,12 +331,19 @@ namespace eval ::abook {
 
 	# This proc is a dummy socket server proc, because we need a command to be called which the client connects to the test server (if not firewalled)
 	proc dummysocketserver { sock ip port } {
+		variable random_id
 		if {[catch {
-			puts $sock "AMSNPING"
+			#puts $sock "AMSNPING"
+			if { [info exists random_id] } {
+				puts $sock "AMSNPING${random_id}"
+			} else {
+				puts $sock "AMSNPING"
+			}
 			flush $sock
 			close $sock
-		}]} {
-			status_log "::abook::dummysocketserver: Error writing to socket\n"
+			status_log "::abook::dummysocketserver: Received connection on $sock" blue
+		} res]} {
+			status_log "::abook::dummysocketserver: Error writing to socket: $res\n"
 		}
 	}
 
