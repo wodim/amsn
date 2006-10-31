@@ -68,7 +68,7 @@ Version:	%{_version}
 Release:	%{_release}
 License:	GPL
 Group:		Productivity/Networking/InstantMessaging
-URL:		http://amsn.sourceforge.net/
+URL:		http://www.amsn-project.net/
 Source:		http://dl.sourceforge.net/sourceforge/amsn/%{name}-%{_src_version}.tar.gz
 Requires:	tcl >= 8.4
 Requires:	tk >= 8.4
