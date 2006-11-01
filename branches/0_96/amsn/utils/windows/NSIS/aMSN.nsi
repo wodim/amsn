@@ -164,10 +164,10 @@ Section "aMSN (required)" Core
   Call OSType
   Pop $R0
   StrCmp $R0 "NT" 0 Win9x
-  File /oname=amsn.exe "..\launcher\amsn.unicode.exe"
+  File /oname=amsn.exe "..\launcher\amsnW.exe"
   Goto Files_Next
 Win9x:
-  File /oname=amsn.exe "..\launcher\amsn.ascii.exe"
+  File /oname=amsn.exe "..\launcher\amsnA.exe"
 
 Files_Next:
 
