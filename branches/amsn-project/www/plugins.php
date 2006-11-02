@@ -52,7 +52,7 @@ if (!mysql_num_rows(($q = mysql_query("SELECT *  FROM `amsn_plugins` ORDER BY `n
 <?php 
 		if ($plugin['screen']>0) {
 ?>
-    <li class="dg"><a href="http://www.amsn-project.net/wiki/show_image.php?id=<?php echo $plugin['screen']?>"><strong>Screenshot</strong></a></li>
+    <li class="dg"><a href="http://amsn.sourceforge.net/wiki/show_image.php?id=<?php echo $plugin['screen']?>"><strong>Screenshot</strong></a></li>
 <?php 
 		}
 		else {

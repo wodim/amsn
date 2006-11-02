@@ -52,7 +52,7 @@ if (!mysql_num_rows(($q = mysql_query("SELECT *  FROM `amsn_skins` ORDER BY `nam
 <?php 
 		if ($skin['screen']>0) {
 ?>
-    <li class="lg"><a href="http://www.amsn-project.net/wiki/show_image.php?id=<?php echo $skin['screen']?>"><strong>Screenshot</strong></a></li>
+    <li class="lg"><a href="http://amsn.sourceforge.net/wiki/show_image.php?id=<?php echo $skin['screen']?>"><strong>Screenshot</strong></a></li>
 <?php 
 		}
 		else {
