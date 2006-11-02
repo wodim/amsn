@@ -19,6 +19,7 @@ if {[catch {package require tkdnd}] } {
 }
 #package require pixmapbutton
 if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
+	catch {source utils/macosx/brushedmetal/brushedmetal.tcl}
 	#Use tclCarbonHICommand for window utilities
 	catch {package require tclCarbonHICommand}
 	catch {package require QuickTimeTcl}
@@ -3558,7 +3559,13 @@ proc cmsn_draw_main {} {
 
 	#For All Platforms (except Mac)
 	if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
-		frame .main -class Amsn -relief flat -background white
+		 # Set the window style (brushed/aqua) for the CL.
+		if {[::skin::getKey usebrushedmetal "0"]} {
+			catch { ::tk::unsupported::MacWindowStyle style . document {closeBox horizontalZoom verticalZoom collapseBox resizable metal} }
+			frame .main -class Amsn -relief [::skin::getKey mainwindowrelief "flat"] -bd [::skin::getKey mainwindowbd "0"] -background [::skin::getKey mainwindowbg]
+		} else {
+			frame .main -class Amsn -relief flat -background white
+		}
 		#Create the frame for play_Sound_Mac
 		frame .fake
 	} else {
