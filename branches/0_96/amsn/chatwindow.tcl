@@ -1050,8 +1050,8 @@ namespace eval ::ChatWindow {
 				"::amsn::ShowChatList \"[trans history]\" \[::ChatWindow::GetCurrentWindow $w\] ::log::OpenLogWin"
 			bind $w <Control-w> "::ChatWindow::CloseTab \[set ::ChatWindow::win2tab(\[::ChatWindow::GetCurrentWindow $w\])\]"
 			bind $w <Control-W> "::ChatWindow::CloseTab \[set ::ChatWindow::win2tab(\[::ChatWindow::GetCurrentWindow $w\])\]"
-			bind $w <Command-Right> "::ChatWindow::GoToNextTab $w"
-			bind $w <Command-Left> "::ChatWindow::GoToPrevTab $w"
+			bind $w <Control-Right> "::ChatWindow::GoToNextTab $w"
+			bind $w <Control-Left> "::ChatWindow::GoToPrevTab $w"
 			
 			bind $w <Control-Tab> "::ChatWindow::GoToNextTab $w"
 			bind $w <Control-Shift-Tab> "::ChatWindow::GoToPrevTab $w"
