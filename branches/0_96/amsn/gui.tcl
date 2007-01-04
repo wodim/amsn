@@ -3854,7 +3854,10 @@ proc cmsn_draw_main {} {
 
 	update idletasks
 
-
+	# Make sure that visable area of main screen is shown.
+	if {[winfo x .] > [expr [winfo screenwidth .] - [winfo width .]] || [winfo y .] > [expr [winfo screenheight .] - [winfo height .]]} {
+		wm geometry . +20+40
+	}
 }
 #///////////////////////////////////////////////////////////////////////
 
