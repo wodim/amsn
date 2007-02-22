@@ -509,17 +509,20 @@ proc play_Sound_Mac {sound} {
 
 namespace eval ::Version {
 
-	set amsn_revision 0
-	set date "01/01/1970 00:00:00"
-	set last_file ""
-	set last_author ""
+	variable amsn_revision 0
+	variable date "01/01/1970 00:00:00"
+	variable last_file ""
+	variable last_author ""
 
 	proc setSubversionId { idstring } {
 		variable amsn_revision
 		variable date
+		variable last_file
+		variable last_author
+
 		#Be careful with this line : the line break should be changed carefully if it needs
-		set pattern {\$Id: (.*) ([[:digit:]]*) ([[:digit:]]{4})-([[:digit:]]{2})-\
-([[:digit:]]{2}) ([[:digit:]]{2}):([[:digit:]]{2}):([[:digit:]]{2})Z (.*) \$}
+		set pattern {\$Id: (.*) ([[:digit:]]*) ([[:digit:]]{4})-([[:digit:]]{2})-([[:digit:]]{2})\
+ ([[:digit:]]{2}):([[:digit:]]{2}):([[:digit:]]{2})Z (.*) \$}
 	
 		if { [regexp $pattern $idstring match file rev year month day hour minute second author] } {
 			if { $amsn_revision < $rev } {

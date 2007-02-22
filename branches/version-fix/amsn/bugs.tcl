@@ -1,3 +1,6 @@
+
+::Version::setSubversionId {$Id$}
+
 proc bgerror { args } {
     ::bugs::bgerror $args
 }
@@ -83,11 +86,8 @@ namespace eval ::bugs {
 	set ::bugs::bug(loadedplugins) $::plugins::loadedplugins
 	set ::bugs::bug(vendor) $vendor
 
-	if {[file exists cvs_date]==1} {
-	    set fd [open cvs_date]
-	    set date [gets $fd]
-	    close $fd
-	    set date [::bugs::cvstostamp $date]
+	if {$::Version::amsn_revision > 0} {
+	    set date $::Version::date
 	} else {
 	    set date  [clock scan "$::date 00:00:00"]
 	}
