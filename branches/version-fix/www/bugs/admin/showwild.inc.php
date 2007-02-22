@@ -6,6 +6,7 @@ $table->col_option('bug_text','rename','translucate(html_entity_decode(\'$arg\')
 $table->col_option('bug_date','css','width:210px;text-align:center');
 $table->col_option('bug_date','rename','strftime("%c",$arg)');
 $table->col_option('bug_date','filter','search');
+$table->col_option('bug_revision','filter','search');
 $table->col_option('bug_cvsdate','rename','strftime("%c",$arg)');
 $table->col_option('bug_cvsdate','css','width:210px;text-align:center');
 $table->col_option('bug_cvsdate','filter','search');

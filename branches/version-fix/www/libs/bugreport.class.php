@@ -209,7 +209,7 @@ if(!defined('_BUGREPORT_CLASS_')) {
       $this->code=$row['bug_code'];
       #set system stuff
       $this->amsn=$row['bug_amsn'];
-      $this->revison=$row['bug_revision'];
+      $this->revision=$row['bug_revision'];
       $this->cvs_date=$row['bug_cvsdate'];
       $this->tcl=$row['bug_tcl'];
       $this->tk=$row['bug_tk'];
