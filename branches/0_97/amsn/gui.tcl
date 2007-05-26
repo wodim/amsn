@@ -42,6 +42,15 @@ if { $initialize_amsn == 1 } {
 	::skin::setKey contact_mobile #404040
 	::skin::setKey chatwindowbg #EAEAEA
 
+	::skin::setKey loginbg #ffffff
+	::skin::setKey loginwidgetbg #ffffff
+	::skin::setKey loginfg #000000
+	::skin::setKey loginurlfg #0000ff
+	::skin::setKey logincheckfg #ffffff
+	::skin::setKey loginbuttonbg #c3c2d2
+	::skin::setKey loginbuttonfg black
+	::skin::setKey loginbuttonfghover black
+
 	::skin::setKey tabbarbg "[::skin::getKey chatwindowbg]"
 	::skin::setKey tabfg #000000
 	::skin::setKey tab_text_x 5
@@ -52,9 +61,6 @@ if { $initialize_amsn == 1 } {
 	::skin::setKey chat_tabbar_padx 0
 	::skin::setKey chat_tabbar_pady 0
 	::skin::setKey buttonbarbg #eeeeff
-	::skin::setKey loginbuttonbg #c3c2d2
-	::skin::setKey loginbuttonfg black
-	::skin::setKey loginbuttonfghover black
 	::skin::setKey sendbuttonbg #c3c2d2
 	::skin::setKey sendbuttonfg black
 	::skin::setKey sendbuttonfghover black
@@ -3261,7 +3267,7 @@ namespace eval ::amsn {
 
 		destroy .closeordock
 		unset rememberdock
-		exit		
+		exit
 	}
 	
 
@@ -6093,10 +6099,23 @@ if { [info command ::tk::exit] == "" && [info command exit] == "exit" } {
 proc exit {} {
 	global HOME lockSock
 	catch { ::MSN::logout}
-	::config::setKey wingeometry [wm geometry .]
 
-	# Temporary until the new CL is good and working...
-	::config::setKey use_new_cl 0
+	# if there is a container
+	if { [info exists ::ChatWindow::containers] } {
+		foreach { key value } [array get ::ChatWindow::containers] {
+			::ChatWindow::CloseAll $value
+		}
+	}
+	if { [info exists ::ChatWindow::windows] } {
+		foreach { value } [array get ::ChatWindow::windows] {
+			#cycle in every window and destroy it
+			#force the destroy
+			set ::ChatWindow::recent_message($value) 0
+			::ChatWindow::Close $value
+		}
+	}
+
+	::config::setKey wingeometry [wm geometry .]
 
 	save_config
 	::config::saveGlobal
