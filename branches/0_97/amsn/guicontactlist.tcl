@@ -2204,6 +2204,7 @@ namespace eval ::guiContactList {
 
 		set ::Bulle(first) 0; kill_balloon
 		$canvas delete uline_$tag
+		$canvas raise $tag
 	}
 
 	#For some Mac, Tk's default interval for Double Click is too weak, I increase it here to 700 in place of 500

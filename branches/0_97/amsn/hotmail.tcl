@@ -177,18 +177,21 @@ namespace eval ::hotmail {
 				if { $oim_message == "" } {
 					break
 				}
-				incr oim_count
 				set from [GetXmlEntry $mailList ":MD:M:E" $oim_count]
 				set nick [GetXmlEntry $mailList ":MD:M:N" $oim_count]
+
+				# When we receive the notification while being signed in (appear offline for example) the base64
+				# has a space in the end (probably a bug in the server) so we remove it here ot make it 'normal'
 				if { [string range $nick end-2 end] == " ?=" } {
-					set nick [string range $nick end-2 end]
+					set nick [string range $nick 0 end-3]
 					append nick "?="
 				}
 				set oim [list $from $nick $oim_message]
 				lappend oim_messages $oim
+				incr oim_count
 			}
 			if { $oim_count > 0 } {
-				after 0 "::hotmail::askReadReceivedOIMs $oim_count [list $oim_messages]"
+				after 0 [list ::hotmail::askReadReceivedOIMs $oim_count $oim_messages]
 			}
 		} else {
 			status_log "Mail-Data is invalid : $mailData"
