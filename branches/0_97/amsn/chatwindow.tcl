@@ -3580,6 +3580,11 @@ namespace eval ::ChatWindow {
 			wm title $container "$title"
 		}
 		
+		#Post event for plugins to know the window title was changed
+		set evPar(title) $title
+		set evPar(win) $win
+		set evPar(chatid) $chatid
+		::plugins::PostEvent chatwin_title_changed evPar
 	}
 
 	#this proc is to get the name of the containerwindow, like groupname for groupchats
