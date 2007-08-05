@@ -596,7 +596,7 @@ namespace eval ::amsn {
 	#///////////////////////////////////////////////////////////////////////////////
 	
 	#///////////////////////////////////////////////////////////////////////////////
-	proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememberAnswer 0}} {
+	proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememberAnswer 0} {modal 0}} {
 		# This tracker is so we can TkWait. It needs to be global so that the buttons can modify it.
 		global customMessageBoxAnswerTracker
 		# This is the tracker for the checkbox.
@@ -685,6 +685,10 @@ namespace eval ::amsn {
 		moveinscreen $w 30
 		bind $w <<Escape>> "destroy $w"
 		wm protocol $w WM_DELETE_WINDOW [list set customMessageBoxAnswerTracker($unique) ""]
+
+		if { $modal } {
+			grab set $w
+		}
 
 		tkwait variable customMessageBoxAnswerTracker($unique)
 
@@ -2929,10 +2933,14 @@ namespace eval ::amsn {
 
 		set container [::ChatWindow::GetContainerFromWindow $win_name]
 		if { $container != "" } { ::ChatWindow::SwitchToTab $container $win_name }
-		#from a weird reason, 
-		if {!$oim && [::config::getKey tabbedchat] != 0 } {
-			focus [::ChatWindow::GetInputText ${win_name}]
-		}
+
+		# while receiving oims, with no tabbed chatting,
+		# since many windows could open at the same time, and each of them were asking for the focus
+		# here is an ugly workaround
+		if {!$oim || [::config::getKey tabbedchat] != 0 } {
+ 			focus [::ChatWindow::GetInputText ${win_name}]
+ 		}
+
 		return $win_name
 	}
 	#///////////////////////////////////////////////////////////////////////////////
@@ -6369,9 +6377,20 @@ proc show_umenu {user_login grId x y} {
 	::groups::updateMenu menu .user_menu.move_group_menu ::groups::menuCmdMove [list $grId $user_login]
 	::groups::updateMenu menu .user_menu.copy_group_menu ::groups::menuCmdCopy $user_login
 
-	if {[::config::getKey orderbygroup]} {
-		.user_menu add cascade -label "[trans movetogroup]" -menu .user_menu.move_group_menu
-		.user_menu add cascade -label "[trans copytogroup]" -menu .user_menu.copy_group_menu
+	#check if user is in a virtual group 
+	set grIdV 0
+	if { $grId == "offline" || $grId == "mobile" } {
+		set grIdV 1
+	}
+
+	if {[::config::getKey orderbygroup] && !$grIdV} {
+ 		.user_menu add cascade -label "[trans movetogroup]" -menu .user_menu.move_group_menu
+		#you may not copy a contact from "no group" to a normal group
+		if { $grId == "0" } {
+			.user_menu add cascade -label "[trans copytogroup]"  -state disabled
+		} else {
+			.user_menu add cascade -label "[trans copytogroup]" -menu .user_menu.copy_group_menu
+		}
 	} else {
 		.user_menu add cascade -label "[trans movetogroup]"  -state disabled
 		.user_menu add cascade -label "[trans copytogroup]"  -state disabled
@@ -6932,9 +6951,11 @@ proc updateDpBrowserSelection { browser target } {
 
 #proc chooseFileDialog {basename {initialfile ""} {types {{"All files"         *}} }} {}
 proc chooseFileDialog { {initialfile ""} {title ""} {parent ""} {entry ""} {operation "open"} {types {{ "All Files" {*} }} }} {
-	if { $parent == "" } {
-		set parent "."
-		catch {set parent [focus]}
+	if { $parent == "" || ![winfo exists $parent] } {
+ 		catch {set parent [focus]}
+		if { $parent == "" } {
+			set parent "."
+		}
 	}
 
 	global  starting_dir

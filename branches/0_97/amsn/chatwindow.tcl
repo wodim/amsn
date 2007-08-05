@@ -219,7 +219,7 @@ namespace eval ::ChatWindow {
 		} elseif {[::config::isSet closeChatWindowWithTabs]} {
 			::ChatWindow::CloseTab $currenttab
 		} else {
-			set result [::amsn::customMessageBox [trans closeall] yesnocancel question [trans title] $window 1]
+			set result [::amsn::customMessageBox [trans closeall] yesnocancel question [trans title] $window 1 1]
 			set answer [lindex $result 0]
 			set rememberAnswer [lindex $result 1]
 			
@@ -3548,6 +3548,9 @@ namespace eval ::ChatWindow {
 		set win [GetCurrentWindow $container]
 		#get the ID of the chat (email if only one user)
 		set chatid [::ChatWindow::Name $win]
+		if {$usersinchat == ""} {
+			set usersinchat $chatid
+		}
 
 		#we'll set a title for the container-window, beginning from scratch
 		set title ""
@@ -3565,7 +3568,7 @@ namespace eval ::ChatWindow {
 			set title [string replace $title end-1 end " : [GetContainerName $container] - [trans chat]"]
 		}
 
-		if { $title == "" &&  [::OIM_GUI::IsOIM $chatid] == 1 } {
+		if { [::OIM_GUI::IsOIM $chatid] == 1 } {
 			set title "$chatid - [trans oim]"
 		}
 		#don't think this proc does much .. anyway ;)
