@@ -1,7 +1,5 @@
 # New Contact List :: Based on canvas
 #
-# This module is still experimental, a lot of work is still needed.
-#
 # Things to be done (TODO):
 #
 # * change cursor while dragging (should we ?)
@@ -1711,17 +1709,9 @@ namespace eval ::guiContactList {
 		#-----------#
 
 		# First, remove previous bindings
-		$canvas bind $tag <Enter> [list ]
-		$canvas bind $tag <Motion> [list ]
-		$canvas bind $tag <Leave> [list ]
-		$canvas bind $main_part <Enter> [list ]
-		$canvas bind $main_part <Motion> [list ]
-		$canvas bind $main_part <Leave> [list ]
-		$canvas bind $main_part <ButtonRelease-1> [list ]
-		$canvas bind $main_part <Double-ButtonRelease-1> [list ]
-		$canvas bind $space_icon <Enter> [list ]
-		$canvas bind $space_icon <Motion> [list ]
-		$canvas bind $space_icon <Leave> [list ]
+		cleanBindings $canvas $tag
+		cleanBindings $canvas $main_part
+		cleanBindings $canvas $space_icon
 
 		#Click binding for the "star" image for spaces
 		$canvas bind $space_icon <Button-1> [list ::guiContactList::toggleSpaceShown $email]
@@ -1760,11 +1750,11 @@ namespace eval ::guiContactList {
 			# If the user is offline and support mobile (SMS)
 			$canvas bind $main_part <ButtonRelease-1> [list ::guiContactList::contactCheckDoubleClick \
 				"set ::guiContactList::displayCWAfterId \
-				\[after 0 [list ::MSNMobile::OpenMobileWindow \"$email\"]\]" $main_part %X %Y %t]
+				\[after 0 \[list ::MSNMobile::OpenMobileWindow \"$email\"\]\]" $main_part %X %Y %t]
 		} else {
 			$canvas bind $main_part <ButtonRelease-1> [list ::guiContactList::contactCheckDoubleClick \
 				"set ::guiContactList::displayCWAfterId \
-				\[after 0 [list ::amsn::chatUser \"$email\"]\]" $main_part %X %Y %t]
+				\[after 0 \[list ::amsn::chatUser \"$email\"\]\]" $main_part %X %Y %t]
 		}
 
 		# Binding for right click		 
@@ -1788,7 +1778,11 @@ namespace eval ::guiContactList {
 		}
 	}
 
-
+	proc cleanBindings {canvas tag} {
+		foreach seq [$canvas bind $tag] {
+			$canvas bind $tag $seq [list ]
+		}
+	}
 	
 	proc toggleSpaceShown {email} {
 		if { [::config::getKey spacesinfo "inline"] == "inline" || [::config::getKey spacesinfo "inline"] == "both" } {
@@ -2287,14 +2281,14 @@ namespace eval ::guiContactList {
 
 		set oldgrId [::guiContactList::getGrIdFromTag $tag]
 
-		set iconXCoord [lindex [$canvas coords $tag] 0]
-		set iconYCoord [lindex [$canvas coords $tag] 1]
+		set coordX [expr {[$canvas canvasx $x] - $DragDeltaX}]
+		set coordY [expr {[$canvas canvasy $y] - $DragDeltaY}]
 
-		set ChangeX [expr {[lindex $DragStartCoords 0] - $iconXCoord}]
-		set ChangeY [expr {[lindex $DragStartCoords 1] - $iconYCoord}]
+		set ChangeX [expr {[lindex $DragStartCoords 0] - $coordX}]
+		set ChangeY [expr {[lindex $DragStartCoords 1] - $coordY}]
 
 		# Check if we're not dragging off the CL
-		if { $iconXCoord < 0 || ( abs($ChangeX) <= 5 && abs($ChangeY) <= 5 ) } { 
+		if { $coordX < 0 || ( abs($ChangeX) <= 5 && abs($ChangeY) <= 5 ) } { 
 			# TODO: Here we should trigger an event that can be used
 			# 	by plugins. For example, the contact tray plugin
 			# 	could create trays like this
@@ -2320,7 +2314,7 @@ namespace eval ::guiContactList {
 					set grYCoord [lindex $grCoords 1]
 					# This +5 is to make dragging a contact on a group's name
 					# or 5 pixels above the group's name possible
-					if {$grYCoord <= [expr {$iconYCoord + 5}]} {
+					if {$grYCoord <= [expr {$coordY + 5}]} {
 						set newgrId $grId
 					}
 				}
