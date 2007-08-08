@@ -212,7 +212,7 @@ namespace eval ::MSNP2P {
 
 			create_dir [file join $HOME smileys]
 			create_dir [file join $HOME smileys cache]
-			::MSNP2P::RequestObject $chatid $user $msnobj
+			if { [::abook::getContactData $user showcustomsmileys] != 0 } { ::MSNP2P::RequestObject $chatid $user $msnobj }
 		} else {
 			# Make sure the smiley is max 50x50
 			::smiley::resizeCustomSmiley emoticonCustom_std_${filename}
@@ -1179,7 +1179,10 @@ namespace eval ::MSNP2P {
 			set bheader [binary format i 0]
 		} else {
 			# normal message
-			set bheader [binary format i $sid]
+		    # This is a workaround to prevent a bug with Telepathy client which sends a 64-bit SID..
+		    if {[catch {set bheader [binary format i $sid]}] } {
+				set bheader [binary format i 0]
+		    }
 		}
 
 		if { $MsgId == 0 } {

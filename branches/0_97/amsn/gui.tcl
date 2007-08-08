@@ -904,18 +904,16 @@ namespace eval ::amsn {
 	}
 
 	proc DisableCancelText { cookie chatid } {
-
 		set win_name [::ChatWindow::For $chatid]
 
-                [::ChatWindow::GetOutText ${win_name}] tag configure ftno$cookie \
-                        -foreground #808080 -font bplainf -underline false
-                [::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Enter> ""
-                [::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Leave> ""
-                [::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Button1-ButtonRelease> ""
-
-                [::ChatWindow::GetOutText ${win_name}] conf -cursor xterm
-
-
+		if { [winfo exists $win_name] }	{
+			[::ChatWindow::GetOutText ${win_name}] tag configure ftno$cookie \
+				-foreground #808080 -font bplainf -underline false
+			[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Enter> ""
+			[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Leave> ""
+			[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Button1-ButtonRelease> ""
+			[::ChatWindow::GetOutText ${win_name}] conf -cursor xterm
+		}
 	}
 
 	proc CancelFTInvitation { chatid cookie } {
@@ -7308,8 +7306,12 @@ namespace eval ::OIM_GUI {
 		if { ![info exists ::OIM_GUI::oim_asksend_[string map {: _} ${chatid} ] ] } {
 			set ::OIM_GUI::oim_asksend_[string map {: _} ${chatid} ] 1
 		}
-		if { [set ::OIM_GUI::oim_asksend_[string map {: _} ${chatid} ]] } {
-			set answer [tk_messageBox -type yesno -parent [::ChatWindow::For $chatid] -message "[trans asksendoim]"]
+
+		set window [::ChatWindow::For $chatid]
+		if { [set ::OIM_GUI::oim_asksend_[string map {: _} ${chatid} ]] && $window != 0} {
+			# should fix issue with automessages from alarms since the window is not yet created and the user has just gone offline
+			# in that case, should we send the message ? ask to send the message ? for the moment we send it without asking
+			set answer [tk_messageBox -type yesno -parent $window -message "[trans asksendoim]"]
 		} else {
 			set answer "yes"
 		}

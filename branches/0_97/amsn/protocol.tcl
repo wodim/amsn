@@ -1068,7 +1068,9 @@ namespace eval ::MSN {
 				#It's a new contact so we save its guid and its nick
 				::abook::setContactData $username contactguid $contactguid
 				::abook::setContactForGuid $contactguid $username
-				::abook::setContactData $username nick $nickname
+				if {[::abook::getContactData $username nick ""] == ""} {
+					::abook::setContactData $username nick $nickname
+				}
 			}
 			status_log "$username was in groups [::abook::getGroups $username]"
 			if {[::abook::getGroups $username] != "" && $groups == 0} {
@@ -1124,6 +1126,7 @@ namespace eval ::MSN {
 				#The GUID is invalid if the contact is removed from the FL list
 				::abook::setContactForGuid $userguid ""
 				::abook::setContactData $user contactguid ""
+				::abook::clearVolatileData $user
 			}
 
 			#an event to let the GUI know a user is removed from a group / the list
