@@ -2943,6 +2943,8 @@ proc InitPref { {fullinit 0} } {
 		$lfname.logdisconnect configure -state disabled
 		$lfname.logemail configure -state disabled
 		$lfname.logstate configure -state disabled
+		$lfname.lognick configure -state disabled
+		$lfname.logpsm configure -state disabled
 	}
 
 	# Let's fill our list of States

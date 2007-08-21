@@ -1140,6 +1140,8 @@ proc SwitchToDefaultProfile { } {
 	::config::setKey log_event_disconnect 0
 	::config::setKey log_event_email 0
 	::config::setKey log_event_state 0
+	::config::setKey log_event_nick 0
+	::config::setKey log_event_psm 0
 }
 
 #///////////////////////////////////////////////////////////////////////////////
