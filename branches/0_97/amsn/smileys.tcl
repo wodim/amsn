@@ -460,7 +460,7 @@ namespace eval ::smiley {
 		
 		#Now add custom emotions bindings
 		global custom_emotions
-		foreach name [array names custom_emotions] {
+		foreach name [lsort [array names custom_emotions]] {
 			array set emotion $custom_emotions($name)
 			set symbol [string map { % %% } [lindex $emotion(text) 0]]
 			
@@ -483,7 +483,18 @@ namespace eval ::smiley {
 			incr temp
 		}
 
-		moveinscreen $w 5
+	   	# Here, I disable the "Leave" event so that in case the window 
+		# is in the upper left corner and really small, when we click, 
+		# and the mouse is already inside the window, we don't want the
+		# 'moveinscreen' to generate a <Leave> event and thus making it
+		# impossible to show the smiley window
+
+		set binding [bind $w <Leave>]
+		bind $w <Leave> ""
+
+ 		moveinscreen $w 5
+ 		
+		bind $w <Leave> $binding
 		
 		event generate $w <Enter>
 	
@@ -718,7 +729,7 @@ namespace eval ::smiley {
 		
 		#Now add custom emotions
 		global custom_emotions
-		foreach name [array names custom_emotions] {
+		foreach name [lsort [array names custom_emotions]] {
 		
 			array set emotion $custom_emotions($name)
 			if {![info exists emotion(animated)]} { set emotion(animated) 0 }
