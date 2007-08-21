@@ -676,10 +676,8 @@ namespace eval ::ChatWindow {
 		}
 
 		# If this is the first message, and no focus on window, then show notify
-		if { $::ChatWindow::first_message($win_name) == 1  && $msg!="" } {
+		if { $::ChatWindow::first_message($win_name) == 1 && $msg != "" } {
 			set ::ChatWindow::first_message($win_name) 0
-	
-
 		
 			if { [::config::getKey newmsgwinstate] == 0 } {
 				if { [winfo exists .bossmode] } {
@@ -836,9 +834,6 @@ namespace eval ::ChatWindow {
 			#bind on configure for saving the window shape
 			bind $w <Configure> "::ChatWindow::Configured %W"
 
-			wm state $w withdraw
-
-
 		} else {
 			set w [CreateTabbedWindow $container]
 		} 
@@ -897,7 +892,6 @@ namespace eval ::ChatWindow {
        		 	$w.search configure -searchin [::ChatWindow::GetOutText $w]
 
 			if { ![OnMac] } {
-				lower $w
 				::ChatWindow::MacPosition $w
 			}
 		}
