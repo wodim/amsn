@@ -615,6 +615,9 @@ namespace eval ::guiContactList {
 		# Let's draw each element of this list
 		set curPos [list $Xbegin $Ybegin]
 
+		# Now let's get an exact contact list
+		set contactList [getContactList]
+
 		################################
 		#  First line for the "boxes"  #
 		set DrawingFirstGroup 1
