@@ -95,7 +95,7 @@
 		<langcode>ee</langcode>
 		<name>Estonian (eesti keel)</name>
 		<version>1.41</version>
-		<encoding>iso8859-4</encoding>
+		<encoding>utf-8</encoding>
 	</lang>
 	<lang>
 		<langcode>fi</langcode>
@@ -155,7 +155,7 @@
 		<langcode>hu</langcode>
 		<name>Hungarian (magyar)</name>
 		<version>1.23</version>
-		<encoding>iso8859-2</encoding>
+		<encoding>utf-8</encoding>
 	</lang>
 	<lang>
 		<langcode>id</langcode>
@@ -183,9 +183,9 @@
 	</lang>
 	<lang>
 		<langcode>ko</langcode>
-		<name>Korean (한국어 [韓國語])</name>
-		<version>1.5</version>
-		<encoding>euc-kr</encoding>
+		<name>Korean (한국어)</name>
+		<version>1.0</version>
+		<encoding>utf-8</encoding>
 	</lang>
 	<lang>
 		<langcode>lt</langcode>

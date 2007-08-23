@@ -56,7 +56,8 @@ assistantaoutput Ses çýkýþ aygýtýný seçip deneme kaydýný çalmayý deneyin
 assistantawarn Kendi sesinizi kaydedemez ya da baðlantýlarýnýzla sesli konuþamazsýnýz. Bu eklentiyi nasýl kuracaðýnýz hakkýnda bilgiyi Wiki sayfamýzda bulabilirsiniz:
 assistantfinetunepic Aþaðýdaki ayarlarla görüntü kalitesini ayarlayýnýz
 assistantselectcam Kameranýzý listeden seçiniz
-assistantstarting Yardýmcý baþlatýlýyor
+assistantstarting Ayarlayýcý baþlatýlýyor
+assistanttitle Ses Ve Görüntü Ayarlayýcýsý
 assistantwelcome Bu yardýmcý program aMSN ses ve görüntü ayarlarýný yapmak için size yol gösterecek.\n\nGerekli eklentilerin kurulu olup olmadýðýný denetleyip ses ve görüntü aygýtlarýný seçtikten sonra görüntü kalitesi ve çözünürlük gibi ayarlarý yapabileceksiniz.
 audioconfigured Aþaðýdaki ayarlarý seçtiniz:\nSes çýkýþ aygýtý: $1\nSes kayýt aygýtý: $2
 audiovideo Ses ve görüntü ayarlarý
@@ -117,6 +118,7 @@ cancel Ýptal Et
 cancelled Ýptal edildi
 cannotdeleteprofile Kimlik kullanýmda olduðu için silinemiyor
 cantexec $1 uygulamasi çalýþtýrýlamýyor. Seçenekleri kontrol edin.
+cantget $1 alýnamadý
 cantloadonlineversion Güncellenmiþ diller listesi internetten alýnamadý
 cantremoveothers "Diðer" öbeði silinemiyor
 captureextloaded Kamera eklentisi -$1- yüklendi
@@ -142,7 +144,7 @@ channels Kanallar
 charscounter Sohbet penceresinde girilen harf sayacý
 chat Sohbet
 chatack Sohbet istemi kabul edilen kiþi
-chatmaxmin Bir arkadaþým benimle sohbet penceresi açtýðýnda pencerenin þöyle olmasýný istiyorum:
+chatmaxmin Bir baðlantým benimle sohbet penceresi açtýðýnda pencerenin þöyle olmasýný istiyorum:
 chatreq Sohbet istemi
 chatsmileys Gülen adamlar
 chatsmileys2 Sohbet penceresinde gülen adamlar görünsün
@@ -278,10 +280,12 @@ disableuserfonts Sohbetlerde karþý tarafýn yazýtipini dikkate alma ve kendi yazý
 disconnect $1 ayrýldý
 disconnectedfrom $1 ile baðlantý kesildi
 displaychat Metin seçeneklerini göster
-displayeventconnect Arkadaþlar baðlanýnca göster
-displayeventdisconnect Arkadaþlar çýkýnca göster
+displayeventconnect Baðlantýlar çevrimiçi olunca göster
+displayeventdisconnect Baðlantýlar çevrimdýþý olunca göster
 displayeventemail Bir e-posta gelince göster
-displayeventstate Arkadaþlar durum deðiþtirince göster
+displayeventnick Baðlantýlar rumuz deðiþtirince göster
+displayeventpsm Baðlantýlar kiþisel iletilerini deðiþtirince göster
+displayeventstate Baðlantýlar durum deðiþtirince göster
 displayp4context Ýletiyi gönderen olarak P4-Ýçeriði alanýný göster
 displaypic Kullanýcý Resmi
 dockfreedesktop AçýkMasaüstü (KDE3/Gnome2)
@@ -399,6 +403,7 @@ handle Ýsim
 havenomic Mikrofonum yok
 help Yardým
 helpcontents Yardým içeriði
+hidebuttonbar Düðmeleri gizle
 hidedisplaypic Kullanýcý resmini gösterme
 hidemenu Menüyü göster/gizle
 hidemenumessage Menüleri gizlemek istediðinizden emin misiniz?\nMenüleri tekrar görmek için Ctrl+M kýsayolunu kullanabilirsiniz.
@@ -474,6 +479,8 @@ logbigger Her baðlantý için kayýt dosyasý boyutu üst sýnýrý
 logeventconnect Baðlantýlarý kayda geçir
 logeventdisconnect Baðlantýdan çýkýþlarý kayda geçir
 logeventemail Gelen e-postalarý kayda geçir
+logeventnick Rumuz deðiþimlerini kayda geçir
+logeventpsm Kiþisel ileti deðiþimlerini kayda geçir
 logeventstate Durum deðiþimlerini kayda geçir
 logfandexp Kayýt dosya boyutlarý ve Geçmiþ kayýtlarýnýn silinme zamaný 
 loggedotherlocation Baþka bir yerden baðlandýðýnýz için baðlantý kesildi
@@ -549,6 +556,7 @@ newtabbedfeature aMSN'de sohbet pencereleri düzeniyle ilgili bir yenilik var:\n 
 newveravailable Yeni $1 sürümü indirilmeye hazýr
 next Sonraki
 nick Rumuz
+nickchanged $1 rumuzunu '$2' olarak deðiþtirdi
 no Hayýr
 noactivity Etkinlik yok
 nocacheddps Bu kullanýcýya ait saklanmýþ resim yok
@@ -624,6 +632,7 @@ picstatus Resimli alarmý aç/kapa
 play Oynat
 playbackposition Oynatýcý konumu
 playbackspeed Oynatma hýzý (iki kare arasýnda milisaniye cinsinden süre)
+playerror Sesi çalarken bir sorun oluþtu: $1
 playing $1 çalýnýyor
 playtest Deneme dosyasýný çal
 playwebcamsend Kamera görüntüsü göndermeye devam et
@@ -676,6 +685,7 @@ proxyconfhttp HTTP proxy desteði ayarlarý
 proxyconnection Ýnternete proxy sunucu ile baðlanýyorum
 psm Kiþisel Ýleti
 psmatend Kiþisel iletiyi rumuzun yanýnda göster
+psmchanged $1 Kiþisel iletisini '$2' olarak deðiþtirdi
 psmdontshow Rumuz þablonu ya da özel rumuz ayarlarýnda aksi belirtilmedikçe kiþisel iletileri gösterme
 psmnewline Kiþisel iletiyi rumuzun altýnda göster
 psmplace Kiþisel iletiler nerede gözüksün?
@@ -703,6 +713,7 @@ rememberaccount Hesabýmý hatýrla
 rememberpass Þifreyi hatýrla
 remembersetting Bu ayarlarý hatýrla
 removeempty Boþ öbekleri baðlantý listesinden çýkar
+removefromgroup Öbekten çýkar
 removefromlist Bu listeden çýkar
 rename Yeniden adlandýr
 report Bildir
@@ -762,6 +773,7 @@ showlinksinlogin Giriþ ekranýnda internet baðlantýlarýný göster
 showmailicon Yeni e-posta varsa panelde e-posta imgesi gözüksün
 showmypic Kullanýcý Resmim
 shownotify Belli olaylarda uyarý penceresi göster
+showonedpframe Sohbet pencerelerinde bir tek kullanýcý resmi çerçevesi olsun
 showpicnotify Uyarý pencerelerinde kullanýcý resimleri gözüksün
 showuserpic $1 kullanýcýsýnýn resmi
 signinstatus Baðlanma þekli:
