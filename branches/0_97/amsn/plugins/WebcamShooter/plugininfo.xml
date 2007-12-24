@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>Cam Shooter</name>
+	<author>Jerome Gagnon-Voyer (mac code), Le Philousophe (lin/win code) and Karel Demeyer (plugin maintainer)</author>
+	<description>With this plugin you can take shoots of your webcam to use as display picture.</description>
+	<description_fr>Prendre des photos avec sa webcam pour les utiliser en tant qu'avatar.</description_fr>
+	<description_hu>A plugin segítségével felvételeket készíthetsz a saját webkamerádról, és e felvételeket megjelenítendő képként használhatod.</description_hu>
+	<amsn_version>0.97</amsn_version>
+	<plugin_version>0.2</plugin_version>
+	<plugin_file>camshoot.tcl</plugin_file>
+	<plugin_namespace>camshoot</plugin_namespace>
+	<init_procedure>Init</init_procedure>
+
+	<cvs_version>8773</cvs_version>
+
+	<lang>
+		<langcode>en</langcode>
+		<version>5378</version>
+	</lang>
+	<lang>
+		<langcode>es</langcode>
+		<version>7909</version>
+	</lang>
+	<lang>
+		<langcode>fi</langcode>
+		<version>6945</version>
+	</lang>
+	<lang>
+		<langcode>fr</langcode>
+		<version>7916</version>
+	</lang>
+	<lang>
+		<langcode>hu</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>it</langcode>
+		<version>7652</version>
+	</lang>
+	<lang>
+		<langcode>nl</langcode>
+		<version>5519</version>
+	</lang>
+	<lang>
+		<langcode>pt_BR</langcode>
+		<version>7285</version>
+	</lang>
+	<lang>
+		<langcode>sv</langcode>
+		<version>7016</version>
+	</lang>
+
+	<URL>
+		<main>http://www.amsn-project.net/autoupdater/plugins2/WebcamShooter/camshoot.tcl</main>
+		<plugininfo>http://www.amsn-project.net/autoupdater/plugins2/WebcamShooter/plugininfo.xml</plugininfo>
+		<lang>http://www.amsn-project.net/autoupdater/plugins2/WebcamShooter/lang/lang$langcode</lang>
+		<file>http://www.amsn-project.net/autoupdater/plugins2/WebcamShooter/$file</file>
+	</URL>
+
+</plugin>

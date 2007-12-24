@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+
+<version>
+	<lang>
+		<langcode>al</langcode>
+		<name>Albanian (shqip)</name>
+		<version>1.11</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>ast</langcode>
+		<name>Asturian</name>
+		<version>1.3</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>eu</langcode>
+		<name>Basque (euskera)</name>
+		<version>1.37</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>bn</langcode>
+		<name>Bengali (বাংলা)</name>
+		<version>1.3</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>bs</langcode>
+		<name>Bosnian (Bosanski)</name>
+		<version>1.2</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>bg</langcode>
+		<name>Bulgarian</name>
+		<version>1.1</version>
+		<encoding>cp1251</encoding>
+	</lang>
+	<lang>
+		<langcode>ca</langcode>
+		<name>Catalan-Valencian (Català-Valencià)</name>
+		<version>1.123</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>cs</langcode>
+		<name>Cesky</name>
+		<version>1.13</version>
+		<encoding>iso8859-2</encoding>
+	</lang>
+	<lang>
+		<langcode>zh-CN</langcode>
+		<name>Chinese - Simplified (中文)</name>
+		<version>1.2</version>
+		<encoding>gb2312</encoding>
+	</lang>
+	<lang>
+		<langcode>zh-TW</langcode>
+		<name>Chinese - Taiwanese (台語)</name>
+		<version>1.12</version>
+		<encoding>big5</encoding>
+	</lang>
+	<lang>
+		<langcode>da</langcode>
+		<name>Danish (dansk)</name>
+		<version>1.46</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>nl</langcode>
+		<name>Dutch (Nederlands)</name>
+		<version>1.137</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>ei</langcode>
+		<name>Eivissenc</name>
+		<version>1.1</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>en</langcode>
+		<name>English</name>
+		<version>1.372</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>eo</langcode>
+		<name>Esperanto</name>
+		<version>1.7</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>ee</langcode>
+		<name>Estonian (eesti keel)</name>
+		<version>1.41</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>fi</langcode>
+		<name>Finnish (suomi)</name>
+		<version>1.10</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>fr</langcode>
+		<name>French - France (français)</name>
+		<version>1.172</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>fr_CA</langcode>
+		<name>French - Canadian</name>
+		<version>1.8</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>fri</langcode>
+		<name>Frisian (Frysk)</name>
+		<version>1.17</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>fur</langcode>
+		<name>Friulan (Furlan)</name>
+		<version>1.4</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>glg</langcode>
+		<name>Galician (Galego)</name>
+		<version>1.6</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>de</langcode>
+		<name>German (Deutsch)</name>
+		<version>1.52</version>
+		<encoding>iso8859-15</encoding>
+	</lang>
+	<lang>
+		<langcode>el</langcode>
+		<name>Greek (ελληνικά)</name>
+		<version>1.16</version>
+		<encoding>iso8859-7</encoding>
+	</lang>
+	<lang>
+		<langcode>gr2</langcode>
+		<name>Greeklish</name>
+		<version>1.8</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>hu</langcode>
+		<name>Hungarian (magyar)</name>
+		<version>1.23</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>id</langcode>
+		<name>Indonesian (Bahasa Indonesia)</name>
+		<version>1.50</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>is</langcode>
+		<name>Icelandic (Íslenska)</name>
+		<version>1.10</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>it</langcode>
+		<name>Italian (italiano)</name>
+		<version>1.69</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>ja</langcode>
+		<name>Japanese (日本語)</name>
+		<version>1.16</version>
+		<encoding>euc-jp</encoding>
+	</lang>
+	<lang>
+		<langcode>ko</langcode>
+		<name>Korean (한국어)</name>
+		<version>1.0</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>lt</langcode>
+		<name>Lithuanian (lietuviškai)</name>
+		<version> 1.0</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>mk</langcode>
+		<name>Macedonian (Македонски)</name>
+		<version>1.14</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>mn</langcode>
+		<name>Mongolian (Монгол)</name>
+		<version>1.9</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>no</langcode>
+		<name>Norwegian (Norsk)</name>
+		<version>1.52</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>oc</langcode>
+		<name>Occitan</name>
+		<version>1.0</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>pl</langcode>
+		<name>Polish (polski)</name>
+		<version>1.7</version>
+		<encoding>iso8859-2</encoding>
+	</lang>
+	<lang>
+		<langcode>pt</langcode>
+		<name>Portuguese - Portugal (português)</name>
+		<version>1.63</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>pt_BR</langcode>
+		<name>Portuguese - Brazil</name>
+		<version>1.36</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>ro</langcode>
+		<name>Romanian (Limba Română)</name>
+		<version>1.38</version>
+		<encoding>iso8859-2</encoding>
+	</lang>
+	<lang>
+		<langcode>ru</langcode>
+		<name>Russian (Русский язык)</name>
+		<version>1.20</version>
+		<encoding>koi8-r</encoding>
+	</lang>
+	<lang>
+		<langcode>sk</langcode>
+		<name>Slovak (slovenčina)</name>
+		<version>1.11</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>sl</langcode>
+		<name>Slovenian (slovenščina)</name>
+		<version>1.43</version>
+		<encoding>iso8859-2</encoding>
+	</lang>
+	<lang>
+		<langcode>af</langcode>
+		<name>South African</name>
+		<version>1.6</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>es</langcode>
+		<name>Spanish (Español)</name>
+		<version>1.252</version>
+		<encoding>utf-8</encoding>
+	</lang>
+	<lang>
+		<langcode>sr</langcode>
+		<name>Serbian (Српски)</name>
+		<version>1.12</version>
+		<encoding>iso8859-5</encoding>
+	</lang>
+	<lang>
+		<langcode>sv</langcode>
+		<name>Swedish (svenska)</name>
+		<version>1.18</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>swa</langcode>
+		<name>Swahili (Kiswahili)</name>
+		<version>1.19</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>ta</langcode>
+		<name>Tamil (தமிழ்)</name>
+		<version>1.5</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>tr</langcode>
+		<name>Turkish (Türkçe)</name>
+		<version>1.62</version>
+		<encoding>iso8859-9</encoding>
+	</lang>
+	<lang>
+		<langcode>ca_VC</langcode>
+		<name>Valencian-Catalan (Valencià - Català)</name>
+		<version>1.2</version>
+		<encoding>iso8859-1</encoding>
+	</lang>
+	<lang>
+		<langcode>cy</langcode>
+		<name>Welsh (Cymraeg)</name>
+		<version>1.11</version>
+		<encoding>utf-8</encoding>
+	</lang>
+</version>

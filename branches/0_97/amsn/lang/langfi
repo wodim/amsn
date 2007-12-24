@@ -1,0 +1,975 @@
+amsn_lang_version 2
+abort Keskeytä
+aboutamsn Tietoja aMSN:stä
+about Tietoja ohjelmasta
+acceptfile Hyväksy tiedosto $1 (koko $2 tavua)? Tallennetaan $3
+accept Hyväksy
+account Tili
+actions Toiminnot
+activeautoupdate Aktivoi automaattinen päivitys
+addacontact Lisää henkilö
+addedyou $1 ($2) on lisännyt sinut yhteystietoihin
+add Lisää
+addprofiledesc Anna tunnus jolle haluat tehdä uuden profiilin.\n Profiilit antavat sinun mahdollisuuden käyttää eri ari asetuksia eri tunnuksille. \n Ilman profiileita et voi käyttää Historia, Hälytykset tai "Muista salasana" ominaisuuksia.
+addprofile Lisää uusi profiili
+addstate Lisää uusi tila
+addtocontacts Lisää yhteystietoihin
+addto Lisää $1
+addtoo Lisää yhteystietoluetteloon
+admincontacts Hallitse yhteystietoja
+admingroups Hallitse ryhmiä
+advanced Lisäasetukset
+advancedprefs Lisäasetukset
+adverts Mainokset
+agotinvitation Äänikutsu käyttäjältä $1
+alarmonconnect Näytä ilmoitus, kun käyttäjä kirjautuu sisään
+alarmondisconnect Näytä ilmoitus, kun käyttäjä kirjautuu ulos
+alarmonmsg Näytä ilmoitus, kun käyttäjä lähettää viestin
+alarmonstatus Näytä ilmoitus, kun käyttäjä vaihtaa tilaansa
+alarmpref2 Hälytysasetukset kaikille
+alarmpref Hälytysasetukset käyttäjälle
+alarms Hälytykset
+alarmstatus Aseta hälytys päälle/pois 
+allfiles Kaikki tiedostot
+allmonths Kaikki kuukaudet
+allowallbutbl Salli kaikkien käyttäjien ottaa yhteys minuun, paitsi estettyjen.
+allowbadwords Älä sensuroi käyttäjien nimiä
+allowlist Sallitut nimimerkit:
+allowonlyinal Hyväksy vain sallittujen nimimerkkien yhteydenotot
+allowseen Anna tämän henkilön nähdä online-tilani ja ottaa yhteyttä minuun
+allow_sms Salli muiden käyttäjien ottaa yhteyttä langattomaan MSN-laitteeseeni
+allprofilesinuse Kaikki olemassa olevat profiilit ovat käytössä.
+always Aina
+animatedemoticon Tämä hymiö on animoitu
+animatedsmileys Ota animoidut hymiöt käyttöön
+animatenotify Animoitu ilmoitusikkuna
+appearance Ulkonäkö
+appearoff Näkyminen muille offline-tilana
+areacode Suuntanumero
+aretyping $1 kirjoittaa viestiä
+askcam Pyydä ottamaan vastaan Web-kamera
+askcontactwebcam kysyä sinun kontaktin Web-kameraa, tai
+askeachtime Kysy joka kerta
+asksendingyourwebcam pyydä lupa oman Web-kameran lähetykseen
+asksendoim Haluatko lähettää vietin offline-viestinä?
+askwebcam Kysy tältä käyttäjältä Web-kameraistuntoa
+assistantainput Valitse tulolaite äänelle ja kokeile äänittää ääntä sillä.
+assistantaoutput Valitse äänilähtö ja kokeile toistaa tämä äänitiedosto sillä.
+assistantawarn Et pysty nauhoittamaan ääntäsi tai puhumaan kavereillesi.Voit löytää ohjeita lisäosan asentamiseen aMSN:n Wikistä:
+assistantfinetunepic Aseta seuraavat asetukset säätääksesi Web-kameran kuvanlaatua
+assistantselectcam Valitse Web-kamera listasta
+assistantstarting Käynnistetään ohjattua toimintoa
+assistanttitle Ohjattu ääni- ja kuva-asetustoiminto
+assistantwelcome Tämä ohjattu toiminto opastaa aMSN:n ääni- ja videoasetusten määrittelemisessä.\n\nSe voi tarkastaa onko tarvittavat lisäosat asennettuina.
+audioconfigured Valitsit seuraavat ääniasetukset:\n\nLähtölaite: $1\nTulolaite: $2
+audiovideo Ääni- ja kuva-asetukset
+author Tekijä
+autoaccepted Tiedostonsiirto hyväksyttiin automaattisesti
+autoacceptft Hyväksy tiedonsiirrot automaattisesti
+autoaway Vaihda tilaksi "Poissa", kun olen ollut tekemättä mitään
+autocheckver Tarkista käynnistettäessä, onko aMSN:stä uudempaa versiota saatavilla
+autoconnect2 Kirjaudu automaattisesti sisään, kun aMSN käynnistyy
+autoconnect Automaattinen kirjautuminen
+autodetectip Tunnista IP-osoite automaattisesti
+autohotmaillog Automaattinen kirjautuminen Hotmail-palveluun
+autoidle Poissa-tila päälle määräajan kuluttua (5min) 
+autoip Automaattinen IP
+autolisten_voiceclips Toista vastaanotetut äänileikkeet automaattisesti
+automessage Automattinen viesti
+autonoact Vaihda tilaksi "Ei läsnä", kun olen ollut tekemättä mitään
+autoresizedp Skaalaa kuvat normikokoon
+avaccepted Videoneuvottelupuhelut hyväkstytty
+avcanceled Videoneuvottelupuhelu peruttu
+avgotinvitation Videoneuvottelukutsu käyttäjältä $1
+avinitfailed Ääni/kuva -lisäosan alustus epäonnistui. Puhelu peruttu
+avoidseen Estä tätä henkilöä näkemästä yhteystilaani ja ottamasta yhteyttä minuun
+awaymsg1 Kysy poissaoloviestiä joka kerta kun vaihdan Poissa/BRB/Kiireinen-tilaan
+awaymsg2 Älä koskaan kysy ja käytä aina alla olevaa viestiä
+away Poissa
+back Takaisin
+baduserpass Virheellinen käyttäjänimi tai salasana
+badwebcam Web-kameran kuvaa ei pystytä näyttämään. Varmista, että Web-kamera on yhdistettynä ja asenennettuna.
+bgcolor Vaihda aMSN:n taustaväri
+blankdirect Jätä tyhjäksi, jos käytät suoraa yhteyttä
+blocked Estetty
+blockedyougroup Näytä erillinen ryhmä ihmisille, jotka ovat estäneet yhteydenottosi
+block Estä
+blocking Estää
+blockinter1 Kun tilasi on "Online", tarkista joka
+blockinter2 sekunti, muuten joka:
+blockinter3 joka
+blockinter4 sekunti
+blocklist Estetyt nimimerkit:
+blockmessage Nämä henkilöt ovat "Online" ja ovat estäneet yhteydenottosi
+blocknotifications Älä näytä huomautus ikkunoita
+blocksounds Vaimenna äänet
+blockusers Samanaikaisten valittavien käyttäjien lukumäärä samalla kerralla
+bouncedock Uuden viestin tullessa vilkuta aMSN-ikonia.
+brightness Kirkkaus
+broughtby  Kehitetty seuraavien kehittäjien toimesta
+browserexample ( \$url tarkoittaa osoitetta). Esim. firefox \$url
+browser Selain
+browse Selaa
+bugerror Ongelmia yhdistettäessä virhe-tietokantaan. Ole hyvä ja tarkista internetyhteytesi toimivuus.
+bugnocomment Lähetä ilman kommenttia. Virheen kommentointi helpottaa meitä ymmärtämään mikä meni pieleen ja korjaaman sen helpommin.
+busy Varattu
+bytesymbol t
+cachedpics $1 haettua kuvaa
+cachedpicsfor Käyttäjän tallennetut kuvat
+cagreement Salassapitosopimus
+cancelled Peruutettu
+cancel Peruuta
+cannotdeleteprofile Profiilia ei voi poistaa, koska se on aMSN-session käytössä
+cantexec Ohjelmaa $1 ei voi suorittaa. Tarkista asetukset
+cantloadonlineversion On-line päivityslistan nouto internetistä ei onnistunut
+cantremoveothers Ryhmää "Muut" ei voi poistaa
+captureextloaded Capture-laajennus -$1- on ladattuna
+captureextnotloaded Capture-laajennusta -$1- ei ladattu, sinun pitää kääntää se ensin
+captureproperties Web-kameran kuva-asetukset
+capturewarn Et pysty lähettämään Web-kameran kuvaa. Apua tarvittavan lisäosan asentamiseen voit löytää aMSN Wikistä.
+casesensitive Käytä aakkosriippuvaisia liipasimia
+cfgalarmall Hälytykset
+cfgalarm Hälytykset
+change_account_info Vaihda tunnuksen tiedot
+changecustomstate Vaihda
+changedisplaypic Vaihda näytettävä kuva
+changefont Vaihda fontti
+changeglobnick Vaihda nimi
+change_mobile Muuta matkapuhelimen asetuksia
+change Muuta
+changenick Muuta nimi
+changesize Muuta koko
+changestate Muuta tila $1 tilaan $2
+changestatus Muuta tila
+changevideosettings Muuta videoasetuksia
+channels Kanavat
+charscounter Kirjainlaskuri keskusteluikkunassa
+chatack Hyväksytään keskustelupyyntöä
+chat Keskustele
+chatmaxmin Kun joku avaa kanssani keskustelun, haluan olla:
+chatreq Pyydä keskusteluun
+chatsmileys2 Näytä hymiöt keskusteluikkunoissa
+chatsmileys Hymiöt
+checkblocking Tarkista jatkuvasti, estävätkö henkilöt yhteydenottosi
+checkemail Näytä tieto uusista sähköpostiviesteistä pääikkunassa
+checkfilman Vastaanotetut tiedostot tallennetaan kansioon $1. Tarkista tiedostojenhallinnan asetukset Valinnat-ikkunasta
+checkingaudio Tarkistaa onko ääni lisäosa (Snack) ladattu ...
+checkingcam Tarkistaa onko Web-kamera yhdistetty ...
+checkingcapext Tarkistaa onko '$1' lisäosa ladattu ...
+checkingextensions Tarkisaa tarvittavia kuva lisäosia.
+checkingver Tarkistetaan uutta versiota
+checkonfln Tarkista, estääkö käyttäjä viestisi, kun hän kirjautuu ulos 
+checkopenfilecommand Valitse tiedostonavauskomento asetukset ikkunasta
+checkver Tarkista uusin versio
+choosearq Valitse järjestelmäsi arkkitehtuuri
+choosebasefont Valitse fontti
+choosebgcolor Valitse taustaväri
+choosechannel Valitse kanava
+choosecontact Valitse käyttäjä:
+choosedevice Valitse laite
+choosefontcolor Valitse kirjaimisen väri
+chooseinputdev Valitse sisääntulo laite
+chooselocation Valitse uusi sijainti
+choosemixerdev Valitse mikseri
+chooseoutputdev Valitse ulostulo laite
+chooseskin Valitse käytettävä teema
+ch_to_state Vaihda uuteen tilaan
+clearlog2 Tyhjennä historiatiedot kaikilta yhteystiedoilta
+clearlog3 Tyhjennä kaikki historiatiedot
+clearlog Tyhjennä historia
+clear Tyhjennä
+clearwebcamlogs Tyhjennä Web-kamerahistoria
+clickhere Napsauta tästä
+clicktoadd Napsauta 'Lisää'-nappia lisätäksesi uuden tiedon
+clicktologin Napsauta tästä kirjautuaksesi
+clientcaps Lähetä x-clientcaps paketti muille clienteille
+clientname Clientin nimi
+closeall Sulje kaikki välilehdet tässä ikkunassa?
+closealltabs Sulje kaikki välilehdet
+closechatwindows Sulje kaikki keskusteluikkunat ennen kirjautumista ulos?
+closed Keskustelu $1n kanssa suljettiin, koska keskustelua ei oltu käyty moneen minuuttiin.
+closelabel Kun painat sulje-nappia välilehdellisessä keskuteluikkunassa
+closeonly Sulje vain nykyinen välilehti
+closeordock Sulkemalla pääikkunan sammutat aMSN:n. Ehkä tarkoituksena oli vain sulkea keskusteluikkunan ja pitää aMSN käynnissä pienennettynä.\n\n Oletko varma, että haluat sammuttaa aMSN:n?
+closeothers Sulje kaikki muut välilehdet
+close Sulje
+closingdocks Sulje-painike pienentää ikkunan
+color Väri
+command Komento
+commandstatus Suorita komento
+configure Asetukset
+configuremic Aseta mikrofoni
+configureplugin Lisäosan $1 asetukset
+configuringaudio Asettaa ääni asetuksia
+confirmbl Oletko varma, että haluat estää tämän henkilön.
+confirmdelete Haluatko varmasti poistaa $1?
+confirmdg Oletko varma, että haluat poistaa tämän ryhmän?
+confirmdu Oletko varma, että haluat poistaa tämän käyttäjän?
+confirmeg Oletko varma, että haluat tyhjentää tämän ryhmän?
+confirm Oletko varma?
+confirmpurge Kaikki henkilökuvat muista yhteyksistä poistetaan (ei koske omia kuvia). Haluatko varmasti jatkaa?
+confirmrfl Oletko varma, että haluat poistaa tämän käyttäjän tästä ryhmästä?
+congrats Onnittelut
+connectedwith Kirjauduttu sisään ($1)
+connected Yhteys muodostettu
+connecterror Virhe yhdistettäessä palvelimelle
+connectfirst Yhdistä ensin
+connecting Yhdistetään
+connectionlost Yhteys katkesi: Yhteys palvelimeen suljettu
+connection Yhteys
+contactadded Yhteystieto lisätty
+contactdoesnotexist Yhteystietoa ei ole!
+contactlist Yhteystietolista
+contacts Yhteystiedot
+contact Yhteystieto
+continuously Jatkuvasti
+contrast Kontrasti
+conversationwith $1 henkilöä keskustelussa
+convertexplain Polku CONVERT-tiedostoon, ImageMagick-ohjelmasta (tarvitaan Kuvien näyttämiseen).\n Jätä tyhjäksi jos CONVERT on polussa
+copy Kopioi
+copytoclipboard Kopioi $1 leikepöydälle
+copytogroup Kopio ryhmään
+corruptconfig Konfiguraatiotiedosto on vahingoittunut. Uutta luodaan. Vanha tiedosto tallenetaan kansioon $1. Ole hyvä ja lähetä se meille, jotta voimme tarkistaa mitä tapahtui.
+corruptstates Mukautettujen tilojen asetustiedosto on vahingoittunut. Uutta luodaan. Vanha tiedosto tallennetaan kansioon $1. Ole hyvä ja lähetä se meille, jotta voimme selvittää mitä tapahtui.
+couldnotrename Tiedoston $1 uudelleennimeäminen ei onnistunut
+countrycode Oma maa/aluekoodi
+cprofile Luo profiili
+created Lisätty
+credits Tekijät
+curdisplaypic Nykyinen kuva
+currentdate Tänään
+currentlanguage Käytössä oleva kieli
+currentnotes Nykyiset viestit
+custnotifymsg Näytä ilmoitus kun tämä käyttäjä lähtettää viestin.
+custnotifyoffline Näytä ilmoitus kun tämä käyttäjä katkaisee yhteyden
+custnotifyonline Näytä ilmoitus kun tämä käyttäjä kirjautuu sisään
+custnotifystatus Näytä ilmoitus kun tämän käyttäjän tila muuttuu
+customcolor Muu väri
+customdp Oma keskustelukuvake
+custom_edit Muokkaa mukautettua hymiötä
+custom_new Luo uusi mukautettu hymiö
+customnick Muu nimi
+customsmileys Näytä muiden käyttäjien muokatut oliot
+customstyle Erikoistyyli
+custshowcustomsmileys Näytä käyttäjän muokatut oliot
+cutimageboxreset Palauta valintalaatikon\n koko:
+cutimagebox Valitse kuvasta osa jota haluat käyttää, vaihtamalla kokoa ja siirtämällä valintalaatikkoa
+cut Leikkaa
+dateformat Päivämäärän muoto
+date Päiväys
+day Päivä
+days Päivät
+dcprofile Älä luo profiilia
+default2 Oletus
+defaultloginradio Kirjaudu sisään oletusasetuksilla
+default Oletusasetukset
+defchatwinsize Keskusteluikkunoiden oletuskoko (leveys x korkeus)
+deleteall Poista kaikki
+deleteblock Poista ja estä
+deletecustomstate Poista mukautettu tila
+delete Poista
+delimiters Ajan erotinmerkit:
+deliverfail Seuraavaa viestiä ei voitu välittää
+delprofile2 Valitse profiili, jonka haluat poistaa
+delprofile Poista profiili
+description Kuvaus
+detach Irroita
+details Tiedot
+devicebusy Laite $1 kiireinen
+devices Laitteet
+directconnection Suora yhteys (portti 1863)
+disabled Ei käytössä
+disableprofiles Ota profiilit pois käytösä (Hyödyllinen jos käytät jaettua konetta)
+disablessl Älä käytä SSL:ää
+disableuserfonts Ohita muiden fonttiasetukset keskusteluissa ja käytä omia fonttiasetuksia
+disconnect $1 katkaisi yhteyden
+disconnectedfrom Kirjauduttu ulos ($1)
+displaychat Näytä tekstin valinnat
+displayeventconnect Näytä, kun käyttäjät kirjautuvat
+displayeventdisconnect Näytä, kun käyttäjät kirjautuvat ulos
+displayeventemail Näytä, kun sähköpostia saapuu
+displayeventnick Näytä, kun henkilö vaihtaa nimeä
+displayeventpsm Näytä, kun henkilö vaihtaa henkilökohtaista viestiä
+displayeventstate Näytä, kun käyttäjät vaihtavat tilaansa
+displayp4context Näytä P4-Conext-kentän sisältö viestiä lähetettäessä
+displaypic Kuva
+dockfreedesktop FreeDesktop (KDE3/Gnome2)
+dockgtk Gnome Dock
+docking Docking
+dockingoff Docking pois
+dockkde KDE Dock
+done Valmis
+dontaskweek Älä kysy uudestaan viikkoon
+dontdownload Älä lataa TLS:ää, asennan sen itse
+dontshowdp Estä käyttäjää lataamasta keskustelukuvaketta
+dontshow Älä näytä
+downloadcanceled Lataus keskeytetty.
+downloadingtls Ladataan TLS-moduuli paikasta:\n $1
+downloadingwait Ladataan uuta aMSN-versiota. Odota hetki...
+download Lataa
+editavsettings Muokkaa ääni- ja kuva-asetuksia
+editcontent Muuta aihe- ja viestikenttää
+editcustomstate Muokkaa mukautettua tilaa
+edit Muokkaa
+editmyprofile Muuta MSN profiilia
+editnewstate Uusi henkilökohtainen automessage tila
+editprofile Muokkaa profiilia
+editstate Muuta olemassaolevaa automessage tilaa
+editvalue Muokkaa arvoa
+emailsinlist Näytä yhteystietolistassa sähköpostiosoitteet nimien sijasta
+email Sähköposti
+emoticon_steal Lisää hymiöihin
+emotisounds Käytä ääniä joidenkin hymiöiden kanssa
+emptygroup Tyhjä ryhmä
+enabled Käytössä
+enableproxy Ota välityspalvelin käyttöön
+enableremote Salli etähallinta
+enablesound Käytä ääntä
+encoding2 Merkistön koodaus
+encoding Valitse merkistökoodaus
+enterbugdesc Kirjoita mitä olit tekemässä auttaaksesi meitä virheen testauksessa:
+entercontactemail Anna henkilön sähköpostiosoite
+enterfilename Anna tiedoston nimi
+enternick Nimi
+enterpsm Henkilökohtainen viesti
+errortls Virhe asennettaessa TLS-moduulia:
+error Virhe
+escapeclosescw Esc-näppäin sulkee keskusteluikkunan
+eventhistory Näytä tapahtumahistoria
+examples Esimerkit
+exitamsn Haluatko varmasti lopettaa?
+extras Lisäpalvelut
+faileddeleteperso Tätä kuvaa ei voida poistaa, sillä se ei kuulu profiiliisi. Ainoastaan oman profiilisi kuvia voidaan poistaa tällä tavalla.
+faileddelete Poistaminen epäonnistui
+failed Epäonnistui
+faq FAQ (Usein kysytyt kysymykset)
+fetching Kerätään dataa...
+filedoesnotexist Tiedostoa ei ole
+filemanexample ( \$location tarkoittaa hakemistoa ) (KDE: konqueror \$location GNOME: nautilus \$location)
+fileman Tiedostonhallintaohjelma
+filename Tiedoston nimi
+filenotwritable Tätä tiedostoa ei voida poistaa
+file Tiedosto
+filetransfercancelled Tiedoston siirto keskeytetty
+filetransfercomplete Tiedoston siirto valmis
+filetransfer Tiedostonsiirto
+filtersselect Valitse suodattimet joita haluat käyttää.\n(Huom: tyhjä tarkoittaa 'näytä kaikki')
+filters Suodattimet
+filtersx Suodatinvalinta
+findasyoutype Etsi samalla kun kirjoitat
+find Etsi
+findnext Etsi seuraava
+findprev Etsi edellinen
+finetunesettings Finetune kuva-asetukset
+finish2apply Paina valmis hyväksyäksesi asetukset
+finish Valmis
+firewalled2 Olet palomuurin takana, katso kohtaa 'Yhteysasetukset' asetuksista.
+firewalled Olet palomuurin tai NAT-reitittimen takana
+followtext Vieritä alaspäin kun uutta tekstiä tulee
+forget_me Unohda minut
+forgot_pass Oletko unohtanut salasanan?
+formatcsv CSV formaatti
+formatctt CTT formaatti
+friendlyname Lempinimi
+ftacceptedby $1 hyväksyi tiedostonsiirtokutsun tiedostolle '$2'.
+ftaccepted Tiedoston siirto hyväksytty
+ftaccepting Hyväksytään tiedostonsiirtopyyntö
+ftautoclose Sulje ikkuna kun siirto on valmis
+ftconnecterror Virhe yhdistettäessä
+ftconnecting Yhdistetään $1 porttiin $2
+ftconnectionlost Yhteys katkennut vastaanottajaan
+ftgotinvitation $1 haluaa lähettää sinulle tiedoston '$2' ($3 tavua). Se tallennetaan kansioon $4. Hyväksytkö tiedoston vastaanoton?
+ftportpref2 Avataan portti yhteyttä varten (tiedostonsiirtoa ja Web-kameraa varten)
+ftportpref Ensimmäinen porti tiedostonsiirrolle
+ftporttest Testaa portti
+ftrejectedby $1 kieltäytyi vastaanottamasta tiedostoa $2
+ftrejected Tiedoston siirto hylätty
+ftsendinvitation Tiedostoa '$2' ($3 tavua) yritetään lähettää $1:lle. Odotetaan vastaanottajan hyväksyntää.
+fullcontactlist Yhteystietolistasi on täysi. Poista yhteystietoja lisätäksesi uusia.
+getdisppic Hae muiden käyttäjien kuvat
+getmoreplugins Hae lisää lisäosia!
+getmoreskins Hae lisää teemoja!
+globalcontainer Yleinen rasia
+globalnick Lisää muoto kaikkien yhteystietojen nimien muodostamiseen. Voit käyttää näitä muuttujia: \$user_login yhteystietojesi osotteisiin \$nick yhteystietojesi nimiin ja \$customnick käyttäjätietojesi erikoisnimille. Esim: '\$user_login is \$nick' näyttää tältä 'yhteystieto@msn.com on Yhteystieto'
+globalnicktitle Yleinen nimi
+globaloverride Yleisen nimen muoto korvaa erikoisnimet
+gonelunch Lounaalla
+gotink $1 lähetti sinulle mustetta.
+gotoinbox Avaa saapuneet sähköpostiviestit
+goto Mene $1
+goto_prefs_removeprofile Paina tästä päästäksesi asetuksiin ja poistaaksesi profiilin
+groupadd Lisää ryhmä
+groupcontactsbystatus Ryhmitä yhteistiedot tilan mukaan
+groupcontacts Ryhmäyhteystiedot
+groupdelete Poista ryhmä
+groupexists Ryhmä on jo olemassa!
+groupmissing Ryhmää ei löydy
+groupnewname Uusi nimi
+groupnotempty Ryhmä ei ole tyhjä!
+groupoldname Vanha nimi
+grouprename Nimeä ryhmä uudelleen
+group Ryhmä
+groups Ryhmät
+groupunknown Tuntematon ryhmä
+handle Käsittele
+havenomic Minulla ei ole mikrofonia
+help Apua
+helpcontents Sisältö
+hidebuttonbar Piilota painikerivi
+hidedisplaypic Piilota henkilökuva
+hidemenumessage Oletko varma, että haluat piilottaa valikot?\n Voit palauttaa ne koska tahansa käyttämällä 'Näytä/Piilota valikot'-valintaa tai painamalla 'Ctrl-M'
+hidemenu Näytä/Piilota valikot
+hiden Piilota olio hymiövalikosta
+hidewindow Piilota ikkuna
+history2 Historia
+history Viestihistoria
+home Koti
+httpconnection HTTP-yhteys (portti 80)
+hue Vivahde
+huge Jättimäinen
+hybrid Risteymä-moodi
+identity Henkilöllisyys
+ident Tunnistus käynnissä
+ignorecontact Ohita keskustelut tältä käyttäjältä
+ignoreerrors Ohita hiljaisesti muut aMSN:n virheet istunnon loppuun asti
+ignore Ohita
+imagefiles Kuvatiedostot
+inbox Saapuneet
+insertsmiley Lisää hymiö
+inserttextnote Lisää tekstiä aihe- ja viestikenttään, ja valitse 'Tallenna'
+installconvert Sinun täytyy asentaa ImageMagick (muunto-ohjelma), jos haluat käyttää Buddy-ikoneita ja mukautettuja hymiöitä. Voit ladata ohjelma binäärit omaa käyttöjärjestelmääsi varten osoitteesta ftp://ftp.imagemagick.net/pub/ImageMagick/binaries/ . Jos sinulla on jo kyseinen ohjelma, kyseessä on virhe. Tässä tapauksessa ilmoita siitä meille. Nämä ominaisuudet otetaan nyt pois käytöstä. Jos asennat ImageMagickin uudelleen, laita nämä asetukset takaisin päälle asetuksista.
+internalerror Palvelimen sisäinen virhe
+invalidfile2 Tiedostoa $1 ei voitu luoda. Varmista, että sinulla on tarvittavat käyttöoikeudet kyseiseen kohteeseen.
+invalidfile Kenttään "$1" syötettyä tiedostoa $2 ei ole tai sitä ei pysty lukemaan.
+invalidgroup Virheellinen ryhmä
+invalidparameter Virhe yhdistettäessä palvelimeen: väärä parametri
+invalidpic Annettua tiedostoa ei ole olemassa.
+invalidpicsize Annettu kuvakoko on liian suuri, valitse pienempi kuva
+invalidsound Annettua äänitiedostoa ei ole olemassa
+invalidusername Virheellinen käyttäjänimi
+invitationcancelled Kutsu peruttu
+invite Kutsu
+ipaddress IP-osoite
+ipdetect Tunnista oikea IP-osoite tiedostonsiirtoja varten käyttämällä HTTP:ta.
+ircstyle IRC-tyyli
+istyping $1 kirjoittaa viestiä
+joins $1 liittyy keskusteluun
+justonce Vain kerran
+keepalive Pidä yhteys elossa (NAT)
+keeplog2 Tallenna kaikki aMSN:n keskustelut myöhempää tarkastelua varten
+keeplog Tallenna keskustelut viestihistoriaan
+language Kieli
+language_manager Kielten hallinta
+large Iso
+largest Suurin
+lastlogin Kirjauduttu viimeksi
+lastlogout Kirjauduttu ulos viimeksi
+lastmsgedme Viimeisin viesti
+lastmsgtime Viimeisin viesti saapunut $1
+lastseen Viimeksi verkossa
+lazypicretrieval Laiska kuvien haku
+lclosedwin $1 on sulkenut ikkunan $2
+lconftopriv Julkinen keskustelu muuttui yksityiseksi jossa mukana $1
+lconvstarted Keskustelu alkoi $1
+lconvstartedOIM Offline-keskustelu aloitettu $1:n kanssa
+leaveblankforhotmail Jätä tyhjäksi Hotmail web-palvelua varten
+leavejoinsinchat Näytä "poistui/liittyi keskusteluun" ilmoitukset keskustelun sisällä
+leaves $1 poistui keskustelusta
+lenteredconf $1 on liittynyt keskusteluun $2
+lineflushlog Puhdista loki-tiedosto jokaisen rivin jälkeen
+linprivate Yksityinen keskustelu
+listening Kuunnellaan
+listeningon Kuuntelee porttia $1
+listsmileys2 Näytä hymiöt aMSN:n yhteystietolistalla.
+listsmileys Hymiöluettelo
+ljoinedconf $1 liittyi keskusteluun
+lleftconf $1 poistui keskustelusta
+loadcontacts Lataa yhteystiedot
+load Lataa
+loadotherdisplaypic Ladataan DPs paikasta $1, odota hetki...
+logbigger Ei rajoitusta lokitiedoston koolle
+logeventconnect Kirjaa ylös kirjautumiset
+logeventdisconnect Kirjaa ylös uloskirjautumiset
+logeventemail Kirjaa ylös kun sähköpostia saapuu
+logeventnick Kirjaa ylös nimenmuutokset
+logeventpsm Kirjaa ylös henkilökohtaisen viestin muutokset
+logeventstate Kirjaa ylös kun tila vaihtuu
+logfandexp Lokitiedoston koot ja historian vanhentuminen
+loggedotherlocation Yhteys katkesi. Olet kirjautuneena toisesta paikasta.
+loggingin Kirjaudutaan
+loginas Kirjaudu nimellä
+loging Historia
+login Kirjaudu
+logolder Kirjaa ylös vain keskustelut jotka tapahtuimat lähi
+logout Kirjaudu ulos
+logoutwincloselabel Kirjauduttaessa ulos, sulje keskustelut
+logsbydate Lajittele lokit päivämäärän mukaan (Keskusteluhistoria avautuu nopeammin)
+logschats Kirjaa ylös keskustelut
+logsin on juuri kirjautunut sisään
+logsmileys Näytä oliot ja hymiöt aMSN:n historiassa
+logsout kirjautui juuri ulos
+logwebcam Tallenna kaikki Web-kameraistunnot myöhempää tarkastelua varten
+longnick Nimesi on yli 130 merkin pituinen. MSN -protokolla ei virallisesti tue näin pitkiä nimiä. Oletko varma, että haluat jatkaa? 
+longp4c Nimesi on yli 130 merkkiä. Se näkyy virallisessa MSN-ohjelmassa $1. Oletko varma että haluat vaihtaa sen?
+longpsm Henkilökohtainen viesti on liian pitkä. Tätä ei virallisesti tueta MSN-protokollassa. Oletko varma että haluat vaihtaa sen?
+lowrescam Käytä pientä näyttötilaa Web-kamerassa
+lprivtoconf Yksityinen keskustelu muuttui keskusteluksi jossa mukana $1
+luclosedwin Olet sulkenut ikkunan $1
+mailerexample ( \$recipient = Vastaanottaja ) Jätä tyhjäksi käyttääksei Hotmailia
+mailer Sähköpostiohjelma
+maintenance Palvelin ajetaan alas ylläpitoa varten $1 minuutiksi
+maximised Maksimoitu
+medium Meedium
+minimised Pienennetty
+minimize Pienennä ilmoitusalueelle
+mins minuuttia
+mobilegrp1 Matkaviestin-ryhmä
+mobilegrp2 Lisää käyttäjät Matkaviestin-ryhmään jos ovat offline-tilassa (ja lajiteltu tilan mukaan)
+mobile Matkapuhelin
+modified Muutettu
+month Kuukausi
+more Lisää
+morepersonal Lisää Osavaltioita ->
+move Siirrä
+movetogroup Siirrä ryhmään
+msgflicker Vilkuta keskusteluikkunan otsikkoa kun uusi viesti saapuu taustalla olevaan ikkunaan.
+msgmaxmin Kun uusi viesti saapuu, haluan olla:
+msgmode Valitse miten useita viesti-ikkunoita käsitellään:
+msg Viesti
+msn aMSN
+msnstatus MSN-verkon tila
+msnstyle MSN-Tyyli
+mustrestart Sinun täytyy käynnistää ohjelma uudestaan, jotta muutokset tulevat voimaan
+myfriendlyname Lempinimeni
+myhomephone Oma kotipuhelin
+mymobilephone Oma matkapuhelin
+mynick Nimeni
+mypic Kuvani
+mypics Minun kuvat
+mystatus Oma tila
+myworkphone Oma työpuhelin
+name Nimi
+natip IP:n selvitys web-sivuston mukaan
+natkeepalive Jos yhteys katkeilee jatkuvasti, kytke päälle tämä asetus
+needonline Sinä olet/näyt vieläkin offline-tilassa!
+needwinico2 Tarvitaan winico05.dll-tiedosto (löytyy hakemistosta utils/windows), jotta palkkiinpienennys toimisi
+never Ei Koskaan
+new_account Luo uusi tunnus
+newchat Uusi Keskustelu
+new_ft_protocol Käytä uutta tiedostonsiirtoprotokollaa (sisältää virheitä)
+newline Uusi rivi
+newmail $1 uutta sähköpostiviestiä
+newmailfolder Sinulla on $1 uutta viestiä muissa Hotmail-kansioissa
+newmailfromother Uusi sähköposti muissa hakemistoista osoitteesta $1 ($2)
+newmailfrom Uusi viesti $1 ($2)
+newmsg Uusi viesti
+newoim Uusi offline-viesti
+newstate Uusi tila
+newtabbedfeature aMSN:ssä on uusi ominaisuus keskustelijen hallintaan, voit nyt pitää kaikki ikkunat samasta rihmästä tai koko yhteystietolistasta yhdessä välilehti-ikkunassa. Ole hyvä ja valitse tapa jolla aMSN:n pitäsi hallita keskustelujasi
+newupdate Päivityksiä saatavilla aMSN:ään
+newveravailable Uudempi versio $1 ladattavissa
+next Seuraava
+nickchanged $1 vaihtoi nimensä. Uusi nimi: $2
+nick Nimi
+noactivity Ei läsnä
+nocacheddps Kuvia ei ole muistissa tälle käyttäjälle
+nocamwarn Web-kameraa ei löytynyt tai se on toisen ohjelman käytössä. Apua ongelman ratkaisemiseen löytyy aMSN Wikistä.
+nodataavailable Tietoa ei saataville $1:lle
+nodevices Tällä hetkellä ei ole laitteita asennettuna
+no Ei
+noftpreview Estä kuvien esikatselu tiedostonsiirrossa
+nogap Ei tilaa ryhmien välillä
+nogroup Ei ryhmää
+nologfile Ei historiatietoja ($1)
+nomic Ei mikrofonia
+noneavailable Ei yhtään saatavilla
+nonewmail Ei uusia sähköpostiviestejä
+nonewver Uudempaa versiota ei ole saatavilla
+nopic Ei kuvaa
+noprofileexists Tällä hetkellä ei yhtään profiilia, \n sinun pitää tehdä yksi jos haluat käytää profiloitua kirjautumisia. \n Käytä lisää uusi profiili-nappia tässä ikkunassa lisätäksesi uuden profiilin.
+noresizesmileys Älä skaalaa saapuvia olioita
+normal Normaali
+noskins Skins-kansiosta ei löytynyt oletusteemaa. aMSN:ää ei voi käynnistää.
+nosound_or_hold Ääntä ei tunnistettu. Lähettääksesi äänileikkeen sinun pitää painaa ja pitää painettuna näppäintä kun puhut ja päästää se lähettääksesi viestin.
+nosound Ääntä ei tunnistettu, varmista että mikrofoni on kytketty oikein
+nospace Ei mitään nähtävää
+nosystemtray Järjestelmäpalkki ei saatavilla
+note Huomautus
+notificationserver MSN-viestintäpalvelin
+notify1_5 Näytä ilmoitus kun käyttäjät kirjautuvat ulos
+notify1_75 Näytä ilmoitus kun käyttäjät vaihtavat tilaansa
+notify1 Näytä ilmoitus kun käyttäjät kirjautuvat sisään
+notify2 Näytä ilmoitus kun uusi viesti saapuu
+notify3 Näytä ilmoitus kun uusi sähköposti saapuu
+notify4 Näytä ilmoitus kun uusi sähköposti saapuu muihin kansioihin
+notify muistuta
+notifyoffset Ilmoitus ponnahdusikkunoiden tasapainotettu paikka
+notifytimeout Ilmoitus näkyy ruudulla (millisekuntia)
+notifytyping Lähetä käyttäjille ilmoituksia kun kirjoitetaan
+notifywin Muistutus-ikkuna
+notinlist Et ole hänen käyttäjälistassa
+notls MSN-protikolla 9 vaatii TLS-paketin. Tämä paketti ei ole näytä olevan asennettuna. Jos kuitenkin on asennettuna, polku tähän kirjastoon pitää määritellä Asetukset-ikkunassa. (esim: /opt/tls/lib). \n \n Se on myös mahdollista ladata osoitteesta http://tls.sf.net.
+nottabbed Tavallinen ikkuna ilman välilehtiä
+nousersinsession Ei käyttäjiä
+nouserspecified Käyttäjää ei ole määritelty
+nudge $1 pyytää huomiotasi
+offline Offline-tila
+oim Offline-viestintä
+ok Hyväksy
+onenewmail 1 uusi sähköpostiviesti
+onlinehelp Online-apu
+online Online-tila
+onphone Puhelimessa
+opendir Avaa hakemisto
+openfile Avaa
+openfilecommand Avaa komento
+openreceived Avaa vastaanotetut tiedostot
+options Asetukset
+ordercontactsby Järjestä yhteystiedot
+ordergroupsby Järjestä ryhmät
+original Alkuperäinen
+otherdisplaypic Muut näyttöasetukset tälle käyttäjälle (klikkaa hiiren oikeaa nappulaa päästäksesi lisäasetuksiin)
+otherdps Muut keskustelukuvakkeet
+other Muu
+others Muut
+p4contextprefix Etuliite P4-Context lähettäjille tällä kirjainrivillä
+pager Hakulaite
+pass Salasana
+paste Liitä
+pausedwebcamreceive Tämä Web-kamera on tauotettu toisen käyttäjän toimesta
+pause Tauko
+pausewebcamsend Tauota Web-kamera-lähetys
+personal Henkilökohtainen
+phone Puhelin
+phones Puhelinnumerot
+picbrowser Kuvaselain
+picfile Hälytyksen kuva (GIF < 500 x 500)
+picstatus Kuvahälytys päälle/pois
+playbackposition Toiston paikka
+playbackspeed Toiston nopeus (millisekunteja kehysten välissä)
+playerror Tiedostoa $1 soitettaessa tapahtui virhe
+playing Nyt soi: $1
+playtest Toista testinauhoite
+play Toista
+playwebcamsend Jatka Web-kameralähetystä
+pluginselector Lisäosat
+port Portti
+portswellconfigured Porttiasetukset ovat OK
+prefalerts Omat hälytykset ja äänet
+prefapps Sovellukset
+prefawaymsg Poissaoloviestit
+prefblock1 Valitse kirjauduttaessa ulos
+prefblock2 Tarkista jatkuvasti
+prefblock3 "Sinut on estetty" -ryhmä
+prefconnection Yhteysasetukset
+prefemotic Hymiöt
+preferences Asetukset
+preffont2 Oma fontti keskusteluissa
+preffont3 aMSN:n fontti ja koko
+preffont4 Muiden fontti keskusteluissa
+preffont Fontit
+prefft Tiedostonsiirto, peer-to-peer ja NAT asetukset
+preflibs Kirjastot hakemistot
+preflog1 Tapahtuma- ja keskusteluhistorian asetukset
+preflogevent Tapahtumahistoria
+preflook Ulkonäkö
+prefmsging Keskustelut
+prefname Nimi/lempinimi
+prefphone2 Kirjoita puhelinnumerot jotka haluat muiden ihmisten näkevän
+prefphone Puhelinnumero
+prefprivacy2 Käyttäjän yhteystiedot
+prefprivacy Sallitut käyttäjät
+prefprofile2 Luo/muokkaa julkista profiilia (kuvaus, jonka muut voivat nähdä)
+prefprofile3 Käyttäjäprofiilit
+prefprofile Julkinen profiili
+prefproxy Välityspalvelinasetukset
+prefremote Etäyhteysasetukset
+prefsession Tila
+prefshared Jaetut yhteydet (vain NAT)
+prefsound Äänet
+preview Esikatsele
+privacy Yksityisyys
+profiledconfig Profiloidut asetukset
+profileexists Et voi luoda profiilia tällä tunnuksella \n koska se on jo olemassa. Ole hyvä ja valitse toinen.
+profileinuse Tämä profiili on toisen aMSN-session käyntössä, ole hyvä ja valitse toinen
+profileloginradio Kirjaudu käyttäen olemassa olevaa Profiilia
+profiles Profiilit
+properties Ominaisuudet
+proxyconfhttp HTTP-välityspalvelimen asetukset
+proxyconf Välityspalvelimen asetukset
+proxyconnection Yhteys välityspalvelimen kautta:
+proxy Olen välityspalvelimen takana (HTTP tai SOCKS5)
+psmatend Näytä henkilökohtainen viesti nimen vieressä
+psmchanged $1 vaihtoi henkilökohtaisen viestinsä. Uusi viesti: $2
+psmdontshow Älä näytä henkilökohtaista viestiä
+psm Henkilökohtainen viesti
+psmnewline Näytä henkilökohtainen viesti nimen alla
+psmplace Henkilökohtaisen viestin asetukset
+publishphones Näytä puhelinnumero muille
+purge Puhdistus
+pwcdriver Käytät pwc ajuria
+quit Sulje
+raised Suurennettu
+readonlymsgbox Tiedostonsiirto on peruttu, koska vastaanottohakemisto on pelkästään luku-tilassa. Ole hyvä ja korjaa oikeudet tässä hakemistossa.
+readonlywarn VAROITUS: Tiedosto ei luultavasti tallennu oikein, koska "Tallennetut tiedostot" hakemisto näyttää olevan kirjoitussuojattu. Ole hyvä ja varmista oikeudet kohdehakemistossa ($1) ennen tiedostonsiirtoa.
+receivedbytes Vastaanotettu $1 / $2 tavusta
+receiveddir Vastaanotettujen tiedostojen sijainti
+receivedoimread Sinulle on yksi tai useampi uusi offline-viesti. Haluato lukea ne?
+receivedvoice Äänileike vastaanotettu
+receivefile Vastaanota tiedosto
+recentmsg Estä keskusteluikkunan sulkeminen jos viesti on juuri saapunut
+reconnect2 Yhdistä uudelleen jos yhteys katkeaa
+reconnecting Yhdistetään uudelleen
+reconnect Odottaa $1 uudelleenkirjautumista
+recorderror Tapahtui virhe, kun yritettiin nauhoitaa ääntä : $1
+record Nauhoita
+recvwebcamaccepted $1 hyväksyi pyyntösi vastaanottaa Web-kameran kuvaa. Yhdistetään...
+reject Hylkää
+rememberaccount Muista tunnus
+rememberme Muista minut
+rememberpass Muista salasana
+remembersetting Muista valinta
+removeempty Poista tyhjät ryhmät käyttäjälistasta
+removefromgroup Poista ryhmästä
+removefromlist Poista listasta
+rename Nimeä uudelleen
+reporting Raportointi
+report Raportti
+required_version Lisäosan lataus ei onnistunut. Se vaatii vähintään aMSN version $1
+resetincomingfont Nollaa kirjasin (käytä lähettäjän kirjasinta)
+restartforskin HUOM! Voit joutua käynnistämään aMSN:n uudelleen, jotta uusi teema näkyy oikein
+retry Yritä uudelleen
+reversed Käännetty
+reverselist Takaperin lista (TL):
+rightback Palaan pian
+saveas Tallenna nimellä
+savechatwinsize Tallenna ikkunan koko oletukseksi kokoa muutettaessa
+savecontacts Tallenna yhteystiedot
+saveddefaultloc Tallenna oletuspaikkaan
+savelocationerror Tiedostoa ei voi tallentaa valitsemaasi sijaintiin.
+savelocation Haluatko tallentaa tiedoston sijaintiin $1?
+saveotherdirectory Tallenna hakemistoon
+save Tallenna
+savetofile Tallenna tiedostoon
+says $1 sanoo
+sbcon Otetaan yhteys kytkintauluun
+searchdown Hae taakse
+searchup Hae eteen
+selectall Valitse kaikki
+selectcontact Valitse yhteystieto
+selectplugins Valitse lisäosat, joita haluat käyttää
+selectskin Valitse teema:
+sendcam Lähetä Web-kamera
+sendemail Ilmoita muutoksista sähköpostiosoitteeseen
+sendfeedback Lähetä palautetta
+sendfile Lähetä tiedosto
+send Lähetä
+sendmail Lähetä sähköpostiviesti
+sendmobmsg Lähetä matkaviestimeen
+sendmsg Lähetä viesti
+sendoim Lähetä offline-viesti
+sendvoice Lähetä äänileike
+sendwebcamaccepted $1 hyväksyi pyyntösi lähettää Web-kameran kuvaa. Yhdistetään...
+sendwebcaminvite Kutsu käyttäjä Web-kameraistuntoon
+sentbytes Lähetetty $1 / $2 tavusta
+sentvoice Äänileike lähetetty
+serverbusy Palvelin on varattu
+servergoingdown Yhteys katkaistu: palvelin sammutetaan
+server Palvelin
+serverunavailable Palvelin ei ole saatavilla
+session Istunto
+setasmydp Aseta kuvaksi
+setupcamfinetune Web-kameraa asennetaan ja kuvaa hienosäädetään
+setupcam Määritellään Web-kameraa
+shareswebcam Jakaa Web-kameran
+showbanner Näytä aMSN:n banneri
+showblockedlist Näytä lista käyttäjistä, jotka ovat estäneet sinut
+showcachedpics Näytä muistissa olevat kuvat
+show_contactdps_in_cl Näytä käyttäjien kuvat käyttäjälistassa
+showcontactemail Näytä käyttäjien sähköposti
+showcontactnick Näytä käyttäjien nimi
+showdisplaypic2 Näytä kuva oletusarvoisesti kun keskusteluikkuna on avattu
+showdisplaypic Näytä kuva
+showhiddenfiles Näytä piilotetut tiedostot ja kansiot tiedostoselaimessa
+showlinksinlogin Näytä linkit kirjautumisikkunassa
+showmailicon Näytä posti-ikoni alapalkissa kun uutta sähköpostia saapuu
+showmypic Minun kuvani
+shownotify Näytä tapahtumailmoitus
+showpicnotify Näytä käyttäjien kuvat ilmoitusikkunoissa
+showuserpic $1:n Kuva
+signinstatus Oma tila
+skinselector Ulkoasu
+skin Teema
+smallest Pienin
+small Pieni
+smileconfig Omat oliot -asetukset
+smilefile Hymiön nimi
+smileintro2 Ole hyvä ja täytä vaaditut kentät luodaksesi muokatun hymiön (lue FAQ)
+smileintro Ole hyvä ja täytä vaaditut kentät muokataksesi hymiötä (lue FAQ)
+smiletoobig Hymiö jonka valitsit on normaalia suurempi. Haluatko muuttaa sen koon ?
+snackfailed Snack:n lataaminen epäonnistui, palataan oletukseen
+snackneeded Snack-kirjasto tarvitaan tämän toiminnon käyttämiseen. Vähintään versio 2.2.9 tarvitaan.
+snapshot Ruutukaappaus
+sngdblclick Paina kerran avataksesi uuden keskusteluikkunan
+sortcontactgroup Lajittele yhteystiedot ryhmän mukaan
+sortcontacthybrid Lajittele yhteystiedot hybrid-tilassa
+sortcontactsasc Lajittele yhteystiedot nousevasti
+sortcontactsby Lajittele yhteystiedot
+sortcontactsdesc Lajittele yhteystiedot laskevasti
+sortcontactstatus Lajittele yhteystiedot tilan mukaan
+sortgroupsasc Lajittele ryhmät laskevasti
+sortgroupsdesc Lajittele ryhmät nousevasti
+sound2 Äänimerkki, kun käyttäjä kirjautuu sisään tai lähettää viestin
+soundactive Äänimerkki, kun vastaanotetaan viestejä (myös aktiivisessa ikkunassa)
+soundcommand Tämä on soitto-ohjelmasi (esim: esdplay)
+soundexample ( \$sound = Ääni joka soitetaan) Esim: esdplay \$sound
+soundfile Hälytyksen äänitiedosto
+soundfiles Äänitiedostot
+soundloop Soita ääntä silmukassa
+soundnoavail Äänilaite ei ole saatavilla. Ole hyvä ja pysäytä kaikki ohjelmat jotka käyttävät äänilaitetta.
+soundserver Äänipalvelin
+soundstatus Äänihälytys
+sound Tapahtumien äänimerkki
+sourcecode Lähdekoodi (vaatii sekä kääntämisen että asentamisen) 
+splashstart Käynnistä
+sslwarning VAROITUS!! SSL-tuenn kytkeminen pois päältä poistaa salauksen, jolloin salasanasi lähetetään selväkielisenä tekstinä verkossa. Käytä vain ja ainoastaan erittäin vaikeiden välityspalvelimien ja verkkokonfiguratioiden kanssa.
+startoffline2 Kirjaudu sisään hiljaisesti "Näkyminen muille offline-tilana"
+startoffline Aloita offline-tilassa
+startonboot Käynnistä aMSN järjestelmän käynnistyessä
+startontray Käynnistä aMSN vain alapalkissa
+stateautomsg Lähetä automaattinen viesti
+statechange vaihda tilaksi:
+stateedittext Ole hyvä ja vaihda kentät joita haluat \n muuttaa ja paina tallenna
+state Haluan näkyä
+stateinfo Henkilökohtaisen tilan asetukset
+statename Henkilökohtaisen tilan nimi
+statenewtext Ole hyvä ja täytä tarvittava informaatio luodaksesi \n uuden henkilökohtaisen tilasi ja paina tallenna
+statenick Erikoisnimi (jätä tyhjäksi, jos ei muutosta)
+statepsm Oma henkilökohtainen viesti (jätä tyhjäksi, jos ei muutosta)
+stats Tilastot
+status Tila
+step Askel
+stopalarm Keskeytä hälytys
+stop Lopeta
+stopwebcamreceive Lopeta Web-kameraistunto
+stopwebcamsend Lopeta Web-kameraistunto
+storenickname Palaa alkuperäiseen nimeen erikoistilan "Erikoisnimellä" jälkeen
+strictfonts Rajoita kaikkien kirjasinten koko valittuun (Status-rivi ja muut)
+stylechat Sama tyyli kuin keskusteluissa
+stylehist aMSN historiakatsaus
+stylelog Valitse keskusteluhistorian muoto
+style Tyyli
+subject Aihe
+subjectrequired Aihe tarvitaan
+syntaxerror Muotoiluvirhe
+tabbedglobal Välilehti-ikkuna kaikille käyttäjille
+tabbedgroups Välilehti-ikkuna kaikille käyttäjille samassa ryhmässä
+tabbed Välilehdelliset ikkunat
+tabtitlenick Näytä nimet välilehdissä sähköpostiosoitteen sijaan
+temp_state Väliaikainen tila (ei tallenneta)
+textsize Tekstin koko
+thismonth Tämä kuukausi
+throughserver Palvelimen kautta
+timeremaining Aikaa jäljellä
+timestamp Aikaleima
+timestamps Käytä aikaleimoja keskusteluissa
+title aMSN
+tkerror1 Tk on havainnut virheen, virhe on löytynyt aMSN:stä, ole hyvä ja raportoi siitä valitsemalla Raportoi napin. Voit valita Tiedot nähdäksesti tiedot virheestä tai valita OK jatkaaksei keskustelua aMSN:ssä.
+tkerror TK on havainnut virheen, virhe on löytynyt aMSN:stä, ole hyvä ja raportoi siitä. Lähetä tiedosto $1 sähköpostiin amsn-bugs@list.sf.net
+tlsdowncompleted Tiedosto $1 ladattiin hakemistoon $2. Sinun pitää purkaa se, kääntää se (jos latasit lähdetiedoston) ja asenta se $3:n sisälle.
+tlsexplain Kansio missä tcl TLS moduuli on. Jossei aMSN löydä sitä, ole hyvä ja tarkenna sen sijainti.\n(Tarvitaan SSL kirjautumiseen),
+tlsinstallexp aMSN käyttää nyt MSNP9:stä, joka tarvitsee salattua\nyhteyttä käyttäen SSL:ää. Käyttääksesi SSL:ää, aMSN tarvisee asentaa moduulin nimeltä TSL,\njoka puuttuu järjestelmästäsi. Tämä welho auttaa sinua lataamaan ja\n asentamaan TLS:n. Ole hyvä ja valitse järjestelmän tyyppi, että voimme automaattisesti\n ladata tarvittavat TLS-tiedostot.
+tlsinstall TLS-Moduulin asennuswelho
+tlsinstcompleted TLS moduulin asennus valmis - sinun pitäisi nyt pystyä käytää MSNP9:ää. Jossei se toimi, silloin et luulvasti valinnut oikeaa moduulia tai sitten käännettyä moduulia ei ollut saatavilla järjestelmällesi.
+today Tänään
+tomobile Matkaviestimeen
+tools Työkalut
+tooltips Näytä vinkit
+totalsize Koko yhteensä
+to Vastaanottaja
+transnotexists Haluttua tiedostoa ei ole käännetty nykyiselle kielelle vielä.
+trayicon Näytä tila-ikoni ilmoitusalueella
+traynotcompiled Alapalkki lisäosaa ei ole käännetty. Tarkista plugins/traydock
+triggers Tekstiliipaisimet
+truncatenames1 Katkaise nimet, jotka ovat pidempiä, kuin ikkunan leveys ikkunan otsikossa ja yhteystietolistassa
+truncatenames2 Katkaise nimet, jotka ovat pidempiä, kuin ikkunan leveys keskustelujen sisällä
+truncatenicks Katkaise nimet, jotka ovat pidempiä kuin ikkunan leveys
+twonewmail $1 uutta sähköpostiviestiä
+type Tyyppi
+unblock Päästä
+unknown Tuntematon
+unload Poista
+unselectall Poista valinnat
+uoffline Offline-tilassa
+uonline Online-tilassa 
+updateonlycurrentlanguage Päivitä ainoastaan nykyinen kieli
+update Päivitä
+updatesaved Valmis\n Tallennettu $1 ($2).
+updating Päivitetään
+useasdp Käytä kuvana
+useasregexp Käytä säännöllistä lauseketta (regexp)
+useother Käytä eri ohjelmaa
+useralreadyonlist Käyttäjä on jo yhteystiedoissa
+userblocked Käyttäjä on kirjautunut, mutta hän on estänyt sinut
+userdata Käyttäjätiedot
+userdps Käyttäjien kuvat
+usernotonline Käyttäjä ei ole online-tilassa
+userproperties Käyttäjän $1 asetukset
+usersettings Asetukset
+user Sähköpostiosoite
+useryourself Et voi keskustella itsesi kanssa!
+usesnack Käytä Snack-kirjastoa (Tcl:n sisäinen)
+verifyblocked Tarkista estävät ihmiset
+version Versio
+videoconversationrequest Olet juuri vastaanottanut videokeskustelun (kaksisuuntainen, äänellä ja kuvalla) pyynnön. Tämä ominaisuus ei ole tuettu aMSN:ssä ja se on evätty. Kuitenkin voit käyttää standardia Web-kamerakeskustelua.
+viewcontactsby Näytä yhteystiedot tavalla
+view Näytä
+viewprofile Näytä profiili
+voice_notimplemented Äänileikkeiden vastaanottamista ei ole vielä toteutettu. Ole hyvä ja ole kärsivällinen.
+voice_windows_click Paina tästä tehdäksesi niin.
+voice_windows Koska olet Windowsin käyttäjä, voi olla mahdollista kuunnella äänileike avaamalle se mediasoittimella.
+volume Äänenvoimakkuus
+wanttosharecam Haluan, että Web-kamerani on muiden saatavilla
+webcamcanceled Web-kameraistunto $1 kanssa on keskeytetty
+webcamclosebefcancel Sinun pitää keskeyttää kaikki Web-kameraistunnot ennen ikkunan sulkemista
+webcamconfiguredLinux Valitsit seuraavat Web-kameran asetukset:\nWeb-kamera: $1\nWeb-kameran kanava: $2
+webcamconfiguredMac Web-kameran asetukset määritelty
+webcamconfiguredWin Valitsit seuraavan Web-kameran : $1
+webcamconfigure Konfiguroi Web-kamera
+webcamextchecking Tarkistetaan onko Web-kamera lisäosa ladattu ...
+webcamextloaded Web-kamera -laajennus ladattu
+webcamextnotloaded Web-kamera -laajennusta ei ole ladattu. Sinut täytyy asentaa se.
+webcamextwarn Et pysty näyttämään yhteystietojesi Web-kameraa. Apua lisäosien asentamiseen voit löytää aMSN Wikistä:
+webcamfaq FAQ/Apua Web-kameralle
+webcamhistory Näytä Web-kameraistunnot
+webcaminvite $1 kutsui sinut Web-kameraistuntoon, mutta aMSN ei tue tätä ominaisuutta.
+webcaminvitereceived $1 kutsui sinut Web-kameraistuntoon. Haluatko hyväksyä kutsun?
+webcaminvitereceiving Sinut on kutsuttu katsomaan $1 :n Web-kameran kuvaa. Hyväksytkö tämän istunnon?
+webcaminvitesending $1 haluaisi katsoa Web-kameraasi. Hyväksytkö tämän istunnon?
+webcamrejected $1 ei hyväksynyt Web-kameraistuntoa
+webcamrequestreceive Lähetetty pyyntö ottaa vastaan Web-kameran kuvaa
+webcamrequestsend Lähetetty pyyntö lähettää Web-kameran kuvaa
+webcamsending Lista ihmisistä, jotka ovat tällä hetkellä lähettämssä Web-kameraa\nKeskeytä
+webcam Web-kamera
+web Verkko
+whatisamsn aMSN on käyttöympäristöriippumaton MSN Messenger klooni
+whatsize Haluttu kuva ei ole oikean kokoinen (96x96) Minkä kokoisena haluaisit sen näkyvän?
+willjoin Odottaa $1 liittymistä keskusteluun
+winkreceived Olet vastaanottanut Wink:n käyttäjältä $1. Tämä ominaisuus ei ole tällä hetkellä tuettuna aMSN:ssa.
+wintitlenick Näytä nimet välilehdillä sähköpostin sijaan
+work Työ
+wrongfields "$1", "$2" ja/tai "$3" kentät ovat virheellisiä
+wrongprofileversion Väärä profiiliversio. Korjataksesi sen, ole hyvä ja poista hakemisto $1, tai päivitä aMSN
+xmmscurrent Näytä kappale
+xmmserr Mitään ole soitossa, tai sinulla ei ole xmms-infopipe:ä asennettuna.
+xmmssend Lähetä nykyinen kappale
+xoffset X-sijainti
+year Vuosi
+yesblock Kyllä ja estä
+yes Kyllä
+yesterday Eilen
+yoffset Y-sijainti
+youblocked Sinut on estetty
+yousay Sanot
+youwant Haluat
+zoom Lähennä/Loitonna
