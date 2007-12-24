@@ -69,7 +69,7 @@ wm state . withdrawn
 # behind the version (after 0.95.90 comes 0.95.90.svn, after 0.96 comes 0.96.90.svn)
 set version "0.97"
 set rcversion "0.97"
-set date "12/25/2006"
+set date "12/25/2007"
 set weburl "http://www.amsn-project.net"
 set program_dir "."
 set HOME ""
