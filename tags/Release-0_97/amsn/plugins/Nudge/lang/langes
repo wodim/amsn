@@ -1,0 +1,18 @@
+amsn_lang_version 2
+add_blockbutton Añadir un botón para bloquear los Zumbidos entrantes en la ventana de charla
+add_button Añadir un botón para enviar un zumbido en la ventana de chat.
+add_clmenuitem Añadir al menú de la lista de contactos
+block_nudge Admitir/No Admitir zumbidos
+delay Tiempo mínimo entre dos Zumbidos del mismo contacto (en segundos)
+limit Activar la limitación de la recepción de Zumbidos
+no_nudge_support No se puede enviar un zumbido a su contacto porque él o ella no usa un cliente que lo soporte.
+notify_receive Notificar zumbidos recibidos en la ventana de charla.
+notify_send Notificar zumbidos enviados en la ventana de charla.
+nudge_sent ¡Se ha enviado un zumbido!
+popup_nudge Notificar zumbidos con una ventana emergente.
+send_nudge Enviar Zumbido
+shake_nudge Movimientos por zumbido 
+shake_receive Mover la ventana cuando se reciba un zumbido.
+shake_send Mover la ventana cuando se envía un zumbido.
+sound_receive Ejecutar un sonido cuando se reciba un zumbido.
+sound_send Ejecutar un sonido cuando se envía un zumbido.
