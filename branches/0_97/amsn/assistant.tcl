@@ -1306,6 +1306,11 @@ namespace eval ::AVAssistant {
 		variable previmg
 		variable lowrescam
 
+		if {![winfo exists $chanswidget] } {
+			status_log "StartPreviewLinux : Assistant destroyed, returning"
+			return
+		}
+
 		if { $value == "" } {
 			status_log "No channel selected; IS THIS POSSIBLE ?"
 		} else {
@@ -2237,6 +2242,12 @@ namespace eval ::AVAssistant {
 
 			#add connection entry only if with have a webcam
 			abook::getIPConfig
+			
+			# Window can be closed while we do the IPConfig stuff..
+			if {![winfo exists $contentf] } {
+				return
+			}
+
 			if { [::abook::getDemographicField listening] == "false"} {
 				label $contentf.connection -justify left -font bplainf -text [trans firewalled2]
 				#pack it
