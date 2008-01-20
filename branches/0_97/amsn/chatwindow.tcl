@@ -3333,6 +3333,7 @@ namespace eval ::ChatWindow {
 		variable win2tab
 		variable winflicker
 		variable visibletabs
+		variable containerwindows
 
 		if { $win == 0 || ![info exists win2tab($win)] } { return }
 		if {![winfo exists $win]} { return }
