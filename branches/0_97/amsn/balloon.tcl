@@ -138,7 +138,7 @@ proc balloon {target message pic {cx 0} {cy 0} {fonts ""} {mode "simple"} } {
 			::tk::unsupported::MacWindowStyle style .balloon help none
 		} else {
 			wm overrideredirect .balloon 1
-			if { [OnWin] } { wm attributes .balloon -alpha [::skin::getKey balloonalpha 0.9] }
+			if { [OnWin] } { catch { wm attributes .balloon -alpha [::skin::getKey balloonalpha 0.9] } }
 		}
 
 		frame .balloon.f -bg [::skin::getKey balloonbackground]
@@ -220,7 +220,7 @@ proc balloon {target message pic {cx 0} {cy 0} {fonts ""} {mode "simple"} } {
 		if { [OnMac] } {
 			#Set alpha value of balloon. This is done after setting the geometry to
 			#avoid the balloon to be placed at a random position on screen.
-			wm attributes .balloon -alpha [::skin::getKey balloonalpha 0.9]
+			catch { wm attributes .balloon -alpha [::skin::getKey balloonalpha 0.9] }
 
 			#Focus last windows in AquaTK (to fix "Mac OS X focus bug")
 			if { $lastfocus!="" } {
