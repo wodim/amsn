@@ -1326,6 +1326,8 @@ proc process_custom_smileys_SB { txt {animated 0} } {
 	
 	set txt2 [string toupper $txt]
 
+	set total 0
+
 	#Try to find used smileys in the message	
 	foreach name [array names custom_emotions] {
 	
@@ -1333,7 +1335,11 @@ proc process_custom_smileys_SB { txt {animated 0} } {
 			status_log "process_custom_smileys_SB: Custom smiley $name doesn't exist in custom_emotions array!!\n" red
 			continue
 		}
-		
+
+		if {$total >= 5 } {
+			break
+		}
+
 		array set emotion $custom_emotions($name)
 		foreach symbol [encoding convertto identity $emotion(text)] {
 			set symbol2 [string toupper $symbol]
@@ -1344,10 +1350,12 @@ proc process_custom_smileys_SB { txt {animated 0} } {
 				if { [info exists emotion(casesensitive)] && [is_true $emotion(casesensitive)] } {
 					if {  [string first $symbol $txt] != -1 } {
 						append msg "$symbol\t[create_msnobj [::config::getKey login] 2 [::skin::GetSkinFile smileys [filenoext $file].png]]\t"
+						incr total
 					}
 				} else {
 					set msnobj ""
 					set startidx 0
+					set variations [list]
 					while {  [string first $symbol2 $txt2 $startidx] != -1 } {
 						if { $msnobj == "" } {
 							set msnobj [create_msnobj [::config::getKey login] 2 [::skin::GetSkinFile smileys [filenoext $file].png]]
@@ -1356,7 +1364,13 @@ proc process_custom_smileys_SB { txt {animated 0} } {
 						set idx [string first $symbol2 $txt2 $startidx]
 						set startidx [expr {$idx + [string length $symbol2]}]
 						set symbol [string range $txt $idx [expr {$startidx - 1}]]
-						append msg "$symbol\t$msnobj\t"
+
+						# Avoid adding multiple times the same symbol
+						if { [lsearch $variations $symbol] == -1 } {
+							lappend variations $symbol
+							append msg "$symbol\t$msnobj\t"
+							incr total
+						}
 					}
 				}
 			}
