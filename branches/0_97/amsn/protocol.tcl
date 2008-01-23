@@ -6695,7 +6695,11 @@ namespace eval ::MSN6FT {
 	
 					set p2pmessage [P2PMessage create %AUTO%]
 					$p2pmessage createFromMessage $message
-				
+
+					if { [$p2pmessage cget -offset] == 0 } {
+						degt_protocol "<--DC-MSNP2P ([getObjOption $sid chatid]) $data" "sbrecv"
+					}
+
 					::MSNP2P::ReadData $p2pmessage [getObjOption $sid chatid]
 					catch { $p2pmessage destroy }
 					catch { $message destroy }
@@ -6771,7 +6775,7 @@ namespace eval ::MSN6FT {
 					fileevent $sock writable ""
 					catch { close $sock }
 				} else {
-					fileevent $sock writable "::MSN6FT::WriteToSock $sock"
+					after 5 [list fileevent $sock writable "::MSN6FT::WriteToSock $sock"]
 				}
 			}
 
