@@ -3908,9 +3908,8 @@ proc cmsn_draw_main {} {
 	
 	if { [OnMac] } {
 		# Set the window style (brushed/aqua) for the CL.
-		if {[::skin::getKey usebrushedmetal "0"] && [::config::getKey allowbrushedmetal "1"]} {
-			catch { ::tk::unsupported::MacWindowStyle style . document {closeBox horizontalZoom verticalZoom collapseBox resizable metal} }
- 		}
+		::macWindowStyle::setBrushed .
+		
 		frame .fake ;#Create the frame for play_Sound_Mac
 	}
 
