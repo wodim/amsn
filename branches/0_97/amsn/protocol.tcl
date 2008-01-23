@@ -1433,11 +1433,11 @@ namespace eval ::MSN {
 
 		if { [lindex $item 0] == 500 } {
 			#Instead of disconnection, transform into error 201
-			cmsn_ns_handler [lreplace $item 0 0 201]
+			ns handleCommand [lreplace $item 0 0 201]
 			return
 		}
 
-		cmsn_ns_handler $item
+		ns handleCommand $item
 	}
 
 	proc MOVHandler { oldGid contactguid passport item } {
@@ -4320,12 +4320,34 @@ proc cmsn_conn_sb {sb sock} {
 	set cmd [$sb cget -auth_cmd]
 	set param [$sb cget -auth_param]
 
-	::MSN::WriteSB $sb $cmd $param "cmsn_connected_sb $sb"
+	::MSN::WriteSB $sb $cmd $param "cmsn_auth_sb $sb"
 
 	::amsn::chatStatus [::MSN::ChatFor $sb] "[trans ident]...\n" miniinfo ready
 
 }
 
+proc cmsn_auth_sb { sb recv } {
+	set cmd [lindex $recv 0]
+	
+	if { $cmd == [$sb cget -auth_cmd] } {
+		#We got a valid response
+		cmsn_connected_sb $sb $recv
+	} else {
+		switch -- $cmd {
+			911 {
+				#Authentication failed, server will disconnect us.
+				status_log "cmsn_auth_sb: SB authentication failed for $sb, reconnecting..." red
+				$sb configure -stat "af"
+				cmsn_reconnect $sb
+			}
+			
+			default {
+				status_log "cmsn_auth_sb: unknown server reply on $sb: $recv" red
+				cmsn_reconnect $sb
+			}
+		}
+	}
+}
 
 proc cmsn_conn_ans {sb sock} {
 
@@ -4367,7 +4389,8 @@ proc cmsn_connected_sb {sb recv} {
 #  "d" - Disconnected, the SB is not connected to the server
 #  "c" - The SB is going to get a socket to connect to the server.
 #  "cw" - "Connect wait" The SB is trying to connect to the server.
-#  "a" - Authenticating. The SB is authenticating to the server
+#  "a" - Authenticating. The SB is authenticating to the server.
+#  "af" - Authentication failed.
 #  "i" - Inviting first person to the chat. Successive invitations will be while in "o" status
 #  "o" - Opened. The SB is connected and ready for chat
 #  "n" - Nobody. The SB is connected but there's nobody at the conversation
@@ -4460,6 +4483,15 @@ proc cmsn_reconnect { sb } {
 				cmsn_reconnect $sb
 			}
 		}
+		
+		"af" {
+			#status_log "cmsn_reconnect: stat = af , SB= $sb\n" green
+			set proxy [$sb cget -proxy]
+			$proxy finish $sb
+			$sb configure -stat "d"
+			cmsn_reconnect $sb			
+		}
+		
 		"" {
 			status_log "cmsn_reconnect: SB $sb stat is [$sb cget -stat]. This is bad, should delete it and create a new one\n" red
 			catch {
@@ -5486,26 +5518,23 @@ proc initial_syn_handler {recv} {
         }
 	catch { file delete [file join ${HOME} "psm.cache"] }
 
-
-	cmsn_ns_handler $recv
+	ns handleCommand $recv
 }
 
-proc msnp9_userpass_error {} {
+proc msnp11_userpass_error {} {
 	ns configure -stat "closed"
 	::MSN::logout
 	status_log "Error: User/Password\n" red
 	::amsn::errorMsg "[trans baduserpass]"
 }
 
-proc msnp9_auth_error {} {
+proc msnp11_auth_error {} {
 	status_log "Error connecting to server\n"
 	::MSN::logout
 	::amsn::errorMsg "[trans connecterror]"
 }
 
-
-
-proc msnp9_authenticate { ticket } {
+proc msnp11_authenticate { ticket } {
 	if {[ns cget -stat] == "u" } {
 		::MSN::WriteSB ns "USR" "TWN S $ticket"
 		set ::authentication_ticket $ticket
@@ -5734,12 +5763,6 @@ proc cmsn_ns_connect { username {password ""} {nosignin ""} } {
 		cmsn_draw_signin
 	}
 
-	#Log in
-#	.main_menu.file entryconfigure 0 -state disabled
-#	.main_menu.file entryconfigure 1 -state disabled
-	#Log out
-#	.main_menu.file entryconfigure 2 -state normal
-
 
 	::MSN::StartPolling
 	::groups::Reset
@@ -5747,10 +5770,9 @@ proc cmsn_ns_connect { username {password ""} {nosignin ""} } {
 	#TODO: Call "on connect" handlers, where hotmail will be registered.
 	set ::hotmail::unread 0
 
-	ns configure -autherror_handler "msnp9_auth_error"
-	ns configure -passerror_handler "msnp9_userpass_error"
-	ns configure -ticket_handler "msnp9_authenticate"
-	#ns configure -data [list]
+	ns configure -autherror_handler "msnp11_auth_error"
+	ns configure -passerror_handler "msnp11_userpass_error"
+	ns configure -ticket_handler "msnp11_authenticate"
 	ns configure -connected "cmsn_ns_connected"
 
 	cmsn_socket ns
@@ -5759,35 +5781,6 @@ proc cmsn_ns_connect { username {password ""} {nosignin ""} } {
 	return 0
 }
 
-
-#TODO Delete it when MSNP11 is finished
-proc process_msnp9_lists { bin } {
-
-	set lists [list]
-
-	if { $bin == "" } {
-		status_log "process_msnp9_lists: No lists!!!\n" red
-		return $lists
-	}
-
-	if { $bin & 1 } {
-		lappend lists "FL"
-	}
-
-	if { $bin & 2 } {
-		lappend lists "AL"
-	}
-
-	if { $bin & 4 } {
-		lappend lists "BL"
-	}
-
-	if { $bin & 8 } {
-		lappend lists "RL"
-	}
-
-	return $lists
-}
 
 proc process_msnp11_lists { bin } {
 
