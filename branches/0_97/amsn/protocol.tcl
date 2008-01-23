@@ -2660,10 +2660,23 @@ namespace eval ::MSN {
 		set list_users ""
 	}
 
+
+	#Make the lists from the abook
+	proc makeLists { } {
+		foreach contact [::abook::getAllContacts] {
+			foreach lst [::abook::getLists $contact] {
+				::MSN::addToList $lst $contact
+			}
+		}
+	}
+
 	#Add a user to a list
 	proc addToList {list_type user} {
 		variable list_${list_type}
 
+		if { ![info exists list_${list_type}] } {
+			return
+		}
 		if { [lsearch [set list_${list_type}]  $user] == -1 } {
 			lappend list_${list_type} $user
 		} else {
@@ -3545,7 +3558,7 @@ namespace eval ::MSNOIM {
 				::abook::addContactToList $username $list_sort
 				::MSN::addToList $list_sort $username
 
-				#No need to set groups and set offline state if command is not LST
+				#No need to set groups and set offline state if contact is not in FL
 				if { $list_sort == "FL" } {
 					::abook::setContactData $username group $groups
 					set loading_list_info(last) $username
@@ -4962,10 +4975,9 @@ proc cmsn_ns_handler {item {message ""}} {
 			return 0
 		}
 		SYN {
-			new_contact_list "[lindex $item 2]"
 			global loading_list_info
 
-			if { [llength $item] == 6 } {
+			if { [llength $item] == 6 && [new_contact_list "[lindex $item 2]" "[lindex $item 3]"] } {
 				status_log "Going to receive contact list\n" blue
 				#First contact in list
 				::MSN::clearList FL
@@ -4975,7 +4987,8 @@ proc cmsn_ns_handler {item {message ""}} {
 				::groups::Reset
 				::groups::Set 0 [trans nogroup]
 
-				set loading_list_info(version) [lindex $item 3]
+				set loading_list_info(cl_version) [lindex $item 2]
+				set loading_list_info(list_version) [lindex $item 3]
 				set loading_list_info(total) [lindex $item 4]
 				set loading_list_info(current) 0
 				set loading_list_info(gcurrent) 0
@@ -4989,13 +5002,7 @@ proc cmsn_ns_handler {item {message ""}} {
 			return 0
 		}
 		BLP {
-			#puts "$item == [llength $item]"
-			if { [llength $item] == 2} {
-				change_BLP_settings "[lindex $item 1]"
-			} else {
-				new_contact_list "[lindex $item 2]"
-				change_BLP_settings "[lindex $item 3]"
-			}
+			change_BLP_settings "[lindex $item 1]"
 			return 0
 		}
 		CHL {
@@ -5026,21 +5033,18 @@ proc cmsn_ns_handler {item {message ""}} {
 			return 0
 		}
 		REG {	# Rename Group
-			new_contact_list "[lindex $item 2]"
 			#status_log "$item\n" blue
 			::groups::RenameCB [lrange $item 0 5]
 
 			return 0
 		}
 		ADG {	# Add Group
-			new_contact_list "[lindex $item 2]"
 			#status_log "$item\n" blue
 			::groups::AddCB [lrange $item 0 5]
 
 			return 0
 		}
 		RMG {	# Remove Group
-			new_contact_list "[lindex $item 2]"
 			#status_log "$item\n" blue
 			::groups::DeleteCB [lrange $item 0 5]
 
@@ -5370,8 +5374,18 @@ proc cmsn_auth {{recv ""}} {
 				initial_syn_handler ""
 				ns setInitialStatus
 			} else {
-				#TODO: MSNP11 store contactlist and use those values here
-				::MSN::WriteSB ns "SYN" "0 0" initial_syn_handler
+				set list_version [::abook::getContactData contactlist list_version]
+				#If the value is invalid, we will be disconnected from server
+				if { ![regexp {^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+-[0-9]{2}:[0-9]{2}$} $list_version] } {
+					set list_version "0"
+					::abook::setContactData contactlist list_version "0"
+				}
+				set cl_version [::abook::getContactData contactlist cl_version]
+				if { ![regexp {^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]+-[0-9]{2}:[0-9]{2}$} $cl_version] } {
+					set cl_version "0"
+					::abook::setContactData contactlist cl_version "0"
+				}
+				::MSN::WriteSB ns "SYN" "$cl_version $list_version" initial_syn_handler
 			}
 
 			#Alert dock of status change
@@ -5892,24 +5906,21 @@ proc change_BLP_settings { state } {
 }
 
 
-proc new_contact_list { version } {
+proc new_contact_list { cl_version list_version } {
 	global contactlist_loaded
 
-	#TODO: update for MSNP11
-	#if {[string is digit $version] == 0} {
-	#	status_log "new_contact_list: Wrong version=$version\n" red
-	#	return
-	#}
+	set old_list_version [::abook::getContactData contactlist list_version]
+	set old_cl_version [::abook::getContactData contactlist cl_version]
 
-	status_log "new_contact_list: new contact list version : $version --- previous was : [::abook::getContactData contactlist list_version] \n"
+	status_log "new_contact_list: new contact list version : $list_version $cl_version --- previous was : $old_list_version $old_cl_version\n"
 
-	::abook::setContactData contactlist list_version $version
-	#if { $list_version != $version } {
-	#	set list_version $version
-	#} else {
-	#	set contactlist_loaded 1
-	#}
-
+	if { ($old_list_version eq $list_version) && ($old_cl_version eq $cl_version) } {
+		return 0
+	} else {
+		::abook::setContactData contactlist list_version $list_version
+		::abook::setContactData contactlist cl_version $cl_version
+		return 1
+	}
 }
 
 proc getCensoredWords { } {
