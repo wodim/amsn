@@ -4906,7 +4906,7 @@ proc cmsn_change_state {recv} {
 
 
 proc cmsn_ns_handler {item {message ""}} {
-	global list_cmdhnd password
+	global password
 
 	switch -- [lindex $item 0] {
 		MSG {
@@ -4978,13 +4978,15 @@ proc cmsn_ns_handler {item {message ""}} {
 		SYN {
 			global loading_list_info
 
+			::MSN::clearList FL
+			::MSN::clearList BL
+			::MSN::clearList RL
+			::MSN::clearList AL
+			::MSN::clearList PL
+
 			if { [llength $item] == 6 && [new_contact_list "[lindex $item 2]" "[lindex $item 3]"] } {
 				status_log "Going to receive contact list\n" blue
 				#First contact in list
-				::MSN::clearList FL
-				::MSN::clearList BL
-				::MSN::clearList RL
-				::MSN::clearList AL
 				::groups::Reset
 				::groups::Set 0 [trans nogroup]
 
@@ -5002,8 +5004,14 @@ proc cmsn_ns_handler {item {message ""}} {
 
 				# Check if there are no users and no groups, then we already finished authentification
 				if {$loading_list_info(gtotal) == 0 && $loading_list_info(total) == 0} {
-					ns authenticationDone							
+					ns authenticationDone
 				}
+			} else {
+				::MSN::makeLists
+				foreach username [::MSN::getList "FL"] {
+					::abook::setVolatileData $username state "FLN"
+				}
+				ns authenticationDone
 			}
 			return 0
 		}
@@ -5444,7 +5452,7 @@ proc recreate_contact_lists {} {
 proc initial_syn_handler {recv} {
 
 	global HOME
-
+	
 	# Switch to our cached nickname if the server's one is different that ours
 	if { [file exists [file join ${HOME} "nick.cache"]] && [::config::getKey storename] } {
 
@@ -5490,7 +5498,7 @@ proc initial_syn_handler {recv} {
         }
 	catch { file delete [file join ${HOME} "psm.cache"] }
 
-	ns handleCommand $recv
+	cmsn_ns_handler $recv
 }
 
 proc msnp11_userpass_error {} {
