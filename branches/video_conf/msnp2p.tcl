@@ -633,7 +633,6 @@ namespace eval ::MSNP2P {
 							set producer 1
 						}
 
-						status_log "we got an webcam invitation" red
 
 						set context [base64::decode $context]
 						set context [FromUnicode $context]
@@ -644,17 +643,17 @@ namespace eval ::MSNP2P {
 
 						SessionList set $sid [list 0 0 0 $dest 0 $uid 0 "webcam" "" "$branchuid"]
 						
-						if { $context != "\{B8BE70DE-E2CA-4400-AE03-88FF85B9F4E8\}" } {
-							status_log "Received a video conferenced invitation.. we do not support this"
-							::CAMGUI::InvitationRejected $chatid $sid $branchuid $uid
-							#::MSNCAM::RejectFT $chatid $sid $branchuid $uid
-							::CAMGUI::GotVideoConferenceInvitation $chatid
-							return
+						if {$context == "\{B8BE70DE-E2CA-4400-AE03-88FF85B9F4E8\}" } {
+							status_log "we got an webcam invitation" red
+							set av 0
+						} else {
+							status_log "Received a video conferenced invitation.." red
+							set av 1
 						}
-
+						
 						
 
-						::CAMGUI::AcceptOrRefuse $chatid $dest $branchuid $cseq $uid $sid $producer
+						::CAMGUI::AcceptOrRefuse $chatid $dest $branchuid $cseq $uid $sid $producer $av
 
 						status_log "MSNP2P | $sid $dest -> Sent ACK for INVITE\n" red
 						return

@@ -193,15 +193,16 @@ namespace eval ::MSNCAM {
 	#//////////////////////////////////////////////////////////////////////////////
 	# AcceptFT ( chatid dest branchuid cseq uid sid filename1 )
 	# This function is called when a file transfer is accepted by the user (local)
-	proc AcceptWebcam { chatid dest branchuid cseq uid sid producer} {
+	proc AcceptWebcam { chatid dest branchuid cseq uid sid producer av} {
 
 		setObjOption $sid producer $producer
 		setObjOption $sid inviter 0
 		setObjOption $sid chatid $chatid
 		setObjOption $sid reflector 0
+		setObjOption $sid av $av
 
 
-		if { $producer } {
+		if { $av || $producer } {
 		    setObjOption $sid source [::config::getKey "webcamDevice" "0"]
 		}
 
@@ -214,8 +215,8 @@ namespace eval ::MSNCAM {
 		SendSyn $sid $chatid
 	}
 
-	proc AcceptWebcamOpenSB {chatid dest branchuid cseq uid sid producer } {
-		if {[catch {::MSNCAM::AcceptWebcam $chatid $dest $branchuid $cseq $uid $sid $producer} res]} {
+	proc AcceptWebcamOpenSB {chatid dest branchuid cseq uid sid producer av} {
+		if {[catch {::MSNCAM::AcceptWebcam $chatid $dest $branchuid $cseq $uid $sid $producer $av} res]} {
 			status_log "Error in InvitationAccepted: $res\n" red
 			return 0
 		}
@@ -370,7 +371,7 @@ namespace eval ::MSNCAM {
 		::MSN::ChatQueue $chatid [list ::MSNCAM::SendInvite $chatid]
 	}
 	proc StartVideoConferenceQueue { chatid } {
-		::MSN::ChatQueue $chatid [list ::MSNCAM::StartVideoconference $chatid]
+		::MSN::ChatQueue $chatid [list ::MSNCAM::StartVideoConference $chatid]
 	}
 
 	proc SendInvite { chatid } {
@@ -379,6 +380,8 @@ namespace eval ::MSNCAM {
 	proc AskWebcam { chatid } {
 		SendCamInvitation $chatid "1C9AA97E-9C05-4583-A3BD-908A196F1E92" "\{B8BE70DE-E2CA-4400-AE03-88FF85B9F4E8\}"
 	}
+
+	# Read up at  http://ml20rc.msnfanatic.com/vc_1_1/index.html
 	proc StartVideoConference { chatid } {
 		SendCamInvitation $chatid "4BD96FC0-AB17-4425-A14A-439185962DC8" "\{0425E797-49F1-4D37-909A-031116119D9B\}"
 	}
@@ -399,11 +402,9 @@ namespace eval ::MSNCAM {
 		set dest [lindex [::MSN::usersInChat $chatid] 0]
 
 		if { $context == "\{B8BE70DE-E2CA-4400-AE03-88FF85B9F4E8\}" } {
-			setObjOption $sid webcam 1
-			setObjOption $sid conference 0
+			set av 0
 		} else {
-			setObjOption $sid webcam 0
-			setObjOption $sid conference 1
+			set av 1
 		}
 
 		# This is a fixed value... it must be that way or the invite won't work
@@ -414,12 +415,14 @@ namespace eval ::MSNCAM {
 		setObjOption $sid inviter 1
 		setObjOption $sid chatid $chatid
 		setObjOption $sid reflector 0
+		setObjOption $sid av $av
 
+		
 		if { $guid == "4BD96FC0-AB17-4425-A14A-439185962DC8" } {
 			setObjOption $sid producer 1
 
 			setObjOption $sid source [::config::getKey "webcamDevice" "0"]
-			::CAMGUI::InvitationToSendSent $chatid $sid
+			::CAMGUI::InvitationToSendSent $chatid $sid $av
 		} else {
 			setObjOption $sid producer 0
 			::CAMGUI::InvitationToReceiveSent $chatid $sid
@@ -449,13 +452,18 @@ namespace eval ::MSNCAM {
 		::MSNP2P::SendPacket [::MSN::SBFor $chatid] [::MSNP2P::MakePacket $sid $slpdata 1]
 
 		set producer [getObjOption $sid producer]
+		set av [getObjOption $sid av]
 		::amsn::WinWrite $chatid "\n" green
 		::amsn::WinWriteIcon $chatid winwritecam 3 2
 		set nick [::abook::getDisplayNick $chatid]
-		if { $producer == 1 } {
-			::amsn::WinWrite $chatid "[timestamp] [trans sendwebcamaccepted $nick]" green
+		if { $av == 0 } {
+			if { $producer == 1 } {
+				::amsn::WinWrite $chatid "[timestamp] [trans sendwebcamaccepted $nick]" green
+			} else {
+				::amsn::WinWrite $chatid "[timestamp] [trans recvwebcamaccepted $nick]" green
+			}
 		} else {
-			::amsn::WinWrite $chatid "[timestamp] [trans recvwebcamaccepted $nick]" green
+			::amsn::WinWrite $chatid "[timestamp] [trans avconferenceaccepted $nick]" green
 		}
 
 		SendSyn $sid $chatid
@@ -605,7 +613,59 @@ namespace eval ::MSNCAM {
 			catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
 		} 
 	}
-	
+
+	# All this crap will not work simply because the read should be blocking
+	# and if it, amsn will freeze.. if it's not, then the 'play' will just finish right away
+	# The solution would be to do an :
+	# set fd [open "| stream_play.tcl" r]
+	# then use $fd to send the data to...
+	# The stream_play.tcl file should look like this :
+	#
+	# package require snack
+	# set snd [sound -channel stdin]
+	# $snd play -command exit -blocking yes
+
+
+	proc StreamingServerClosed { snd sock} {
+		puts "finished"
+		close $sock
+		$snd destroy
+	}
+
+	proc StreamingServerCmd {operation sock args} { 
+
+		fconfigure $sock -translation binary -encoding binary -blocking 0
+		set snd [snack::sound -channel $sock -rate 16000 -channels 1 -blocking 0] 
+		puts "created $snd"
+		$snd $operation -command "::MSNCAM::StreamingServerClosed $snd $sock" 
+		puts "Playing"
+	} 
+
+	proc GetStreamingSock { sock send} {
+		
+		if {$send} {
+			set operation record
+			set server_key audio_send_server
+			set stream_key audio_send_sock
+		} else {
+			set operation play
+			set server_key audio_recv_server
+			set stream_key audio_recv_sock
+		}
+
+		set port 23654
+		while { [catch {set server_sock [socket  -myaddr 127.0.0.1 -server "::MSNCAM::StreamingServerCmd $operation" $port] } ] } {
+			incr port
+		}
+
+		set stream_sock [socket localhost $port]
+		fconfigure $stream_sock -translation binary -encoding binary -blocking 0
+
+		setObjOption $sock $server_key $server_sock]
+		setObjOption $sock $stream_key $stream_sock]
+
+		return $stream_sock
+	}
 
 	proc ReadFromSock { sock } {
 
@@ -613,6 +673,7 @@ namespace eval ::MSNCAM {
 		set sid [getObjOption $sock sid]
 
 		set producer [getObjOption $sid producer]
+		set av [getObjOption $sid av]
 		set server [getObjOption $sock server]
 		set state [getObjOption $sock state]
 		set reflector [getObjOption $sid reflector]
@@ -665,11 +726,16 @@ namespace eval ::MSNCAM {
 				status_log "Received Data on Reflector socket $sock $my_rid - $rid server=$server - state=$state : \n$data\n" red
 				if { $data == "CONNECTED\r" } {
 					nbgets $sock 
-					if { $producer } {
-						setObjOption $sock state "TSP_SEND"
-						catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
+					if { $av == 0} {
+						if { $producer } {
+							setObjOption $sock state "TSP_SEND"
+							catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
+						} else {
+							setObjOption $sock state "TSP_RECEIVE"
+						}
 					} else {
-						setObjOption $sock state "TSP_RECEIVE"
+						setObjOption $sock state "AV_SEND_RECV"
+						catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
 					}
 					
 				} else {
@@ -687,12 +753,18 @@ namespace eval ::MSNCAM {
 						CloseUnusedSockets $sid $sock
 						puts -nonewline $sock "connected\r\n\r\n"
 						status_log "Sending \"connected\" to the server\n" red
-						if { $producer } {
-							setObjOption $sock state "SEND"
-							catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
-							AuthSuccessfull $sid $sock
+						if { $av == 0 } {
+							if { $producer } {
+								setObjOption $sock state "SEND"
+								catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
+								AuthSuccessfull $sid $sock
+							} else {
+								setObjOption $sock state "RECEIVE"
+								AuthSuccessfull $sid $sock
+							}
 						} else {
-							setObjOption $sock state "RECEIVE"
+							setObjOption $sock state "AV_SEND_RECV"
+							catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
 							AuthSuccessfull $sid $sock
 						}
 					} else {
@@ -711,12 +783,21 @@ namespace eval ::MSNCAM {
 
 					if { $data == "connected\r\n\r\n" } {
 						setObjOption $sid socket $sock
-						if { $producer == 0} {
+						if { $av } {
+							setObjOption $sock state "AV_SEND_RECV"
+							catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
+						} elseif { $producer == 0} {
 							setObjOption $sock state "RECEIVE"
 						}
 					} elseif { $producer == 0 } {
+						# TODO : what if it's AV_SEND_RECV?
 						set header "${data}[nbread $sock 11]"
-						setObjOption $sock state "RECEIVE"
+						if { $av } {
+							setObjOption $sock state "AV_SEND_RECV"
+							catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
+						} else {
+							setObjOption $sock state "RECEIVE"
+						}
 
 						set size [GetCamDataSize $header]
 						if { $size > 0 } {
@@ -759,6 +840,58 @@ namespace eval ::MSNCAM {
 					status_log "ERROR4 : Received $data from socket on state TSP_PAUSED \n" red
 				}
 			}
+			"AV_SEND_RECV" {
+				set header [nbread $sock 2]
+				binary scan $header cc size code
+				if { ![info exists code] } {
+					
+					setObjOption $sock state "END"
+					status_log "ERROR: Could only read [string length $header] instead of 2 bytes.. Header is $header \n" red
+					return
+				}
+				# signed to unsigned 8bit int
+				set size [expr {$size & 0xff}]
+
+				set data [nbread $sock $size]
+				if { [string length $data] != $size } {
+					setObjOption $sock state "END"
+					status_log "ERROR: Could only read [string length $data] instead of $size bytes.. \n" red
+					return
+				}
+
+				#status_log "Received $size payload" red
+				if {$code == 00 } {
+					# Video frame
+					# TODO handle WMV3 video frames
+					#status_log "It's a video frame!" red
+				} elseif {$code == 32 } {
+					# Audio frame
+					#status_log "It's an audio frame!" red
+
+					set dec [getObjOption $sock audio_dec ""]
+					set stream_sock [getObjOption $sock audio_recv_sock ""]
+					if {$dec == "" ||$stream_sock == "" } {
+						if { [catch {require_snack} ] || [package vcompare [set ::snack::patchLevel] 2.2.9] < 0 || [catch {package require tcl_siren }] } {
+							# Handle error: no snack
+							status_log "no snack/tcl_siren" red
+							return
+						} else {
+							set dec [::Siren::NewDecoder]
+							setObjOption $sock audio_dec $dec
+ 
+							set stream_sock [GetStreamingSock $sock 0]
+						}
+					}
+					binary scan $data si unk counter
+					set data [string range $data 6 end]
+
+					#status_log "Counter is $counter!" red
+					puts -nonewline $stream_sock [::Siren::Decode $dec $data]
+				} else {
+					#setObjOption $sock state "END"
+					status_log "ERROR4 : Received AV frame with code $code non A/V. Payload if $size : \n$data" red
+				}
+			}
 			"TSP_RECEIVE" -
 			"RECEIVE"
 			{
@@ -792,8 +925,14 @@ namespace eval ::MSNCAM {
 					#::CAMGUI::ShowCamFrame $sid $data
 				} elseif {$size != 0 }  {
 					#AuthFailed $sid $sock
-					setObjOption $sock state "END"
-					status_log "ERROR5 : $data - invalid data received" red
+					#setObjOption $sock state "END"
+					#status_log "ERROR5 : $data - invalid data received" red
+					if { ![info exists ::av_fd] } {
+						set ::av_fd [open /home/kakaroto/av.dump w]
+						fconfigure $::av_fd -translation binary
+					}
+					puts -nonewline $::av_fd $header
+					puts -nonewline $::av_fd [read $sock]
 
 				} else {
 					::CAMGUI::GotPausedFrame $sid
@@ -806,6 +945,10 @@ namespace eval ::MSNCAM {
 				status_log "Closing socket $sock because it's in END state\n" red
 				catch { close $sock }
 				CancelCam $chatid $sid
+				if {[info exists ::av_fd] } {
+					close $::av_fd 
+					unset ::av_fd
+				}
 
 			}
 			default
@@ -834,6 +977,7 @@ namespace eval ::MSNCAM {
 		set server [getObjOption $sock server]
 		set state [getObjOption $sock state]
 		set producer [getObjOption $sid producer]
+		set av [getObjOption $sid av]
 		set reflector [getObjOption $sid reflector]
 
 		set rid [getObjOption $sid rid]
@@ -874,12 +1018,18 @@ namespace eval ::MSNCAM {
 			"CONNECTED"
 			{
 				set data "connected\r\n\r\n"
-				if { $producer } {
-					setObjOption $sock state "SEND"
-					catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
-					AuthSuccessfull $sid $sock
+				if { $av == 0 } {
+					if { $producer } {
+						setObjOption $sock state "SEND"
+						catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
+						AuthSuccessfull $sid $sock
+					} else {
+						setObjOption $sock state "CONNECTED2"
+						AuthSuccessfull $sid $sock
+					}
 				} else {
-					setObjOption $sock state "CONNECTED2"
+					setObjOption $sock state "AV_SEND_RECV"
+					catch { fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
 					AuthSuccessfull $sid $sock
 				}
 			}
@@ -891,6 +1041,10 @@ namespace eval ::MSNCAM {
 			{
 				after 250 "::CAMGUI::GetCamFrame $sid $sock;
 					   catch {fileevent $sock writable \"::MSNCAM::WriteToSock $sock\" }"
+			}
+			"AV_SEND_RECV" {
+				# TODO : send A/V frames...
+				status_log "Should send A/V frame.. canceling" red
 			}
 			"TSP_PAUSED" -
 			"PAUSED" 
@@ -2236,11 +2390,12 @@ namespace eval ::CAMGUI {
 		}
 	}
 
-	proc AcceptOrRefuse {chatid dest branchuid cseq uid sid producer} {
-		SendMessageFIFO [list ::CAMGUI::AcceptOrRefuseWrapped $chatid $dest $branchuid $cseq $uid $sid $producer] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
+	proc AcceptOrRefuse {chatid dest branchuid cseq uid sid producer av} {
+		SendMessageFIFO [list ::CAMGUI::AcceptOrRefuseWrapped $chatid $dest $branchuid $cseq $uid $sid $producer $av] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
 	}
+
 	#Executed when we receive a request to accept or refuse a webcam session
-	proc AcceptOrRefuseWrapped {chatid dest branchuid cseq uid sid producer} {
+	proc AcceptOrRefuseWrapped {chatid dest branchuid cseq uid sid producer av} {
 		
 		#Grey line
 		::amsn::WinWrite $chatid "\n" green
@@ -2251,15 +2406,19 @@ namespace eval ::CAMGUI {
 		#Show invitation
 		#::amsn::WinWrite $chatid "[timestamp] [trans webcaminvitereceived [::abook::getDisplayNick $chatid]]" green
 
-		if { $producer == 0 } {
-			::amsn::WinWrite $chatid "[timestamp] [trans webcaminvitereceiving [::abook::getDisplayNick $chatid]]" green
+		if {$av == 0} {
+			if { $producer == 0 } {
+				::amsn::WinWrite $chatid "[timestamp] [trans webcaminvitereceiving [::abook::getDisplayNick $chatid]]" green
+			} else {
+				::amsn::WinWrite $chatid "[timestamp] [trans webcaminvitesending [::abook::getDisplayNick $chatid]]" green
+			}
 		} else {
-			::amsn::WinWrite $chatid "[timestamp] [trans webcaminvitesending [::abook::getDisplayNick $chatid]]" green
+			::amsn::WinWrite $chatid "[timestamp] [trans avconferenceinvite [::abook::getDisplayNick $chatid]]" green
 		}
 		
 		#Accept and refuse actions
 		::amsn::WinWrite $chatid " - (" green
-		::amsn::WinWriteClickable $chatid "[trans accept]" [list ::CAMGUI::InvitationAccepted $chatid $dest $branchuid $cseq $uid $sid $producer] acceptwebcam$sid
+		::amsn::WinWriteClickable $chatid "[trans accept]" [list ::CAMGUI::InvitationAccepted $chatid $dest $branchuid $cseq $uid $sid $producer $av] acceptwebcam$sid
 		::amsn::WinWrite $chatid " / " green
 		::amsn::WinWriteClickable $chatid "[trans reject]" [list ::CAMGUI::InvitationRejected $chatid $sid $branchuid $uid] nowebcam$sid
 		::amsn::WinWrite $chatid ")\n" green
@@ -2268,31 +2427,7 @@ namespace eval ::CAMGUI {
 		::amsn::WinWriteIcon $chatid greyline 3
 
 	}
-	
-	proc GotVideoConferenceInvitation {chatid} {			
-		SendMessageFIFO [list ::CAMGUI::GotVideoConferenceInvitationWrapped $chatid] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
-	}
-	
-	
-	#Show a message when we receive a video-conference invitation to ask the user if he wants
-	#To ask to receive/send webcam because video-conference is not supported
-	proc GotVideoConferenceInvitationWrapped {chatid} {
-		
-		#Grey line
-		::amsn::WinWrite $chatid "\n" green
-		::amsn::WinWriteIcon $chatid greyline 3
-		::amsn::WinWrite $chatid " \n" green
-		#WebcamIcon
-		::amsn::WinWriteIcon $chatid winwritecam 3 2
-		#Description of the problem
-		::amsn::WinWrite $chatid "[timestamp] [trans videoconversationrequest]\n" green
-		#Choices of action
-		::amsn::WinWriteClickable $chatid "[trans clickhere]" [list ::CAMGUI::AskWebcamAfterVideoInvitation $chatid] askwebcam$chatid
-		::amsn::WinWrite $chatid " [trans askcontactwebcam]" green
-		::amsn::WinWriteClickable $chatid "[trans clickhere]" [list ::CAMGUI::SendInviteCamAfterVideoInvitation $chatid] sendwebcam$chatid	
-		::amsn::WinWrite $chatid " [trans asksendingyourwebcam]" green
 			
-	}
 	#After we clicked one time on Ask webcam invitaiton, disable the click here button in the chatwindow
 	proc AskWebcamAfterVideoInvitation {chatid } {
 	
@@ -2335,7 +2470,7 @@ namespace eval ::CAMGUI {
 		::MSNCAM::SendInviteQueue $chatid
 	}
 	
-	proc InvitationAccepted { chatid dest branchuid cseq uid sid producer} {
+	proc InvitationAccepted { chatid dest branchuid cseq uid sid producer av} {
 		#Get the chatwindow name
 		set win_name [::ChatWindow::For $chatid]
 		if { [::ChatWindow::For $chatid] == 0} {
@@ -2359,7 +2494,7 @@ namespace eval ::CAMGUI {
 		[::ChatWindow::GetOutText ${win_name}] conf -cursor left_ptr
 		
 		#Execute the accept webcam protocol
-		if {[::MSN::ChatQueue $chatid [list ::MSNCAM::AcceptWebcamOpenSB $chatid $dest $branchuid $cseq $uid $sid $producer]] == 0} {
+		if {[::MSN::ChatQueue $chatid [list ::MSNCAM::AcceptWebcamOpenSB $chatid $dest $branchuid $cseq $uid $sid $producer $av]] == 0} {
 			return 0
 		}
 	}
@@ -2456,15 +2591,19 @@ namespace eval ::CAMGUI {
 		::amsn::WinWriteIcon $chatid greyline 3
 	}
 	#Executed when you invite someone to send your webcam
-	proc InvitationToSendSent {chatid sid} {
-		SendMessageFIFO [list ::CAMGUI::InvitationToSendSentWrapped $chatid $sid] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
+	proc InvitationToSendSent {chatid sid av} {
+		SendMessageFIFO [list ::CAMGUI::InvitationToSendSentWrapped $chatid $sid $av] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
 	}
-	proc InvitationToSendSentWrapped {chatid sid} {
+	proc InvitationToSendSentWrapped {chatid sid av} {
 		::amsn::WinWrite $chatid "\n" green
 		::amsn::WinWriteIcon $chatid greyline 3
 		::amsn::WinWrite $chatid " \n" green
 		::amsn::WinWriteIcon $chatid winwritecam 3 2
-		::amsn::WinWrite $chatid "[timestamp] [trans webcamrequestsend]" green
+		if {$av == 0 } {
+			::amsn::WinWrite $chatid "[timestamp] [trans webcamrequestsend]" green
+		} else {
+			::amsn::WinWrite $chatid "[timestamp] [trans avconferencesend]" green
+		}
 		::amsn::WinWrite $chatid " - (" green
 		::amsn::WinWriteClickable $chatid "[trans cancel]" [list ::MSNCAM::CancelCam $chatid $sid] cancelwebcam$sid
 		::amsn::WinWrite $chatid ")\n" green
