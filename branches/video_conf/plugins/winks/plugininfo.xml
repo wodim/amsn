@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>Winks</name>
+	<author>Pablo Novara and others (some code taken from Nudge plugin, some from amsn source code, some from voice clips, ...)</author>
+	<description>Winks!!!!!. Please read README.txt.</description>
+	<description_fr>Winks ! Merci de lire README.txt (en anglais).</description_fr>
+	<description_hu>Animációk. Olvasd el a README.txt fájlt.</description_hu>
+	<amsn_version>0.97</amsn_version>
+	<plugin_version>20080105</plugin_version>
+	<plugin_file>winks.tcl</plugin_file>
+	<plugin_namespace>winks</plugin_namespace>
+	<init_procedure>Init</init_procedure>
+	<deinit_procedure>DeInit</deinit_procedure>
+	<cvs_version>9263</cvs_version>
+
+	<lang>
+		<langcode>be</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>de</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>en</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>es</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>fr</langcode>
+		<version>9030</version>
+	</lang>
+	<lang>
+		<langcode>hu</langcode>
+		<version>8935</version>
+	</lang>
+	<lang>
+		<langcode>it</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>nl</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>sv</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>tr</langcode>
+		<version>8921</version>
+	</lang>
+	<file>
+		<path>README.txt</path>
+		<version>8921</version>
+	</file>
+	<file>
+		<path>pixmaps/unknown_wink.png</path>
+		<version>8921</version>
+	</file>
+	<file>
+		<path>pixmaps/winksbut_hover_old.png</path>
+		<version>8921</version>
+	</file>
+	<file>
+		<path>pixmaps/winksbut_hover.png</path>
+		<version>8921</version>
+	</file>
+	<file>
+		<path>pixmaps/winksbut_old.png</path>
+		<version>8921</version>
+	</file>
+	<file>
+		<path>pixmaps/winksbut.png</path>
+		<version>8921</version>
+	</file>
+	<URL>
+		<main>http://www.amsn-project.net/autoupdater/plugins2/winks/winks.tcl</main>
+		<plugininfo>http://www.amsn-project.net/autoupdater/plugins2/winks/plugininfo.xml</plugininfo>
+		<lang>http://www.amsn-project.net/autoupdater/plugins2/winks/lang/lang$langcode</lang>
+		<file>http://www.amsn-project.net/autoupdater/plugins2/winks/$file</file>
+	</URL>
+
+</plugin>
