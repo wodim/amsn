@@ -614,59 +614,6 @@ namespace eval ::MSNCAM {
 		} 
 	}
 
-	# All this crap will not work simply because the read should be blocking
-	# and if it, amsn will freeze.. if it's not, then the 'play' will just finish right away
-	# The solution would be to do an :
-	# set fd [open "| stream_play.tcl" r]
-	# then use $fd to send the data to...
-	# The stream_play.tcl file should look like this :
-	#
-	# package require snack
-	# set snd [sound -channel stdin]
-	# $snd play -command exit -blocking yes
-
-
-	proc StreamingServerClosed { snd sock} {
-		puts "finished"
-		close $sock
-		$snd destroy
-	}
-
-	proc StreamingServerCmd {operation sock args} { 
-
-		fconfigure $sock -translation binary -encoding binary -blocking 0
-		set snd [snack::sound -channel $sock -rate 16000 -channels 1 -blocking 0] 
-		puts "created $snd"
-		$snd $operation -command "::MSNCAM::StreamingServerClosed $snd $sock" 
-		puts "Playing"
-	} 
-
-	proc GetStreamingSock { sock send} {
-		
-		if {$send} {
-			set operation record
-			set server_key audio_send_server
-			set stream_key audio_send_sock
-		} else {
-			set operation play
-			set server_key audio_recv_server
-			set stream_key audio_recv_sock
-		}
-
-		set port 23654
-		while { [catch {set server_sock [socket  -myaddr 127.0.0.1 -server "::MSNCAM::StreamingServerCmd $operation" $port] } ] } {
-			incr port
-		}
-
-		set stream_sock [socket localhost $port]
-		fconfigure $stream_sock -translation binary -encoding binary -blocking 0
-
-		setObjOption $sock $server_key $server_sock]
-		setObjOption $sock $stream_key $stream_sock]
-
-		return $stream_sock
-	}
-
 	proc ReadFromSock { sock } {
 
 
@@ -841,7 +788,25 @@ namespace eval ::MSNCAM {
 				}
 			}
 			"AV_SEND_RECV" {
+				if { ![info exists ::av_fd] } {
+					set ::av_fd [open "dump.av" w]
+					fconfigure $::av_fd -translation binary
+				}
+				set extradata ""
 				set header [nbread $sock 2]
+
+				if {$header == "co" } {
+					append header [nbread $sock 11]
+					if {$header == "connected\r\n\r\n" } {
+						set header [nbread $sock 2]
+					} else {
+						set extradata $header
+						set header [string range $extradata 0 1]
+						set extradata [string range $extradata 2 end]
+					}
+				}
+
+				puts -nonewline $::av_fd $header
 				binary scan $header cc size code
 				if { ![info exists code] } {
 					
@@ -852,7 +817,17 @@ namespace eval ::MSNCAM {
 				# signed to unsigned 8bit int
 				set size [expr {$size & 0xff}]
 
+				if { $extradata != ""} {
+					incr size -[string length $extradata]
+				}
+
 				set data [nbread $sock $size]
+
+				if {$extradata != "" } {
+					set data "${extradata}${data}"
+				}
+
+				puts -nonewline $::av_fd $data
 				if { [string length $data] != $size } {
 					setObjOption $sock state "END"
 					status_log "ERROR: Could only read [string length $data] instead of $size bytes.. \n" red
@@ -863,14 +838,14 @@ namespace eval ::MSNCAM {
 				if {$code == 00 } {
 					# Video frame
 					# TODO handle WMV3 video frames
-					#status_log "It's a video frame!" red
+					status_log "It's a video frame!" red
 				} elseif {$code == 32 } {
 					# Audio frame
-					#status_log "It's an audio frame!" red
+					status_log "It's an audio frame!" red
 
 					set dec [getObjOption $sock audio_dec ""]
-					set stream_sock [getObjOption $sock audio_recv_sock ""]
-					if {$dec == "" ||$stream_sock == "" } {
+					set stream_fd [getObjOption $sock audio_recv_fd ""]
+					if {$dec == "" ||$stream_fd == "" } {
 						if { [catch {require_snack} ] || [package vcompare [set ::snack::patchLevel] 2.2.9] < 0 || [catch {package require tcl_siren }] } {
 							# Handle error: no snack
 							status_log "no snack/tcl_siren" red
@@ -879,14 +854,22 @@ namespace eval ::MSNCAM {
 							set dec [::Siren::NewDecoder]
 							setObjOption $sock audio_dec $dec
  
-							set stream_sock [GetStreamingSock $sock 0]
+							set stream_fd [open "| [auto_execok wish] stream_audio.tcl" w]
+							fconfigure $stream_fd -translation binary
+							setObjOption $sock audio_recv_fd $stream_fd
 						}
 					}
 					binary scan $data si unk counter
 					set data [string range $data 6 end]
-
+					set raw [::Siren::Decode $dec $data]
 					#status_log "Counter is $counter!" red
-					puts -nonewline $stream_sock [::Siren::Decode $dec $data]
+					if { [catch {puts -nonewline $stream_fd $raw} res] } {
+						#setObjOption $sock state "END"
+						status_log "ERROR: Could not play audio : $res \n" red
+						#return						
+					} else {
+						flush $stream_fd
+					}
 				} else {
 					#setObjOption $sock state "END"
 					status_log "ERROR4 : Received AV frame with code $code non A/V. Payload if $size : \n$data" red
@@ -924,15 +907,9 @@ namespace eval ::MSNCAM {
 					}
 					#::CAMGUI::ShowCamFrame $sid $data
 				} elseif {$size != 0 }  {
-					#AuthFailed $sid $sock
-					#setObjOption $sock state "END"
-					#status_log "ERROR5 : $data - invalid data received" red
-					if { ![info exists ::av_fd] } {
-						set ::av_fd [open /home/kakaroto/av.dump w]
-						fconfigure $::av_fd -translation binary
-					}
-					puts -nonewline $::av_fd $header
-					puts -nonewline $::av_fd [read $sock]
+					AuthFailed $sid $sock
+					setObjOption $sock state "END"
+					status_log "ERROR5 : $data - invalid data received" red
 
 				} else {
 					::CAMGUI::GotPausedFrame $sid
@@ -2426,6 +2403,10 @@ namespace eval ::CAMGUI {
 		#Grey line
 		::amsn::WinWriteIcon $chatid greyline 3
 
+		if { [config::getKey autoaccept_webcam 0] } {
+			::CAMGUI::InvitationAccepted $chatid $dest $branchuid $cseq $uid $sid $producer $av
+		}
+
 	}
 			
 	#After we clicked one time on Ask webcam invitaiton, disable the click here button in the chatwindow
@@ -2589,6 +2570,12 @@ namespace eval ::CAMGUI {
 		::amsn::WinWriteIcon $chatid winwritecam 3 2
 		::amsn::WinWrite $chatid "[timestamp] [trans webcamcanceled [::abook::getDisplayNick $chatid]]\n" green
 		::amsn::WinWriteIcon $chatid greyline 3
+
+
+		if {[info exists ::av_fd] } {
+			close $::av_fd 
+			unset ::av_fd
+		}
 	}
 	#Executed when you invite someone to send your webcam
 	proc InvitationToSendSent {chatid sid av} {
