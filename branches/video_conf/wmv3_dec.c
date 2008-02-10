@@ -101,7 +101,7 @@ int main(int argc, char *argv[]) {
   fclose (fd);
   fclose (out);
 
-  sprintf (exec_buf, "display -size 320x240 -depth 8 rgb:%s", argv[2]);
+  sprintf (exec_buf, "display -size 320x240 -depth 8 -delay 1 rgb:%s", argv[2]);
 
   system (exec_buf);
 
