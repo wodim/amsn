@@ -1,0 +1,14 @@
+FAQ 1.8
+--------
+
+Ha a képernyőn csúnya (olvashatatlan) karakterek jelennek meg az ékezetes betűk helyett, 
+akkor a Fiók / Beállítások / Megjelenés / Karakterkódolás megváltoztatása opció segítségével
+állítsd át UTF-8 kódolásra.
+
+Unix/Linux alatt az aMSN frissítése után, ha nem jók az ékezetek, töröld a ~/.amsn/langlist.xml
+fájlt, és indítsd újra a programot.
+
+Az "ő, ű" probléma csak bizonyos betűtípusoknál jelentkezik. Próbáld meg azokat átállítani.
+
+További segítség (angolul):
+http://www.amsn-project.net/wiki/FAQ

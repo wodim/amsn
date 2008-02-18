@@ -1,0 +1,24 @@
+Az amsn súgója
+
+Követelmények:
+Az amsn tcl/tk-ban íródott, így szükséged van egy működő tcl/tk interpreterre,
+legalább 8.4 verziójúra. Ezt letöltheted innen: http://tcl.sourceforge.net.
+Az interpreter elérhető linux, windows és macintosh rendszerre is. 
+Néhány funkció további, külön programokat vagy függvénykönyvtárakat igényelhet. 
+Ilyen pl: tálca ikon, megjelenítendő képek, vagy az SSL kapcsolat az MSN Protocol 9-hez.
+
+Telepítés:
+Töltsd le az amsn-x_xx.tar.gz fájlt. Bontsd ki a következő paranccsal:
+  gzip -d amsn-x_xx.tar.gz
+  tar xvf amsn-x_xx.tar
+Ez létre fog hozni egy msn/ könyvtárat, és az amsn telepítve lesz, kész a használatra.
+Futtatás:
+  cd msn
+  ./amsn
+vagy ha ez nem működik:
+  wish amsn
+Ha a wish parancs nem létezik, a tcl/tk nincs (megfelelően) telepítve.
+Ha a "wish amsn" működik, de az "./amsn" nem, az 'amsn' fájl első sorában módosítsd
+a 'wish' elérési útját. Az alapértelmezés: /usr/bin/wish
+
+Ha problémád adódik, olvasd el először a FAQ-ot.
