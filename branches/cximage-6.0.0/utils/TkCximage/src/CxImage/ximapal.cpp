@@ -168,7 +168,10 @@ RGBQUAD CxImage::GetPixelColor(long x,long y, bool bGetAlpha)
 		rgb.rgbRed  = *iDst;
 	}
 #if CXIMAGE_SUPPORT_ALPHA
-	if (pAlpha && bGetAlpha) rgb.rgbReserved = BlindAlphaGet(x,y);
+	if (pAlpha && bGetAlpha)
+        rgb.rgbReserved = BlindAlphaGet(x,y);
+    else
+        rgb.rgbReserved = 255;
 #else
 	rgb.rgbReserved = 0;
 #endif //CXIMAGE_SUPPORT_ALPHA
@@ -205,7 +208,10 @@ RGBQUAD CxImage::BlindGetPixelColor(const long x,const long y, bool bGetAlpha)
 		rgb.rgbReserved = 0; //needed for images without alpha layer
 	}
 #if CXIMAGE_SUPPORT_ALPHA
-	if (pAlpha && bGetAlpha) rgb.rgbReserved = BlindAlphaGet(x,y);
+	if (pAlpha && bGetAlpha)
+        rgb.rgbReserved = BlindAlphaGet(x,y);
+    else
+        rgb.rgbReserved = 255;
 #else
 	rgb.rgbReserved = 0;
 #endif //CXIMAGE_SUPPORT_ALPHA
