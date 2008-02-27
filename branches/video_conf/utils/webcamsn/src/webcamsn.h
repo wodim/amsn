@@ -28,6 +28,11 @@
 #include <tkPlatDecls.h>
 
 
+#ifdef HAVE_LIBAVCODEC
+#include <avcodec.h>
+#endif
+
+
 // Defined as described in tcl.tk compiling extension help
 #ifndef STATIC_BUILD
 
@@ -61,26 +66,38 @@ typedef unsigned short WORD;
 typedef unsigned int  DWORD;
 
 
-typedef struct mimic_header {
+typedef struct video_header {
   	WORD	header_size;
 	WORD	width;
 	WORD	height;
-	WORD	reserved1;
+	WORD	nkeyframe;
 	DWORD	payload_size;
 	DWORD	fourcc;
-	DWORD	reserved2;
-	DWORD	reserved3;
-} MimicHeader; 
+  	DWORD	unk;
+	DWORD	timestamp;
+} VideoHeader; 
 
 
 
-enum codec_types {ENCODER, DECODER_UNINITIALIZED, DECODER_INITIALIZED};
+enum codec_types {ENCODER,  DECODER_UNINITIALIZED,
+		  DECODER_ML20_UNINITIALIZED, DECODER_ML20_INITIALIZED,
+		  DECODER_WMV3_INITIALIZED};
 
 struct CodecInfo {
-	MimCtx * codec;
-	enum codec_types type;
-	char name[30];
-	unsigned int frames;
+  enum codec_types type;
+  char name[30];
+  unsigned int frames;
+  BYTE *rgb_buffer;
+
+  /* ML20 codec specific variable */
+  MimCtx * ml20_codec;
+
+#ifdef HAVE_LIBAVCODEC
+  /* WMV3 codec specific variables */
+  AVCodecContext *wmv3_codec;
+  AVFrame *wmv3_frame;
+  AVFrame *wmv3_rgb_frame;
+#endif
 };
 
 typedef struct CodecInfo CodecInfo;
