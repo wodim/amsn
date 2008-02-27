@@ -7,6 +7,7 @@ slnkdir 	:= @bindir@
 VPATH		:= $(srcdir)
 
 STATIC		:= @STATIC@
+HAVE_LIBAVCODEC := @HAVE_LIBAVCODEC@
 
 doc_files	:= docs INSTALL CREDITS FAQ GNUGPL HELP README TODO AGREEMENT remote.help
 
@@ -52,7 +53,11 @@ VERSION		:= $(BASEVERSION)-$(RELEASEVERSION)
 WARN_FLAGS	:= -w
 LFS_FLAGS	:= -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 LIB_FLAGS	:= -I. -I$(capture_dir) -I$(capture_dir)/libng -I$(capture_dir)/structs
-LIB_FLAGS	+= -I$(webcamsn_dir)/src -I$(tcl_siren_dir)/src -I$(tkcximage_dir)/src -I$(tkcximage_dir)/src/CxImage
+LIB_FLAGS	+= -I$(webcamsn_dir)/src
+ifeq ($(HAVE_LIBAVCODEC),yes)
+LIB_FLAGS	+= -I$(webcamsn_dir)/src/ffmpeg/libavcodec -I$(webcamsn_dir)/src/ffmpeg/libavutil
+endif
+LIB_FLAGS	+= -I$(tcl_siren_dir)/src -I$(tkcximage_dir)/src -I$(tkcximage_dir)/src/CxImage
 LIB_FLAGS	+= -I$(tclISF_dir)/src/libISF
 LIBDIR		:= @LIBDIR@
 
@@ -94,6 +99,10 @@ CFLAGS   += $(LIB_FLAGS)
 CFLAGS   += -DPACKAGE='"$(PACKAGE)"'
 CFLAGS   += -DVERSION='"$(VERSION)"'
 CFLAGS   += -DLIBDIR='"$(LIBDIR)"'
+ifeq ($(HAVE_LIBAVCODEC),yes)
+CFLAGS	 += -DHAVE_LIBAVCODEC
+endif
+
 CXXFLAGS := $(CFLAGS)
 
 # for gcc3
@@ -161,10 +170,10 @@ $(srcdir)/configure: $(srcdir)/configure.ac
 	(cd $(srcdir); autoconf)
 
 clean::
-	find . -name \*~ -print | xargs rm -f
-	find . -name \*.o -print | xargs rm -f
-	find . -name \*.a -print | xargs rm -f
-	find . -name \*.dep -print | xargs rm -f
+	find . -name \*~ -print | grep -v ffmpeg | xargs rm -f
+	find . -name \*.o -print | grep -v ffmpeg | xargs rm -f
+	find . -name \*.a -print | grep -v ffmpeg | xargs rm -f
+	find . -name \*.dep -print | grep -v ffmpeg | xargs rm -f
 
 
 distclean:: clean

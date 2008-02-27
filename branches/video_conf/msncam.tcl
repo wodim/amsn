@@ -91,7 +91,8 @@ namespace eval ::MSNCAM {
 	#  This function is called when a file transfer is canceled by the remote contact
 	proc CamCanceled { chatid sid } {
 		set grabber [getObjOption $sid grabber]
-		set window [getObjOption $sid window]
+		set window_in [getObjOption $sid window_in]
+		set window_out [getObjOption $sid window_out]
 
 		#draw a notification in the window (gui)
 		::CAMGUI::CamCanceled $chatid $sid
@@ -106,7 +107,7 @@ namespace eval ::MSNCAM {
 
 		} else {
 			if { [::CAMGUI::IsGrabberValid $grabber] } {
-				::CAMGUI::CloseGrabber $grabber $window
+				::CAMGUI::CloseGrabber $grabber $window_out
 			}
 		}
 		
@@ -116,17 +117,31 @@ namespace eval ::MSNCAM {
 			catch { close $fd }
 		}
 
-		if { [winfo exists $window] } {
-			wm protocol $window WM_DELETE_WINDOW "destroy $window"
-			#$window.q configure -command "destroy $window"
-			#$window.canvas bind stopbut <Button1-ButtonRelease> [list destroy $window]
-			$window.canvas delete stopbut
+		if { [winfo exists $window_out] } {
+			wm protocol $window_out WM_DELETE_WINDOW "destroy $window_out"
+			#$window_out.q configure -command "destroy $window_out"
+			#$window_out.canvas bind stopbut <Button1-ButtonRelease> [list destroy $window_out]
+			$window_out.canvas delete stopbut
 
 			if { [getObjOption $sid producer] } {
 				#We disable the button which show the properties
-				#$window.settings configure -state disable -command ""
-				$window.canvas delete confbut
-				$window.canvas delete pausebut
+				#$window_out.settings configure -state disable -command ""
+				$window_out.canvas delete confbut
+				$window_out.canvas delete pausebut
+			}
+		}
+
+		if { [winfo exists $window_in] } {
+			wm protocol $window_in WM_DELETE_WINDOW "destroy $window_in"
+			#$window_in.q configure -command "destroy $window_in"
+			#$window_in.canvas bind stopbut <Button1-ButtonRelease> [list destroy $window_in]
+			$window_in.canvas delete stopbut
+
+			if { [getObjOption $sid producer] } {
+				#We disable the button which show the properties
+				#$window_in.settings configure -state disable -command ""
+				$window_in.canvas delete confbut
+				$window_in.canvas delete pausebut
 			}
 		}
 
@@ -838,10 +853,72 @@ namespace eval ::MSNCAM {
 				if {$code == 00 } {
 					# Video frame
 					# TODO handle WMV3 video frames
-					status_log "It's a video frame!" red
+					#status_log "It's a video frame!" red
+
+					set frame [getObjOption $sid current_wmv3_frame ""]
+					set current_len [getObjOption $sid current_wmv3_frame_size 0]
+					if { [string length $frame] + [string length $data] >= $current_len } {
+
+						set part1 [string range $data 0 [expr {$current_len - [string length $frame] - 1}] ]
+						set part2 [string range $data [expr {$current_len - [string length $frame]}] end ]
+
+						append frame $part1
+						set data $part2
+
+						if {$frame != "" } {
+							status_log "We have a complete frame!!!!" green
+							if { [::config::getKey webcamlogs] == 1 } {
+								set fd [getObjOption $sid weblog]
+								if { $fd == "" } {
+									set email [string tolower [lindex [::MSNP2P::SessionList get $sid] 3]]
+									if { ![catch {set fd [open [file join $::webcam_dir ${email}.cam] a]}] } {
+										fconfigure $fd -translation binary
+										setObjOption $sid weblog $fd
+										# Update cam sessions metadata
+										::log::UpdateCamMetadata $email
+									}
+									
+								}
+								
+								catch {puts -nonewline $fd $frame}
+							}
+							catch { fileevent $sock readable "" }
+								
+							after 0 "::CAMGUI::ShowCamFrame $sid [list $frame];
+						 catch {fileevent $sock readable \"::MSNCAM::ReadFromSock $sock\"}"
+												
+						}
+						
+						if {$data != "" } {
+							set data [string range $data 1 end]
+							set header [string range  $data 0 23]
+							set size [GetCamDataSize $header]
+						
+							status_log "Got header size : $size"
+							if { $size > 0 } {
+								setObjOption $sid current_wmv3_frame $data
+								setObjOption $sid current_wmv3_frame_size [expr {$size + 24}]
+							} elseif {$size != 0 }  {
+								AuthFailed $sid $sock
+								setObjOption $sock state "END"
+								status_log "ERROR5 : [string range $data 0 50] - invalid data received" red
+								
+							} else {
+								::CAMGUI::GotPausedFrame $sid
+							}
+						} else {
+							setObjOption $sid current_wmv3_frame ""
+							setObjOption $sid current_wmv3_frame_size 0
+						}
+						
+					} else {
+						#status_log "not enough data" green
+						append frame $data
+						setObjOption $sid current_wmv3_frame $frame
+					}
 				} elseif {$code == 32 } {
 					# Audio frame
-					status_log "It's an audio frame!" red
+					#status_log "It's an audio frame!" red
 
 					set dec [getObjOption $sock audio_dec ""]
 					set stream_fd [getObjOption $sock audio_recv_fd ""]
@@ -972,6 +1049,7 @@ namespace eval ::MSNCAM {
 
 
 		set data ""
+		set silent 0
 
 		switch $state {
 
@@ -1021,7 +1099,20 @@ namespace eval ::MSNCAM {
 			}
 			"AV_SEND_RECV" {
 				# TODO : send A/V frames...
-				status_log "Should send A/V frame.. canceling" red
+				#status_log "Should send A/V frame.. canceling" red
+				set frame [getObjOption $sid current_out_frame ""]
+				
+				if { $frame != "" } {
+					set to_send [string range $frame 0 199]
+					set frame [string range $frame 200 end]
+					setObjOption $sid current_out_frame $frame
+					set data "[binary format cc [string length $to_send] 0]$to_send"
+					catch {fileevent $sock writable "::MSNCAM::WriteToSock $sock" }
+					set silent 1
+				} else {
+					after 250 "::CAMGUI::GetCamFrame $sid $sock;
+					   catch {fileevent $sock writable \"::MSNCAM::WriteToSock $sock\" }"
+				}
 			}
 			"TSP_PAUSED" -
 			"PAUSED" 
@@ -1064,8 +1155,9 @@ namespace eval ::MSNCAM {
 		}
 
 		if { $data != "" } {
-			status_log "Writing Data on socket $sock sending=$sending - server=$server - state=$state : \n$data\n" red
-		
+			if { $silent == 0 } {
+				status_log "Writing Data on socket $sock sending=$sending - server=$server - state=$state : \n$data\n" red
+			}
 			catch { puts -nonewline $sock "$data" }
 		}
 
@@ -1623,7 +1715,7 @@ namespace eval ::MSNCAM {
 			return -1
 		}
 		set fcc [string range $data 12 15]
-		if { $fcc != "ML20" } {
+		if { $fcc != "ML20" && $fcc != "WMV3" } {
 			status_log "fcc invalid - $fcc - [string range $data 0 50]" red
 			return -1
 		}
@@ -1658,7 +1750,7 @@ namespace eval ::MSNCAM {
 			return -1
 		}
 		set fcc [string range $data 12 15]
-		if { $fcc != "ML20" } {
+		if { $fcc != "ML20" && $fcc != "WMV3" } {
 			status_log "fcc invalid - $fcc - [string range $data 0 50]" red
 			return -1
 		}
@@ -1703,7 +1795,7 @@ namespace eval ::MSNCAM {
 			return 0
 		}
 		set fcc [string range $data 12 15]
-		if { $fcc != "ML20" } {
+		if { $fcc != "ML20" && $fcc != "WMV3" } {
 		# if { $fcc != $r_fcc} 
 			status_log "fcc invalide - $fcc - [string range $data 0 50]" red
 			return -1
@@ -1716,6 +1808,9 @@ namespace eval ::MSNCAM {
 
 	proc SendFrame { sock encoder img } {
 		#If the img is not at the right size, don't encode (crash issue..)
+
+		set sid [getObjOption $sock sid]
+		set av [getObjOption $sid av]
 
 		if { [::config::getKey lowrescam] == 1 && [OnLinux] } {
 			set camwidth 160
@@ -1763,6 +1858,15 @@ namespace eval ::MSNCAM {
 				set size [GetCamDataSize $header]
 				if { $size > 0 } {
 					set data "$header[read $fd $size]"
+					
+					if { $av } {
+						set data "\x00$data"
+					
+						set to_send [string range $data 0 199]
+						set frame [string range $data 200 end]
+						setObjOption $sid current_out_frame $frame
+						set data $to_send
+					}
 				}
 			} else {
 				# struct header {
@@ -1805,11 +1909,24 @@ namespace eval ::MSNCAM {
 				append header "[binary format i $timestamp]"
 				set data "${header}${data}"
 
+				if { $av } {
+					set data "\x00$data"
+					
+					set to_send [string range $data 0 199]
+					set frame [string range $data 200 end]
+					setObjOption $sid current_out_frame $frame
+					set data $to_send
+				}
 			}
 		}
 		catch {
 		    if { ![eof $sock] && [fconfigure $sock -error] == "" } {
-			puts -nonewline $sock "$data"
+			    if {$av} {
+				    puts -nonewline $sock "[binary format cc [string length $data] 0]$data"
+				    status_log "Wrote : [binary format cc [string length $data] 0]$data"
+			    } else {
+				    puts -nonewline $sock "$data"
+			    }
 		    }
 		
 		}
@@ -1855,9 +1972,9 @@ namespace eval ::CAMGUI {
 
 		if { [getObjOption [getObjOption $sid socket] state] == "END" } { return }
 
-		set window [getObjOption $sid window]
-		set decoder [getObjOption $sid codec]
-	        set img [getObjOption $sid image]
+		set window [getObjOption $sid window_in]
+		set decoder [getObjOption $sid decoder]
+	        set img [getObjOption $sid image_in]
 
 # 		if { 1 == 1 } {
 # 		    set chatid [getObjOption $sid chatid]
@@ -1868,11 +1985,11 @@ namespace eval ::CAMGUI {
 
 		if { $decoder == "" } {
 			set decoder [::Webcamsn::NewDecoder]
-			setObjOption $sid codec $decoder
+			setObjOption $sid decoder $decoder
 		}
 
 		if { $window == "" } {
-			set window .webcam_$sid
+			set window .webcam_in_$sid
 			toplevel $window -class AmsnWebcam
 			set chatid [getObjOption $sid chatid]
 			wm title $window "$chatid - [::abook::getDisplayNick $chatid]"
@@ -1891,8 +2008,8 @@ namespace eval ::CAMGUI {
 			$canv bind stopbut <Enter> [list balloon_enter %W %X %Y [trans stopwebcamreceive]]
 			$canv bind stopbut <Leave> "set Bulle(first) 0; kill_balloon"
 			$canv bind stopbut <Motion> [list balloon_motion %W %X %Y [trans stopwebcamreceive]]
-			setObjOption $sid window $window
-			setObjOption $sid image $img
+			setObjOption $sid window_in $window
+			setObjOption $sid image_in $img
 		} else {
 			#$window.paused configure -text ""
 			if {[winfo exists $window.canvas]} {
@@ -1906,7 +2023,7 @@ namespace eval ::CAMGUI {
 	}
 	
 	proc GotPausedFrame {sid} {
-		set window [getObjOption $sid window]
+		set window [getObjOption $sid window_in]
 		if { $window != "" } {
 			#$window.paused configure -text "[trans pausedwebcamreceive]"
 			$window.canvas itemconfigure paused -state normal
@@ -1925,10 +2042,10 @@ namespace eval ::CAMGUI {
 
 		set chatid [getObjOption $sid chatid]
 
-		set window [getObjOption $sid window]
-		set img [getObjOption $sid image]
+		set window [getObjOption $sid window_out]
+		set img [getObjOption $sid image_out]
 
-		set encoder [getObjOption $socket codec]
+		set encoder [getObjOption $socket encoder]
 		set source [getObjOption $sid source]
 
 		if { [OnLinux] } {
@@ -2046,7 +2163,7 @@ namespace eval ::CAMGUI {
 		}
 
 		if { $window == "" } {
-			set window .webcam_$sid
+			set window .webcam_out_$sid
 
 			#Don't show the sending frame on Mac OS X (we already have the grabber)
 			if { [OnDarwin] } {
@@ -2118,8 +2235,8 @@ namespace eval ::CAMGUI {
 			lappend windows $window
 			set ::grabbers($grabber) $windows
 
-			setObjOption $sid window $window
-			setObjOption $sid image $img
+			setObjOption $sid window_out $window
+			setObjOption $sid image_out $img
 		}
 
 		if { $grab_proc == "" } {
@@ -2151,7 +2268,7 @@ namespace eval ::CAMGUI {
 		if { $encoder == "" } {
 			set encoder [::Webcamsn::NewEncoder HIGH]
 			::Webcamsn::SetQuality $encoder 4500
-			setObjOption $socket codec $encoder
+			setObjOption $socket encoder $encoder
 		}
 
 		if { ![catch { $grabber picture $img} res] } {
@@ -2175,7 +2292,7 @@ namespace eval ::CAMGUI {
 				}
 				set encoder [::Webcamsn::NewEncoder $res]
 				::Webcamsn::SetQuality $encoder 4500
-				setObjOption $socket codec $encoder
+				setObjOption $socket encoder $encoder
 			}
 			::MSNCAM::SendFrame $socket $encoder $img
 		} else {
@@ -2189,13 +2306,14 @@ namespace eval ::CAMGUI {
 		if { $encoder == "" } {
 			set encoder [::Webcamsn::NewEncoder HIGH]
 			::Webcamsn::SetQuality $encoder 4500
-			setObjOption $socket codec $encoder
+			setObjOption $socket encoder $encoder
 		}
 
 		if {[winfo ismapped $grabber]} {
 			set socker_ [getObjOption $img socket]
 			set encoder_ [getObjOption $img encoder]
 
+			# FIXME : WTF???
 			if { $socker_ == "" || $encoder_ == "" } {
 				setObjOption $img socket $socket
 				setObjOption $img encoder $encoder
@@ -3325,20 +3443,29 @@ namespace eval ::CAMGUI {
 		fconfigure $fd -encoding binary -translation binary
 		set data [read $fd 1024000]
 		# we need to start looking at least after the 12th char otherwise the $advance -12 will give us a negative value in our data.
-		set advance [string first "ML20" $data 12]
+		set advance_ml20 [string first "ML20" $data 12]
+		set advance_wmv3 [string first "WMV3" $data 12]
+		if {$advance_ml20 == -1 && $advance_wmv3 == -1} {
+			set advance -1
+		} elseif {$advance_ml20 == -1} {
+			set advance $advance_wmv3
+		} elseif {$advance_wmv3 == -1} {
+			set advance $advance_ml20
+		} elseif {$advance_wmv3 < $advance_ml20 } {
+			set advance $advance_wmv3
+		} else {
+			set advance $advance_ml20
+		}
 		if { $advance == -1 } {
 			close $fd
 			return [file size $filename]
 		}
 		incr advance -12
 		set keyframe 0
-		set not_keyframe 1
 		while { $keyframe == 0 && $advance < [file size $filename]} {
 			binary scan $data @${advance}c@[expr {$advance + 8}]i h_size p_size
-			binary scan $data @[expr {$advance + 24 + 12}]c not_keyframe
-			if { $h_size == 24 && $not_keyframe == 0 } {
-				set keyframe 1
-			} else {
+			binary scan $data @[expr {$advance + 6}]c keyframe
+			if { $h_size != 24 || $keyframe == 0} {
 				incr advance 24
 				incr advance $p_size
 			}

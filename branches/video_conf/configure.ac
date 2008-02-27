@@ -391,6 +391,14 @@ AC_SUBST(TCL_STUB_LIB_SPEC)
 AC_SUBST(TK_STUB_LIB_SPEC)
 
 
+if test -f utils/webcamsn/src/ffmpeg/libavcodec/libavcodec.a -a -f utils/webcamsn/src/ffmpeg/libavutil/libavutil.a ; then
+    HAVE_LIBAVCODEC="yes"
+else
+    HAVE_LIBAVCODEC="no"
+fi
+
+AC_SUBST(HAVE_LIBAVCODEC)
+
 dnl ---------------------------------------------------------------------
 dnl do some OS specific stuff here
 
@@ -495,8 +503,20 @@ compile time options summary
     TK 		 : $TK_VERSION
     DEBUG        : $DEBUG
     STATIC       : $STATIC
+    FFMPEG       : $HAVE_LIBAVCODEC
 
 EOF
 
+if test "$HAVE_LIBAVCODEC" != "yes" -a -f utils/webcamsn/src/ffmpeg/compile; then
+cat << EOF
+**************  WARNING  ************
+The Audio/Video Conference feature requires you to have FFMPEG compiled in order to support WMV3 decoding.
+aMSN did not find the compiled binaries of ffmpeg but you do have the source code for it.
+Please go to the ffmpeg source directory and compile it by running the following command : 
+    cd utils/webcamsn/src/ffmpeg/ && ./compile && cd ../../../../
+Then you must re-run this ./configure script
+**************  WARNING  ************
+EOF
+fi
 
 exit 0

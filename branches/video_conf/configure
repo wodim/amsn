@@ -681,6 +681,7 @@ TCL_INC_SPEC
 TK_INC_SPEC
 TCL_STUB_LIB_SPEC
 TK_STUB_LIB_SPEC
+HAVE_LIBAVCODEC
 CXX_LIB
 LDLIBS
 FOUND_X11
@@ -3526,6 +3527,14 @@ fi
 
 
 
+
+
+
+if test -f utils/webcamsn/src/ffmpeg/libavcodec/libavcodec.a -a -f utils/webcamsn/src/ffmpeg/libavutil/libavutil.a ; then
+    HAVE_LIBAVCODEC="yes"
+else
+    HAVE_LIBAVCODEC="no"
+fi
 
 
 
@@ -7197,6 +7206,7 @@ TCL_INC_SPEC!$TCL_INC_SPEC$ac_delim
 TK_INC_SPEC!$TK_INC_SPEC$ac_delim
 TCL_STUB_LIB_SPEC!$TCL_STUB_LIB_SPEC$ac_delim
 TK_STUB_LIB_SPEC!$TK_STUB_LIB_SPEC$ac_delim
+HAVE_LIBAVCODEC!$HAVE_LIBAVCODEC$ac_delim
 CXX_LIB!$CXX_LIB$ac_delim
 LDLIBS!$LDLIBS$ac_delim
 FOUND_X11!$FOUND_X11$ac_delim
@@ -7215,7 +7225,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 84; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 85; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5
@@ -7650,8 +7660,20 @@ compile time options summary
     TK 		 : $TK_VERSION
     DEBUG        : $DEBUG
     STATIC       : $STATIC
+    FFMPEG       : $HAVE_LIBAVCODEC
 
 EOF
 
+if test "$HAVE_LIBAVCODEC" != "yes" -a -f utils/webcamsn/src/ffmpeg/compile; then
+cat << EOF
+**************  WARNING  ************
+The Audio/Video Conference feature requires you to have FFMPEG compiled in order to support WMV3 decoding.
+aMSN did not find the compiled binaries of ffmpeg but you do have the source code for it.
+Please go to the ffmpeg source directory and compile it by running the following command :
+    cd utils/webcamsn/src/ffmpeg/ && ./compile && cd ../../../../
+Then you must re-run this ./configure script
+**************  WARNING  ************
+EOF
+fi
 
 exit 0
