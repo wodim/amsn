@@ -803,10 +803,6 @@ namespace eval ::MSNCAM {
 				}
 			}
 			"AV_SEND_RECV" {
-				if { ![info exists ::av_fd] } {
-					set ::av_fd [open "dump.av" w]
-					fconfigure $::av_fd -translation binary
-				}
 				set extradata ""
 				set header [nbread $sock 2]
 
@@ -821,7 +817,6 @@ namespace eval ::MSNCAM {
 					}
 				}
 
-				puts -nonewline $::av_fd $header
 				binary scan $header cc size code
 				if { ![info exists code] } {
 					
@@ -842,7 +837,6 @@ namespace eval ::MSNCAM {
 					set data "${extradata}${data}"
 				}
 
-				puts -nonewline $::av_fd $data
 				if { [string length $data] != $size } {
 					setObjOption $sock state "END"
 					status_log "ERROR: Could only read [string length $data] instead of $size bytes.. \n" red
@@ -999,10 +993,6 @@ namespace eval ::MSNCAM {
 				status_log "Closing socket $sock because it's in END state\n" red
 				catch { close $sock }
 				CancelCam $chatid $sid
-				if {[info exists ::av_fd] } {
-					close $::av_fd 
-					unset ::av_fd
-				}
 
 			}
 			default
@@ -2689,11 +2679,6 @@ namespace eval ::CAMGUI {
 		::amsn::WinWrite $chatid "[timestamp] [trans webcamcanceled [::abook::getDisplayNick $chatid]]\n" green
 		::amsn::WinWriteIcon $chatid greyline 3
 
-
-		if {[info exists ::av_fd] } {
-			close $::av_fd 
-			unset ::av_fd
-		}
 	}
 	#Executed when you invite someone to send your webcam
 	proc InvitationToSendSent {chatid sid av} {
