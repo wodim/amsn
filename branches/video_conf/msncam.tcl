@@ -842,7 +842,7 @@ namespace eval ::MSNCAM {
 					status_log "ERROR: Could only read [string length $data] instead of $size bytes.. \n" red
 					return
 				}
-
+				
 				#status_log "Received $size payload" red
 				if {$code == 00 } {
 					# Video frame
@@ -884,6 +884,7 @@ namespace eval ::MSNCAM {
 						}
 						
 						if {$data != "" } {
+							status_log "[string range $data 0 0]"
 							set data [string range $data 1 end]
 							set header [string range  $data 0 23]
 							set size [GetCamDataSize $header]
@@ -913,10 +914,12 @@ namespace eval ::MSNCAM {
 				} elseif {$code == 32 } {
 					# Audio frame
 					#status_log "It's an audio frame!" red
-
+				
 					set dec [getObjOption $sock audio_dec ""]
-					set stream_fd [getObjOption $sock audio_recv_fd ""]
-					if {$dec == "" ||$stream_fd == "" } {
+					set snd1 [getObjOption $sock audio_snd_in1 ""]
+					set snd2 [getObjOption $sock audio_snd_in2 ""]
+					set snd [getObjOption $sock audio_snd_in ""]
+					if {$dec == "" || $snd1 == "" || $snd2 == "" } {
 						if { [catch {require_snack} ] || [package vcompare [set ::snack::patchLevel] 2.2.9] < 0 || [catch {package require tcl_siren }] } {
 							# Handle error: no snack
 							status_log "no snack/tcl_siren" red
@@ -925,21 +928,28 @@ namespace eval ::MSNCAM {
 							set dec [::Siren::NewDecoder]
 							setObjOption $sock audio_dec $dec
  
-							set stream_fd [open "| [auto_execok wish] stream_audio.tcl" w]
-							fconfigure $stream_fd -translation binary
-							setObjOption $sock audio_recv_fd $stream_fd
+							set snd1 [::snack::sound]
+							set snd2 [::snack::sound]
+							set snd $snd1
+							setObjOption $sock audio_snd_in1 $snd1
+							setObjOption $sock audio_snd_in2 $snd2
+							setObjOption $sock audio_snd_in $snd
 						}
 					}
 					binary scan $data si unk counter
 					set data [string range $data 6 end]
 					set raw [::Siren::Decode $dec $data]
 					#status_log "Counter is $counter!" red
-					if { [catch {puts -nonewline $stream_fd $raw} res] } {
-						#setObjOption $sock state "END"
-						status_log "ERROR: Could not play audio : $res \n" red
-						#return						
-					} else {
-						flush $stream_fd
+					$snd append $raw -rate 16000 -channels 1 -fileformat RAW
+					if { [$snd length] >= 16000 } {
+						$snd play
+						if { $snd == $snd1 } {
+							$snd2 flush
+							setObjOption $sock audio_snd_in $snd2
+						} else {
+							$snd1 flush
+							setObjOption $sock audio_snd_in $snd1
+						}
 					}
 				} else {
 					#setObjOption $sock state "END"
@@ -1010,6 +1020,7 @@ namespace eval ::MSNCAM {
 
 
 	}
+	
 	proc WriteToSock { sock } {
 
 		catch { fileevent $sock writable "" }
@@ -1088,6 +1099,7 @@ namespace eval ::MSNCAM {
 					   catch {fileevent $sock writable \"::MSNCAM::WriteToSock $sock\" }"
 			}
 			"AV_SEND_RECV" {
+				return
 				# TODO : send A/V frames...
 				#status_log "Should send A/V frame.. canceling" red
 				set frame [getObjOption $sid current_out_frame ""]
@@ -1913,7 +1925,7 @@ namespace eval ::MSNCAM {
 		    if { ![eof $sock] && [fconfigure $sock -error] == "" } {
 			    if {$av} {
 				    puts -nonewline $sock "[binary format cc [string length $data] 0]$data"
-				    status_log "Wrote : [binary format cc [string length $data] 0]$data"
+				    #status_log "Wrote : [binary format cc [string length $data] 0]$data"
 			    } else {
 				    puts -nonewline $sock "$data"
 			    }
