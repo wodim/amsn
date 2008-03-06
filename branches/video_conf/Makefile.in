@@ -29,6 +29,7 @@ tray_dir := $(srcdir)/utils/linux/traydock
 linflash_dir := $(srcdir)/utils/linux/linflash
 tclISF_dir := $(srcdir)/utils/tclISF
 macosx_dir := $(srcdir)/utils/macosx
+aio_dir := $(srcdir)/utils/aio
 
 # programs
 CC		:= @CC@
@@ -102,6 +103,7 @@ CFLAGS   += -DLIBDIR='"$(LIBDIR)"'
 ifeq ($(HAVE_LIBAVCODEC),yes)
 CFLAGS	 += -DHAVE_LIBAVCODEC
 endif
+CFLAGS   += @AO_CFLAGS@
 
 CXXFLAGS := $(CFLAGS)
 
@@ -136,6 +138,7 @@ CXX_LIB := @CXX_LIB@
 
 LDFLAGS	 += ${TCL_STUB_LIB_SPEC}
 LDFLAGS	 += ${TK_STUB_LIB_SPEC}
+LDFLAGS  += @AO_LIBS@
 
 #AppMain.tcl is needed by MacOSX : do not try to simplify by moving it outside the ifeq/else.
 ifeq ($(FOUND_OS),linux)
@@ -265,6 +268,9 @@ include $(webcamsn_dir)/src/Rules.mk
 
 include $(tcl_siren_dir)/Rules.mk
 include $(tcl_siren_dir)/src/Rules.mk
+
+include $(aio_dir)/Rules.mk
+include $(aio_dir)/src/Rules.mk
 
 include $(tclISF_dir)/Rules.mk
 include $(tclISF_dir)/src/Rules.mk

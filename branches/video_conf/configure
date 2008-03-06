@@ -682,6 +682,8 @@ TK_INC_SPEC
 TCL_STUB_LIB_SPEC
 TK_STUB_LIB_SPEC
 HAVE_LIBAVCODEC
+AO_CFLAGS
+AO_LIBS
 CXX_LIB
 LDLIBS
 FOUND_X11
@@ -1287,12 +1289,16 @@ Optional Features:
   --enable-debug          enable some debugging information
   --enable-static         enable static link of libstdc++
   --disable-version-check Disable checking that linked tcl/tk version is the same version that bin program tclsh
+  --disable-aotest       Do not try to compile and run a test ao program
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-tcl=DIR          use Tcl binaries from DIR
   --with-tk=DIR           use Tk binaries from DIR
+  --with-ao=PFX   Prefix where libao is installed (optional)
+  --with-ao-libraries=DIR   Directory where libao library is installed (optional)
+  --with-ao-includes=DIR   Directory where libao header files are installed (optional)
   --with-x                use the X Window System
 
 Some influential environment variables:
@@ -3535,6 +3541,386 @@ if test -f utils/webcamsn/src/ffmpeg/libavcodec/libavcodec.a -a -f utils/webcams
 else
     HAVE_LIBAVCODEC="no"
 fi
+
+
+
+
+
+# Check whether --with-ao was given.
+if test "${with_ao+set}" = set; then
+  withval=$with_ao; ao_prefix="$withval"
+else
+  ao_prefix=""
+fi
+
+
+# Check whether --with-ao-libraries was given.
+if test "${with_ao_libraries+set}" = set; then
+  withval=$with_ao_libraries; ao_libraries="$withval"
+else
+  ao_libraries=""
+fi
+
+
+# Check whether --with-ao-includes was given.
+if test "${with_ao_includes+set}" = set; then
+  withval=$with_ao_includes; ao_includes="$withval"
+else
+  ao_includes=""
+fi
+
+# Check whether --enable-aotest was given.
+if test "${enable_aotest+set}" = set; then
+  enableval=$enable_aotest;
+else
+  enable_aotest=yes
+fi
+
+
+
+  if test "x$ao_libraries" != "x" ; then
+    AO_LIBS="-L$ao_libraries"
+  elif test "x$ao_prefix" != "x"; then
+    AO_LIBS="-L$ao_prefix/lib"
+  elif test "x$prefix" != "xNONE"; then
+    AO_LIBS="-L$prefix/lib"
+  fi
+
+  if test "x$ao_includes" != "x" ; then
+    AO_CFLAGS="-I$ao_includes"
+  elif test "x$ao_prefix" != "x"; then
+    AO_CFLAGS="-I$ao_prefix/include"
+  elif test "x$prefix" != "xNONE"; then
+    AO_CFLAGS="-I$prefix/include"
+  fi
+
+  # see where dl* and friends live
+
+for ac_func in dlopen
+do
+as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
+{ echo "$as_me:$LINENO: checking for $ac_func" >&5
+echo $ECHO_N "checking for $ac_func... $ECHO_C" >&6; }
+if { as_var=$as_ac_var; eval "test \"\${$as_var+set}\" = set"; }; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Define $ac_func to an innocuous variant, in case <limits.h> declares $ac_func.
+   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
+#define $ac_func innocuous_$ac_func
+
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char $ac_func (); below.
+    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+    <limits.h> exists even on freestanding compilers.  */
+
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+
+#undef $ac_func
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char $ac_func ();
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined __stub_$ac_func || defined __stub___$ac_func
+choke me
+#endif
+
+int
+main ()
+{
+return $ac_func ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext &&
+       $as_test_x conftest$ac_exeext; then
+  eval "$as_ac_var=yes"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	eval "$as_ac_var=no"
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+fi
+ac_res=`eval echo '${'$as_ac_var'}'`
+	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+echo "${ECHO_T}$ac_res" >&6; }
+if test `eval echo '${'$as_ac_var'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
+_ACEOF
+ AO_DL_LIBS=""
+else
+
+    { echo "$as_me:$LINENO: checking for dlopen in -ldl" >&5
+echo $ECHO_N "checking for dlopen in -ldl... $ECHO_C" >&6; }
+if test "${ac_cv_lib_dl_dlopen+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-ldl  $LIBS"
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+#ifdef __cplusplus
+extern "C"
+#endif
+char dlopen ();
+int
+main ()
+{
+return dlopen ();
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext &&
+       $as_test_x conftest$ac_exeext; then
+  ac_cv_lib_dl_dlopen=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	ac_cv_lib_dl_dlopen=no
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ echo "$as_me:$LINENO: result: $ac_cv_lib_dl_dlopen" >&5
+echo "${ECHO_T}$ac_cv_lib_dl_dlopen" >&6; }
+if test $ac_cv_lib_dl_dlopen = yes; then
+  AO_DL_LIBS="-ldl"
+else
+
+      { echo "$as_me:$LINENO: WARNING: could not find dlopen() needed by libao sound drivers
+      your system may not be supported." >&5
+echo "$as_me: WARNING: could not find dlopen() needed by libao sound drivers
+      your system may not be supported." >&2;}
+
+fi
+
+
+fi
+done
+
+
+  AO_LIBS="$AO_LIBS -lao $AO_DL_LIBS"
+
+  { echo "$as_me:$LINENO: checking for ao" >&5
+echo $ECHO_N "checking for ao... $ECHO_C" >&6; }
+  no_ao=""
+
+
+  if test "x$enable_aotest" = "xyes" ; then
+    ac_save_CFLAGS="$CFLAGS"
+    ac_save_LIBS="$LIBS"
+    CFLAGS="$CFLAGS $AO_CFLAGS"
+    LIBS="$LIBS $AO_LIBS"
+      rm -f conf.aotest
+      if test "$cross_compiling" = yes; then
+  echo $ac_n "cross compiling; assumed OK... $ac_c"
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ao/ao.h>
+
+int main ()
+{
+  system("touch conf.aotest");
+  return 0;
+}
+
+
+_ACEOF
+rm -f conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  :
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+( exit $ac_status )
+no_ao=yes
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+
+       CFLAGS="$ac_save_CFLAGS"
+       LIBS="$ac_save_LIBS"
+  fi
+
+  if test "x$no_ao" = "x" ; then
+     { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; }
+     :
+  else
+     { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; }
+     if test -f conf.aotest ; then
+       :
+     else
+       echo "*** Could not run ao test program, checking why..."
+       CFLAGS="$CFLAGS $AO_CFLAGS"
+       LIBS="$LIBS $AO_LIBS"
+       cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+
+#include <stdio.h>
+#include <ao/ao.h>
+
+int
+main ()
+{
+ return 0;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && {
+	 test -z "$ac_c_werror_flag" ||
+	 test ! -s conftest.err
+       } && test -s conftest$ac_exeext &&
+       $as_test_x conftest$ac_exeext; then
+   echo "*** The test program compiled, but did not run. This usually means"
+       echo "*** that the run-time linker is not finding ao or finding the wrong"
+       echo "*** version of ao. If it is not finding ao, you'll need to set your"
+       echo "*** LD_LIBRARY_PATH environment variable, or edit /etc/ld.so.conf to point"
+       echo "*** to the installed location  Also, make sure you have run ldconfig if that"
+       echo "*** is required on your system"
+       echo "***"
+       echo "*** If you have an old version installed, it is best to remove it, although"
+       echo "*** you may also be able to get things to work by modifying LD_LIBRARY_PATH"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+	 echo "*** The test program failed to compile or link. See the file config.log for the"
+       echo "*** exact error that occured. This usually means ao was incorrectly installed"
+       echo "*** or that you have moved ao since it was installed."
+fi
+
+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
+      conftest$ac_exeext conftest.$ac_ext
+       CFLAGS="$ac_save_CFLAGS"
+       LIBS="$ac_save_LIBS"
+     fi
+     AO_CFLAGS=""
+     AO_LIBS=""
+     { { echo "$as_me:$LINENO: error: libao required!" >&5
+echo "$as_me: error: libao required!" >&2;}
+   { (exit 1); exit 1; }; }
+  fi
+
+
+  rm -f conf.aotest
+
+
 
 
 
@@ -7207,6 +7593,8 @@ TK_INC_SPEC!$TK_INC_SPEC$ac_delim
 TCL_STUB_LIB_SPEC!$TCL_STUB_LIB_SPEC$ac_delim
 TK_STUB_LIB_SPEC!$TK_STUB_LIB_SPEC$ac_delim
 HAVE_LIBAVCODEC!$HAVE_LIBAVCODEC$ac_delim
+AO_CFLAGS!$AO_CFLAGS$ac_delim
+AO_LIBS!$AO_LIBS$ac_delim
 CXX_LIB!$CXX_LIB$ac_delim
 LDLIBS!$LDLIBS$ac_delim
 FOUND_X11!$FOUND_X11$ac_delim
@@ -7225,7 +7613,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 85; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 87; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

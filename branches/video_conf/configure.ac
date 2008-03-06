@@ -399,6 +399,12 @@ fi
 
 AC_SUBST(HAVE_LIBAVCODEC)
 
+XIPH_PATH_AO(,AC_MSG_ERROR(libao required!))
+
+AC_SUBST(AO_LIBS)
+AC_SUBST(AO_CFLAGS)
+
+
 dnl ---------------------------------------------------------------------
 dnl do some OS specific stuff here
 

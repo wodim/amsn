@@ -94,6 +94,11 @@ namespace eval ::MSNCAM {
 		set window_in [getObjOption $sid window_in]
 		set window_out [getObjOption $sid window_out]
 
+		set sock [getObjOption $sid socket]
+		set snd [getObjOption $sock audio_snd_in ""]
+
+		catch {::Aio::Close $snd}
+
 		#draw a notification in the window (gui)
 		::CAMGUI::CamCanceled $chatid $sid
 
@@ -916,41 +921,28 @@ namespace eval ::MSNCAM {
 					#status_log "It's an audio frame!" red
 				
 					set dec [getObjOption $sock audio_dec ""]
-					set snd1 [getObjOption $sock audio_snd_in1 ""]
-					set snd2 [getObjOption $sock audio_snd_in2 ""]
 					set snd [getObjOption $sock audio_snd_in ""]
-					if {$dec == "" || $snd1 == "" || $snd2 == "" } {
-						if { [catch {require_snack} ] || [package vcompare [set ::snack::patchLevel] 2.2.9] < 0 || [catch {package require tcl_siren }] } {
+					if {$dec == "" || $snd == "" } {
+						if { [catch {package require aio} ] || [catch {package require tcl_siren }] } {
 							# Handle error: no snack
-							status_log "no snack/tcl_siren" red
+							status_log "no aio/tcl_siren" red
 							return
 						} else {
+							if { [catch {set snd [::Aio::Open]} res] } {
+								status_log "aio::open error : $res" red
+								return
+								
+							}
 							set dec [::Siren::NewDecoder]
 							setObjOption $sock audio_dec $dec
  
-							set snd1 [::snack::sound]
-							set snd2 [::snack::sound]
-							set snd $snd1
-							setObjOption $sock audio_snd_in1 $snd1
-							setObjOption $sock audio_snd_in2 $snd2
 							setObjOption $sock audio_snd_in $snd
 						}
 					}
 					binary scan $data si unk counter
 					set data [string range $data 6 end]
-					set raw [::Siren::Decode $dec $data]
 					#status_log "Counter is $counter!" red
-					$snd append $raw -rate 16000 -channels 1 -fileformat RAW
-					if { [$snd length] >= 16000 } {
-						$snd play
-						if { $snd == $snd1 } {
-							$snd2 flush
-							setObjOption $sock audio_snd_in $snd2
-						} else {
-							$snd1 flush
-							setObjOption $sock audio_snd_in $snd1
-						}
-					}
+					::Aio::Play $snd [::Siren::Decode $dec $data]
 				} else {
 					#setObjOption $sock state "END"
 					status_log "ERROR4 : Received AV frame with code $code non A/V. Payload if $size : \n$data" red
