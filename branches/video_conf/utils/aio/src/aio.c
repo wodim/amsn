@@ -20,12 +20,12 @@ int Aio_Open  _ANSI_ARGS_((ClientData clientData,
 {
 
 	int driver;
-	ao_device *device;
+	ao_device *device = NULL;
 	ao_sample_format format;
 	char name[15];
 	char * req_name = NULL;
 	static char device_prefix[] = "device";
-	Tcl_HashEntry *hPtr;
+	Tcl_HashEntry *hPtr = NULL;
 	int newHash;
 
 	// We verify the arguments
@@ -84,8 +84,8 @@ int Aio_Play _ANSI_ARGS_((ClientData clientData,
 			  Tcl_Obj *CONST objv[])) 
 {
 	char * name = NULL;
-	ao_device *device;
-	Tcl_HashEntry *hPtr;
+	ao_device *device = NULL;
+	Tcl_HashEntry *hPtr = NULL;
 	unsigned char* input = NULL;
 	int dataSize;
 
@@ -143,9 +143,9 @@ int Aio_Close _ANSI_ARGS_((ClientData clientData,
 			   Tcl_Obj *CONST objv[]))
 {
 	char * name = NULL;
-	ao_device *device;
-	Tcl_HashEntry *hPtr;
-
+	ao_device *device = NULL;
+	Tcl_HashEntry *hPtr = NULL;
+ 
 	// We verify the arguments
 	if ( objc != 2) {
 		Tcl_WrongNumArgs(interp, 1, objv, "name");

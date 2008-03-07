@@ -96,8 +96,12 @@ namespace eval ::MSNCAM {
 
 		set sock [getObjOption $sid socket]
 		set snd [getObjOption $sock audio_snd_in ""]
+		set dec [getObjOption $sock audio_dec ""]
 
 		catch {::Aio::Close $snd}
+		catch {::Siren::Close $dec}
+		setObjOption $sock audio_snd_in ""
+		setObjOption $sock audio_dec ""
 
 		#draw a notification in the window (gui)
 		::CAMGUI::CamCanceled $chatid $sid
