@@ -5,7 +5,36 @@ TARGETS-webcamsn := $(webcamsn_dir)/src/webcamsn.$(SHLIB_EXTENSION)
 OBJS-ffmpeg += $(webcamsn_dir)/src/ffmpeg/libavcodec/libavcodec.a \
 		 $(webcamsn_dir)/src/ffmpeg/libavutil/libavutil.a
 
+OBJS-wmv3_dec := $(webcamsn_dir)/src/wmv3_dec.o  
+TARGETS-wmv3_dec := $(webcamsn_dir)/src/wmv3_dec
+
+OBJS-wmv3_enc := $(webcamsn_dir)/src/wmv3_enc.o  
+TARGETS-wmv3_enc := $(webcamsn_dir)/src/wmv3_enc
+
+
 ifeq ($(HAVE_LIBAVCODEC),yes)
+
+wmv3_dec : $(TARGETS-wmv3_dec)
+	
+$(TARGETS-wmv3_dec): $(OBJS-wmv3_dec) $(OBJS-ffmpeg)
+	@$(echo_link_app)
+	@$(link_app)
+
+clean-wmv3_dec::
+	rm -f $(TARGETS-wmv3_dec) $(OBJS-wmv3_dec)
+
+
+wmv3_enc : $(TARGETS-wmv3_enc)
+	
+$(TARGETS-wmv3_enc): $(OBJS-wmv3_enc) $(OBJS-ffmpeg)
+	@$(echo_link_app)
+	@$(link_app)
+
+clean-wmv3_enc::
+	rm -f $(TARGETS-wmv3_enc) $(OBJS-wmv3_enc)
+
+clean:: clean-wmv3_dec clean-wmv3_enc
+
 DEPS-webcamsn := $(OBJS-webcamsn) $(OBJS-ffmpeg)
 else
 DEPS-webcamsn := $(OBJS-webcamsn)
