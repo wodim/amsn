@@ -26,6 +26,7 @@ tcl_siren_dir := $(srcdir)/utils/tcl_siren
 tkcximage_dir := $(srcdir)/utils/TkCximage
 tray_dir := $(srcdir)/utils/linux/traydock
 linflash_dir := $(srcdir)/utils/linux/linflash
+macosx_dir := $(srcdir)/utils/macosx
 
 # programs
 CC		:= @CC@
@@ -259,6 +260,9 @@ ifeq ($(FOUND_OS),linux)
       include $(linflash_dir)/Rules.mk
   endif
 else
+  ifeq ($(FOUND_OS),mac)
+	include $(macosx_dir)/sndplay-src/Rules.mk
+  endif
   ifeq ($(FOUND_OS),bsd)
     ifeq ($(FOUND_X11),yes)
        ADDLIBS    += ${X_LIBS} 
