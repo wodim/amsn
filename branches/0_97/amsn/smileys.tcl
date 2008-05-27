@@ -200,11 +200,13 @@ namespace eval ::smiley {
 		#Create the image now and store it   ;# $emotion(name) is unique as we store the emoticon in the array under this name (cfr infra)
 		if { [catch { image create photo emoticonCustom_std_$emotion(text) -file $emotion(file) -format cximage } emotion(image_name) ] } {
 			status_log "Error when creating image for emoticon $emotion(name) : $emotion(image_name)"
-			#Error when creating smiley's image so we don't add it
-			return 0
+
+			#error loading emoticon, just flag it as unreachable
+			set emotion(reachable) 0
 		} else {
 			set emotion(preview) [image create photo emoticonCustom_preview_$emotion(text)]
 			$emotion(preview) copy emoticonCustom_std_$emotion(text)
+			set emotion(reachable) 1
 
 			# Make sure the smiley is max 50x50
 			::smiley::resizeCustomSmiley emoticonCustom_std_$emotion(text)
@@ -215,8 +217,6 @@ namespace eval ::smiley {
 		
 		return 0
 	}
-	
-
 	
 	#///////////////////////////////////////////////////////////////////////////////
 	# proc cleanup
@@ -307,6 +307,11 @@ namespace eval ::smiley {
 					
 					#Get all emoticon data from custom_emotions array
 					array set emotion $custom_emotions($name)
+					
+					#check if emoticon is unreachable and skip it
+					if { $emotion(reachable) == 0 } {
+						continue
+					}
 					
 					if { [info exists emotion(casesensitive)] && [is_true $emotion(casesensitive)]} {
 						set nocase "-exact"
@@ -477,8 +482,10 @@ namespace eval ::smiley {
 			#the smileys menu for first time, the second click can launch
 			#this procedure without all smileys having been created
 			catch { 
-				#TODO: Improve this now we know about quoting a bit more?
-				bind $w.c.$temp <Button1-ButtonRelease> "catch {[list $text insert insert $symbol]\; wm state $w withdrawn} res" 
+				if { $emotion(reachable) == 1 } {
+					#TODO: Improve this now we know about quoting a bit more?
+					bind $w.c.$temp <Button1-ButtonRelease> "catch {[list $text insert insert $symbol]\; wm state $w withdrawn} res" 
+				}
 				#Add binding for custom emoticons
 				if { [OnMac] } {
 					
@@ -551,6 +558,11 @@ namespace eval ::smiley {
 					#Get all emoticon data from custom_emotions array
 					array set emotion $custom_emotions($name)
 
+					#check if emoticon is unreachable and skip it
+					if { $emotion(reachable) == 0 } {
+						continue
+					}
+					
 					if { [info exists emotion(casesensitive)] && [is_true $emotion(casesensitive)]} {
 						set nocase "-exact"
 					} else {
@@ -643,17 +655,21 @@ namespace eval ::smiley {
 
 	
 	#Create ONE smiley in the smileys menu
-	proc CreateSmileyInMenu {w cols rows smiw smih emot_num name symbol image file animated} {
+	proc CreateSmileyInMenu {w cols rows smiw smih emot_num name symbol image file animated {reachable 1}} {
 		catch {
-			#number of menu-item in name as I'm usure about the name being unique and the quoting of the symbol
-			set resized [image create photo emoticonAll_tny_${emot_num}_small]
-			$resized copy $image
-			if {[image width $image] > 22 && [image height $image] > 22} {
-				::picture::ResizeWithRatio $resized 22 22
+			if { $reachable == 1 } {
+				#number of menu-item in name as I'm usure about the name being unique and the quoting of the symbol
+				set resized [image create photo emoticonAll_tny_${emot_num}_small]
+				$resized copy $image
+				if {[image width $image] > 22 && [image height $image] > 22} {
+					::picture::ResizeWithRatio $resized 22 22
+				}
+				label $w.$emot_num -image $resized -background [$w cget -background]
+				bind $w.$emot_num <Destroy> "image delete $resized"
+			} else {
+				label $w.$emot_num -background red
 			}
-			label $w.$emot_num -image $resized -background [$w cget -background]
-			bind $w.$emot_num <Destroy> "image delete $resized"
-	
+				
 			$w.$emot_num configure -cursor hand2 -borderwidth 1 -relief flat
 			
 			#Bindings for raise/flat on mouse over
@@ -661,7 +677,13 @@ namespace eval ::smiley {
 			bind $w.$emot_num <Leave> [list $w.$emot_num configure -relief flat]
 
 			#Tooltip
-			if { [::config::getKey tooltips] } {set_balloon $w.$emot_num "$name\n[trans triggers]: $symbol" "$image"}
+			if { [::config::getKey tooltips] } {
+				if { $reachable == 1 } {
+					set_balloon $w.$emot_num "$name\n[trans triggers]: $symbol" "$image"
+				} else {
+					set_balloon $w.$emot_num "$name\n([trans smileynotavailable])\n[trans triggers]: $symbol"
+				}
+			}
 			set xpos [expr {($emot_num % $cols)* $smiw}]
 			set ypos [expr {($emot_num / $cols) * $smih}]
 			$w create window $xpos $ypos -window $w.$emot_num -anchor nw -width $smiw -height $smih
@@ -745,7 +767,7 @@ namespace eval ::smiley {
 			set animated [expr {$emotion(animated) && [::config::getKey animatedsmileys 0]}]
 			
 			CreateSmileyInMenu $w.c $cols $rows $smiw $smih \
-				$emot_num $name [lindex $emotion(text) 0] $emotion(preview) $emotion(file) $animated
+				$emot_num $name [lindex $emotion(text) 0] $emotion(preview) $emotion(file) $animated $emotion(reachable)
 	
 			incr emot_num
 		}
@@ -1078,6 +1100,7 @@ namespace eval ::smiley {
 		
 		set emotion(file) $file
 		set emotion(name) $name
+		set emotion(reachable) 1
 		
 		#Create a list of symbols
 		set emotion(text) [list]

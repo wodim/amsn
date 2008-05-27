@@ -533,9 +533,9 @@ proc save_config {} {
 
 	if { [catch {
 		if { [OnUnix] } {
-			set file_id [open "[file join ${HOME} config.xml]" w 00600]
+			set file_id [open "[file join ${HOME} config.xml.temp]" w 00600]
 		} else {
-			set file_id [open "[file join ${HOME} config.xml]" w]
+			set file_id [open "[file join ${HOME} config.xml.temp]" w]
 		}
 	} res]} {
 		return 0
@@ -594,6 +594,9 @@ proc save_config {} {
 	puts $file_id "</config>"
 
 	close $file_id
+	
+	#writing was successful, so move config.xml.temp to config.xml
+	file rename -force [file join ${HOME} config.xml.temp] [file join ${HOME} config.xml]
 
 	::config::setKey login $loginback
 	set password $passback
