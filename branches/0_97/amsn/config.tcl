@@ -291,7 +291,7 @@ namespace eval ::config {
 		::config::setKey escape_close_cw 1				;# Whether the escape key closes the chat windows or not
 
 
-                ::config::getKey no_oim_confirmation 0                          ;# Ask or not confirmation to send/read oim messages
+                ::config::setKey no_oim_confirmation 0                          ;# Ask or not confirmation to send/read oim messages
 
 
 		#Advanced options, not in preferences window
