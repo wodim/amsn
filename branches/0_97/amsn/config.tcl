@@ -291,6 +291,9 @@ namespace eval ::config {
 		::config::setKey escape_close_cw 1				;# Whether the escape key closes the chat windows or not
 
 
+                ::config::getKey no_oim_confirmation 0                          ;# Ask or not confirmation to send/read oim messages
+
+
 		#Advanced options, not in preferences window
 		# Create the entry in the list and then, set
 		# the variable at bottom
@@ -359,6 +362,7 @@ namespace eval ::config {
 			[list local storename bool storenickname] \
 			[list local globaloverride bool globaloverride ] \
 			[list local escape_close_cw bool escapeclosescw ] \
+			[list local no_oim_confirmation bool nooimconfirmation ] \
 			[list global disableprofiles bool disableprofiles] \
 		]
 
