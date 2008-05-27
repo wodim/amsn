@@ -109,6 +109,12 @@ else
 	LDFLAGS := @LDFLAGS@
 endif
 
+ifeq (@FOUND_OS@,mac)
+	SHLIB_EXTENSION := dylib
+else
+	SHLIB_EXTENSION := so
+endif
+
 ifeq (@DEBUG@,no)
 	ifneq (@FOUND_OS@,mac)
 LDFLAGS += -s
@@ -262,6 +268,10 @@ ifeq ($(FOUND_OS),linux)
 else
   ifeq ($(FOUND_OS),mac)
 	include $(macosx_dir)/sndplay-src/Rules.mk
+	include $(macosx_dir)/tclCarbonHICommand/Rules.mk
+	include $(macosx_dir)/tclCarbonHICommand/src/Rules.mk
+	include $(macosx_dir)/tclCarbonNotification/Rules.mk
+	include $(macosx_dir)/tclCarbonNotification/src/Rules.mk
   endif
   ifeq ($(FOUND_OS),bsd)
     ifeq ($(FOUND_X11),yes)
