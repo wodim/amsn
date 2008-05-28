@@ -5351,6 +5351,21 @@ proc drawNick { } {
 	$pgBuddyTop.mystatus bind mystatus <Leave> "+set Bulle(first) 0; kill_balloon"
 	$pgBuddyTop.mystatus bind mystatus <Motion> \
 		+[list balloon_motion %W %X %Y $balloon_message $pic_name $fonts complex]
+
+        $pgBuddyTop.mystatus bind mypsmmedia <Enter> \
+                [list ::guiContactList::underlineList $pgBuddyTop.mystatus [set underlinst(ul)] "all"]
+        $pgBuddyTop.mystatus bind mypsmmedia <Leave> [list $pgBuddyTop.mystatus delete "uline_all"]
+        $pgBuddyTop.mystatus bind mypsmmedia <Enter> \
+                +[list $pgBuddyTop.mystatus configure -cursor hand2]
+        $pgBuddyTop.mystatus bind mypsmmedia <Leave> +[list $pgBuddyTop.mystatus configure -cursor left_ptr]
+
+        $pgBuddyTop.mystatus bind mypsmmedia <Button1-ButtonRelease> "kill_balloon; tk_popup .my_menu %X %Y"
+        $pgBuddyTop.mystatus bind mypsmmedia <Enter> \
+                +[list balloon_enter %W %X %Y $balloon_message $pic_name $fonts complex]
+        $pgBuddyTop.mystatus bind mypsmmedia <Leave> "+set Bulle(first) 0; kill_balloon"
+        $pgBuddyTop.mystatus bind mypsmmedia <Motion> \
+                +[list balloon_motion %W %X %Y $balloon_message $pic_name $fonts complex]
+
 	
 	#Called when the window is resized
 	# -> Refreshes the colorbar depending on the width of the window, and redraw the nickname, truncating as necessary
