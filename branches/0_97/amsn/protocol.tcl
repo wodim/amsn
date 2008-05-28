@@ -1703,6 +1703,7 @@ namespace eval ::MSN {
 
 		if { [string match -nocase "*ns*" $sb] } {
 			status_log "clearing sb $sb. oldstat=$oldstat"
+			catch {[$sb cget -proxy] finish $sb}
 			catch {close [$sb cget -sock]}
 
 			$sb configure -sock ""
@@ -3271,7 +3272,7 @@ namespace eval ::MSNOIM {
 		status_log "End of proxy for $options(-name). Destruction of proxy $options(-proxy). Closing socket $options(-sock)" red
 		catch {
 			$options(-proxy) finish $options(-name)
-			$options(-proxy) destroy 
+			after idle [list $options(-proxy) destroy]
 		}
 		catch {
 			close $options(-sock)
@@ -3284,17 +3285,24 @@ namespace eval ::MSNOIM {
 
 	#this method is called when the socket becomes readable
 	#it will get data from the socket and call handleCommand
-	method receivedData { } {
-		set dataRemains 1 	 
+	method receivedData { {httpdata ""} } {
+		set dataRemains 1
+		set httpdata_added 0
 		while { $dataRemains } {
-			#put available data in buffer. When buffer is empty dataRemains is set to 0
-			if { [info procs $self] != "" || [info procs Snit_methodreceivedData] != ""} {
-				if {[catch {set dataRemains [$self appendDataToBuffer]}] } {
-					status_log "$self has been destroyed while being in use.. couldn't test it, but caught it" red
+			# Ugly hack.. this is a dc 'socket readable' callback and a function called by HTTPRead with the content-data
+			if {$httpdata == "" } {
+				#put available data in buffer. When buffer is empty dataRemains is set to 0
+				if { [info procs $self] != "" || [info procs Snit_methodreceivedData] != ""} {
+					if {[catch {set dataRemains [$self appendDataToBuffer]}] } {
+						status_log "$self has been destroyed while being in use.. couldn't test it, but caught it" red
+					}
+				} else {
+					status_log "$self has been destroyed while being used" red
+					break
 				}
-			} else {
-				status_log "$self has been destroyed while being used" red
-				break
+			} elseif {$httpdata_added == 0} {
+				append dataBuffer $httpdata
+				set httpdata_added 1
 			}
 			#check if appendDataToBuffer didn't close this object because the socket was closed
 			if { [info exists dataBuffer] == 0 } { break }
@@ -4380,6 +4388,7 @@ proc cmsn_reconnect { sb } {
 
 			$sb configure -time [clock seconds]
 
+			catch {[$sb cget -proxy] finish $sb}
 			$sb configure -sock ""
 			#$sb configure -data [list]
 			$sb configure -users [list]

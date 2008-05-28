@@ -478,6 +478,7 @@ proc SOCKSSocket { args } {
 	option -proxy_gateway_ip
 	option -proxy_writing
 	variable poll_afterids
+	variable created_sockets [list]
 
 	constructor {args } {
 		array set poll_afterids [list]
@@ -488,6 +489,9 @@ proc SOCKSSocket { args } {
 		foreach name [array names poll_afterids]  {
 			after cancel [set poll_afterids($name)]
 		}
+		foreach sock $created_sockets {
+			catch {close $sock}
+		}
 	}
 
 	method write { name {msg ""} } {
@@ -497,7 +501,7 @@ proc SOCKSSocket { args } {
 #		variable options(-proxy_writing)
 
 		#Cancel any previous attemp to write or POLL
-		after cancel "$self PollPOST $name"
+		after cancel [list $self HTTPPoll $name]
 		array unset poll_afterids $name
 
 		after cancel "globalWrite $self $name"
@@ -724,7 +728,7 @@ proc SOCKSSocket { args } {
 		variable proxy_queued_data
 
 		#status_log "Canceling \"$self HTTPPoll $name\""
-		after cancel "$self HTTPPoll $name"
+		after cancel [list $self HTTPPoll $name]
 		array unset poll_afterids $name
 		
 		if {[info exists options(-proxy_session_id)]} {
@@ -745,6 +749,7 @@ proc SOCKSSocket { args } {
 			fileevent $sock readable ""
 			fileevent $sock writable ""
 		}
+		set created_sockets [lreplace $created_sockets [lsearch $created_sockets $sock] [lsearch $created_sockets $sock]]
 
 		if {[catch {close $sock}]} {
 			return -1
@@ -786,6 +791,7 @@ proc SOCKSSocket { args } {
 			$sb configure -error_msg $res
 			return -1
 		}
+		lappend created_sockets $sock
 
 		$sb configure -sock $sock
 		fconfigure $sock -buffering none -translation {binary binary} -blocking 0
@@ -886,12 +892,13 @@ proc SOCKSSocket { args } {
 		variable proxy_data
 		variable options
 
-		after cancel "$self HTTPPoll $name"
+		after cancel [list $self HTTPPoll $name]
 		array unset poll_afterids $name
 
 		set sock [$name cget -sock]
 		if {[catch {eof $sock} res]} {
 			status_log "::HTTPConnection::HTTPRead: Error, closing\n" red
+			catch { close $sock }
 			$name sockError
 		} elseif {[eof $sock]} {
 			fileevent $sock readable ""
@@ -942,47 +949,26 @@ proc SOCKSSocket { args } {
 				set content_length "[::MSN::GetHeaderValue $headers Content-Length]\n"
 				set content_data ""
 				if { $content_length > 0 } {
-					fconfigure $sock -blocking 1
-					set content_data [read $sock $content_length]
-					fconfigure $sock -blocking 0
+					set content_data [nbread $sock $content_length]
 				}
 
-				#set log [string map {\r ""} $content_data]
-				set log $content_data
+				if {$content_data != "" } {
+					catch {$name receivedData $content_data}
+				}
 
-				#status_log "::HTTPConnection::HTTPRead: Proxy POST Received ($name):\n$headers\n " green
-				while { $log != "" } {
-					set endofline [string first "\n" $log]
-					set command [string range $log 0 [expr {$endofline-2}]]
-					set log [string range $log [expr {$endofline +1}] end]
-					#sb append $name data $command
-
-					#degt_protocol "<-Proxy($name) $command" nsrecv
-
-					if {[lsearch {MSG NOT PAG IPG UBX GCF} [string range $command 0 2]] != -1} {
-						set recv [split $command]
-						set msg_data [string range $log 0 [expr {[lindex $recv end]-1}]]
-						set log [string range $log [expr {[lindex $recv end]}] end]
-						set command [encoding convertfrom utf-8 $command]
-						$name handleCommand $command $msg_data
-						#degt_protocol " Message contents:\n$msg_data" msgcontents
-
-						#sb append $name data $msg_data
-					} else {
-						set command [encoding convertfrom utf-8 $command]
-						$name handleCommand $command
+				# the handleCommand *could* potentially destroy our own object for some reason...
+				# we must be prepared to not crash because of that.
+				if { [catch { 
+					if { $session_id != ""} {
+						#status_log "Scheduling HTTPPoll\n" white
+						set poll_afterids($name) [after 2000 [list $self HTTPPoll $name]]
 					}
-
+					
+					set options(-proxy_gateway_ip) $gateway_ip
+					set options(-proxy_session_id) $session_id
+				}] } {
+					after cancel [list $self HTTPPoll $name]
 				}
-
-				if { $session_id != ""} {
-					#status_log "Scheduling HTTPPoll\n" white
-					set poll_afterids($name) [after 5000 [list $self HTTPPoll $name]]
-				}
-
-				set options(-proxy_gateway_ip) $gateway_ip
-				set options(-proxy_session_id) $session_id
-
 			}
 		}
 	}
