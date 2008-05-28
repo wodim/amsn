@@ -3600,6 +3600,7 @@ proc create_states_menu { wmenu } {
 	$wmenu add command -label [trans onphone] -command "ChCustomState PHN"
 	$wmenu add command -label [trans gonelunch] -command "ChCustomState LUN"
 	$wmenu add command -label [trans appearoff] -command "ChCustomState HDN"
+	$wmenu add command -label [trans signout] -command "::MSN::logout"
 
 	set modifier [GetPlatformModifier]
 	bind all <$modifier-Key-0> {catch {ChCustomState HDN}}
