@@ -2521,9 +2521,77 @@ namespace eval ::MSN {
 			set style "${style}U"
 		}
 
-		set smile_send "[process_custom_smileys_SB $txt_send]"
-		set animated_smile_send "[process_custom_animated_smileys_SB $txt_send]"
+		set smile_list "[process_custom_smileys_SB $txt_send]"
+		set animated_smile_list "[process_custom_animated_smileys_SB $txt_send]"
 
+		# This is a trick..
+		# by moving the animated smileys into the non-animated smileys message, we *could* be able to sneak in all those custom smileys..
+		# but apparently, WLM stores whether a specific smiley was sent before as being an animated smiley or not and will not show it again
+		# if it's animated and send as a non-animated smiley.... so the code is here, but it's commented out...
+
+ 		#if {[llength $animated_smile_list] >  5 && [llength $smile_list] < 5} {
+ 		#	set new_animated_smile_list [lrange $animated_smile_list 0 4]
+ 		#	set rest [lrange $animated_smile_list 5 end]
+ 		#	set avail [expr {5 - [llength $smile_list]}]
+ 		#	set animated_smile_list $new_animated_smile_list
+ 		#	set smile_list [concat $smile_list [lrange $rest 0 [expr {$avail - 1}]]]			
+ 		#}
+
+		if { $smile_list != [list] } {
+			set smile_header "MIME-Version: 1.0\r\nContent-Type: text/x-mms-emoticon\r\n\r\n"
+			set smile_send ""
+			set total 0
+			foreach smile $smile_list {
+				set symbol [lindex $smile 0]
+				set msnobj [lindex $smile 1]
+				append smile_send "$symbol\t$msnobj\t"
+				incr total
+				if {$total >= 5} {
+					set smilemsg "$smile_header$smile_send"
+					set smilemsg_len [string length $smilemsg]
+					WriteSBNoNL $sbn "MSG" "A $smilemsg_len\r\n$smilemsg"
+					set msgacks($::MSN::trid) $ackid
+
+					set smile_send ""
+					set total 0
+					break
+				}
+			}
+			if {$smile_send != "" } {
+				set smilemsg "$smile_header$smile_send"
+				set smilemsg_len [string length $smilemsg]
+				WriteSBNoNL $sbn "MSG" "A $smilemsg_len\r\n$smilemsg"
+				set msgacks($::MSN::trid) $ackid
+			}
+		}
+		
+		if { $animated_smile_list != [list] } {
+			set smile_header "MIME-Version: 1.0\r\nContent-Type: text/x-mms-animemoticon\r\n\r\n"
+			set animated_smile_send ""
+			set total 0
+			foreach smile $animated_smile_list {
+				set symbol [lindex $smile 0]
+				set msnobj [lindex $smile 1]
+				append animated_smile_send "$symbol\t$msnobj\t"
+				incr total
+				if {$total >= 5} {
+					set smilemsg "$smile_header$animated_smile_send"
+					set smilemsg_len [string length $smilemsg]
+					WriteSBNoNL $sbn "MSG" "A $smilemsg_len\r\n$smilemsg"
+					set msgacks($::MSN::trid) $ackid
+
+					set animated_smile_send ""
+					set total 0
+					break
+				}
+			}
+			if {$animated_smile_send != "" } {
+				set smilemsg "$smile_header$animated_smile_send"
+				set smilemsg_len [string length $smilemsg]
+				WriteSBNoNL $sbn "MSG" "A $smilemsg_len\r\n$smilemsg"
+				set msgacks($::MSN::trid) $ackid
+			}
+		}
 
 		set msg "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n"
 		if { $friendlyname != "" } {
@@ -2536,24 +2604,6 @@ namespace eval ::MSN {
 		set msg "$msg$txt_send"
 		#set msg_len [string length $msg]
 		set msg_len [string length $msg]
-
-		#WriteSB $sbn "MSG" "A $msg_len"
-		#WriteSBRaw $sbn "$msg"
-		if { $smile_send != "" } {
-			set smilemsg "MIME-Version: 1.0\r\nContent-Type: text/x-mms-emoticon\r\n\r\n"
-			set smilemsg "$smilemsg$smile_send"
-			set smilemsg_len [string length $smilemsg]
-			WriteSBNoNL $sbn "MSG" "A $smilemsg_len\r\n$smilemsg"
-			set msgacks($::MSN::trid) $ackid
-		}
-		
-		if { $animated_smile_send != "" } {
-			set smilemsg "MIME-Version: 1.0\r\nContent-Type: text/x-mms-animemoticon\r\n\r\n"
-			set smilemsg "$smilemsg$animated_smile_send"
-			set smilemsg_len [string length $smilemsg]
-			WriteSBNoNL $sbn "MSG" "A $smilemsg_len\r\n$smilemsg"
-			set msgacks($::MSN::trid) $ackid
-		}
 
 		WriteSBNoNL $sbn "MSG" "A $msg_len\r\n$msg"
 
