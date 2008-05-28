@@ -1415,6 +1415,9 @@ namespace eval ::MSN {
 		}
 		
 		::MSN::WriteSB ns "ADC" "FL N=$userlogin F=$username" "::MSN::ADCHandler $gid"
+
+		set evPar(userlogin) userlogin
+		::plugins::PostEvent addedUser evPar
 	}
 
 	#Handler for the ADC message, to show the ADD messagebox, and to move a user to a group if gid != 0
@@ -1467,6 +1470,8 @@ namespace eval ::MSN {
 		foreach groupID [::abook::getGroups $userlogin] {
 			::MSN::WriteSB ns REM "FL [::abook::getContactData $userlogin contactguid] $groupID"
 		}
+		set evPar(userlogin) userlogin
+		::plugins::PostEvent deletedUser evPar
 	}
 
 	##################################################
