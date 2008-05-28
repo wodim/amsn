@@ -290,6 +290,7 @@ namespace eval ::config {
 
 		::config::setKey escape_close_cw 1				;# Whether the escape key closes the chat windows or not
 
+		::config::setKey dynamic_rate 0 				;# Use a dynamic framerate for webcam depending on the timestamps in the ML20 header
 
                 ::config::setKey no_oim_confirmation 0                          ;# Ask or not confirmation to send/read oim messages
 
