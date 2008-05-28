@@ -6062,47 +6062,50 @@ proc add_Clientid {chatid clientid} {
 	##First save the clientid (number)
 	::abook::setContactData $chatid clientid $clientid
 
-        ##Find out how the client-program is called
-        switch -- [expr {$clientid & 0xF0000000}] {
-                268435456 {
-                        # 0x10000000
-                        set clientname "MSN 6.0"
-                }
-                536870912 {
-                        # 0x20000000
-                        set clientname "MSN 6.1"
-                }
-                805306368 {
-                        # 0x30000000
-                        set clientname "MSN 6.2"
-                }
-                1073741824 {
-                        # 0x40000000
-                        set clientname "MSN 7.0"
-                }
-                1342177280 {
-                        # 0x50000000
-                        set clientname "MSN 7.5"
-                }
-                1610612736 {
-                        # 0x60000000
-                        set clientname "Windows Live Messenger 8.0"
-                }
-                1879048192 {
-                        # 0x70000000
-                        set clientname "Windows Live Messenger 8.1"
-                }
-                default {
-                        if {($clientid & 0x200) == [expr {0x200}]} {
-                                set clientname "Webmessenger"
-                        } elseif {($clientid & 0x800) == [expr {0x800}]} {
-                                set clientname "Microsoft Office gateway"
-                        } else {
-                                set clientname "[trans unknown]"
-                        }
-                }
-               
-        }	
+	##Find out how the client-program is called
+	switch -- [expr {$clientid & 0xF0000000}] {
+		268435456 {
+			# 0x10000000
+			set clientname "MSN 6.0"
+		}
+		536870912 {
+			# 0x20000000
+			set clientname "MSN 6.1"
+		}
+		805306368 {
+			# 0x30000000
+			set clientname "MSN 6.2"
+		}
+		1073741824 {
+			# 0x40000000
+			set clientname "MSN 7.0"
+		}
+		1342177280 {
+			# 0x50000000
+			set clientname "MSN 7.5"
+		}
+		1610612736 {
+			# 0x60000000
+			set clientname "Windows Live Messenger 8.0"
+		}
+		1879048192 {
+			# 0x70000000
+			set clientname "Windows Live Messenger 8.1"
+		}
+		2147483648 {
+			# 0x80000000
+			set clientname "Windows Live Messenger 8.5"
+		}
+		default {
+			if {($clientid & 0x200) == [expr {0x200}]} {
+					set clientname "Webmessenger"
+			} elseif {($clientid & 0x800) == [expr {0x800}]} {
+					set clientname "Microsoft Office gateway"
+			} else {
+					set clientname "[trans unknown]"
+			}
+		}
+	}	
 
 	##Store the name of the client this user uses in the adressbook
 	::abook::setContactData $chatid client $clientname
