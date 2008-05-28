@@ -909,7 +909,7 @@ proc SOCKSSocket { args } {
 				$self connect $name [list $self RetryWrite $name]
 				return 0
 			} else {
-				set poll_afterids($name) [after 5000 [list $self HTTPPoll $name]]
+				set poll_afterids($name) [after 2000 [list $self HTTPPoll $name]]
 			}
 		} else {
 			set tmp_data "ERROR READING POST PROXY !!\n"
