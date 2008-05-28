@@ -4093,6 +4093,7 @@ proc cmsn_draw_main {} {
 		::config::setKey wingeometry $geometry
 	}
 	catch {wm geometry . $geometry}
+	update idletasks
 	
 	#allow for display updates so window size is correct
 	update idletasks
