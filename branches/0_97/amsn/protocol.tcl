@@ -4190,7 +4190,9 @@ namespace eval ::MSNOIM {
 							# TODO : find a better way to write the messages ?
 							::amsn::WinWrite $chatid "\n" gray
 							::amsn::WinWriteIcon $chatid greyline 3
+							::amsn::WinWrite $chatid "\n" gray
 							::amsn::WinWrite $chatid $data gray
+							::amsn::WinWrite $chatid "\n" gray
 							::amsn::WinWriteIcon $chatid greyline 3
 							::amsn::WinWrite $chatid "\n" gray
 						}
