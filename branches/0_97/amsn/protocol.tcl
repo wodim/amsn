@@ -1158,7 +1158,7 @@ namespace eval ::MSN {
 	proc changePSM { newpsm { forcechange 0 } } {
 		#TODO: encode XML etc
 		if { [::abook::getPersonal PSM] != $newpsm || $forcechange } {
-			set currentMedia [::abook::getPersonal currentMedia]
+			set currentMedia [::abook::getVolatileData myself currentMedia]
 			set currentMedia [::sxml::xmlreplace $currentMedia]
 			set currentMedia [encoding convertto utf-8 $currentMedia]
 			::abook::setPersonal PSM $newpsm
@@ -1188,7 +1188,7 @@ namespace eval ::MSN {
 		} else {
 			set currentMedia ""
 		}
-		::abook::setPersonal currentMedia $currentMedia
+		::abook::setVolatileData myself currentMedia $currentMedia
 		set currentMedia [::sxml::xmlreplace $currentMedia]
 		set currentMedia [encoding convertto utf-8 $currentMedia]
 		set str "<Data><PSM>$psm</PSM><CurrentMedia>$currentMedia</CurrentMedia></Data>"
