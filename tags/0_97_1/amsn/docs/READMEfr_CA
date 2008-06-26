@@ -1,0 +1,43 @@
+Cette archive a été écrite en français continental. 
+Si vous êtes canadien et que vous voulez 
+adapter le texte à votre région, veuillez 
+éditer l'archive READMEfr_CA dans le répertoire 
+*docs* (sous-fichier de *scripts*) de aMSN et envoyez-le à 
+amsn-translations@lists.sourceforge.net.
+
+Ce programme est un logiciel gratuit; vous pouvez le redistribuer et/ou
+le modifier sous les termes de la License Publique Générale (LPG) telle
+que publiée par la Fondation pour le Logiciel Libre; soit la version 2
+de la License, ou (si vous le voulez) n'importe quelle version subséquente.
+
+Ce programme est distribué dans l'espoir qu'il sera utile, mais SANS
+AUCUNE GARANTIE; sans même la garantie impliquée de VALEUR MARCHANDE ou
+D'APTITUDE POUR UN BUT PARTICULIER. Voir la License Publique Générale pour
+plus de détails.
+
+Vous devriez avoir reçu une copie de la License Publique Générale (LPG)
+avec ce programme; sinon, écrivez à la Fondation pour le Logiciel Libre Inc.,
+59 Place du Temple, Suite 330, Boston, MA 02111-1307 ÉUA.
+
+========================================================
+===Le messager d'Alvaro=================================
+
+CCMSN était très bien mais malheureusement, son auteur 
+a abandonné le projet. Il était très fonctionnel mais 
+il avait besoin d'importants travaux pour améliorer son 
+apparence et faire en sorte qu'il supporte complètement le 
+protocole (MSNP9) ainsi que beaucoup d'autres options. 
+Cela a commencé lorsque, travaillant séparément au début, nous 
+avons décidé de joindre nos efforts et de vous proposer 
+(nous l'espérons) notre chef d'oeuvre  ;) 
+
+Alvaro J. Iradier
+D. Emilio Grimaldo T.
+
+Envoyez vos bogues, commentaires, réactions ou suggestions sur la page du projet Source Forge :
+
+http://sourceforge.net/projects/amsn
+
+Nouvelles versions, et site Internet sur :
+
+http://amsn.sourceforge.net
