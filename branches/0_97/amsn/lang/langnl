@@ -48,7 +48,7 @@ appearoff Offline weergeven
 areacode Netnummer
 aretyping $1 zijn bezig met typen
 askcam Webcambeeld vragen
-askcontactwebcam om je contact te vragen of je zijn/haar webcambeeld mag zien. 
+askcontactwebcam om je contact te vragen of je zijn/haar webcambeeld mag zien, of 
 askeachtime Altijd vragen wat er moet gebeuren
 asksendingyourwebcam om hem/haar uit te nodigen om jouw webcambeeld te bekijken
 asksendoim Wil je dit bericht verzenden als offlinebericht?
@@ -95,8 +95,8 @@ block Blokkeren
 blocked Geblokkeerd
 blockedyougroup Mensen die je geblokkeerd hebben als een aparte groep tonen
 blocking Blokkeren
-blockinter1 Controleren wanneer je online bent om de
-blockinter2 seconden, anders elke:
+blockinter1 Wanneer je status online is, om de
+blockinter2 seconden controleren, anders elke:
 blockinter3 elke
 blockinter4 seconden.
 blocklist [BL] Geblokkeerd
@@ -104,12 +104,12 @@ blockmessage Deze mensen zijn online en hebben je geblokkeerd
 blocknotifications Geen meldingsvensters weergeven
 blocksounds Geen geluid afspelen
 blockusers Gelijktijdig controleren
-bouncedock aMSN's pictogram in het dock laten stuiteren wanneer een bericht is ontvangen
+bouncedock aMSN's pictogram in het dock laten stuiteren zodra een bericht wordt ontvangen
 brightness Helderheid
 broughtby Aangeboden door de volgende ontwikkelaars
 browse Verkennen
 browser Webbrowser
-browserexample (\$url wordt vervangen door de URL) Vb.: mozilla \$url
+browserexample (\$url wordt vervangen door de URL) Vb.: firefox \$url
 bugerror Er is een fout opgetreden bij het verbinden met de gegevensbank voor bugrapportages. Controleer je internetverbinding.
 bugnocomment Wil je dit foutrapport echt verzenden zonder commentaar? Hou er rekening mee dat het voor ons makkelijker is om de fout te reproduceren en te repareren als we een beschrijving hebben van de situatie waarin deze optrad.
 busy Bezig
@@ -183,7 +183,7 @@ clearwebcamlogs Webcamsessies wissen
 clickhere Klik hier
 clicktoadd Klik op de knop 'Toevoegen' voor een nieuwe notitie
 clicktologin Klik hier om je aan te melden
-clientcaps x-clientcaps-pakketje naar andere clients sturen
+clientcaps x-clientcaps-pakketje naar clients van anderen sturen
 clientname Clientnaam
 close Sluiten
 closeall Alle tabbladen in dit venster sluiten?
@@ -192,8 +192,9 @@ closechatwindows Alle gesprekken sluiten voor afmelden?
 closed Het gesprek met $1 is wegens inactiviteit afgesloten
 closelabel Bij het klikken op de sluitknop van een venster met tabbladen
 closeonly Alleen het zichtbare tabblad sluiten
+closeorcall Je moet het audiogesprek sluiten/annuleren alvorens het venster te sluiten.
 closeordock Als je de contactenlijst sluit, wordt aMSN afgesloten. Wellicht wilde je enkel het venster sluiten en aMSN actief houden in het systeemvak.\n\nWil je aMSN werkelijk afsluiten?
-closeothers Alle andere tabbladen sluiten
+closeothers Alle overige tabbladen sluiten
 closingdocks Minimaliseren i.p.v. sluiten
 color Kleur
 command Commando
@@ -207,11 +208,13 @@ confirmbl Weet je zeker dat je dit contact wilt blokkeren?
 confirmdelete Weet je zeker dat je $1 wilt verwijderen?
 confirmdg Weet je zeker dat je deze groep wilt verwijderen?
 confirmdu Weet je zeker dat je deze gebruiker wilt verwijderen?
-confirmeg Weet je zeker dat je deze groep leeg wilt maken?
+confirmeg Weet je zeker dat je deze groep wilt leegmaken?
+confirmfulldelete Ook uit Windows Live-adresboek verwijderen
 confirmpurge Alle opgeslagen schermafbeeldingen van je contacten zullen worden verwijderd. Wil je dit echt?
-confirmrfl weet je zeker dat je deze gebruiker uit deze groep wilt verwijderen?
+confirmrfl Weet je zeker dat je deze gebruiker uit deze groep wilt verwijderen?
 congrats Gefeliciteerd
 connected Je bent nu verbonden
+connectedat Aangemeld om 
 connectedwith Aangemeld als $1
 connecterror Fout bij verbinden met server
 connectfirst Maak eerst verbinding
@@ -239,6 +242,7 @@ created Gemaakt
 credits De makers
 curdisplaypic Huidige schermafbeelding
 currentdate Huidige datum
+currentdynrate Huidige real-timesnelheid (in milliseconden)
 currentlanguage Deze taal gebruik je nu
 currentnotes Huidige notities
 custnotifymsg Meldingsvenster weergeven wanneer een nieuw bericht binnenkomt
@@ -307,7 +311,8 @@ dontshowdp Dit contact niet toestaan om mijn nieuwe schermafbeeldingen te downlo
 download Downloaden
 downloadcanceled Download geannuleerd.
 downloadingtls Bezig met downloaden van TLS vanaf:\n $1
-downloadingwait Bezig met downloaden van nieuwe amsn-versie. Even wachten...
+downloadingwait Bezig met downloaden van nieuwe aMSN-versie. Even wachten...
+dynamicrate Dynamische framerate gebruiken voor simulatie van de real-timesnelheid
 edit Bewerken
 editavsettings Instellingen voor beeld en geluid bewerken
 editcontent Inhoud van de velden 'Titel' en 'Notitie' bewerken
@@ -344,6 +349,9 @@ failed Mislukt
 faileddelete Verwijderen mislukt
 faileddeleteperso Deze afbeelding kan niet worden verwijderd omdat het bestand niet in je persoonlijke profiel staat. Alleen afbeeldingen die zijn opgeslagen in je persoonlijke profiel kun je op deze manier verwijderen.
 faq FAQ (Veelgestelde vragen)
+farsightextchecking Controleren of Farsight-extensie is geladen...
+farsightextwarn Je kunt geen SIP-gesprekken voeren. Informatie over het installeren van Farsight kun je vinden op onze Wiki:
+farsightinfook Farsight is een raamwerk voor het omgaan met audio-/videoconferentieprotocollen. Met Farsight kun je SIP-gesprekken voeren binnen aMSN! Neem eens een kijkje naar Farsight op onze Wiki:
 fetching Gegevens ophalen...
 file Bestand
 filedoesnotexist Bestand bestaat niet
@@ -366,7 +374,7 @@ finish Voltooien
 finish2apply Klik op Voltooien om deze instellingen toe te passen.
 firewalled Je bevindt je achter een firewall of router
 firewalled2 Je bevindt je achter een firewall, controleer je verbindingsinstellingen in het voorkeurenvenster
-followtext Naar beneden scrollen als er nieuwe tekst wordt ingevoerd
+followtext Omlaag scrollen zodra nieuwe tekst wordt ingevoerd
 forget_me Mij vergeten
 forgot_pass Ik ben mijn wachtwoord vergeten
 formatctt CTT-formaat
@@ -387,6 +395,13 @@ ftrejected Bestandsoverdracht geweigerd
 ftrejectedby $1 heeft de overdracht van het bestand '$2' geweigerd.
 ftsendinvitation De uitnodiging voor de overdracht van bestand '$2' ($3 bytes) is verstuurd naar $1
 fullcontactlist Sorry, je contactenlijst is vol. Je moet eerst iemand verwijderen voordat je weer iemand kunt toevoegen.
+gameaccepted $1 heeft je speluitnodiging geaccepteerd
+gameclosedbyother $1 heeft de spelsessie met jou geannuleerd.
+gameclosedbyself Je hebt de spelsessie met $1 geannuleerd.
+gameinvitation $1 heeft je uitgenodigd om $2 te spelen. Wil je deze uitnodiging accepteren?
+gamepluginnotfound $1 heeft je uitgenodigd om $2 te spelen, maar er is momenteel geen plug-in voor dit spel geladen. Activeer en configureer deze plug-in eerst.
+gamerejected $1 heeft je speluitnodiging afgewezen
+gamerequest Je hebt $1 uitgenodigd om $2 te spelen
 getdisppic De schermafbeelding van anderen weergeven tijdens gesprekken
 getmoreplugins Klik hier voor meer plug-ins!
 getmoreskins Klik hier voor meer skins!
@@ -407,12 +422,14 @@ groupdelete Groep verwijderen
 groupexists Groep bestaat al
 groupmissing Kan de groep niet vinden
 groupnewname Nieuwe naam
+groupnonim Niet-instant messaging-contacten samen groeperen
 groupnotempty Deze groep is niet leeg!
 groupoldname Oude naam
 grouprename Groepsnaam wijzigen
 groups Groepen
 groupunknown Onbekende groep
 handle Schermnaam
+hangup Ophangen
 havenomic Ik heb geen microfoon
 help Help
 helpcontents Help-onderwerpen
@@ -434,7 +451,7 @@ ident Bezig met identificeren
 identity Identiteit
 ignore Negeren
 ignorecontact Inkomende berichten van dit contact negeren
-ignoreerrors De overige AMSN-foutberichten negeren tot het einde van de sessie
+ignoreerrors De overige aMSN-foutberichten negeren tot het einde van de sessie
 imagefiles Afbeeldingsbestanden
 inbox Postvak IN
 insertsmiley Emoticon invoegen
@@ -488,7 +505,7 @@ ljoinedconf $1 nam deel aan de vergadering
 lleftconf $1 heeft de vergadering verlaten
 load Activeren
 loadcontacts Contactenlijst importeren
-loadotherdisplaypic Even geduld, de schermafbeeldingen van $1 worden geladen...
+loadotherdisplaypic Even geduld, de schermafbeeldingen van $1 worden geladen...	
 logbigger Het logboek mag per contact niet groter zijn dan 
 logeventconnect In logboek vastleggen wanneer een contact online komt
 logeventdisconnect In logboek vastleggen wanneer een contact offline gaat
@@ -538,7 +555,7 @@ msg Bericht
 msgflicker Titel van gespreksvenster laten knipperen als een bericht aankomt in een inactief venster
 msgmaxmin Weergave van binnenkomende berichten in een bestaand gesprek:
 msgmode Kies hoe meerdere gespreksvensters worden weergegeven:
-msn AMSN
+msn aMSN
 msnstatus MSN Messenger-netwerkstatus
 msnstyle MSN-stijl
 mustrestart Je moet het programma herstarten om wijzigingen door te voeren
@@ -582,11 +599,14 @@ nodevices Er zijn geen apparaten geïnstalleerd
 noftpreview Geen voorbeeld van afbeeldingen verzenden bij bestandsoverdrachten
 nogap Geen ruimte openlaten tussen groepen
 nogroup Geen groep
+nojavascript Je hebt geen javascript ingeschakeld. Mogelijk werkt automatisch aanmelden niet.
 nologfile Geen logboek voor $1
 nomic Geen microfoon
 noneavailable Geen beschikbaar
 nonewmail Geen nieuwe berichten in Postvak IN
 nonewver Er zijn geen nieuwere versies beschikbaar
+nonimgroup Niet-instant messaging-contacten
+nooimconfirmation Geen bevestiging vragen bij het verzenden/ontvangen van offlineberichten
 nopic Geen afbeelding
 noprofileexists Er zijn momenteel geen profielen,\nje moet er een aanmaken als je aanmeldingsnamen met een profiel wilt gebruiken.\nGebruik de knop 'Nieuw profiel toevoegen' in dit venster om een nieuw profiel toe te voegen.
 noresizesmileys Inkomende aangepaste emoticons niet schalen
@@ -609,6 +629,7 @@ notifyoffset Afstand meldingsvenster vanaf de hoek van het scherm
 notifytimeout Aantal milliseconden voordat het meldingsvenster verdwijnt
 notifytyping Anderen in een gesprek laten zien of je aan het typen bent
 notifywin Meldingsvenster
+notimcontact Dit contact is geen instant messaging-contact
 notinlist Je staat niet in zijn/haar contactenlijst
 notls Versie 9 van het MSN-protocol vereist het pakket TLS. Dit pakket lijkt niet geïnstalleerd te zijn op deze machine. Als het wel is geïnstalleerd, moet het pad naar de map van de TLS-bibliotheek worden opgegeven in het instellingenvenster (bv. /opt/tls/lib). \n \n TLS is te downloaden van http://tls.sf.net.
 nottabbed Geen tabbladen gebruiken
@@ -630,7 +651,7 @@ options Opties
 ordercontactsby Contacten sorteren op
 ordergroupsby Groepen sorteren op
 original Origineel
-other Andere
+other Overig
 otherdisplaypic Overige schermafbeeldingen van dit contact (klik met de rechtermuisknop voor meer opties)
 otherdps Overige schermafbeeldingen
 others Overig
@@ -651,6 +672,8 @@ play Afspelen
 playbackposition Afspeelpositie
 playbackspeed Afspeelsnelheid (milliseconden tussen elk frame)
 playerror Er is een fout opgetreden tijdens het afspelen van het geluid: $1
+playgame Spel spelen
+playgame2 $1 spelen
 playing $1 wordt afgespeeld
 playtest Het testgeluid afspelen
 playwebcamsend Webcam hervatten
@@ -672,6 +695,8 @@ preffont3 Lettertype en -grootte van aMSN's interface wijzigen
 preffont4 De weergave van berichten van mijn contacten in gespreksvensters wijzigen
 prefft Bestandsoverdracht-, peer-to-peer- en NAT-instellingen
 preflibs Zoekpad voor bibliotheken
+preflocale Landinstellingen
+preflocale2 Selecteer je taal-landcode
 preflog1 Logboeken en geschiedenis
 preflogevent Mijn gebeurtenissengeschiedenis
 preflook Weergave
@@ -694,7 +719,7 @@ privacy Privacy
 profiledconfig Profielconfiguratie
 profileexists Je kunt geen profiel aanmaken met deze aanmeldingsnaam omdat er al een bestaat. Gelieve een andere aanmeldingsnaam te kiezen.
 profileinuse Dit profiel wordt momenteel gebruikt door een andere aMSN-sessie, kies een andere
-profileloginradio Aanmelden d.m.v. een bestaand profiel
+profileloginradio Aanmelden met een bestaand profiel
 profiles Profielen
 properties Eigenschappen
 proxy Een proxyserver gebruiken (HTTP of SOCKS5)
@@ -726,6 +751,7 @@ reconnecting Bezig met opnieuw verbinden met de server
 record Opnemen
 recorderror Er is een fout opgetreden tijdens het opnemen van het geluid: $1
 recvwebcamaccepted $1 heeft je verzoek om zijn/haar webcambeeld te mogen zien geaccepteerd. Bezig met verbinden...
+redirect Klik hier om te worden doorgestuurd
 reject Afwijzen
 rememberaccount Mijn account onthouden
 rememberpass Wachtwoord onthouden
@@ -734,6 +760,8 @@ removeempty Lege groepen verwijderen uit de contactenlijst
 removefromgroup Verwijderen uit groep
 removefromlist Verwijderen uit deze lijst
 rename Hernoemen
+renameep Deze locatie hernoemen ($1)
+renamelocation Deze locatie hernoemen
 report Foutrapport versturen
 reporting Foutrapport wordt verstuurd
 required_version Kan de plug-in niet laden omdat deze minimaal aMSN $1 nodig heeft om te werken
@@ -754,6 +782,7 @@ saveotherdirectory Opslaan in een andere map
 savetofile Opslaan in bestand
 says $1 zegt
 sbcon Bezig met verbinden met schakelbord
+searchadvprefs Zoeken in geavanceerde instellingen:
 searchdown Neerwaarts zoeken
 searchup Opwaarts zoeken
 selectall Alles selecteren
@@ -769,6 +798,7 @@ sendmail E-mail verzenden
 sendmobmsg Bericht verzenden naar mobiel
 sendmsg Bericht verzenden
 sendoim Offlinebericht verzenden
+sendsip Audiogesprek starten
 sendvoice Voiceclip verzenden
 sendwebcamaccepted $1 heeft je uitnodiging om je webcambeeld te bekijken geaccepteerd. Bezig met verbinden...
 sendwebcaminvite Dit contact uitnodigen om je webcambeeld te bekijken
@@ -793,12 +823,37 @@ showdisplaypic Schermafbeelding tonen
 showdisplaypic2 Schermafbeelding standaard tonen bij het openen van een gespreksvenster
 showonedpframe Slechts één schermafbeeldingsframe tonen in gespreksvensters
 showlinksinlogin Koppelingen weergeven in het aanmeldscherm
-showmailicon E-mailpictogram weergeven in het systeemvak als er nieuwe e-mails binnenkomen
+showmailicon E-mailpictogram weergeven in systeemvak wanneer nieuwe e-mails binnenkomen
 showmypic Mijn afbeelding
+shownonim Niet-instant messaging-contacten tonen
 shownotify Meldingsvenster weergeven bij bepaalde gebeurtenissen
+showofflinegroup Groep Offline tonen
 showpicnotify Schermafbeelding weergeven op meldingsvensters
+showspaces Spaces-pictogram tonen in de contactenlijst
 showuserpic Afbeelding van $1
 signinstatus Status na aanmelden
+signout Afmelden
+signouthere Hier afmelden ($1)
+signoutep Afmelden bij $1
+signouteverywhere Overal afmelden
+sipcallaccepted Audiogesprek geaccepteerd
+sipcallback Terugbellen
+sipcalldeclined Audiogesprek geweigerd
+sipcalleeaccepted Gebruiker heeft je audiogespreksoproep geaccepteerd
+sipcalleebusy Gebruiker is momenteel bezet
+sipcalleecanceled Gebruiker heeft de uitnodiging voor een audiogesprek geannuleerd
+sipcalleeclosed Gebruiker heeft je audiogesprek beëindigd
+sipcalleedeclined Gebruiker heeft je uitnodiging voor een audiogesprek geweigerd
+sipcalleenoanswer Gebruiker heeft je gespreksoproep niet beantwoord
+sipcalleeunavailable Gebruiker is momenteel niet beschikbaar
+sipcallended Je audiogesprek is beëindigd
+sipcallimpossible Je kunt geen audiogesprek starten. Installeer Farsight2 en probeer het opnieuw.
+sipcallmissed Je hebt een audiogespreksoproep van $1 gemist
+sipcallnosipflag Gebruiker ondersteunt geen audiogesprekken.
+sipcallsent $1 bellen
+sipcallunsupported Je hebt een uitnodiging voor een audiogesprek ontvangen dat momenteel niet wordt ondersteund. Je kunt terugbellen met een nieuwe uitnodiging. Het audiogesprek zal dan werken.
+sipcallyouarebusy Je kunt slechts één audiogesprek tegelijk voeren.
+sipgotinvitation Uitnodiging voor audiogesprek ontvangen van $1
 skin Skin
 skinselector Skin selecteren
 small Klein
@@ -808,6 +863,7 @@ smilefile Bestandsnaam van de emoticon
 smileintro Vul de nodige velden in om een nieuwe emoticon te maken (zie de FAQ voor hulp)
 smileintro2 Pas de nodige velden aan om deze emoticon te bewerken (zie de FAQ voor hulp)
 smiletoobig De gekozen emoticon is groter dan gewoonlijk. Wil je de grootte aanpassen?
+smileynotavailable Emoticon niet beschikbaar!
 snackfailed Laden van Snack is niet gelukt. Teruggevallen op de standaardfuncties.
 snackneeded Om deze functionaliteit te gebruiken heb je de Snack-bibliotheek (versie 2.2.9 of nieuwer) nodig.
 snapshot Foto
@@ -816,6 +872,7 @@ sortcontactgroup Contacten sorteren op groep
 sortcontacthybrid Contacten sorteren in hybride modus
 sortcontactsasc Contacten oplopend sorteren
 sortcontactsby Contacten sorteren op
+sortcontactsbylogsize Contacten sorteren op logbestandsgrootte
 sortcontactsdesc Contacten aflopend sorteren
 sortcontactstatus Contacten sorteren op status
 sortgroupsasc Groepen oplopend sorteren
@@ -862,6 +919,7 @@ stylehist aMSN-geschiedenisstijl
 stylelog Kies de opmaak van de geschiedenislogboeken
 subject Onderwerp
 subjectrequired Er moet een onderwerp worden opgegeven
+svnversion SVN-versie
 syntaxerror Syntaxisfout
 tabbed Vensters met tabbladen
 tabbedglobal Alle gesprekken met contacten in één venster
@@ -878,10 +936,10 @@ title Al's Messenger
 tkerror TK heeft een fout gemeld, er zit een bug in aMSN, rapporteer het alsjeblieft. Stuur het bestand $1 naar amsn-bugs@lists.sf.net
 tkerror1 Er is een fout gemeld door TK, de oorzaak hiervan is een bug in aMSN. Klik op Foutrapport versturen om deze fout te melden aan de makers van aMSN. Klik op Details voor meer informatie over de opgetreden fout, of klik op Negeren om de fout te negeren en door te gaan.
 tlsdowncompleted Het bestand $1 is opgeslagen in $2. Pak dit bestand uit, maak er een build van (als je broncode hebt gedownload) en installeer het in $3.
-tlsexplain De map waarin de tcl TLS-module staat. Vul dit in als aMSN het zelf niet kan vinden.\n(Dit is nodig voor beveiligd aanmelden met SSL).
+tlsexplain De map waarin de tcl TLS-module staat. Vul dit in als aMSN deze zelf niet kan vinden.\n(Dit is nodig voor beveiligd aanmelden met SSL).
 tlsinstall TLS-module-installatiewizard
 tlsinstallexp aMSN gebruikt nu versie 9 van het MSN-protocol.\nDaarvoor is een met SSL beveiligde verbinding vereist. aMSN heeft hierbij een module\nnodig met de naam TLS, die niet aanwezig is op je systeem. Deze wizard helpt je bij\nhet downloaden en installeren van TLS. Selecteer het type systeem dat je gebruikt\nzodat de benodigde bestanden automatisch kunnen worden gedownload.
-tlsinstcompleted De TLS-module is geïnstalleerd. Je zult versie 9 van het MSN-protocol nu moeten kunnen gebruiken. Als dit niet werkt, dan heb je vermoedelijk niet de juiste module gekozen, of er bestaat geen kant-en-klare module voor jouw systeem.
+tlsinstcompleted De TLS-module is geïnstalleerd. Je zou versie 9 van het MSN-protocol nu moeten kunnen gebruiken. Als dit niet werkt, dan heb je vermoedelijk niet de juiste module gekozen, of er bestaat geen kant-en-klare module voor jouw systeem.
 to Aan
 today Vandaag
 tomobile Naar Mobiel
@@ -966,6 +1024,7 @@ wrongprofileversion Verkeerde versie profielconfiguratiebestand. Gelieve de map 
 xmmscurrent Weergeven welke muziek je afspeelt
 xmmserr Er wordt niks afgespeeld of "xmms-infopipe" is niet geïnstalleerd
 xmmssend Huidige nummer verzenden
+xplaces $1 plaatsen
 xoffset Horizontaal
 year Jaar
 yes Ja

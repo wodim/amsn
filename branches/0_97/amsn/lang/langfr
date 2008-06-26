@@ -108,7 +108,7 @@ bouncedock Faire rebondir l'icone de aMSN dans le dock lorsque vous recevez un m
 brightness Luminosité
 broughtby Développé pour vous par
 browse Parcourir
-browserexample (\$url sera remplacée par l'URL) Ex: mozilla \$url
+browserexample (\$url sera remplacée par l'URL) Ex: firefox \$url
 browser Navigateur web
 bugerror Nous sommes désolés, mais il y a eu un problème lors de la connexion à la base de données des bogues. Merci de véifier votre connexion internet.
 bugnocomment Envoyer sans commentaire ? Mettre des commentaires nous aide à mieux comprendre ce qui c'est passé et donc à résoudre le problème plus facilement.
@@ -192,6 +192,7 @@ close Fermer
 closechatwindows Fermer toutes les conversations avant de se déconnecter ?
 closelabel Lorsque vous cliquez sur le bouton Fermer dans une fenêtre de conversation à onglets
 closeonly Ne fermer que l'onglet courant
+closeorcall Vous devez raccrocher l'appel audio avant de fermer la fenêtre de conversation
 closeordock Fermer la fenêtre de la liste de contacts va quitter aMSN. Peut-être que vous souhaitez seulement fermer la fenêtre et avoir aMSN dans la boîte à miniatures (systray ou traydock).\n\nEtes-vous sûr de vouloir quitter aMSN?
 closeothers Fermer tous les autres onglets
 closingdocks Le bouton Fermer ancre l'application
@@ -210,8 +211,10 @@ confirmeg Etes-vous sûr de vouloir vider ce groupe ?
 confirmpurge Toutes les avatars de vos contacts vont être supprimés. Etes-vous sur de vouloir le faire ?
 confirmrfl Etes-vous sûr de vouloir effacer ce contact de ce groupe ?
 confirm Êtes-vous sûr ?
+confirmfulldelete Aussi supprimer du carnet d'adresse de Windows Live
 congrats Félicitations
 connected Vous êtes maintenant connecté[e]
+connectedat Connecté[e] depuis 
 connectedwith Connecté[e] avec $1
 connecterror Erreur de connexion
 connectfirst Veuillez vous connecter
@@ -239,6 +242,7 @@ created créé[e]
 credits Crédits
 curdisplaypic Avatar actuel
 currentdate Date actuelle
+currentdynrate Vitesse courante (en millisecondes)
 currentlanguage Langue actuelle
 currentnotes Notes actuelles
 custnotifymsg Annoncer quand vous recevez un message d'un de vos contacts
@@ -247,12 +251,12 @@ custnotifyonline Annoncer quand un de vos contact se connecte
 custnotifystatus Annoncer quand un de vos contact change de statut
 customcolor Couleur personnalisée
 customdp Avatar personnalisé
-custom_edit Editer une émoticône personnalisée
-custom_new Créer une émoticône personnalisée
+custom_edit Editer une émoticône/smiley personnalisée
+custom_new Créer une émoticône/smiley personnalisée
 customnick Pseudo personnalisé
-customsmileys Afficher les émoticônes des contacts
+customsmileys Afficher les émoticônes/smileys des contacts
 customstyle Style personnalisé
-custshowcustomsmileys Afficher les émoticônes de ce contact
+custshowcustomsmileys Afficher les émoticônes/smileys de ce contact
 cut Couper
 cutimageboxreset Mettre à zéro la boîte de sélection\ntaille:
 cutimagebox Sélectionnez la partie de l'image qui vous intéresse en redimensionnant et/ou en déplaçant la boîte de sélection
@@ -308,6 +312,7 @@ downloadingtls Téléchargement du module TLS à partir de :\n $1
 download Télécharger
 downloadcanceled Téléchargement annulé
 downloadingwait Téléchargement d'une nouvelle version d'aMSN. Veuillez patienter.
+dynamicrate Utiliser le rendu dynamique pour simuler la vitesse en temps réél
 editavsettings Modifier les paramètres audio et vidéo
 editcontent Remplir les champ Sujet et Note, puis cliquer sur Enregistrer
 editcustomstate Editer le statut personnel
@@ -343,6 +348,9 @@ extras Services Additionnels
 faileddelete Echec de l'effacement
 faileddeleteperso Cette photo ne peut pas être effacée parce qu'elle n'est pas un fichier de photo personnelle. Seules les photos qui appartiennent à votre profil personnel peuvent être effacées de cette façon.
 failed Echec
+farsightextchecking Vérifie si l'extension Farsight est chargée...
+farsightextwarn Vous ne pourrez pas avoir d'appels Audio. Vous trouverez des informations sur Farsight sur notre Wiki :
+farsightinfook Farsight est un ensemble d'outils pour utiliser les protocols de conférences audio/vidéo. Avec Farsight, vous pouvez recevoir et émettre des appels Audio au sein d'aMSN! Vous trouverez d'autres informations sur notre Wiki : 
 faq Questions les plus fréquentes
 fetching Téléchargement des données ...
 filedoesnotexist Le fichier n'existe pas
@@ -362,8 +370,8 @@ findnext Résultat suivant
 findprev Résultat précédent
 find Rechercher
 finetunesettings Réglages avancés de l'image
-finish2apply Appuyez sur Terminé pour utiliser les nouveaux paramètres.
-finish Terminé
+finish2apply Appuyez sur Terminer pour utiliser les nouveaux paramètres.
+finish Terminer
 firewalled2 Vous êtes derrière un pare-feu ou un routeur. Veuillez vérifier les paramètres dans la fenêtre des Préférences.
 firewalled Vous êtes derrière un pare-feu ou un routeur
 followtext Faire défiler lorsque du texte est entré
@@ -387,6 +395,13 @@ ftrejectedby $1 a refusé l'invitation de transfert de fichier pour le fichier '$
 ftrejected Transfert de fichier refusé
 ftsendinvitation L'invitation de transfert du fichier '$2' ($3 bytes) a été envoyé à $1.
 fullcontactlist Désolé, votre liste de contact est pleine. Vous devez supprimer des contacts pour en ajouter de nouveaux.
+gameaccepted $1 a accepté votre invitation à jouer
+gameclosedbyother $1 a annulé la session de jeu.
+gameclosedbyself Vous avez annulé la session de jeu avec $1.
+gameinvitation $1 vous invite a jouer à $2. Voulez-vous accepter son invitation ?
+gamepluginnotfound $1 vous a invité[e] à jouer à $2 mais il n'y a pas de plugin chargé pour jouer à ce jeu. Veuillez l'activer et le configurer.
+gamerejected $1 a refusé votre invitation à jouer
+gamerequest Vous venez d'inviter $1 à jouer à $2
 getdisppic Permettre la réception d'avatars des autres contacts
 getmoreplugins Obtenez d'autres plugins !
 getmoreskins Obtenez d'autres apparences !
@@ -407,12 +422,14 @@ groupexists Le groupe existe déjà
 group Groupe
 groupmissing Impossible de trouver le groupe
 groupnewname Nouveau nom
+groupnonim Grouper les contacts hors messagerie instantanée ensemble
 groupnotempty Groupe non vide
 groupoldname Ancien nom
 grouprename Renommer un groupe
 groups Groupes
 groupunknown Groupe inconnu
 handle Pseudonyme
+hangup Raccrocher
 havenomic Je n'ai pas de microphone
 help Aide
 helpcontents Contenu de l'aide
@@ -489,6 +506,7 @@ lleftconf $1 a quitté la conférence
 load Activer
 loadcontacts Importer la liste de contacts
 loadotherdisplaypic Chargement des avatars de $1, patientez...
+localecode Le code à 4 chiffres désignant votre pays ou votre langue
 logbigger Taille du fichier Log pour chaque contact ne dépasse jamais
 logeventconnect Enregistrer les connexions
 logeventdisconnect Enregistrer les déconnexions
@@ -510,7 +528,7 @@ logschats Enregistre les conversations
 logsin vient de se connecter
 logsmileys Afficher les émoticônes/smileys dans la fenêtre d'historique de aMSN
 logsout vient juste de se déconnecter
-logwebcam Enregistrer toutes les sessions webcam dans l'historique d'aMSN pour une visualisation ultèrieure
+logwebcam Enregistrer toutes les sessions webcam dans l'historique d'aMSN pour une visualisation ultérieure
 longnick Votre pseudonyme est supérieur à 130 caractères. Ce n'est pas supporté officiellement par le protocol MSN. Êtes-vous sûrs de vouloir le mettre ?
 longp4c Votre pseudonyme de conversation dépasse les 130 caractères. Le client MSN officiel affichera $1. Voulez-vous continuer ?
 longpsm Votre message personnel est trop long. Ce n'est pas supporté officiellement par le protocol MSN. Êtes-vous sûrs de vouloir le mettre ?
@@ -583,9 +601,12 @@ nogap Aucun espace entre les groupes
 nogroup Aucun groupe
 nologfile Pas d'historique pour $1
 nomic Pas de microphone
+nojavascript Vous n'avez pas javascript activé dans votre navigateur. La connexion automatique risque de ne pas fonctionner.
 noneavailable Pas disponible
 nonewmail Pas de nouveau message
 nonewver Il n'y a pas de nouvelle version disponible
+nonimgroup Contacts hors messagerie instantanée
+nooimconfirmation Ne pas demander de confirmation lors de l'envoi ou de la réception de messages différés
 no Non
 nopic Pas d'avatar
 noprofileexists Utiliser les profils... \nUtiliser le boutton Ajouter nouveau profil dans cette fenêtre pour en créer un nouveau.
@@ -609,6 +630,7 @@ notify prévenir
 notifytimeout Nombre de milisecondes écoulées avant que la fenêtre d'annonce ne disparaisse
 notifytyping Notifier les contacts du fait que vous tapez un message, lors d'une conversation
 notifywin Fenêtre d'annonce
+notimcontact Ce contact est hors messagerie instantanée
 notinlist Vous ne figurez pas dans sa liste de contact
 notls Le protocole 9 de MSN requiert le module tls. Celui-ci ne semble pas être installé sur le système. S'il est installé,
 nottabbed Fenêtres normales sans onglets
@@ -650,6 +672,8 @@ picstatus Activer/Désactiver l'image associée à l'alarme
 playbackposition Position de la lecture
 playbackspeed Vitesse de lecture (nombre de millisecondes entre chaque image)
 playerror Une erreur s'est produite lors de la lecture du son : $1
+playgame Jouer
+playgame2 Jouer à $1
 playing Joue: $1
 play Jouer
 playtest Lire le fichier de test
@@ -672,6 +696,8 @@ preffont4 Changer la façon dont je vois le texte des contacts dans la fenêtre de
 preffont Texte de mes messages
 prefft Configuration des transferts de fichiers, peer-to-peer et NAT
 preflibs Répertoires des bibliothèques
+preflocale Paramètres d'internationalisation
+preflocale2 Choississez votre code de langue/pays
 preflog1 Mon historique et ses options
 preflogevent Mon historique d'événements
 preflook Apparence de aMSN
@@ -726,6 +752,7 @@ reconnecting Reconnexion au serveur
 record Enregistrer
 recorderror Une erreur s'est produite lors de l'enregistrement du son : $1
 recvwebcamaccepted $1 a accepté votre invitation pour voir sa webcam. Connexion en cours.
+redirect Cliquez ici pour être redirigé
 reject Refuser
 rememberaccount Enregistrer le nom de compte
 rememberpass Enregistrer le mot de passe
@@ -734,6 +761,8 @@ removeempty Retirer les groupes vides de la liste des contacts
 removefromgroup Enlever de ce groupe
 removefromlist Supprimer de cette liste
 rename Renommer
+renameep Renommer cet emplacement ($1)
+renamelocation Renommer cet emplacement
 report Envoyer
 reporting Envoi du bug....
 required_version Impossible de charger ce plugin. Il nécessite au moins la version $1 d'aMSN
@@ -754,6 +783,7 @@ saveotherdirectory Enregistrer dans un autre emplacement
 savetofile Sauvegarder dans un fichier
 says $1 dit
 sbcon Connexion au "Switch Board"
+searchadvprefs Chercher dans les préférences avancées :
 searchdown Rechercher vers le bas
 searchup Rechercher vers le haut
 selectall Tout sélectionner
@@ -769,6 +799,7 @@ sendmail Envoyer un courrier
 sendmobmsg Envoyer un message au mobile
 sendmsg Envoyer un message
 sendoim Envoyer un message différé
+sendsip Démarrer un appel audio
 sendvoice Envoyer un message vocal
 sendwebcamaccepted $1 a accepté votre invitation pour voir votre webcam. Connexion en cours.
 sendwebcaminvite Inviter un contact à voir votre webcam
@@ -794,11 +825,36 @@ showdisplaypic Afficher l'avatar
 showlinksinlogin Afficher les liens dans la fenêtre de connexion
 showmailicon Montrer l'icône des mails dans la boîte à miniatures lorsque de nouveaux mails arrivent
 showmypic Mon avatar
+shownonim Afficher les contacts hors messagerie instantanée
 shownotify Afficher la fenêtre d'annonce quand certains événements se produisent
 showonedpframe N'afficher qu'un avatar dans la fenêtre de conversation
+showofflinegroup Montrer le groupe des contacts Déconnectés
 showpicnotify Montrer l'avatar des contacts dans la fenêtre d'annonce
+showspaces Afficher les icônes des pages personnelles dans la liste de contacts
 showuserpic Icône de $1
 signinstatus Statut lors de la connexion
+signout Se déconnecter 
+signoutep Se déconnecter de $1
+signouteverywhere Se déconnecter partout
+signouthere Se déconnecter de cet emplacement ($1)
+sipcallaccepted Appel audio accepté
+sipcallback Rappeler
+sipcalldeclined Appel audio rejeté
+sipcalleeaccepted Votre contact a accepté votre appel audio
+sipcalleebusy Votre contact est actuellement Occupé et ne peut satisfaire votre appel
+sipcalleecanceled Votre contact a annulé l'appel audio
+sipcalleeclosed Votre contact a raccroché
+sipcalleedeclined Votre contact a refusé votre appel audio
+sipcalleenoanswer Votre contact n'a pas répondu à votre appel
+sipcalleeunavailable Votre contact n'est pas disponible pour le moment
+sipcallended L'appel audio est terminé
+sipcallimpossible Vous ne pouvez pas effectuer d'appels audio. Veuillez installer Farsight2 et ressayer.
+sipcallmissed Vous avez manqué un appel audio de $1
+sipcallnosipflag Votre contact ne peut pas recevoir d'appels audio.
+sipcallsent Appel de $1 en cours
+sipcallunsupported Vous avez reçu une invitation pour un appel audio qui n'est pas encore pris en charge. Vous pouvez rappeler votre contact avec une nouvelle invitation. L'appel audio fonctionnera à ce moment.
+sipcallyouarebusy Vous ne pouvez avoir qu'une conversation audio à la fois.
+sipgotinvitation Invitation pour un appel audio reçue de la part de $1
 skin apparence
 skinselector Changer l'apparence
 smallest Plus petit
@@ -808,6 +864,7 @@ smilefile Nom du fichier de l'émoticône/smiley
 smileintro2 Veuillez éditer les champs obligatoires pour personnaliser cette émoticône/smiley (voir la FAQ pour l'aide)
 smileintro Veuillez remplir les champs obligatoires pour créer un nouvelle émoticône/smiley (voir la FAQ pour l'aide)
 smiletoobig L'émoticône/smiley que vous avez choisie est plus grande que la taille normale. Voulez-vous la redimensionner ?
+smileynotavailable Émoticône/smiley non disponible!
 snackfailed Snack n'a pas pu se lancer, retour à la valeur par défaut
 snackneeded Vous devez avoir la librarie Snack pour utiliser cette fonctionnalité. Une version minimale de 2.2.9 est necessaire.
 snapshot Garder l'image
@@ -816,6 +873,7 @@ sortcontactgroup Trier les contacts par leur groupe
 sortcontacthybrid Trier les contacts en mode hybride
 sortcontactsasc Trier les contacts dans l'ordre ascendant
 sortcontactsby Trier les contacts par
+sortcontactsbylogsize Trier les contacts par taille de l'historique
 sortcontactsdesc Trier les contacts dans l'ordre descendant
 sortcontactstatus Trier les contacts par statut
 sortgroupsasc Trier les groupes dans l'ordre ascendant (standard)
@@ -862,6 +920,7 @@ stylelog Sélectionner le format dans lequel vous voulez voir l'historique
 style Style
 subjectrequired Sujet requis
 subject Sujet
+svnversion Version SVN 
 syntaxerror Erreur de syntaxe
 tabbedglobal Une fenêtre à onglets pour tous les contacts se trouvant dans votre liste de contacts
 tabbedgroups Une fenêtre à onglets pour tous les contacts se trouvant dans un même groupe
@@ -926,19 +985,19 @@ videoconversationrequest Vous venez de recevoir une invitation pour une conversa
 view Affichage
 viewcontactsby Afficher les contacts par
 viewprofile Afficher le profil
-viewspace Voir les éléments des pages "space"
+viewspace Voir les éléments des pages personnelles
 volume Volume
 wanttosharecam Je souhaite indiquer à mes contacts que j'ai une webcam
 webcamcanceled La conversation par webcam avec $1 a été annulée
 webcamclosebefcancel Vous devez annuler toutes les conversations par webcam avant de fermer la fenêtre
 webcamconfigure Configurer la webcam
-webcamconfiguredLinux: Vous avez choisi les paramètres suivants pour la webcam :\nPériphérique : $1\nCanal : $2
+webcamconfiguredLinux Vous avez choisi les paramètres suivants pour la webcam :\nPériphérique : $1\nCanal : $2
 webcamconfiguredMac Les paramètres de la webcam ont été réglés
-webcamconfiguredWin: Vous avez choisi la webcam suivante : $1
+webcamconfiguredWin Vous avez choisi la webcam suivante : $1
 webcamextchecking Vérifie si l'extension requise pour la webcam est chargée...
 webcamextloaded L'extension Webcamsn est chargée
 webcamextnotloaded L'extension Webcamsn n'est pas chargée. Vous devez la compiler.
-webcamextwarn Vous ne pourrez pas voir la webcam de vos contacts. Vous trouverez des aides pour installer les extensions sur le Wiki:
+webcamextwarn Vous ne pourrez pas voir la webcam de vos contacts. Vous trouverez des aides pour installer les extensions sur le Wiki :
 webcamfaq FAQ/Aide à propos de la webcam
 webcamhistory Voir les sessions webcam
 webcamhistory2 Sessions webcam
@@ -964,6 +1023,7 @@ xmmscurrent Affiche la chanson que j'écoute
 xmmserr Rien à jouer, ou vous n'avez pas installé xmms-infopipe.
 xmmssend Envoyer la chanson courante
 xoffset Position en X
+xplaces $1 emplacements
 year Année
 yesblock Oui et bloquer
 yes Oui

@@ -239,6 +239,7 @@ created Oluþturuldu
 credits Emeði Geçenler
 curdisplaypic Þu anki kullanýcý resmi
 currentdate Bugün
+currentdynrate Güncel gerçek zamanlý hýz (milisaniye ile)
 currentlanguage Þu an kullandýðýnýz dil
 currentnotes Güncel notlar
 custnotifymsg Bu kiþiden yeni ileti gelince uyarý penceresi göster
@@ -308,6 +309,7 @@ download Ýndir
 downloadcanceled Ýndirme iptal edildi.
 downloadingtls TLS $1 \n adresinden alýnýyor
 downloadingwait Yeni aMSN sürümü alýnýyor. Lütfen bekleyin...
+dynamicrate Gerçek zamanlý hýzý canlandýrmak için deðiþken kare sayýsý kullan
 edit Düzenle
 editavsettings Ses ve görüntü ayarlarýný deðiþtir
 editcontent Konu ve not alanlarýnýn içeriðini düzenle
@@ -387,6 +389,13 @@ ftrejected Dosya aktarýmý reddedildi
 ftrejectedby $1, '$2' dosyasý için yapýlan aktarým davetini geri çevirdi
 ftsendinvitation '$2' dosyasý ($3 bayt) için aktarým daveti $1 kullanýcýsýna gönderildi
 fullcontactlist Baðlantý listeniz dolu. Yeni baðlantý eklemek için bazýlarýný silmeniz gerek
+gameaccepted $1 oyun davetinizi kabul etti
+gameclosedbyother $1 sizinle olan oyun oturumunu kapattý
+gameclosedbyself $1 ile olan oyun oturumunu kapattýnýz
+gameinvitation $1 sizi $2 oynamaya davet ediyor. Kabul ediyor musunuz?
+gamepluginnotfound $1 sizi $2 oynamaya davet ediyor; ancak bu oyunun eklentisi yüklenmiþ deðil. Lütfen eklentiyi yükleyip ayarlayýnýz.
+gamerejected $1 oyun davetinizi geri çevirdi
+gamerequest $1'i $2 oynamaya davet ettiniz
 getdisppic Diðer kullanýcýlardan kullanýcý resmi alýnabilsin
 getmoreplugins Yeni eklentiler al!
 getmoreskins Yeni kabuklar al!
@@ -413,6 +422,7 @@ grouprename Öbeði yeniden isimlendir
 groups Öbekler
 groupunknown Bilinmeyen öbek
 handle Ýsim
+hangup Sesli aramayý bitir
 havenomic Mikrofonum yok
 help Yardým
 helpcontents Yardým içeriði
@@ -489,6 +499,7 @@ lleftconf $1 konferanstan ayrýldý
 load Yükle
 loadcontacts Baðlantý listesi yükle
 loadotherdisplaypic $1 kullanýcýsýna ait resimler yükleniyor, lütfen bekleyin...
+localecode 4 haneli ülke/dil kodunuz
 logbigger Her baðlantý için kayýt dosyasý boyutu üst sýnýrý
 logeventconnect Baðlantýlarý kayda geçir
 logeventdisconnect Baðlantýdan çýkýþlarý kayda geçir
@@ -587,6 +598,7 @@ nomic Mikrofon yok
 noneavailable Hiçbiri yok
 nonewmail Gelen kutusunda yeni ileti yok
 nonewver Daha yeni bir sürüm yok
+nooimconfirmation Çevrimdýþý ileti alýrken/gönderirken onay isteme
 nopic Resim yok
 noprofileexists Henüz hiçbir kimlik yok. Eðer kimlikle baðlanmak \nisterseniz bir tane yaratmalýsýnýz. Bu penceredeki \nYeni Kimlik Ekle düðmesine týklayarak bunu yapabilirsiniz.
 noresizesmileys Alýnan özel gülen adamlarýn boyutunu küçültme
@@ -651,6 +663,8 @@ play Oynat
 playbackposition Oynatýcý konumu
 playbackspeed Oynatma hýzý (iki kare arasýnda milisaniye cinsinden süre)
 playerror Sesi çalarken bir sorun oluþtu: $1
+playgame Oyun oyna
+playgame2 $1 oyna
 playing $1 çalýnýyor
 playtest Deneme dosyasýný çal
 playwebcamsend Kamera görüntüsü göndermeye devam et
@@ -754,6 +768,7 @@ saveotherdirectory Baþka bir dizine kaydet
 savetofile Dosyaya kaydet
 says $1 diyor ki
 sbcon Switch Board'a baðlanýyor
+searchadvprefs Geliþmiþ seçeneklerde ara:
 searchdown Aþaðý doðru ara
 searchup Yukarý doðru ara
 selectall Hepsini seç
@@ -769,6 +784,7 @@ sendmail E-posta iletisi gönder
 sendmobmsg Taþýnabilir aygýta gönder
 sendmsg Sohbet et
 sendoim Çevrim dýþý ileti gönder
+sendsip Sesli aramayý baþlat
 sendvoice Ses kaydý gönder
 sendwebcamaccepted $1 kamera görüntünüzü gönderme isteðinizi kabul etti. Baðlantý kuruluyor...
 sendwebcaminvite Kullanýcýyý kameranýzý izlemeye davet edin
@@ -799,6 +815,25 @@ showonedpframe Sohbet pencerelerinde bir tek kullanýcý resmi çerçevesi olsun
 showpicnotify Uyarý pencerelerinde kullanýcý resimleri gözüksün
 showuserpic $1 kullanýcýsýnýn resmi
 signinstatus Baðlanma þekli:
+sipcallaccepted Sesli arama kabul edildi
+sipcallback Geri ara
+sipcalldeclined Sesli arama reddedildi
+sipcalleeaccepted Kullanýcý sesli aramanýzý kabul etti
+sipcalleebusy Kullanýcý þu an meþgul
+sipcalleecanceled Kullanýcý sesli arama davetini iptal etti
+sipcalleeclosed Kullanýcý sesli aramayý bitirdi
+sipcalleedeclined Kullanýcý sesli arama davetinizi reddetti
+sipcalleenoanswer Kullanýcý aramanýza yanýt vermedi
+sipcalleeunavailable Kullanýcýya þu an ulaþýlamýyor
+sipcallended Sesli aramanýz sona erdi
+sipcallimpossible Sesli arama yapamazsýnýz. Lütfen Farsight2'yi kurup tekrar deneyin.
+sipcallmissed $1 kullanýcýsýndan gelen bir sesli aramayý kaçýrdýnýz
+sipcallnosipflag Kullanýcý sesli arama yapamýyor.
+sipcallsent $1 aranýyor
+sipcallunsupported Henüz desteklenmeyen bir sesli arama daveti aldýnýz. Geri arama ile yeni bir davet gönderip konuþabilirsiniz.
+sipcallyouarebusy Bir anda tek bir sesli arama yapabilirsiniz
+sipgotinvitation $1 kullanýcýsýndan sesli arama daveti aldýnýz
+smileynotavailable Gülen adam bulunmuyor!
 skin Kabuk
 skinselector Kabuk Seç
 small Küçük
