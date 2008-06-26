@@ -1,0 +1,1458 @@
+
+********************************************************************************
+Changes From 0.97 to 0.97.1 :
+
+2008-06-26 20:59  lephilousophe
+
+	* autopackage/default.apspec: Autopackage version bump
+
+2008-06-26 20:56  lephilousophe
+
+	* configure: Autoconfed configure
+
+2008-06-26 20:51  lephilousophe
+
+	* amsn, configure.ac: Prepare versions
+
+2008-06-26 20:28  baaazen
+
+	* protocol.tcl: rev. 10255 to branch: Should fix logging in issues
+	  users are having... thx to crawler_ from IRC
+
+2008-06-26 20:24  baaazen
+
+	* login_screen.tcl: rev. 10259 to branch: Fix security bug with
+	  password not saved but kept in memory.
+
+2008-06-26 19:43  billiob
+
+	* lang/complete.pl, lang/langca, lang/langca_VC, lang/langda,
+	  lang/langde, lang/langes, lang/langeu, lang/langfi, lang/langfr,
+	  lang/langhu, lang/langko, lang/langlt, lang/langmt, lang/langnl,
+	  lang/langpt_BR, lang/langru, lang/langsl, lang/langsv,
+	  lang/langtr, lang/langzh-CN, langlist: merge langfiles to trunk
+	  to 0.97 branch:
+	  update some langfiles - should be useless for most of them (there
+	  shouldn't be lost keys)
+	  add langmt
+
+2008-06-23 17:17  billiob
+
+	* abook.tcl: merge from trunk r10232-10233:
+	  fix currentMedia not showing in top CL
+
+2008-06-19 19:28  kakaroto
+
+	* protocol.tcl: merge from trunk r10214 : CurrentMedia should be a
+	  volatile data.. if music plugin crashes or is unloaded, then the
+	  user had no way to reset it to an empty string
+
+2008-06-13 05:08  kakaroto
+
+	* loging.tcl: r10101 to branch :
+	  Save Log to file always saved the original text in the log
+	  window... if you change dates, it wouldn't save the new log to
+	  the file... this fixes it.
+
+2008-06-09 07:37  baaazen
+
+	* configure: recreated configure script in branch, the old one was
+	  broken
+
+2008-06-04 20:40  baaazen
+
+	* msncam.tcl: r10088 to branch:
+	  
+	  set reflector socket as authenticated once it is to avoid trying
+	  twice to connect through the reflector
+
+2008-06-04 20:38  baaazen
+
+	* msncam.tcl: r10086 to branch:
+	  
+	  Should fix the white screen bug for mac once more
+
+2008-05-30 18:28  kakaroto
+
+	* msncam.tcl: from trunk : r10062
+	  Fix the white screen bug for Macs!!!!
+	  the problem is that if the grabber window is not yet mapped, we
+	  didn't do anything, and for a direct connection, that pretty much
+	  meant that 250ms later, we get the chance to send a new frame...
+	  the problem with the WSOD is that it happens when using the
+	  reflector if we don't send a frame, we can't get an ACK for it,
+	  if we don't get the ACK then we'll never get the writable event
+	  called again, so we won't get the chance to send any frame..
+	  ever.. no frame = white screen..
+
+2008-05-28 22:52  baaazen
+
+	* utils/TkCximage: TkCximage from trunk to branch
+
+2008-05-28 22:50  baaazen
+
+	* utils/TkCximage: delete TkCximage from branch, will be re-copied
+	  from trunk in next commit
+
+2008-05-28 22:48  baaazen
+
+	* protocol.tcl: r9560 to branch:
+	  
+	  3 new events: addedUser , deletedUser , ChangeDP .
+
+2008-05-28 22:46  baaazen
+
+	* Makefile.in, utils/macosx/growl1.0/Rules.mk,
+	  utils/macosx/growl1.0/src,
+	  utils/macosx/growl1.0/src/CFGrowlAdditions.c,
+	  utils/macosx/growl1.0/src/CFGrowlAdditions.h,
+	  utils/macosx/growl1.0/src/GrowlApplicationBridge.h,
+	  utils/macosx/growl1.0/src/GrowlApplicationBridge.m,
+	  utils/macosx/growl1.0/src/GrowlDefines.h,
+	  utils/macosx/growl1.0/src/GrowlDefinesInternal.h,
+	  utils/macosx/growl1.0/src/GrowlPathUtil.h,
+	  utils/macosx/growl1.0/src/GrowlPathUtil.m,
+	  utils/macosx/growl1.0/src/GrowlPathway.h,
+	  utils/macosx/growl1.0/src/NSURLAdditions.h,
+	  utils/macosx/growl1.0/src/NSURLAdditions.m,
+	  utils/macosx/growl1.0/src/ReadMe-Tcl.txt,
+	  utils/macosx/growl1.0/src/Rules.mk,
+	  utils/macosx/growl1.0/src/TclGrowler.h,
+	  utils/macosx/growl1.0/src/TclGrowler.m,
+	  utils/macosx/growl1.0/src/growl.m: r9232, 9527 to branch:
+	  
+	  9232: Add growl source to the package. So recompiling will be
+	  easier.
+	  `make install` builds the lib, and copies it back into the utils
+	  folder.
+	  
+	  9527: Add growl make rules to Makefile.in.
+
+2008-05-28 22:30  baaazen
+
+	* lang/langen, preferences.tcl: r9581 to branch:
+	  
+	  New feature.. simulate the real time framerate when viewing
+	  webcam logs
+
+2008-05-28 22:28  baaazen
+
+	* config.tcl, lang/langen, loging.tcl, msncam.tcl: r9545, 9546 to
+	  branch:
+	  
+	  New feature.. simulate the real time framerate when viewing
+	  webcam logs
+
+2008-05-28 18:18  kakaroto
+
+	* protocol.tcl: fix how action messages appear in the CW.. was
+	  missing two newlines (before and after action data)
+
+2008-05-28 18:03  kakaroto
+
+	* config.tcl: merge 10045 :
+	  Do not crash if we can't set/delete the registry
+
+2008-05-28 16:42  kakaroto
+
+	* protocol.tcl: merge r9194 : reverted 9193
+
+2008-05-28 16:22  kakaroto
+
+	* lang.tcl: from trunk r10041 :
+	  Fix language detection by skipping the .UTF_8 from $LANG.. will
+	  fix :
+	  +https://sourceforge.net/tracker/?func=detail&atid=472655&aid=1976861&group_id=54091
+
+2008-05-28 15:08  baaazen
+
+	* protocol.tcl, smileys.tcl: r9414, 9415 to branch:
+	  
+	  9414: Refactored the smiley thing, it now returns a list of
+	  smileys to send and we make that into a proper message in
+	  protocol.tcl. The 5 smileys limit is also checked in protocol.tcl
+	  now.
+	  Removing the two 'break' statements, will make aMSN send multiple
+	  x-ms-emoticon messages in order to send all smileys, but sending
+	  5 at a time. This does not work with WLM though since it will
+	  only show the last smileys received.. (purpose of the refactoring
+	  was to test this idea).
+	  
+	  9415: A trick.. by moving the animated smileys into the
+	  non-animated smileys message, we *could* be able to sneak in all
+	  those custom smileys.. but apparently, WLM stores whether a
+	  specific smiley was sent before as being an animated smiley or
+	  not and will not show it again if it's animated and send as a
+	  non-animated smiley.... so the code is there, but it's commented
+	  out...
+	  Also removed a debug output...
+
+2008-05-28 14:56  baaazen
+
+	* protocol.tcl: r9387 to branch:
+	  
+	  XML encode everything.. you never know where an '&' could get in
+	  the middle of our xml...
+
+2008-05-28 14:47  baaazen
+
+	* loging.tcl: r9378 to branch:
+	  
+	  clean the loging windows (chat+cam) code.
+
+2008-05-28 14:45  baaazen
+
+	* chatwindow.tcl: r9373, 9374 to branch:
+	  
+	  make it consistent, passing only the name of the var
+
+2008-05-28 14:43  baaazen
+
+	* utils/base64/base64.tcl: r9360 to branch:
+	  
+	  fix bug #133
+
+2008-05-28 14:41  baaazen
+
+	* proxy.tcl: r9348 to branch:
+	  
+	  Polling should be done every 2 seconds just like the official
+	  client does.. 5 seconds are too much, + it will make us waste 5
+	  seconds of reading the webcam/file transfer ip/ports so once we
+	  read them, we'll already have timed out and start using the
+	  SB/reflector...
+
+2008-05-28 14:36  baaazen
+
+	* plugins.tcl: r9341 to branch:
+	  
+	  fix adding a new language to a plugin when updating a plugin
+
+2008-05-28 14:32  baaazen
+
+	* chatwindow.tcl: r9321 to branch:
+	  
+	  Attempt at fixing focus switching indefinitely
+
+2008-05-28 14:32  baaazen
+
+	* gui.tcl, guicontactlist.tcl, skins/default/settings.xml: r9320 to
+	  branch:
+	  
+	  Add settings for adding a border around the contact list
+	  (excluding the pgBuddyTop) as well as set a color for that frame.
+	  New skin keys : contactlistbd and contactlistborderbg
+	  Suggestion from 'patrickfromspain' of the forums :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4622
+
+2008-05-28 14:29  baaazen
+
+	* gui.tcl: r9313 to branch:
+	  
+	  Neaten the startup code making sure the window is on screen.
+	  Fix possible typo in wm geometry statement..
+
+2008-05-28 14:18  baaazen
+
+	* skins/default/pixmaps/newline.png: r9231 to branch:
+	  
+	  Missing icon from the skin caused feature to disappear... :
+	  http://www.amsn-project.net/forums/viewtopic.php?p=26499
+
+2008-05-28 14:13  baaazen
+
+	* protocol.tcl: r9193 to branch:
+	  
+	  Fix a crash where Tk would crash if many OIM's (from different)
+	  users were being displayed.
+	  Thnx to J for reporting, and helping fix/test.
+
+2008-05-28 14:09  baaazen
+
+	* login_screen.tcl, skins/default/settings.xml: r9960 to branch:
+	  
+	  Add loginfieldbd for skinners to set the border size for the
+	  input fields in the login screen.
+
+2008-05-28 14:06  baaazen
+
+	* automsg.tcl, gui.tcl: r9803, 9952 to branch:
+	  
+	  Add+fix the addition of the signout option to the states menu,
+	  for those with the menu hidden
+
+2008-05-28 13:57  baaazen
+
+	* config.tcl, preferences.tcl, utils/windows/reg1.1,
+	  utils/windows/reg1.1/pkgIndex.tcl,
+	  utils/windows/reg1.1/tclreg11.dll: r9934 to branch:
+	  
+	  Use the 'registry' extension on windows for getting, adding,
+	  setting, deleting the 'run amsn on boot' registry key.
+	  Now the 'start amsn on windows boot' option is not in an unknown
+	  state, we go fetch the value to make sure the option is checked
+	  correctly, depending on the actual value in the registry. We also
+	  now check for the appropriate file, if ../amsn.exe doesn't exist
+	  (for example, you have tcl installed, amsn svn, but no amsn
+	  installed from the official installer), then it will use the path
+	  of the wish.exe executable with the name of the amsn script
+	  launched so it will still launch correctly.
+	  This will also probably fix those nasty annoyances
+	  pseudo-security popups in vista, or fix it if it wasn't able to
+	  work at all on vista.
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4942
+
+2008-05-28 13:55  baaazen
+
+	* config.tcl: r9931 to branch:
+	  
+	  Fix multiple accounts using the default profile.. DP should not
+	  be shared :
+	  http://www.amsn-project.net/forums/viewtopic.php?p=28932
+
+2008-05-28 13:53  baaazen
+
+	* loging.tcl: r9930 to branch:
+	  
+	  Gracefully recover if we can't open the log file... :
+	  http://www.amsn-project.net/forums/viewtopic.php?p=28739
+
+2008-05-28 13:52  baaazen
+
+	* smileys.tcl: r9929 to branch:
+	  
+	  'copy custom emoticon' popup menu should also appear in the right
+	  click menu, not only left click... suggested here :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4709
+
+2008-05-28 13:48  baaazen
+
+	* gui.tcl: r9909 to branch:
+	  
+	  Make PSM line on pgbuddytop clickable like nickname line
+
+2008-05-28 13:47  baaazen
+
+	* gui.tcl: r9907 to branch:
+	  
+	  call kill_balloon instead of destroy .balloon, so it also cancels
+	  the timer for showing the balloon
+
+2008-05-28 13:42  baaazen
+
+	* gui.tcl, msncam.tcl: r9902 to branch:
+	  
+	  old diff : s/tk_messageBox/::amsn::messageBox/ to work with
+	  Desktop Integration plugin
+
+2008-05-28 13:38  baaazen
+
+	* login_screen.tcl: r9896 to branch:
+	  
+	  No big ugly black borders around focused inputs in the login
+	  screen. Add the highlightthickness=0 parameter.
+
+2008-05-28 13:37  baaazen
+
+	* protocol.tcl: r9890 to branch:
+	  
+	  in case we get an invalid base64, do not crash... :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=1720&start=45
+
+2008-05-28 13:35  baaazen
+
+	* Makefile.in, configure, configure.ac, debian/control,
+	  debian/control.in: r9888 to branch:
+	  
+	  tcl/tk 8.4 vs 8.5 dependency fixed for debian control file
+
+2008-05-28 13:30  baaazen
+
+	* utils/macosx/Ffidl0.6: r9882 to branch:
+	  
+	  Remove unused Ffidl package.
+
+2008-05-28 13:17  baaazen
+
+	* groups.tcl: r9841 to branch:
+	  
+	  Focus on the group name when we do a "add group". Patch by
+	  Takeshi81
+
+2008-05-28 13:14  baaazen
+
+	* protocol.tcl: r9826 to branch:
+	  
+	  Don't try to open open an SB and fetch the DP of our own
+	  contact...
+
+2008-05-28 13:11  baaazen
+
+	* guicontactlist.tcl, msnp2p.tcl: r9827 to branch:
+	  
+	  Don't try to open open an SB and fetch the DP of our own
+	  contact...
+
+2008-05-28 13:09  baaazen
+
+	* msncam.tcl: r9825 to branch:
+	  
+	  Temporary fix the FT/Webcam/DP problems
+
+2008-05-28 13:00  baaazen
+
+	* chatwindow.tcl: r9818 to branch:
+	  
+	  don't close all CW unless you're sure the user chose it.
+
+2008-05-28 12:55  baaazen
+
+	* sxml.tcl: r9799 to branch:
+	  
+	  getting an attribute with the XML procs should unescape the { }
+	  chars.. we do it for an entry, we should do it for an attribute
+
+2008-05-28 12:52  baaazen
+
+	* config.tcl: r9779, 9780 to branch:
+	  
+	  Fix errorMsg not showing when we can't create socket when locking
+	  the profile
+
+2008-05-28 12:50  baaazen
+
+	* lang.tcl: r9776 to branch:
+	  
+	  if we select no language to download in the language manager,
+	  click download, it crashes... now checks whether we really choose
+	  a language or not...
+	  does nothing otherwise (instead of crash)..
+	  fixes bug #159
+
+2008-05-28 12:48  baaazen
+
+	* protocol.tcl, proxy.tcl: r9773, 9774, 9787, 9797, 9809 to branch:
+	  
+	  9773: Should probably fix the bug id #2 and this :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=5071&highlight=
+	  hopefully... once and for all....
+	  
+	  9774: Fix bug #158
+	  
+	  9787: Should fix the HTTPPoll error.. hopefully this time for
+	  real!
+	  
+	  9797: fix HUGE bug with HTTP connection!!!!! we weren't checking
+	  for all the appropriate payload type messages, this would cause
+	  aMSN to freeze if we receive a command that requires a payload
+	  that isn't listed in there.. now use one unified function, so
+	  everything goes there... fixes aMSN freezing when using HTTP
+	  connection and receiving a UBN command (like when receiving an
+	  audio call invite)...
+	  
+	  9809: hopefully no more HTTPPoll bug...
+
+2008-05-28 12:16  baaazen
+
+	* bugs.tcl: r9772 to branch:
+	  
+	  bugreports : never liked the "sadam's n user".. easier to know it
+	  actually means "sad amsn user"...
+
+2008-05-28 12:15  baaazen
+
+	* config.tcl: r9770 to branch:
+	  
+	  Change default location for Downloaded files to ~/Desktop/ on mac
+	  os x.
+
+2008-05-28 12:13  baaazen
+
+	* hotmail.tcl: r9765 to branch:
+	  
+	  Change the askReadReceivedOIMs to have a "Remember" option in the
+	  window. Only remembers the response if the answer is "yes".
+
+2008-05-28 12:10  baaazen
+
+	* gui.tcl, msncam.tcl: r9758 to branch:
+	  
+	  Give the right choice of file extension depending on the file
+	  format you choose when you want to save a webcam session snapshot
+	  into an image.
+	  Patch provided by Tristan Charbonneau (a.k.a Yoda-BZH)
+
+2008-05-28 12:07  baaazen
+
+	* protocol.tcl: r9744 to branch:
+	  
+	  fix socket leak thanks to luismanson :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=5034&highlight=
+	  if no chatwindow associated with a user (SB for download DP),
+	  then not only delete the SB but also kill it (close the socket).
+
+2008-05-28 12:06  baaazen
+
+	* guicontactlist.tcl: r9741 to branch:
+	  
+	  Fix tooltips in new CL where we forgot to migrate the "notinlist"
+	  and "shareswebcam" tooltip lines
+
+2008-05-28 12:03  baaazen
+
+	* Makefile.in, chatwindow.tcl, configure, configure.ac, gui.tcl,
+	  utils/macosx/tclCarbon, utils/macosx/tclCarbon/Rules.mk,
+	  utils/macosx/tclCarbon/pkgIndex.tcl, utils/macosx/tclCarbon/src,
+	  utils/macosx/tclCarbon/src/Rules.mk,
+	  utils/macosx/tclCarbon/src/tclCarbon.c,
+	  utils/macosx/tclCarbon/src/tclCarbon.h,
+	  utils/macosx/tclCarbon/src/tclCarbonHICommand.c,
+	  utils/macosx/tclCarbon/src/tclCarbonHICommand.h,
+	  utils/macosx/tclCarbon/src/tclCarbonNotification.c,
+	  utils/macosx/tclCarbon/src/tclCarbonNotification.h,
+	  utils/macosx/tclCarbon/tclCarbon.dylib,
+	  utils/macosx/tclCarbonHICommand,
+	  utils/macosx/tclCarbonNotification: r9590, 9723, 9726 to branch:
+	  
+	  9590: Change tclCarbonHICommand and tclCarbonNotification into
+	  one package (tclCarbon).
+	  
+	  9723: Add -DMAC_OSX_TK=1 to the configure (if OnMac).
+	  
+	  9726: Remove tclCarbon.dylib from it's src folder.
+
+2008-05-28 11:52  baaazen
+
+	* config.tcl: r9713 to branch:
+	  
+	  remember autologin when creating a new profile
+
+2008-05-28 11:51  baaazen
+
+	* utils/tcl_siren/src/common.c, utils/tcl_siren/src/common.h,
+	  utils/tcl_siren/src/dct4.c, utils/tcl_siren/src/dct4.h,
+	  utils/tcl_siren/src/decoder.c, utils/tcl_siren/src/decoder.h,
+	  utils/tcl_siren/src/encoder.c, utils/tcl_siren/src/encoder.h,
+	  utils/tcl_siren/src/huffman.c, utils/tcl_siren/src/huffman.h,
+	  utils/tcl_siren/src/huffman_consts.h, utils/tcl_siren/src/rmlt.c,
+	  utils/tcl_siren/src/rmlt.h, utils/tcl_siren/src/siren7.h,
+	  utils/tcl_siren/src/tcl_siren.c: r9710, 9715, 9724 to branch:
+	  
+	  9710: Siren encoder/decoder with no trailing spaces and no tabs
+	  and no ^M CR chars and using spaces for indentation.. no other
+	  change
+	  
+	  9724: Rename GUINT32_FROM_LE to ME_FROM_LE32 in tcl_siren.c.
+
+2008-05-28 11:42  baaazen
+
+	* preferences.tcl, utils/dpbrowser/dpbrowser.tcl: r9703, 9704 to
+	  branch:
+	  
+	  9703: Thx to Cristofaro for the patch adding scrolling with
+	  wheelmouse to the dp browser
+	  
+	  9704: Fixes mouse wheel scrolling for windows.. it needs /-120
+	  ... fix for dpbrowser and preferences window!
+
+2008-05-28 11:37  baaazen
+
+	* utils/TkCximage/src/PhotoFormat.cpp,
+	  utils/TkCximage/src/procs.cpp, utils/linux/capture/capture.c,
+	  utils/webcamsn/src/webcamsn.c: r9699 to branch:
+	  
+	  Make it compile for Tcl/Tk CVS
+
+2008-05-28 11:34  baaazen
+
+	* abook.tcl, preferences.tcl: r9695 to branch:
+	  
+	  firewall checker can be moved to it's own ip-address now, if we
+	  go that road we can make sure it does not interfere with the
+	  website viewers, we could also build or own server component, or
+	  use lighttpd or whatever. It also doesn't look at the http reply
+	  body, it looks at the connection that is being established by the
+	  server
+
+2008-05-28 11:32  baaazen
+
+	* utils/tcl_siren/src/tcl_siren.c, utils/tcl_siren/src/tcl_siren.h,
+	  utils/webcamsn/src/webcamsn.c, utils/webcamsn/src/webcamsn.h:
+	  r9691 to branch:
+	  
+	  Use a Tcl_HashTable instead of custom list code... remaining
+	  TkCximage and Capture.. buth they both look too complex to modify
+	  at this time
+
+2008-05-28 11:30  baaazen
+
+	* gui.tcl: r9688 to branch:
+	  
+	  Should fix bug in windows (maybe other OS) where the main window
+	  does not remember its previous position... :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4997&highlight=
+
+2008-05-28 11:28  baaazen
+
+	* protocol.tcl: r9679 to branch:
+	  
+	  Detecting WLM8.5 clientname
+
+2008-05-28 10:51  baaazen
+
+	* gui.tcl, loging.tcl: r9673 to branch:
+	  
+	  improve translations. Thanks to Ton.
+
+2008-05-28 10:36  baaazen
+
+	* protocol.tcl: r9668 to branch:
+	  
+	  Fixes armas's problem with proxy connections. We were not
+	  following the RFC 2616 which states that an HTTP header field
+	  should be case insensitive, so we were checking the
+	  "Content-Length" while his proxy gave "Content-length" (lower
+	  case L).
+	  Now using a regexp and skipping the LWS as stated in the RFC2616
+	  and trimming the result correctly...
+	  Thanks to armas :
+	  http://www.amsn-project.net/forums/viewtopic.php?p=28747#28747
+
+2008-05-28 00:11  baaazen
+
+	* chatwindow.tcl: r9659, 9667 to branch:
+	  
+	  Less debug : that make it lag
+
+2008-05-28 00:05  baaazen
+
+	* gui.tcl, loging.tcl, preferences.tcl: r9665 to branch:
+	  
+	  improve translation use. Thanks to Ton (dutch translator)
+
+2008-05-28 00:03  baaazen
+
+	* amsn: r9664 to branch:
+	  
+	  Should fix this problem :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4693&highlight=
+	  the tk::dialog::file::showHiddenVar might not work even with the
+	  catch before...
+
+2008-05-28 00:00  baaazen
+
+	* gui.tcl: r9660 to branch:
+	  
+	  lol, fixed bug with 'ignore remote user font' option. Thanks to
+	  Vinky from IRC. Problem was an extra '\' in the comment above
+	  which commenting the change of font
+
+2008-05-27 23:57  baaazen
+
+	* config.tcl: r9654 to branch:
+	  
+	  fixed typo
+
+2008-05-27 23:56  baaazen
+
+	* loging.tcl: r9653 to branch:
+	  
+	  Should fix unknown variable $color when saving log to html :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4928&highlight=
+
+2008-05-27 23:54  baaazen
+
+	* config.tcl, lang/langen, smileys.tcl: r9652, 9661 to branch:
+	  
+	  9661: improved handling for unreachable smileys and improved
+	  method of saving config.xml to prevent corruption when aMSN
+	  crashes while writing the file. for details:
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4913
+
+2008-05-27 23:43  baaazen
+
+	* autoupdate.tcl: r9648 to branch:
+	  
+	  make autoupdate check only once per week for new version to
+	  decrease server load
+
+2008-05-27 23:41  baaazen
+
+	* amsncore.tcl, config.tcl: r9646, 9658 to branch:
+	  
+	  9646: skip the bind-port-to-all-interfaces-test for windows vista
+	  to make profile-locking working again, as it doesn't work here,
+	  but i can't see a reason why this pre-check should be necessary
+	  here.
+	  
+	  9658: disable the pre-check for profile locking on vista
+	  completely as it causes an error in some cases preventing to
+	  startup
+
+2008-05-27 23:37  baaazen
+
+	* bugs.tcl: r9641 to branch:
+	  
+	  Don't xmlencode the bug report that we show in the bugreport
+	  window and in status_log
+
+2008-05-27 23:35  baaazen
+
+	* msnp2p.tcl: r9640 to branch:
+	  
+	  Fix eronous message saying webcam rejected while it's not
+
+2008-05-27 23:33  baaazen
+
+	* msncam.tcl, msnp2p.tcl, protocol.tcl: r9636, 9663 to branch:
+	  
+	  9636: No more memory leak with ObjOption and SessionList
+	  variables... Will also avoid problems with doing a cam session
+	  twice and the second time, it reuses the old socket and the
+	  ObjOptions for it still have old values which will make
+	  everything crash...
+	  
+	  9663: It's better to use unset as array unset uses patterns
+	  Keep old MsgIds and CallIds until the final cleanup : that will
+	  fix DP trouble
+
+2008-05-27 23:21  baaazen
+
+	* config.tcl, gui.tcl, hotmail.tcl, lang/langen: r9635 to branch:
+	  
+	  No OIM confirmation dialogs advanced option
+
+2008-05-27 23:16  baaazen
+
+	* assistant.tcl, msncam.tcl, utils/windows/tkvideo1.2.1,
+	  utils/windows/tkvideo1.3.0,
+	  utils/windows/tkvideo1.3.0/pkgIndex.tcl,
+	  utils/windows/tkvideo1.3.0/tkvideo130.dll: r9602, 9610 to branch:
+	  
+	  update to tkvideo 1.3.0 to make the "format" command available
+	  that fixes the problem of a partial webcam image on newer webcams
+	  with a higher default-resolution
+
+2008-05-27 23:07  baaazen
+
+	* config.tcl, gui.tcl, msnp2p.tcl, protocol.tcl, skins.tcl,
+	  smileys.tcl: reverting r9520:
+	  
+	  we shouldn't use relative paths for smileys and DP in config.xml
+	  for 0.97.1, because this patch would cause problems and
+	  backward-incompatibility of the profile to 0.97
+
+2008-05-27 22:54  baaazen
+
+	* msnp2p.tcl: r9564 to branch:
+	  
+	  This event should be fired only after we retrieve the new display
+	  picture, otherwise plugins may operate on the old display
+	  picture.
+
+2008-05-27 22:46  baaazen
+
+	* msnp2p.tcl: r9544 to branch:
+	  
+	  Fix bug interoperating with emesene.. no idea what the real
+	  problem is, but this is a workaround and adds robustness against
+	  infinite loops..
+
+2008-05-27 22:42  baaazen
+
+	* Compile.mk, Makefile.in, utils/TkCximage/Rules.mk,
+	  utils/TkCximage/src/Rules.mk,
+	  utils/macosx/tclCarbonHICommand/Rules.mk,
+	  utils/macosx/tclCarbonHICommand/src/Makefile,
+	  utils/macosx/tclCarbonHICommand/src/Rules.mk,
+	  utils/macosx/tclCarbonHICommand/src/tclCarbonHICommand.c,
+	  utils/macosx/tclCarbonNotification/Rules.mk,
+	  utils/macosx/tclCarbonNotification/src/Makefile,
+	  utils/macosx/tclCarbonNotification/src/Rules.mk,
+	  utils/tcl_siren/Rules.mk, utils/tcl_siren/src/Rules.mk,
+	  utils/webcamsn/Rules.mk, utils/webcamsn/src/Rules.mk: r9535-9538
+	  to branch: (Mac only)
+	  
+	  9535:Add the tclCarbon extensions to the Makefile.
+	  9537:- If building on Mac set SHLIB_EXTENSION to dylib (else set
+	  it to so).
+	  - Change .so to .$(SHLIB_EXTENSION) in Rules.mk in utils.
+	  - Add dylib compile macros to Compile.mk.
+	  
+	  9538:Fix duplicate Cursor define bug.
+
+2008-05-27 22:27  baaazen
+
+	* chatwindow.tcl: r9528 to branch:
+	  
+	  fixed. topcw: added case when smileys are more big then text and
+	  when the text is too small. Code optmization.
+
+2008-05-27 22:21  baaazen
+
+	* Compile.mk, Makefile.in, utils/macosx/sndplay,
+	  utils/macosx/sndplay-src/Makefile,
+	  utils/macosx/sndplay-src/Rules.mk,
+	  utils/macosx/sndplay-src/sndplay.m: r9522-9526 to branch: (Mac
+	  only)
+	  
+	  9522: Add .m (objc) files to Compile.mk rules.
+	  9523-9525: sndplay to make, sndplay binary
+	  9526: Final commit for sndplay:
+	  - Include Rules.mk file in Makefile.
+	  - When cleaning, don't remove utils/macosx/sndplay.
+
+2008-05-27 22:15  baaazen
+
+	* Makefile.in: r9322, 9343 to branch:
+	  
+	  A more compatible Makefile
+
+2008-05-25 08:12  kakaroto
+
+	* protocol.tcl: from trunk : r9927
+	  fixes : return to original nick+psm after custom state works but
+	  if psm was empty, it will not revert to it
+
+2008-02-23 01:43  lephilousophe
+
+	* utils/linux/traydock/libtray.c: Patching on branch too !!
+
+2008-01-27 11:38  thaven
+
+	* chatwindow.tcl: Apply fix from -r9319:
+	  improve ::ChatWindow::MacPosition.
+	  - Better naming of variables
+	  - Add checking of horizontal position, because chatwindows often
+	  appear too far to the right (partially off screen)
+
+2008-01-27 10:14  thaven
+
+	* config.tcl, gui.tcl, msnp2p.tcl, protocol.tcl, skins.tcl,
+	  smileys.tcl: Apply improvement from -r9474:
+	  save emoticons in config.xml with a relative path instead of
+	  absolute path if they are located in profile directory
+	  (or subdirectory) to get better portability of the profiles
+	  
+	  Apply fix and improvement from -r9486:
+	  -saving a relative path instead of the absolute path for
+	  displaypic too;
+	  -small bugfix in skin-file-finding-proc for windows users.
+	  
+	  Improvements merged into branch for compatibility reasons. After
+	  using current 0.98b, 0.97.1b doesn't set the DP correctly and
+	  also custom emoticons don't work anymore. Merging these
+	  improvements should fix that.
+
+2008-01-24 08:08  thaven
+
+	* protocol.tcl: Fix merge mistake in SYN handler.
+
+2008-01-23 22:13  thaven
+
+	* clgui.tcl: Apply fix from -r9502:
+	  Removing unused file
+
+2008-01-23 22:11  thaven
+
+	* msnp2p.tcl: Apply fix from -r9476:
+	  Ah.. fix a stupid typo that made it not fix the problem of file
+	  transfers getting canceled because of an unhandled TLP_NAK.
+	  
+	  Apply fix from -r9477:
+	  a bit cleaner code...
+
+2008-01-23 22:09  thaven
+
+	* login_screen.tcl: Apply fix from -r9475:
+	  KeyPad Enter signs you in. As suggested by Musikolo and patch
+	  provided by Daniel15 at
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4707
+
+2008-01-23 22:06  thaven
+
+	* msncam.tcl: Apply fix from -r9423:
+	  bugfix: don't open another Savetoimage window if it is already
+	  opened.
+
+2008-01-23 22:05  thaven
+
+	* loging.tcl: Apply fix from -r9422:
+	  now the snapshot button is enabled/disabled correctly. Before it
+	  was or always enabled or always disabled.
+
+2008-01-23 22:02  thaven
+
+	* smileys.tcl: Apply fix from -r9412:
+	  Fixes issue of when sending too many custom smileys, the SB gets
+	  closed...
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4548
+	  
+	  Apply fix from -r9413:
+	  Don't send more than 5 custom smileys otherwise the SB could get
+	  closed. This is also a limitation in WLM.
+	  WLM doesn't send the message and outputs an error in the chat
+	  window saying that you can't send more than 5 custom smileys at
+	  once and you should delete some before sending the message.
+
+2008-01-23 22:00  thaven
+
+	* msnp2p.tcl: Apply fix from -r9410:
+	  Should fix sending FT that gets canceled.. if we get an SLP
+	  message of type ACK, we should ack it..
+
+2008-01-23 21:55  thaven
+
+	* utils/macosx/finishbuild.sh: Apply fix from -r9409 (mac only):
+	  Update the finishbuild script to change the 8.5 path in dylibs as
+	  well.
+	  Also change the renaming of webcamsn and TkCximage by the script.
+	  
+	  (Removed tclISF stuff, because that is not in 0.97.1)
+
+2008-01-23 21:51  thaven
+
+	* gui.tcl: Apply fix from -r9404:
+	  avoid bug when the timestamp in an OIM is corrupted
+
+2008-01-23 21:46  thaven
+
+	* gui.tcl: Apply fix from -r9401:
+	  added a default case if we get an error in OIM timestamp
+
+2008-01-23 21:40  thaven
+
+	* proxy.tcl: Apply fix from -r9398:
+	  Might fix some issues with some HTTP proxies that do not accept
+	  the Accept-Encoding header or the Content-type being something
+	  other than html or xml or refuse or block the
+	  application/x-msn-messenger content-type. Or don't understand the
+	  Pragma: no-cache but need a Cache-control: no-cache header..
+	  Now, apart from the fact that we have an extra 'proxy-connection:
+	  keep-alive' and an extra 'pragma: no-cache' (kept for
+	  compatibility with older proxies) and the user agent being
+	  different, we send the exact same headers that WLM sends..
+	  (removed accept-encoding, added cache-control and changed those
+	  that are different).
+
+2008-01-23 21:36  thaven
+
+	* gui.tcl, utils/macosx/tkUnsupported/macWindowStyle.tcl: Apply fix
+	  from -r9393:
+	  Code cleanup for macWindowStyle API
+	  Edit gui.tcl to use the macWindowStyle API to brush the main
+	  window, rather than doing it itself.
+
+2008-01-23 21:32  thaven
+
+	* abook.tcl, groups.tcl, gui.tcl, guicontactlist.tcl, protocol.tcl:
+	  Backported fix from -r9389:
+	  Phone informations aren't volatile !
+
+2008-01-23 21:02  thaven
+
+	* protocol.tcl: Backported fix from -r9380:
+	  Should fix some bugs about displayed people which shouldn't....
+
+2008-01-23 20:54  thaven
+
+	* abook.tcl: Apply fix from -r9375:
+	  Fixed bug when right clicking a DP from properties and selecting
+	  copy filename to clipboard
+
+2008-01-23 20:49  thaven
+
+	* protocol.tcl: Apply fix from -r9363:
+	  This should fix base64 bugs when decoding the nick of the sending
+	  of an OIM when the base64 encoded nick has a leading '=' and the
+	  base64 package used checks for valid input.
+
+2008-01-23 20:47  thaven
+
+	* protocol.tcl: Apply fix from -r9362:
+	  add protocol debug output for MSNP2P data received on direct
+	  connections. Show only packets with an offset of 0 to avoid
+	  flooding the protocol window when receiving a file (only first
+	  chunk will be shown though..)
+	  Also made the fileevent that writes on the DC socket wait 5 ms
+	  before getting called. When doing direct transfer on a local
+	  network, aMSN would COMPLETELY freeze, using 100% of CPU,
+	  impossible to do anything, it doesn't even refresh the window.. I
+	  calculated that 5ms should be enough without dropping much of
+	  performance. I added the 5ms timer and aMSN became fully
+	  functional, as if no transfer was being done. The transfer speed
+	  went from 540KB/s to 520KB/s so it's good! :)
+
+2008-01-23 20:43  thaven
+
+	* msnp2p.tcl, protocol.tcl: Apply fix from -r9361:
+	  Hourray, this should fix our problems with the file transfers
+	  getting canceled... the problem was that during a file transfer,
+	  we could receive some MSNP2P data to which we send an Ack
+	  message.. the ACK increments the blobID in SessionList which
+	  causes all subsequent data sent to have a wrong blobID so WLM
+	  ignores them then times out and cancels the FT.
+	  Also, this fixes the most probable cause of the failing FTs.
+	  Whenever WLM misses a packet, it will send a NACK msnp2p message
+	  telling us to start sending the file from position X. If we don't
+	  give him the appropriate offset, it will not like it and keep
+	  NACK-ing everyone of our packets. After 2 minutes, if we didn't
+	  reinitialize our file position to the one WLM asks for, it will
+	  cancel the FT. This is now taken into account and if we receive a
+	  NAK for a file transfer's packet, we will seek to the appropriate
+	  position and reinitialize our offset to send the right data. I
+	  tested this in direct connect, but it needs testing when done
+	  over the SB although should work just fine.
+	  In order to test this, send a file to a WLM user, then watch your
+	  status log while you type :
+	  set ::msn6ft_test_nak_once 1
+	  it will switch between two buffers (send buffer at position X+1
+	  before sending buffer at position X). Which will make WLM nak it,
+	  and in theory, we should be able to avoid damage and continue
+	  from where we were (two naks, one for the buffer at X which is
+	  sent right after X+1, so the nak is answered, and then we send
+	  X+2, so it skipped X+1, so we get a second nak to which we must
+	  answer).
+
+2008-01-23 20:28  thaven
+
+	* gui.tcl: Apply fix from -r9340:
+	  Fix Bug : The date for showing the OIM received date should
+	  comply with the date format option.
+	  
+	  (Including fix to that fix from -r9364)
+
+2008-01-23 20:18  thaven
+
+	* amsncore.tcl: Applied fix from -r9329:
+	  Added a comment to decrease verbosity of Events system
+
+2008-01-23 20:16  thaven
+
+	* protocol.tcl: Applied fix from -r9329 and -r9330:
+	  Fix updating of group counts
+
+2008-01-23 20:01  thaven
+
+	* abook.tcl, protocol.tcl: Backported fix from -r9335:
+	  Now we get from cache the abook...
+	  We win some time by not doing the listing...
+
+2008-01-23 19:40  thaven
+
+	* amsncore.tcl, protocol.tcl: Apply fix from -r9328:
+	  Removing duplicated Event code : the code from protocol.tcl was
+	  loaded and after and erased the one in amsncore...
+	  That's a Core thing => removing from protocol
+
+2008-01-23 19:37  thaven
+
+	* abook.tcl, loging.tcl: Apply fix from -r9309:
+	  remove .dat file, too, when removing cam log
+	  
+	  Apply fix from -r9310:
+	  if eq return ONLY userlogin and not also PSM
+	  
+	  Apply fix from -r9318:
+	  Fix a bug when no logs
+
+2008-01-23 19:25  thaven
+
+	* protocol.tcl: Apply fix from -r9305:
+	  Call cmsn_handle_command ONLY from inside NS::handleCommand.
+	  
+	  Apply fix from -r9307:
+	  - Remove unused proc
+	  - rename some procs: msnp9_* to msnp11_*
+	  
+	  Apply fix from -r9308:
+	  Should fix bug #138
+	  
+	  (All of these applied by hand, as protocol.tcl got unmergeable
+	  because of indentation fixes etc.)
+
+2008-01-23 18:47  thaven
+
+	* audio.tcl, picture.tcl, utils/macosx/snack2.2/8.5,
+	  utils/macosx/snack2.2/8.5/libsnack.dylib,
+	  utils/macosx/snack2.2/8.5/libsound.dylib,
+	  utils/macosx/snack2.2/libsnack-8.5.dylib,
+	  utils/macosx/snack2.2/libsound-8.5.dylib,
+	  utils/macosx/snack2.2/pkgIndex.tcl: Apply fix from -r9301:
+	  Sorry, typo! s/info/file
+	  
+	  Apply fix from -r9302 (mac only):
+	  Same as -r9300, but now for snack...
+
+2008-01-23 18:32  thaven
+
+	* picture.tcl, utils/TkCximage/8.5,
+	  utils/TkCximage/8.5/TkCximage.dll,
+	  utils/TkCximage/8.5/TkCximage.dylib,
+	  utils/TkCximage/TkCxImage-8.5.dll,
+	  utils/TkCximage/TkCximage-8.5.dylib,
+	  utils/TkCximage/pkgIndex.tcl: Apply fix from -r9300:
+	  Better this way I think. Move TkCximage 8.5 binaries into a
+	  folder, the prefix if it is there should be the libraries
+	  version.
+
+2008-01-21 09:24  thaven
+
+	* amsn: Better explanation of version <-> rcversion on branch
+	  too...
+
+2008-01-20 22:49  thaven
+
+	* assistant.tcl: Apply fix from -r9298:
+	  should fix bug #120
+
+2008-01-20 22:47  thaven
+
+	* plugins/WebcamShooter/camshoot.tcl: Apply fix from -r9288:
+	  check if file exists before using it... Should fix bug #139
+
+2008-01-20 22:44  thaven
+
+	* protocol.tcl: Apply fix from -r9292:
+	  - Bind handlers for server replies not only to the TRID, but also
+	  to the connection. This should fix bug #10
+	  - Remove unnecessary 'if' in cmsn_ns_handler. That if statement
+	  is unnecessary because we use ::NS::handleCommand now, and we
+	  call cmsn_ns_handler from inside a similar if statement there...
+	  
+	  Apply fix from -r9293:
+	  Do better clean-up in KillSB: delete all handlers for the SB that
+	  is destroyed.
+	  
+	  Apply fix from -r9297:
+	  Fix bug #146
+
+2008-01-20 22:31  thaven
+
+	* abook.tcl, gui.tcl: Apply fix from -r9291:
+	  when we log-in, and in other cases, calculate PSM only if we
+	  really need it
+
+2008-01-20 22:29  thaven
+
+	* chatwindow.tcl: Apply fix from -r9285:
+	  Now we can chat on multiple tabs without losing the variable :D
+
+2008-01-20 22:26  thaven
+
+	* utils/macosx/tkUnsupported/macWindowStyle.tcl: Apply fix from
+	  -r9284:
+	  Fix version check. Thnx to Sander for noticing.
+
+2008-01-20 22:23  thaven
+
+	* smileys.tcl: Apply fix from -r9281:
+	  Fix issue where { and } weren't escaped with smileys. Fixes bug
+	  #135
+
+2008-01-20 22:21  thaven
+
+	* protocol.tcl: Apply fix from -r9279:
+	  - cmsn_connected_sb: call [$sb cget -invite] only once
+	  - cmsn_reconnect: $name doesn't exist, use $sb instead (why
+	  aren't there any reports about that?)
+	  - remove some commented code
+	  
+	  Including fix to that fix from -r9282:
+	  revert that from rev. 9279: no need to remove all SBs if one is
+	  bad...
+
+2008-01-20 22:15  thaven
+
+	* autoupdate.tcl: Apply fix from -r9276:
+	  fixed missing translation function for translation key
+
+2008-01-20 22:04  thaven
+
+	* plugins/inkdraw/inkdraw.tcl: Apply fix from -r9271:
+	  fix bug #129
+
+2008-01-20 22:03  thaven
+
+	* chatwindow.tcl: Apply fix from -r9270:
+	  Allow users who do not have libsnack installed to still be able
+	  to *receive* voice clips.
+	  It will also avoid a bug when you try to play a sound while the
+	  sound card is in use, and it will allow us to fallback on the
+	  play_sound.
+	  (should fix voice clips reception on maemo)
+
+2008-01-20 21:55  thaven
+
+	* utils/TkCximage/TkCxImage-8.5.dll: Apply -r9269:
+	  Adding TkCximage 8.5 binary for windows
+
+2008-01-20 21:49  thaven
+
+	* amsncore.tcl: Apply fix from -r9266:
+	  looping_sound variable unsetted twice
+	  fixed bug #123
+
+2008-01-20 21:46  thaven
+
+	* gui.tcl: Apply fix from -r9265:
+	  ShowOrHidePicture doesn't check if the returned value of
+	  [Chatwindow::For $chatid] is 0 or not.
+	  Fixes Bug #121
+
+2008-01-20 21:43  thaven
+
+	* plugins.tcl: Apply fix from -r9264:
+	  if a new file or a new langcode is added to the plugininfo.xml,
+	  then the autoupdater will crash or detect the wrong version.
+	  Fixes Bug #119
+
+2008-01-20 21:41  thaven
+
+	* plugins/winks/plugininfo.xml, plugins/winks/winks.tcl: Apply fix
+	  from -r9263:
+	  cabextract_version is undefined in winks plugin.
+	  fixed bug #118
+
+2008-01-20 21:38  thaven
+
+	* preferences.tcl: Apply fix from -r9261:
+	  -parent [focus] where no window has focus causes a bug because ""
+	  is in invalid window.
+	  Fixes bug #115
+
+2008-01-20 21:37  thaven
+
+	* protocol.tcl: Apply fix from -r9260:
+	  adding -- on every 'switch' statement to avoid bugs when data
+	  starts with a dash.
+	  Fixes bug #114
+
+2008-01-20 21:32  thaven
+
+	* msnp2p.tcl: Apply fix from -r9259:
+	  If we receive a data preparation message for a msnp2p type not
+	  supported (not a DP/emoticon/voice clip/wink), we should not
+	  crash but simply ignore it.
+
+2008-01-20 21:29  thaven
+
+	* plugins/winks/plugininfo.xml, plugins/winks/winks.tcl: Apply fix
+	  from -r9257 / -r9258:
+	  Fixes bug with wrong syntax to tk_messageBox and replaced all
+	  tk_messageBox by msg_box in the winks plugin.
+	  Fixed bug #112
+
+2008-01-20 21:26  thaven
+
+	* loging.tcl: Apply fix from -r9255:
+	  One window also for save log from the history viewer.
+	  Also history viewer now saves in html automatically.
+	  
+	  Apply fix from -r9256:
+	  avoid possible bug with undefined variable. Fixes bug #89
+	  
+	  Apply fix from -r9272:
+	  showing logs failed for current month when path to profile
+	  directory contained space(s) -> fixed
+
+2008-01-20 21:20  thaven
+
+	* assistant.tcl: Apply fix from -r9262:
+	  Assistant can bug if we go to the last step then do
+	  back->next->finish fast enough to not let the GetIPConfig
+	  function return before we clicked finished.
+	  Fixes bug #116
+	  
+	  Apply fix from -r9267:
+	  StartPreviewLinux being called after the assistant was closed.
+	  Fixes bug #122
+
+2008-01-20 21:04  thaven
+
+	* balloon.tcl: Apply fix from -r9252:
+	  Fix bug #110. The bundled version of Tk (8.4.7) doesn't support
+	  -alpha.
+	  
+	  Apply fix from -r9254:
+	  Catch -alpha for windows aswell...
+
+2008-01-20 21:01  thaven
+
+	* gui.tcl: Apply fix from -r9253:
+	  Fix bug #109.
+
+2008-01-20 20:59  thaven
+
+	* plugins/WebcamShooter/camshoot.tcl,
+	  plugins/WebcamShooter/plugininfo.xml: Apply fix from -r9251:
+	  catch the webcam start in camshooter. Fixes bug #30
+
+2008-01-20 20:57  thaven
+
+	* chatwindow.tcl, preferences.tcl: Apply fix from -r9250:
+	  Only show one window for saving a chat, no need for two.. removes
+	  old ccmsn code.
+	  http://www.amsn-project.net/forums/viewtopic.php?p=26477
+
+2008-01-20 20:52  thaven
+
+	* chatwindow.tcl: Apply fix from -r9248:
+	  Fixes focus issues with new windows being opened when having
+	  tabs.
+	  http://www.amsn-project.net/forums/viewtopic.php?p=26481
+
+2008-01-20 20:50  thaven
+
+	* gui.tcl: Apply fix from -r9245:
+	  catch in case error with WinLoadFile and fallback on the old
+	  rundll32 method.
+	  Fixes bug #92
+
+2008-01-20 20:48  thaven
+
+	* skins.tcl: Apply fix from -r9244:
+	  bullshit code. Fixes Bug #93 in bug report system. If the skin
+	  file couldn't be opened, we created an image with the null file
+	  but we didn't catch.. no need for that, now just create an empty
+	  image!!! will save hundreds of bug reports...
+
+2008-01-20 20:44  thaven
+
+	* audio.tcl, utils/macosx/snack2.2/libsnack-8.5.dylib,
+	  utils/macosx/snack2.2/libsound-8.5.dylib,
+	  utils/macosx/snack2.2/pkgIndex.tcl: Apply fix from -r9242:
+	  Fix snack with 8.5 on Mac OS X.
+
+2008-01-20 20:24  thaven
+
+	* bugs.tcl: Apply fix from -r9241:
+	  Fix html formatting for error text too
+
+2008-01-20 20:21  thaven
+
+	* utils/macosx/tkUnsupported/macWindowStyle.tcl: Apply fix from
+	  -r9239:
+	  Swap if/else in version check for brushed windows.
+	  (I'm not convinced this will make a difference, but according to
+	  cocoaforge users it does..)
+
+2008-01-20 20:19  thaven
+
+	* protocol.tcl: Apply fix from -r9235:
+	  when we log-out ::contactlist_loaded must be set to 0
+	  
+	  Apply fix from -r9246:
+	  if new name is empty, causes error on callback to
+	  handlePRPResponse.
+	  Fixes bug #55
+
+2008-01-20 20:13  thaven
+
+	* configure, configure.ac: Apply fix from -r9234:
+	  Patching configure to fix bad syntax on options --enable-debug
+	  and --enable-static. Problem was because of the syntax we
+	  had, the --disable-debug and --disable-static would also cause it
+	  those options to become enabled....
+	  Patch was provided by the gentoo dev team :
+	  http://sources.gentoo.org/viewcvs.py/gentoo-x86/net-im/amsn/files/amsn-0.97_rc1-autoconf-logic.patch?rev=1.1&view=log
+	  --------
+	  closes bug #179467. Suggested ebuild not used as I had to tame a
+	  wild build system that was pre-stripping binaries and not
+	  listening to --enable flags. Thanks to Edge <edge87@gmail.com>
+	  for help with a test account. Dropped ~alpha & ~hppa keywords
+	  over dev-tcltk/snack dependency, filed bug #185250.
+	  (Portage version: 2.1.3_rc8)
+
+2008-01-20 20:09  thaven
+
+	* utils/TkCximage/TkCximage-8.5.dylib,
+	  utils/TkCximage/TkCximage.dylib, utils/TkCximage/pkgIndex.tcl,
+	  utils/TkCximage/src/TkCximage.cpp,
+	  utils/TkCximage/src/TkCximage.h, utils/macosx/TkCximage,
+	  utils/macosx/webcamsn, utils/webcamsn/webcamsn.dylib: Apply fix
+	  from -r9199 (Mac only):
+	  Move webcamsn and TkCximage dylibs out of utils/macosx into
+	  utils.
+	  
+	  Apply fix from -r9224:
+	  TclTk 8.5 warns if these functions aren't present..
+	  (Tkcximage_Unload and Tkcximage_SafeUnload)
+	  
+	  Apply fix from -r9228:
+	  Change TkCximage to use a version of the lib compiled for this
+	  version of TclTk.
+	  It searches for TkCximage-tclver.shared, and it will use that if
+	  it's available, else it will use the old default
+	  TkCximage.shared.
+
+2008-01-20 19:52  thaven
+
+	* amsn: Apply fix from -r9226 (Mac only):
+	  Disable applescript events with packages using 8.5.0+
+
+2008-01-20 19:49  thaven
+
+	* utils/macosx/tls1.5.0, utils/macosx/tls1.5.0/libtls1.5.0.dylib,
+	  utils/macosx/tls1.5.0/pkgIndex.tcl,
+	  utils/macosx/tls1.5.0/tls.tcl, utils/macosx/tls1.50: Apply fix
+	  from -r9225 (Mac only):
+	  Change tls package version from 1.50 to 1.5.0 on macosx
+
+2008-01-20 19:42  thaven
+
+	* configure, configure.ac: Apply fix from -r9218 (Mac only):
+	  - Fix configure script for 10.5 (-mmacosx-version-min must be
+	  set).
+	  - Tidy universal flags.
+	  - Use system Tcl/Tk installation.
+
+2008-01-20 19:36  thaven
+
+	* gui.tcl: Apply fix from -r9214:
+	  Should fix bug report with preference's privacy tab, missing
+	  colour variable :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4578
+	  
+	  Apply fix from -r9215:
+	  Maybe fixes OIM hanging the whole PC with tabbed chat..
+	  apparently, the workaround was only for no tabbed chats, but
+	  should have been for all chat window types.
+
+2008-01-20 19:31  thaven
+
+	* chatwindow.tcl: Apply fix from -r9208:
+	  fixed bug about color text in top-CW - bug reported here:
+	  http://www.amsn-project.net/forums/viewtopic.php?t=4523
+
+2008-01-20 19:28  thaven
+
+	* protocol.tcl: Apply fix from -r9207:
+	  we shouldn't add ChangeState PostEvent if ILN
+
+2008-01-20 19:23  thaven
+
+	* assistant.tcl: Apply fix from -r9201:
+	  fix some bindings when frames no longer exist
+
+2008-01-20 19:19  thaven
+
+	* bugs.tcl: Apply fix from -r9197:
+	  Fix bug in the bug reporting system that caused an xml error on
+	  the server and errors to users
+
+2008-01-20 19:15  thaven
+
+	* plugins/Nudge/Nudge.tcl, plugins/Nudge/plugininfo.xml: Apply fix
+	  to Nudge-plugin from -r9195 and -r9196
+
+2008-01-20 19:01  thaven
+
+	* amsn: Revert -r9192 on branch and apply fix from -r9191 instead
+
+2008-01-20 18:53  thaven
+
+	* amsn, configure, configure.ac: Set version for 0.97.1 in
+	  development
+
+********************************************************************************
