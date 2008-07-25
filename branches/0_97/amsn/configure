@@ -1832,7 +1832,7 @@ ac_config_headers="$ac_config_headers utils/linux/capture/config.h"
 
 
 APPNAME=amsn
-APPVERSION=0.97.1
+APPVERSION=0.97.2
 APPRELEASE=1
 APPSTABLE=yes
 
@@ -7159,8 +7159,8 @@ _ACEOF
 
 cat >>$CONFIG_STATUS <<_ACEOF || ac_write_fail=1
 # Files that config.status was made for.
-config_files="$ac_config_files"
-config_headers="$ac_config_headers"
+config_files="`echo $ac_config_files`"
+config_headers="`echo $ac_config_headers`"
 
 _ACEOF
 
