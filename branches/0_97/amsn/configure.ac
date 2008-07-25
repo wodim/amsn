@@ -6,7 +6,7 @@ AC_CONFIG_HEADER(utils/linux/capture/config.h)
 
 
 APPNAME=amsn
-APPVERSION=0.97.1
+APPVERSION=0.97.2
 APPRELEASE=1
 APPSTABLE=yes
 
