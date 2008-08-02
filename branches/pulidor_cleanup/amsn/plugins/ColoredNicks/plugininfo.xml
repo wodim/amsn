@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>ColoredNicks</name>
+	<author>Giuseppe Bottiglieri (Square87)</author>
+	<description>ColoredNicks allows to see colored nicks in contact list. You can also colour your nick and your personal message. Background is not supported yet.</description>
+	<description_es>ColoredNicks te permite ver los apodos coloreados en la lista de contactos. Además puedes colorear tu apodo y tu mensaje personal. El color de fondo no está aún soportado</description_es>
+	<description_fr>ColoredNicks vous permet de voir les couleurs dans la liste de vos contacts. Vous pouvez aussi colorier votre pseudonyme et votre message personnel. Le surlignage n'est pas encore supporté.</description_fr>
+	<description_it>ColoredNicks permette di visualizzare i nick colorati nella lista dei contatti. Puoi anche colorare il tuo nick e il messaggio personale. Lo sfondo non è ancora supportato.</description_it>
+	<description_hu>A ColoredNicks segítségével a becenevek színezése is látható . A saját beceneved és személyes üzeneted is színezhető. A háttér színezése jelenleg nem támogatott.</description_hu>
+	<description_nl>ColoredNicks laat gekleurde schermnamen zien in de contactenlijst. Je kunt ook je schermnaam en je persoonlijk bericht inkleuren. Achtergrond wordt nog niet ondersteund.</description_nl>
+	<amsn_version>0.98b</amsn_version>
+	<plugin_version>0.4.1</plugin_version>
+	<plugin_file>colorednicks.tcl</plugin_file>
+	<plugin_namespace>colorednicks</plugin_namespace>
+	<init_procedure>init</init_procedure>
+	<deinit_procedure>deinit</deinit_procedure>
+	
+	<cvs_version>9567</cvs_version>
+
+	<lang>
+		<langcode>en</langcode>
+		<version>1.0</version>
+	</lang>
+	<lang>
+		<langcode>es</langcode>
+		<version>1.0</version>
+	</lang>
+	<lang>
+		<langcode>fr</langcode>
+		<version>9680</version>
+	</lang>
+	<lang>
+		<langcode>hu</langcode>
+		<version>1.0</version>
+	</lang>
+	<lang>
+		<langcode>it</langcode>
+		<version>1.0</version>
+	</lang>
+	<lang>
+		<langcode>nl</langcode>
+		<version>1.0</version>
+	</lang>
+	<lang>
+		<langcode>pt_BR</langcode>
+		<version>1.0</version>
+	</lang>
+
+	<URL>
+		<main>http://www.amsn-project.net/autoupdater/plugins/ColoredNicks/colorednicks.tcl</main>
+		<plugininfo>http://www.amsn-project.net/autoupdater/plugins/ColoredNicks/plugininfo.xml</plugininfo>
+		<lang>http://www.amsn-project.net/autoupdater/plugins/ColoredNicks/lang/lang$langcode</lang>
+		<file>http://www.amsn-project.net/autoupdater/plugins/ColoredNicks/$file</file>
+	</URL>
+
+</plugin>
