@@ -2,8 +2,8 @@
  #
  #       Provides a console window.
  #
- # Last modified on: $Date$
- # Last modified by: $Author$
+ # Last modified on: $Date: 2006-01-28 23:42:17 +0100 (sáb, 28 ene 2006) $
+ # Last modified by: $Author: kakaroto $
  #
  # This file is evaluated to provide a console window interface to the
  # root Tcl interpreter of an OOMMF application.  It calls on a script
@@ -197,3 +197,5 @@
  unset consoleInterp
 
  console title "[wm title .] Console"
+
+package provide tkConsole 1.0

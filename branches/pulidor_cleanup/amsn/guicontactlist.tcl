@@ -106,25 +106,6 @@ namespace eval ::guiContactList {
 		#This means that we aren't currently dragging
 		set OnTheMove 0
 
-		#here we load images used in this code:
-		::skin::setPixmap back back.gif
-		::skin::setPixmap back2 back2.gif
-		::skin::setPixmap upleft box_upleft.gif
-		::skin::setPixmap up box_up.gif
-		::skin::setPixmap upright box_upright.gif
-		::skin::setPixmap left box_left.gif
-		::skin::setPixmap body box_body.gif
-		::skin::setPixmap right box_right.gif
-		::skin::setPixmap downleft box_downleft.gif
-		::skin::setPixmap down box_down.gif
-		::skin::setPixmap downright box_downright.gif
-		::skin::setPixmap plain_emblem plain_emblem.gif		
-		::skin::setPixmap away_emblem away_emblem.gif
-		::skin::setPixmap busy_emblem busy_emblem.gif
-		::skin::setPixmap blocked_emblem blocked_emblem.gif
-		::skin::setPixmap notinlist_emblem notinlist_emblem.gif
-
-
 		variable Xbegin
 		variable Ybegin
 
@@ -677,17 +658,17 @@ namespace eval ::guiContactList {
 					set height [expr {$bodYend - $bodYbegin}]
 					if {$height > [::skin::getKey buddy_ypad]} {
 						image create photo boxbodysmall_$groupDrawn -height \
-							[image height [::skin::loadPixmap left]] -width $width
-						boxbodysmall_$groupDrawn copy [::skin::loadPixmap left] -to 0 0 \
-							[image width [::skin::loadPixmap left]] \
-							[image height [::skin::loadPixmap left]]
-						boxbodysmall_$groupDrawn copy [::skin::loadPixmap body] -to \
-							[image width [::skin::loadPixmap left]] 0 \
-							[expr {$width -  [image width [::skin::loadPixmap right]]}] \
-							[image height [::skin::loadPixmap body]]
-						boxbodysmall_$groupDrawn copy [::skin::loadPixmap right] -to \
-							[expr {$width - [image width [::skin::loadPixmap right]]}] 0 \
-							$width [image height [::skin::loadPixmap right]]
+							[image height [::skin::loadPixmap box_left]] -width $width
+						boxbodysmall_$groupDrawn copy [::skin::loadPixmap box_left] -to 0 0 \
+							[image width [::skin::loadPixmap box_left]] \
+							[image height [::skin::loadPixmap box_left]]
+						boxbodysmall_$groupDrawn copy [::skin::loadPixmap box_body] -to \
+							[image width [::skin::loadPixmap box_left]] 0 \
+							[expr {$width -  [image width [::skin::loadPixmap box_right]]}] \
+							[image height [::skin::loadPixmap box_body]]
+						boxbodysmall_$groupDrawn copy [::skin::loadPixmap box_right] -to \
+							[expr {$width - [image width [::skin::loadPixmap box_right]]}] 0 \
+							$width [image height [::skin::loadPixmap box_right]]
 
 						image create photo boxbody_$groupDrawn -height $height -width $width
 						boxbody_$groupDrawn copy boxbodysmall_$groupDrawn -to 0 0 $width $height
@@ -702,17 +683,17 @@ namespace eval ::guiContactList {
 
 					# Create endbar of the box
 					image create photo boxdownbar_$groupDrawn \
-						-height [image height [::skin::loadPixmap down]] -width $width
-					boxdownbar_$groupDrawn copy [::skin::loadPixmap downleft] -to 0 0 \
-						[image width [::skin::loadPixmap downleft]] \
-						[image height [::skin::loadPixmap downleft]]
-					boxdownbar_$groupDrawn copy [::skin::loadPixmap down] -to \
-						[image width [::skin::loadPixmap downleft]] 0 \
-						[expr {$width -  [image width [::skin::loadPixmap downright]]}] \
-						[image height [::skin::loadPixmap down]]
-					boxdownbar_$groupDrawn copy [::skin::loadPixmap downright] -to \
-						[expr {$width - [image width [::skin::loadPixmap downright]]}] 0 \
-						$width [image height [::skin::loadPixmap downright]]
+						-height [image height [::skin::loadPixmap box_down]] -width $width
+					boxdownbar_$groupDrawn copy [::skin::loadPixmap box_downleft] -to 0 0 \
+						[image width [::skin::loadPixmap box_downleft]] \
+						[image height [::skin::loadPixmap box_downleft]]
+					boxdownbar_$groupDrawn copy [::skin::loadPixmap box_down] -to \
+						[image width [::skin::loadPixmap box_downleft]] 0 \
+						[expr {$width -  [image width [::skin::loadPixmap box_downright]]}] \
+						[image height [::skin::loadPixmap box_down]]
+					boxdownbar_$groupDrawn copy [::skin::loadPixmap box_downright] -to \
+						[expr {$width - [image width [::skin::loadPixmap box_downright]]}] 0 \
+						$width [image height [::skin::loadPixmap box_downright]]
 					$canvas create image $boXpad $bodYend -image boxdownbar_$groupDrawn -anchor nw \
 						-tags [list box box_downbar $gid]
 
@@ -733,18 +714,18 @@ namespace eval ::guiContactList {
 				}
 
 				# Create upbar of the box
-				image create photo boxupbar_$groupDrawn -height [image height [::skin::loadPixmap up]] \
+				image create photo boxupbar_$groupDrawn -height [image height [::skin::loadPixmap box_up]] \
 					-width $width
-				boxupbar_$groupDrawn copy [::skin::loadPixmap upleft] -to 0 0 \
-					[image width [::skin::loadPixmap upleft]] \
-					[image height [::skin::loadPixmap upleft]]
-				boxupbar_$groupDrawn copy [::skin::loadPixmap up] -to \
-					[image width [::skin::loadPixmap upleft]] 0 \
-					[expr {$width -  [image width [::skin::loadPixmap upright]]}] \
-					[image height [::skin::loadPixmap up]]
-				boxupbar_$groupDrawn copy [::skin::loadPixmap upright] -to \
-					[expr {$width - [image width [::skin::loadPixmap upright]]}] 0 \
-					$width [image height [::skin::loadPixmap upright]]
+				boxupbar_$groupDrawn copy [::skin::loadPixmap box_upleft] -to 0 0 \
+					[image width [::skin::loadPixmap box_upleft]] \
+					[image height [::skin::loadPixmap box_upleft]]
+				boxupbar_$groupDrawn copy [::skin::loadPixmap box_up] -to \
+					[image width [::skin::loadPixmap box_upleft]] 0 \
+					[expr {$width -  [image width [::skin::loadPixmap box_upright]]}] \
+					[image height [::skin::loadPixmap box_up]]
+				boxupbar_$groupDrawn copy [::skin::loadPixmap box_upright] -to \
+					[expr {$width - [image width [::skin::loadPixmap box_upright]]}] 0 \
+					$width [image height [::skin::loadPixmap box_upright]]
 
 				# Draw it
 				set topYbegin [lindex $curPos 1]
@@ -752,18 +733,18 @@ namespace eval ::guiContactList {
 					-tags [list box box_upbar $gid]
 
 				# Save the endypos for next body drawing
-				set bodYbegin [expr {$topYbegin + [image height [::skin::loadPixmap up]]}]
+				set bodYbegin [expr {$topYbegin + [image height [::skin::loadPixmap box_up]]}]
 
 				set grpBbox [$canvas bbox $tag]
 				#Here we center the group text in the up pixmap
-				set ypos [expr {[lindex $curPos 1]+([image height [::skin::loadPixmap up]])/2 \
+				set ypos [expr {[lindex $curPos 1]+([image height [::skin::loadPixmap box_up]])/2 \
 				- ([lindex $grpBbox 3] - [lindex $grpBbox 1])/2 }]
 			
 				$canvas move $tag [expr {[lindex $curPos 0] - [lindex $currentPos 0] + $xpad}] \
 					[expr {$ypos - [lindex $currentPos 1]}]
 
 				set curPos [list [lindex $curPos 0] \
-					[expr {[lindex $curPos 1] + [image height [::skin::loadPixmap up]]}]]
+					[expr {[lindex $curPos 1] + [image height [::skin::loadPixmap box_up]]}]]
 				# 	as we already drew a group, the next won't be the first anymore
 				set DrawingFirstGroup 0
 
@@ -781,17 +762,17 @@ namespace eval ::guiContactList {
 	
 			if {$height > [::skin::getKey buddy_ypad]} {
 				image create photo boxbodysmall_$groupDrawn \
-					-height [image height [::skin::loadPixmap left]] -width $width
-				boxbodysmall_$groupDrawn copy [::skin::loadPixmap left] -to 0 0 \
-					[image width [::skin::loadPixmap left]] \
-					[image height [::skin::loadPixmap left]]
-				boxbodysmall_$groupDrawn copy [::skin::loadPixmap body] -to \
-					[image width [::skin::loadPixmap left]] 0 \
-					[expr {$width -  [image width [::skin::loadPixmap right]]}] \
-					[image height [::skin::loadPixmap body]]
-				boxbodysmall_$groupDrawn copy [::skin::loadPixmap right] -to \
-					[expr {$width - [image width [::skin::loadPixmap right]]}] 0 \
-					$width  [image height [::skin::loadPixmap right]]
+					-height [image height [::skin::loadPixmap box_left]] -width $width
+				boxbodysmall_$groupDrawn copy [::skin::loadPixmap box_left] -to 0 0 \
+					[image width [::skin::loadPixmap box_left]] \
+					[image height [::skin::loadPixmap box_left]]
+				boxbodysmall_$groupDrawn copy [::skin::loadPixmap box_body] -to \
+					[image width [::skin::loadPixmap box_left]] 0 \
+					[expr {$width -  [image width [::skin::loadPixmap box_right]]}] \
+					[image height [::skin::loadPixmap box_body]]
+				boxbodysmall_$groupDrawn copy [::skin::loadPixmap box_right] -to \
+					[expr {$width - [image width [::skin::loadPixmap box_right]]}] 0 \
+					$width  [image height [::skin::loadPixmap box_right]]
 				image create photo boxbody_$groupDrawn -height $height -width $width
 				boxbody_$groupDrawn copy boxbodysmall_$groupDrawn -to 0 0 $width $height
 				image delete boxbodysmall_$groupDrawn
@@ -805,17 +786,17 @@ namespace eval ::guiContactList {
 	
 			# Create endbar of the box
 			image create photo boxdownbar_$groupDrawn \
-				-height [image height [::skin::loadPixmap down]] -width $width
-			boxdownbar_$groupDrawn copy [::skin::loadPixmap downleft] -to 0 0 \
-				[image width [::skin::loadPixmap downleft]] \
-				[image height [::skin::loadPixmap downleft]]
-			boxdownbar_$groupDrawn copy [::skin::loadPixmap down] -to \
-				[image width [::skin::loadPixmap downleft]] 0 \
-				[expr {$width -  [image width [::skin::loadPixmap downright]]}] \
-				[image height [::skin::loadPixmap down]]
-			boxdownbar_$groupDrawn copy [::skin::loadPixmap downright] -to \
-				[expr {$width - [image width [::skin::loadPixmap downright]]}] 0 \
-				$width [image height [::skin::loadPixmap downright]]
+				-height [image height [::skin::loadPixmap box_down]] -width $width
+			boxdownbar_$groupDrawn copy [::skin::loadPixmap box_downleft] -to 0 0 \
+				[image width [::skin::loadPixmap box_downleft]] \
+				[image height [::skin::loadPixmap box_downleft]]
+			boxdownbar_$groupDrawn copy [::skin::loadPixmap box_down] -to \
+				[image width [::skin::loadPixmap box_downleft]] 0 \
+				[expr {$width -  [image width [::skin::loadPixmap box_downright]]}] \
+				[image height [::skin::loadPixmap box_down]]
+			boxdownbar_$groupDrawn copy [::skin::loadPixmap box_downright] -to \
+				[expr {$width - [image width [::skin::loadPixmap box_downright]]}] 0 \
+				$width [image height [::skin::loadPixmap box_downright]]
 
 			$canvas create image $boXpad $bodYend -image boxdownbar_$groupDrawn -anchor nw \
 				-tags [list box box_downbar $gid]

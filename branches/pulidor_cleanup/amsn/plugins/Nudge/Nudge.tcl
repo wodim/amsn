@@ -32,9 +32,6 @@ namespace eval ::Nudge {
 		#Config to show in configuration window	
 		::Nudge::configlist_values
 
-		#Load the pictures
-		::Nudge::setPixmap
-
 		#Wait 5 seconds after all the plugins are loaded to register
 		#the command /nudge to amsnplus plugin
 		
@@ -635,17 +632,6 @@ namespace eval ::Nudge {
 		} else {
 			return 0
 		}
-	}
-	############################################
-	# ::Nudge::setPixmap                       #
-	# -----------------------------------------#
-	# Define the nudge pixmaps from the skin   #
-	############################################	
-	proc setPixmap {} {
-			::skin::setPixmap nudge nudge.gif
-			::skin::setPixmap nudgeoff nudgeoff.gif
-			::skin::setPixmap nudgebutton nudgebutton.gif
-			::skin::setPixmap nudgebutton_hover nudgebutton_hover.gif
 	}
 
 	################################################

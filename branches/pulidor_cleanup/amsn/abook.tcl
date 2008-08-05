@@ -1532,7 +1532,7 @@ namespace eval ::abookGui {
 			image create photo customdp_img_$email -file [set customdp_$email]
 			label $nbSettings.fNick.fDispl.dp -height 96 -width 96 -image customdp_img_$email -borderwidth 0 -relief flat
 		} else {
-			label $nbSettings.fNick.fDispl.dp -height 96 -width 96 -image [::skin::loadPixmap nullimage] -borderwidth 0 -relief flat
+			label $nbSettings.fNick.fDispl.dp -height 96 -width 96 -image [::skin::loadPixmap null] -borderwidth 0 -relief flat
 		}
 		
 		button $nbSettings.fNick.fDispl.bset -text "[trans change]" -command "::abookGui::ChangeCustomDp $email $nbSettings" 
@@ -1842,7 +1842,7 @@ namespace eval ::abookGui {
 	proc RemoveCustomDp { email w } {
 	   	global customdp_$email
 		set customdp_$email ""
-		$w.fNick.fDispl.dp configure -image [::skin::loadPixmap nullimage]
+		$w.fNick.fDispl.dp configure -image [::skin::loadPixmap null]
 	}
 
 	proc SetGlobalNick { } {

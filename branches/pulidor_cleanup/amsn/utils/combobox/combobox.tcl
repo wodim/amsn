@@ -262,7 +262,8 @@ proc ::combobox::Init {} {
 	option add *Combobox.maxHeight           10     widgetDefault
 	option add *Combobox.height              0
 	#Modified by Jerome, to get a different arrow on combobox
-	option add *Combobox.image "[::skin::loadPixmap arrow]" widgetDefault
+	option add *Combobox.image [if { [OnMac]} { expr {[::skin::loadPixmap arrowmac]} } else { expr {[::skin::loadPixmap arrow]} } ] widgetDefault
+	#option add *Combobox.image "[ if { 1 } { expr {[::skin::loadPixmap arrowmac]}} ]" widgetDefault
     }
 
     # set class bindings

@@ -16,6 +16,10 @@
 namespace eval ::searchcontact {
 
 	proc Init { dir } {
+		
+		variable plugin_dir
+		
+		set plugin_dir $dir
 
 		::plugins::RegisterPlugin "Search Contact"
 		::plugins::RegisterEvent "Search Contact" contactlistLoaded drawSearchBar
@@ -55,9 +59,6 @@ namespace eval ::searchcontact {
 			[list bool "[trans storelastinput]" storelastinput] \
 		]
 
-		#load the icons
-		::skin::setPixmap search search.png pixmaps [file join "$dir" pixmaps]
-		::skin::setPixmap clear clear.png pixmaps [file join "$dir" pixmaps]
 
 		#clearing some vars before use
 		set ::searchcontact::firstcontact ""
@@ -146,6 +147,8 @@ namespace eval ::searchcontact {
 
 
 	proc drawSearchBar {{event none} {evPar ""} } {
+		variable plugin_dir
+		
 		if {[winfo exists .main.searchbar]} {
 			destroy .main.searchbar
 			variable ::guiContactList::external_lock 0
@@ -168,10 +171,10 @@ namespace eval ::searchcontact {
 
 		set frame .main.searchbar.sunkenframe
 
-		label $frame.searchbutton -image [::skin::loadPixmap search] -bg white	
+		label $frame.searchbutton -image [::skin::loadPixmap search_contact [file join "$plugin_dir" pixmaps]] -bg white	
 		entry $frame.input -relief flat -bg white -font splainf -selectbackground #b7d1ff -fg grey \
 			-highlightcolor #aaaaaa -highlightthickness 2
-		label $frame.clearbutton -image [::skin::loadPixmap clear]  -bg white
+		label $frame.clearbutton -image [::skin::loadPixmap clear_search [file join "$plugin_dir" pixmaps]]  -bg white
 
 		pack $frame.searchbutton -side left
 		pack $frame.input -side left -fill x -expand 1

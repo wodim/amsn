@@ -2478,13 +2478,13 @@ namespace eval ::MSN {
 				status_log "trying to chat with yourself"
 				set chatid [::MSN::ChatFor $sb_name]
 				::MSN::ClearQueue $chatid
-				::amsn::chatStatus $chatid "[trans useryourself]\n" miniwarning
+				::amsn::chatStatus $chatid "[trans useryourself]\n" miniwarn
 			}	
 			216 {
 				# if you try to begin a chat session with someone who blocked you and is online
 				set chatid [::MSN::ChatFor $sb_name]
 				::MSN::ClearQueue $chatid
-				::amsn::chatStatus $chatid "$user: [trans userblocked]\n" miniwarning
+				::amsn::chatStatus $chatid "$user: [trans userblocked]\n" miniwarn
 			}
 			217 {
 				#TODO: Check what we do with sb stat "?", disable chat window?
@@ -2494,7 +2494,7 @@ namespace eval ::MSN {
 				::MSN::ClearQueue $chatid
 				# DO NOT cleanchat... it's needed for ::ChatWindow::TopUpdate
 				# ::MSN::CleanChat $chatid
-				::amsn::chatStatus $chatid "$user: [trans usernotonline]\n" miniwarning
+				::amsn::chatStatus $chatid "$user: [trans usernotonline]\n" miniwarn
 				# If the user goes offline, the servers should tell us so. If we receive a 217 error for a not-offline user, it's most probably a server error - YES it does happen - and it shouldn't make the user go offline on the CL...
 				#::abook::setVolatileData $user state "FLN"
 				::ChatWindow::TopUpdate $chatid
@@ -5233,7 +5233,7 @@ proc cmsn_open_sb {sb recv} {
 		set chatid [::MSN::ChatFor $sb]
 		::MSN::ClearQueue $chatid
 		::MSN::CleanChat $chatid
-		::amsn::chatStatus $chatid "[trans needonline]\n" miniwarning
+		::amsn::chatStatus $chatid "[trans needonline]\n" miniwarn
 		#msg_box "[trans needonline]"
 		return 1
 	}
@@ -5393,7 +5393,7 @@ proc cmsn_reconnect { sb } {
 				set chatid [::MSN::ChatFor $sb]
 				::MSN::ClearQueue $chatid
 				::MSN::CleanChat $chatid
-				::amsn::chatStatus $chatid "[trans needonline]\n" miniwarning
+				::amsn::chatStatus $chatid "[trans needonline]\n" miniwarn
 				return
 			}
 
@@ -7628,17 +7628,16 @@ namespace eval ::MSN6FT {
 				image delete $image
 			}
 			
-			::skin::setPixmap ${callid}.png $file
-							
 			if { [catch { open $file} fd] == 0 } {
 				fconfigure $fd -translation {binary binary }
 				set context "$context[read $fd]"
 				close $fd
 			}
+			
 			#Show the preview picture in the window
-			if { [::skin::loadPixmap "${callid}.png"] != "" } {
+			if { [::skin::loadPixmap $file] != "" } {
 				::amsn::WinWrite $chatid "\n" green
-				::amsn::WinWriteIcon $chatid ${callid}.png 5 5
+				::amsn::WinWriteIcon $chatid $file 5 5
 				::amsn::WinWrite $chatid "\n" green
 			}
 		}
@@ -8297,11 +8296,6 @@ namespace eval ::MSN6FT {
 			fconfigure $fd -translation binary
 			puts -nonewline $fd "$previewdata"
 			close $fd
-			set file [file join $dir ${sid}.png]
-			if { $file != "" && ![catch {set img [image create photo [TmpImgName] -file $file]} res]} {
-				::skin::setPixmap FT_preview_${sid} "[file join $dir ${sid}.png]"			
-			}
-			catch {image delete $img}
 		}
 		setObjOption $sid chatid $chatid
 

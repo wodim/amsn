@@ -49,7 +49,7 @@ package require Tk
 
 if {$::tcl_version <= 8.3} {
 	tk_messageBox -default ok -message "You need TCL/TK 8.4\
-	 or better to run aMSN. Please upgrade."  -icon warning
+		or better to run aMSN. Please upgrade."  -icon warning
 	exit
 }
 #Q: can't this be done in 1 check like "[package require Tk] > 8.3" ?
@@ -83,7 +83,6 @@ set version "0.98b"
 set rcversion "0.97.90.svn"
 set date "12/25/2007"
 set weburl "http://www.amsn-project.net"
-set program_dir "."
 set HOME ""
 set HOME2 ""
 # distributions can change vendor if they provide a patched version of amsn so we
@@ -108,15 +107,10 @@ while {[catch {file readlink [file join $program_dir $program]} program]== 0} {
 	} else {
 		set program_dir [file join $program_dir [file dirname $program]]
 	}
-
 	set program [file tail $program]
 }
 
-set starting_dir [pwd]
-cd $program_dir
-set program_dir [pwd]
 unset program
-#unset program_dir
 
 ############################################################
 ### From here we need amsncore, for platform checks etc
@@ -127,79 +121,34 @@ unset program
 source amsncore.tcl
 
 ############################################################
-### Setup other important directory paths
-### depending on the platform
+### Load platform specific procedures
 ############################################################
+#Specific folder to check for package on platforms
+source [file join $program_dir "platform" "common.tcl"]
 
 if { [OnDarwin] } {
-   set HOME "[file join $env(HOME) Library/Application\ Support/amsn]"
-} elseif { [OnUnix] } {
-   set HOME "[file join $env(HOME) .amsn]"
+	source [file join $program_dir "platform" "darwin.tcl"]
 } elseif { [OnWin] } {
-  if {[info exists env(USERPROFILE)]} {
-     set HOME "[file join $env(USERPROFILE) amsn]"
-  } else {
-   set HOME "[file join [pwd] amsn_config]"
-  }
-} else {
-   set HOME "[file join [pwd] amsn_config]"
-}
+	source [file join $program_dir "platform" "windows.tcl"]
+} elseif { [OnLinux] || [OnBSD]} {
+	source [file join $program_dir "platform" "unix.tcl"]
+} 
+
+lprepend auto_path [file join utils]
+
 set HOME2 $HOME
 
 ############################################################
 ### And setup where to find optional packages
 ############################################################
-
-proc lprepend {varName args} {
-   upvar $varName var
-   set var [eval [list linsert $var 0] $args]
-}
-
 lprepend auto_path [file join ${HOME} plugins]
-#Specific folder to check for package on platforms
-if { [OnDarwin] } {
-	lprepend auto_path [file join utils macosx]
-} elseif { [OnWin] } {
-	lprepend auto_path [file join utils windows]
-} elseif { [OnLinux] } {
-	lprepend auto_path [file join utils linux]
-} elseif { [OnBSD] } {
-        lprepend auto_path [file join utils linux] 
-}
-lprepend auto_path [file join utils]
 
-set libtls ""
-
-catch { source [file join $HOME tlsconfig.tcl] }
-
-if { $libtls != "" && [lsearch $auto_path $libtls] == -1 } {
-    lprepend auto_path $libtls
-}
-
-#TODO: Move this from here ??
-#///////////////////////////////////////////////////////////////////////
-#Notebook Pages (Buddies,News,Calendar,etc.)
-set pgBuddy ""
-set pgNews  ""
-#///////////////////////////////////////////////////////////////////////
 
 
 ############################################################
 #### Load program modules
 ############################################################
 set initialize_amsn 1
-
-proc load_console {} {
-	if { [info proc console] == "" && [info command console] == "" } {
-		if { [file exists console.tcl] && [file readable console.tcl] } {
-			uplevel \#0 {source console.tcl}
-			console show
-		}
-	} else {
-		console show
-	}
-}
-
 
 proc reload_files { } {
     uplevel \#0 {
@@ -267,11 +216,6 @@ proc reload_files { } {
     ::Version::setSubversionId {$Id$}
 }
 
-proc after_info { } {
-	foreach f [after info] {
-		status_log "After $f : [after info $f]\n" red
-	}
-}
 
 reload_files
 
@@ -379,8 +323,3 @@ if { [::config::getKey autocheckver] == 1 } {
     set new [::autoupdate::check_version_silent]
 }
 
-
-
-vwait events
-
-# DO NOT WRITE ANY CODE BELOW THESE LINESSSSSSSSSS FOR ANY CODE TO BE ADDED, WRITE IT BEFORE THE 'vwait events' BECAUSE THAT LINE HANGS THE SCRIPT THERE FOREVER...

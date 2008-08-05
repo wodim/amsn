@@ -1099,16 +1099,6 @@ namespace eval ::ChatWindow {
 
 	proc CreateTabBar { w } {
 		set bar $w.bar
-		::skin::setPixmap tab tab.gif
-		::skin::setPixmap tab_close tab_close.gif
-
-		::skin::setPixmap tab_close_hover tab_close_hover.gif
-		::skin::setPixmap tab_hover tab_hover.gif
-
-		::skin::setPixmap tab_current tab_current.gif
-		::skin::setPixmap tab_flicker tab_flicker.gif
-		::skin::setPixmap moretabs moretabs.gif
-		::skin::setPixmap lesstabs lesstabs.gif
 
 		frame $bar -class Amsn -relief solid -bg [::skin::getKey tabbarbg] -bd 0
 
@@ -2179,14 +2169,14 @@ namespace eval ::ChatWindow {
 		frame $sendbuttonframe -borderwidth 0 -bg [::skin::getKey sendbuttonbg]
 		
 		# Send button in conversation window, specifications and command.
-		button $sendbutton -image [::skin::loadPixmap nullimage] \
+		button $sendbutton -image [::skin::loadPixmap null] \
 		    -command "::amsn::MessageSend $w $text" \
 		    -fg [::skin::getKey sendbuttonfg] -bg [::skin::getKey sendbuttonbg] -bd 0 -relief flat \
 		    -activebackground [::skin::getKey sendbuttonbg] -activeforeground [::skin::getKey sendbuttonfghover] \
 		    -text [trans send] -font sboldf -highlightthickness 0 -pady 0 -padx 0 \
 		    -overrelief flat -compound center
 
-		set send_button_bg [scalable-bg $sendbutton.bg -source [::skin::loadPixmap sendbutton] \
+		set send_button_bg [scalable-bg $sendbutton.bg -source [::skin::loadPixmap sendbut] \
 					-n [::skin::getKey sendbuttony 1] -e [::skin::getKey sendbuttonx 1] \
 					-s [::skin::getKey sendbuttony 1] -w [::skin::getKey sendbuttonx 1] \
 					-resizemethod [::skin::getKey sendbuttonresize "tile"]]
@@ -2198,8 +2188,8 @@ namespace eval ::ChatWindow {
 		# Create my bindings
 		bind $sendbutton <Return> "::amsn::MessageSend $w $text; break"
 
-		bind $sendbutton <Enter> [list $send_button_bg configure -source [::skin::loadPixmap sendbutton_hover]]
-		bind $sendbutton <Leave> [list $send_button_bg configure -source [::skin::loadPixmap sendbutton]]
+		bind $sendbutton <Enter> [list $send_button_bg configure -source [::skin::loadPixmap sendbut_hover]]
+		bind $sendbutton <Leave> [list $send_button_bg configure -source [::skin::loadPixmap sendbut]]
 		bind $sendbutton <Configure> [list ::ChatWindow::SendButtonResized $sendbutton $send_button_bg %w %h]
 		bind $sendbutton <Destroy> [list $send_button_bg destroy]
 
@@ -2482,7 +2472,7 @@ namespace eval ::ChatWindow {
 				amsn::WinWrite $chatid "\n" red
 				amsn::WinWriteIcon $chatid greyline 3
 				amsn::WinWrite $chatid "\n" red
-				amsn::WinWriteIcon $chatid voice_icon 3 2
+				amsn::WinWriteIcon $chatid voice 3 2
 				amsn::WinWrite $chatid "[timestamp] [trans snackneeded]\n" red
 				amsn::WinWriteIcon $chatid greyline 3
 				return
@@ -2496,7 +2486,7 @@ namespace eval ::ChatWindow {
 				amsn::WinWrite $chatid "\n" red
 				amsn::WinWriteIcon $chatid greyline 3
 				amsn::WinWrite $chatid "\n" red
-				amsn::WinWriteIcon $chatid voice_icon 3 2
+				amsn::WinWriteIcon $chatid voice 3 2
 				amsn::WinWrite $chatid "[timestamp] [trans recorderror $res]\n" red
 				amsn::WinWriteIcon $chatid greyline 3
 				$voice_sound destroy
@@ -2665,7 +2655,7 @@ namespace eval ::ChatWindow {
 				amsn::WinWrite $chatid "\n" red
 				amsn::WinWriteIcon $chatid greyline 3
 				amsn::WinWrite $chatid "\n" red
-				amsn::WinWriteIcon $chatid voice_icon 3 2
+				amsn::WinWriteIcon $chatid voice 3 2
 				if { [$voice_sound length -unit seconds] < 2 } {
 					amsn::WinWrite $chatid "[timestamp] [trans nosound_or_hold]\n" red					
 				} else {
@@ -2693,7 +2683,7 @@ namespace eval ::ChatWindow {
 				amsn::WinWrite $chatid "\n" red
 				amsn::WinWriteIcon $chatid greyline 3
 				amsn::WinWrite $chatid "\n" red
-				amsn::WinWriteIcon $chatid voice_icon 3 2
+				amsn::WinWriteIcon $chatid voice 3 2
 				amsn::WinWrite $chatid "[timestamp] [trans sentvoice]\n  " green
 				amsn::WinWriteClickable $chatid "[trans play]" [list ::ChatWindow::playVoiceClip $w $filename $uid] play_voice_clip_$uid
 				amsn::WinWriteClickable $chatid "[trans stop]" [list ::ChatWindow::stopVoiceClip $w $filename $uid] stop_voice_clip_$uid
@@ -2760,7 +2750,7 @@ namespace eval ::ChatWindow {
 			amsn::WinWrite $chatid "\n" red
 			amsn::WinWriteIcon $chatid greyline 3
 			amsn::WinWrite $chatid " \n" red
-			amsn::WinWriteIcon $chatid voice_icon 3 2
+			amsn::WinWriteIcon $chatid voice 3 2
 			amsn::WinWrite $chatid "[timestamp] [trans snackneeded]\n" red
 			amsn::WinWriteIcon $chatid greyline 3
 			return
@@ -2775,7 +2765,7 @@ namespace eval ::ChatWindow {
 			amsn::WinWrite $chatid "\n" red
 			amsn::WinWriteIcon $chatid greyline 3
 			amsn::WinWrite $chatid " \n" red
-			amsn::WinWriteIcon $chatid voice_icon 3 2
+			amsn::WinWriteIcon $chatid voice 3 2
 			amsn::WinWrite $chatid "[timestamp] [trans receivedvoice]\n  " green
 			amsn::WinWriteClickable $chatid "[trans play]" [list ::ChatWindow::playVoiceClip $w $filename_decoded $uid] play_voice_clip_$uid
 			amsn::WinWriteClickable $chatid "[trans stop]" [list ::ChatWindow::stopVoiceClip $w $filename_decoded $uid] stop_voice_clip_$uid

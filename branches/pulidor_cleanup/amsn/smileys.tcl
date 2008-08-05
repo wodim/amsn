@@ -117,10 +117,6 @@ namespace eval ::smiley {
 			
 			#Also add to the emotions data a list of triggers
 			lappend emotion(symbols) $text
-			
-			
-			#Associate this symbol to this file for skin reloading
-			::skin::setPixmap $text $emotion(file) smileys
 		}
 		
 		#Store the smiley fields in the emotions_data array
@@ -343,8 +339,8 @@ namespace eval ::smiley {
 				if { $contact_list == 0 && [ValueForSmiley $emotion_name sound] != "" } {
 					set sound [ValueForSmiley $emotion_name sound]
 				} else { set sound "" }
-				set image_name [::skin::loadPixmap $symbol smileys]
 				set image_file [ValueForSmiley $emotion_name file]
+				set image_name [::skin::loadPixmap $image_file smileys]
 				
 				set start $textbegin
 
@@ -604,8 +600,9 @@ namespace eval ::smiley {
 				} else {
 					set sound ""
 				}
-				set image_name [::skin::loadPixmap $symbol smileys]
+				
 				set image_file [ValueForSmiley $emotion_name file]
+				set image_name [::skin::loadPixmap $image_file smileys]
 			}
 
 			set listpos 0
@@ -750,8 +747,10 @@ namespace eval ::smiley {
 			set file [ValueForSmiley $name file]
 			set animated [expr {[ValueForSmiley $name animated 1] && [::config::getKey animatedsmileys 0]}]
 			
+			set image_file [ValueForSmiley $name file]
+
 			CreateSmileyInMenu $w.c $cols $rows $smiw $smih \
-				$emot_num $name $symbol [::skin::loadPixmap $symbol smileys] [::skin::GetSkinFile smileys ${file}] $animated
+				$emot_num $name $symbol [::skin::loadPixmap $image_file smileys] [::skin::GetSkinFile smileys ${file}] $animated
 
 			incr emot_num
 		

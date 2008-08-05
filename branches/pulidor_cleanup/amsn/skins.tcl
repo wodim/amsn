@@ -46,9 +46,8 @@ namespace eval ::skin {
 	# Here we set every data wich depends on skins to default, so we
 	# can load a skin without problems.
 	proc InitSkinDefaults { } {
-		global emoticon_number emotions emotions_names emotions_data
+		global emoticon_number emotions emotions_data
 		set emoticon_number 0
-		set emotions_names [list]
 		if { [info exists emotions] } {unset emotions}
 		if { [info exists emotions_data] } {unset emotions_data}
 
@@ -72,25 +71,15 @@ namespace eval ::skin {
 		
 		::skin::setKey mydp_hoverimage 0
 		
+		#set the null image transparent
+		[::skin::loadPixmap null] blank
+		
+	}
+	
+	proc GetSkinImageName { location image } {
+		return "skin_${location}_${image}"
 	}
 
-
-	################################################################
-	# ::skin::setPixmap (pixmap_name, pixmap_file [, location])
-	# This procedure sets the image name -- file name association 
-	# in order to load pictures on demand.
-	# Arguments:
-	#  - pixmap_name => Name of the image resource to be used in amsn
-	#  - pixmap_file => The image file
-	#  - location => [NOT REQUIRED, defaults to pixmaps]
-	#                Which folder in skins the file is under (eg pixmaps or smileys)
-	#  - fblocation => [NOT REQUIRED] Directory to check if file not found in the skins (for plugins)
-	proc setPixmap {pixmap_name pixmap_file {location pixmaps} {fblocation ""}} {
-		variable ${location}_names
-		variable ${location}_fblocation
-		set ${location}_names($pixmap_name) $pixmap_file
-		set ${location}_fblocation($pixmap_name) $fblocation
-	}
 
 
 	################################################################
@@ -102,41 +91,32 @@ namespace eval ::skin {
 	#  - pixmap_name => Name of the image resource to be used in amsn
 	#  - location => [NOT REQUIRED, defaults to pixmaps]
 	#                Which folder in the skins folder the file is under (eg pixmaps or smileys)
-	proc loadPixmap {pixmap_name {location pixmaps}} {
-		# Check if pixmap is already loaded
-		variable loaded_${location}
-		if { [info exists loaded_${location}($pixmap_name)] } {
-			return [set loaded_${location}($pixmap_name)]
+	proc loadPixmap {pixmap_name {location pixmaps} {fblocation ""}} {
+		
+		variable fb_locations
+		
+		set image_name [GetSkinImageName $location $pixmap_name]
+		#Check if image already loaded, or load it
+		if { [catch { image inuse $image_name }] } {
+			
+			#If the loading pixmap is corrupted (like someone stupid trying
+			#to change the smileys by himself and is doing something bad),
+			#just show a null picture
+			if { [catch {
+				image create photo $image_name \
+					-file [::skin::GetSkinFile ${location} $pixmap_name "" $fblocation] \
+					-format cximage
+			} res ] } {
+			 	status_log "Error while loading pixmap $res" red
+			 	image create photo $image_name
+			}
+			
+			#Store fallback location, if specified, for use on reloading
+			if { $fblocation != "" } {
+				set fb_locations($image_name) $fblocation
+			}
 		}
-
-		# Not loaded, so let's load it
-		variable ${location}_names
-		variable ${location}_fblocation
-		if { ! [info exists ${location}_names($pixmap_name) ] } {
-			return ""
-		}
-
-		#for better image naming convention
-		switch "$location" {
-				smileys {
-					set naming "emoticonStd_std"
-				}
-				pixmaps {
-					set naming "uiElement_std"
-				}
-				default {
-					set naming $location
-				}
-		}
-
-		#If the loading pixmap is corrupted (like someone stupid trying to change the smileys by himself and is doing something bad), just show a null picture
-		if { [catch {set loaded_${location}($pixmap_name) [image create photo ${naming}_${pixmap_name} -file [::skin::GetSkinFile ${location} [set ${location}_names($pixmap_name)] \
-			"" [set ${location}_fblocation($pixmap_name)]] -format cximage] } res ] } {
-		 	status_log "Error while loading pixmap $res"
-		 	set loaded_${location}($pixmap_name) [image create photo ${naming}_${pixmap_name}]
-		 }
-	
-		return [set loaded_${location}($pixmap_name)]
+		return $image_name
 	}
 
 	################################################################
@@ -226,12 +206,9 @@ namespace eval ::skin {
 	# Arguments:
 	#  - skin_name => [NOT REQUIRED] Overrides the current skin.
 	proc getNoDisplayPicture { {skin_name ""} } {
-		variable loaded_images
-		if { [info exists loaded_images(displaypicture_std_none)] } {
-			return displaypicture_std_none
+		if {[catch {image inuse displaypicture_std_none}]} {
+			image create photo displaypicture_std_none -file [::skin::GetSkinFile displaypic nopic.gif $skin_name] -format cximage
 		}
-		image create photo displaypicture_std_none -file [::skin::GetSkinFile displaypic nopic.gif $skin_name] -format cximage
-		set loaded_images(displaypicture_std_none) 1
 		return displaypicture_std_none
 	}
 
@@ -405,7 +382,6 @@ namespace eval ::skin {
 		uiDynamicElement_mainbar copy [loadPixmap colorbar] -from [expr {$barwidth - $barendwidth}] 0 $barwidth $barheight -to $barendstart 0 $width $barheight
 
 		set pgbuddy_colorbar_width $win_width
-		set ::skin::loaded_images(colorbar) 1
 		return uiDynamicElement_mainbar
 	}
 
@@ -440,40 +416,56 @@ namespace eval ::skin {
 	# Arguments:
 	#  - skin_name => The new skin to switch on.
 	proc reloadSkin { skin_name } {
+		
 		reloadSkinSettings $skin_name
+		variable fb_locations 
 
 		# Reload all pixmaps
-		variable loaded_pixmaps
-		variable pixmaps_names
-		variable pixmaps_fblocation
-		foreach name [array names loaded_pixmaps] {
-			if { [catch {image create photo $loaded_pixmaps($name) -file [::skin::GetSkinFile pixmaps $pixmaps_names($name) $skin_name $pixmaps_fblocation($name)] -format cximage} res] } {
-				status_log "skins::reloadSkin:: Error while loading pixmap $res"
-				image create photo $loaded_pixmaps($name) -file [::skin::GetSkinFile pixmaps null \
-			 -format cximage]	
-			}
-		}
 
-		# Reload smileys
-		variable loaded_smileys
-		variable smileys_names
-		variable smileys_fblocation
-		foreach name [array names loaded_smileys] {
-			if { [catch {image create photo $loaded_smileys($name) -file [::skin::GetSkinFile smileys $smileys_names($name) $skin_name $smileys_fblocation($name)] -format cximage} res] } {
-				status_log "skins::reloadSkin:: Error while loading smiley $res"
-				image create photo $loaded_smileys($name) -file [::skin::GetSkinFile smileys null \
-			 -format cximage]
+		#Foreach type of image, delete current image and delete
+		foreach location [list pixmaps smileys images] {
+			
+			variable fb_locations
+			set prefix [GetSkinImageName $location ""]
+			variable fb
+			
+			foreach image_name [image names] {
+				
+				if {[string first $prefix $image_name] != 0} {
+					continue
+				}
+				
+				set file_name [string range $image_name [string length $prefix] end]
+				
+				image delete $image_name
+				
+				#If fallback locations were specified on loading, use them on reload
+				if {[info exists fb_locations($image_name)] && $fb_locations($image_name) != "" } {
+					set fb_location $fb_locations($image_name)
+				} else {
+					set fb_location ""
+				}
+				 			 
+				if { [catch {
+					image create photo $image_name \
+						-file [::skin::GetSkinFile ${location} $file_name $skin_name $fb_location ] \
+						-format cximage				
+				} res] } {
+					status_log "skins::reloadSkin:: Error while loading pixmap $res" red
+					image create photo $image_name -file [::skin::GetSkinFile pixmaps null \
+				 -format cximage]	
+				}
+				
 			}
+			
 		}
-
+		
 		# Now reload special images that need special treatment
-		variable loaded_images
-		if {[info exists loaded_images(displaypicture_std_none)]} {
-			unset loaded_images(displaypicture_std_none)
+		if {![catch { image delete displaypicture_std_none } ]} {
 			::skin::getNoDisplayPicture $skin_name
 		}
-		if {[info exists loaded_images(colorbar)]} {
-			unset loaded_images(colorbar)
+		
+		if {![catch { image delete colorbar } ]} {
 			::skin::getColorBar $skin_name
 		}
 
@@ -490,6 +482,7 @@ namespace eval ::skin {
 		# Change frame color
 		catch {.main configure -background [::skin::getKey mainwindowbg]}
 		
+		#TODO AIM: Move this to Mac specific platform/darwin.tcl, and run on changedSkin event
 		if { ![OnMac] } {
 			#We are not using pixmapscroll on Mac OS X
 			# Reload pixmapscroll's images
@@ -600,8 +593,8 @@ namespace eval ::skin {
 		#Get extension of the file
 		set ext [string tolower [string range [::skin::fileext $filename] 1 end]]
 		
-		#If the extension is a picture, look in 4 formats
-		if { $ext == "png" || $ext == "gif" || $ext == "jpg" || $ext == "bmp"} {
+		#If the extension is a picture, or no extension, look in 4 formats
+		if { $ext == "" || $ext == "png" || $ext == "gif" || $ext == "jpg" || $ext == "bmp"} {
 			#List the 4 formats we support (in order of priority to check)
 			set ext [list png gif jpg bmp]
 		}
@@ -781,165 +774,22 @@ namespace eval ::skin {
 		return 0
 	}
 	
-	################################################################
-	# ::skin::SetPixmapNames
-	# Setup the pixmap proxy using default filenames. Moved here from cmsn_draw_main.
-	proc SetPixmapNames { } {
-		::skin::setPixmap amsnicon amsnicon.png
+	
+	#TODO AIM: From time to time, call this, and remove unused images
+	#from memory. Need to fix some thigs before, though
+	proc clearUnusedImages { } {
+		#puts "Cleaning images"
+		return
 
-		::skin::setPixmap msndroid msnbot.gif
-		::skin::setPixmap online online.gif
-		::skin::setPixmap offline offline.gif
-		::skin::setPixmap away away.gif
-		::skin::setPixmap busy busy.gif
-		::skin::setPixmap mobile mobile.gif
-
-		::skin::setPixmap info info.gif
-
-		::skin::setPixmap space_update space_update.gif
-		::skin::setPixmap space_noupdate space_noupdate.gif
-		::skin::setPixmap spaces_dock spaces_dock.gif
-		::skin::setPixmap spaces_undock spaces_undock.gif
-	
-		::skin::setPixmap bonline bonline.gif
-		::skin::setPixmap boffline boffline.gif
-		::skin::setPixmap baway baway.gif
-		::skin::setPixmap bbusy bbusy.gif
-		::skin::setPixmap mystatus_bg mystatus_bg.gif
-		::skin::setPixmap mystatus_bg_hover mystatus_bg_hover.gif
-		::skin::setPixmap nonim nonim.gif
-	
-		::skin::setPixmap mailbox mailbox.gif
-		::skin::setPixmap mailbox_new mailbox_unread.gif
-	
-		::skin::setPixmap contract contract.gif
-		::skin::setPixmap contract_hover contract_hover.gif
-		::skin::setPixmap expand expand.gif
-		::skin::setPixmap expand_hover expand_hover.gif
-	
-		::skin::setPixmap globe globe.gif
-		::skin::setPixmap download download.gif
-		::skin::setPixmap warning warning.gif
-	
-		::skin::setPixmap button button.gif
-		::skin::setPixmap button_hover button_hover.gif
-		::skin::setPixmap button_pressed button_pressed.gif
-		::skin::setPixmap button_disabled button_disabled.gif
-		::skin::setPixmap button_focus button_focus.gif
-
-		::skin::setPixmap checkbox checkbox.gif
-		::skin::setPixmap checkbox_on checkbox_on.gif
-	
-		::skin::setPixmap typingimg typing.gif
-		::skin::setPixmap miniinfo miniinfo.gif
-		::skin::setPixmap miniwarning miniwarn.gif
-		::skin::setPixmap minijoins minijoins.gif
-		::skin::setPixmap minileaves minileaves.gif
-	
-		::skin::setPixmap cwtopback cwtopback.gif
-		::skin::setPixmap camicon camicon.gif	
-		
-	
-		::skin::setPixmap butsmile butsmile.gif
-		::skin::setPixmap butsmile_hover butsmile_hover.gif
-		::skin::setPixmap butfont butfont.gif
-		::skin::setPixmap butfont_hover butfont_hover.gif
-		::skin::setPixmap butvoice butvoice.gif
-		::skin::setPixmap butvoice_hover butvoice_hover.gif
-		::skin::setPixmap butblock butblock.gif
-		::skin::setPixmap butblock_hover butblock_hover.gif
-		::skin::setPixmap butsend butsend.gif
-		::skin::setPixmap butsend_hover butsend_hover.gif
-		::skin::setPixmap butinvite butinvite.gif
-		::skin::setPixmap butinvite_hover butinvite_hover.gif
-		::skin::setPixmap butwebcam butwebcam.gif
-		::skin::setPixmap butwebcam_hover butwebcam_hover.gif
-		::skin::setPixmap butnewline newline.gif
-		::skin::setPixmap loginbutton loginbut.gif
-		::skin::setPixmap loginbutton_hover loginbut_hover.gif
-		::skin::setPixmap sendbutton sendbut.gif
-		::skin::setPixmap sendbutton_hover sendbut_hover.gif
-		::skin::setPixmap imgshow imgshow.gif
-		::skin::setPixmap imgshow_hover imgshow_hover.gif
-		::skin::setPixmap imghide imghide.gif
-		::skin::setPixmap imghide_hover imghide_hover.gif
-		::skin::setPixmap confbut confbut.gif
-		::skin::setPixmap confbuth confbuth.gif
-		::skin::setPixmap stopbut stopbut.gif
-		::skin::setPixmap stopbuth stopbuth.gif
-		::skin::setPixmap pausebut pausebut.gif
-		::skin::setPixmap pausebuth pausebuth.gif
-		::skin::setPixmap playbut playbut.gif
-		::skin::setPixmap playbuth playbuth.gif
-		::skin::setPixmap recordbut recordbut.gif
-		::skin::setPixmap recordbuth recordbuth.gif
-		::skin::setPixmap pause pause.gif
-
-		::skin::setPixmap button button.gif
-		::skin::setPixmap button_hover button_hover.gif
-		::skin::setPixmap button_pressed button_pressed.gif
-		::skin::setPixmap button_disabled button_disabled.gif
-	
-		::skin::setPixmap ring ring.gif
-		::skin::setPixmap ring_disabled ring_disabled.gif
-		
-		::skin::setPixmap winwritecam cam_in_chatwin.png
-	
-		::skin::setPixmap webcam webcam.png
-		::skin::setPixmap camempty camempty.png
-		::skin::setPixmap yes-emblem yes-emblem.gif
-		::skin::setPixmap no-emblem no-emblem.gif
-	
-		#@@@@@@@@ webMSN DP
-		::skin::setPixmap webmsn_dp webmsn_dp.gif
-		::skin::setPixmap webmsn webmsn.gif
-	
-		::skin::setPixmap sipicon sipicon.gif
-		::skin::setPixmap fticon fticon.gif
-		::skin::setPixmap ftreject ftreject.gif
-	
-		::skin::setPixmap notifico notifico.gif
-		::skin::setPixmap notifclose notifclose.gif
-		::skin::setPixmap notifyonline notifyonline.gif
-		::skin::setPixmap notifyoffline notifyoffline.gif
-		::skin::setPixmap notifyplugins notifyplugins.gif
-		::skin::setPixmap notifystate notifystate.gif
-		::skin::setPixmap notifymsg notifymsg.gif
-		::skin::setPixmap notifyemail notifyemail.gif
-	
-		::skin::setPixmap blocked blocked.gif
-		::skin::setPixmap blocked_off blocked_off.gif
-		::skin::setPixmap colorbar colorbar.gif
-	
-		::skin::setPixmap bell bell.gif
-		::skin::setPixmap belloff belloff.gif
-	
-		::skin::setPixmap notinlist notinlist.gif
-		::skin::setPixmap note note.gif
-		::skin::setPixmap smile smile.gif
-	
-		::skin::setPixmap loganim loganim.gif
-	
-		::skin::setPixmap greyline greyline.gif
-	
-		::skin::setPixmap assistant assistant.gif
-		::skin::setPixmap assistant_audio assistant_audio.gif
-		::skin::setPixmap assistant_webcam assistant_webcam.gif
-		
-		::skin::setPixmap voice_icon voice.gif
-
-		::skin::setPixmap nullimage null
-		#set the nullimage transparent
-		[::skin::loadPixmap nullimage] blank
-		
-		if { [OnMac] } {
-			::skin::setPixmap logolinmsn logomacmsn.gif
-			::skin::setPixmap arrow arrowmac.gif
-		} else {
-			::skin::setPixmap logolinmsn logolinmsn.gif
-			::skin::setPixmap arrow arrow.gif
+		foreach img [image names] {
+			if { ![image inuse $img] } {
+				puts "  Deleting: $img"
+				image delete $img
+			}
 		}
+		#after 500 ::skin::clearUnusedImages
 	}
+	
 }
 
 namespace eval ::skinsGUI {
@@ -1184,4 +1034,8 @@ namespace eval ::skinsGUI {
 		destroy $w
 		ClearPreview
 	}
+	
+	
 }
+
+ #::skin::clearUnusedImages

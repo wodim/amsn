@@ -330,45 +330,6 @@ namespace eval ::ccard {
 	variable dset 0
 	variable bgcolor #ebf1fa
 
-	#This if is to have backwards-compatibility with aMSN 0.94.  Thanks to Arieh for pointing this out.
-	#Code removed... the 0.97 version should be different
-#	::skin::setPixmap ccard_bg ccard_bg.gif
-#	::skin::setPixmap ccard_close ccard_close.gif
-#	::skin::setPixmap ccard_close_hover ccard_close_hover.gif
-#	::skin::setPixmap ccard_left ccard_left.gif
-#	::skin::setPixmap ccard_left_hover ccard_left_hover.gif
-#	::skin::setPixmap ccard_right ccard_right.gif
-#	::skin::setPixmap ccard_right_hover ccard_right_hover.gif
-#	::skin::setPixmap ccard_back_line ccard_line.gif
-#	::skin::setPixmap ccard_chat ccard_chat.gif
-#	::skin::setPixmap ccard_chat_hover ccard_chat_hover.gif
-#	::skin::setPixmap ccard_email ccard_email.gif
-#	::skin::setPixmap ccard_email_hover ccard_email_hover.gif
-#	::skin::setPixmap ccard_nudge ccard_nudge.gif
-#	::skin::setPixmap ccard_nudge_hover ccard_nudge_hover.gif
-#	::skin::setPixmap ccard_mobile ccard_mobile.gif
-#	::skin::setPixmap ccard_mobile_hover ccard_mobile_hover.gif 
-#	::skin::setPixmap ccard_bpborder ccard_bpborder.gif
-	::skin::setPixmap ccard_x ccard_x.png
-	::skin::setPixmap ccard_x_hl ccard_x_hl.png
-	::skin::setPixmap ccard_up ccard_up.png
-	::skin::setPixmap ccard_dn ccard_dn.png
-
-
-
-	#proc clLoaded { event evpar } {
-        #        foreach contact [::abook::getAllContacts] {
-        #                set has_space [::MSNSPACES::hasSpace $contact]
-        #                if {$has_space == 1 } {
-        #                        #lappend users_with_space $contact
-#				set ccard [::MSNSPACES::getContactCard $contact]
-#				set ccard_list [xml2list $ccard]
-#				::abook::setVolatileData $contact ccard $ccard_list
-#                        }
-#               }
-#
-#	}
-
 
 
 	#################################################

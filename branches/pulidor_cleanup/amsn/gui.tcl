@@ -520,7 +520,7 @@ namespace eval ::amsn {
 		if {[string index $::version end] == "b" && $::Version::amsn_revision > 0} {
 			append version "\n[trans svnversion] : $::Version::amsn_revision"
 		}
-		label .about.image -image [::skin::loadPixmap msndroid]
+		label .about.image -image [::skin::loadPixmap msnbot]
 		label .about.title -text $version -font bboldf
 		label .about.what -text "[trans whatisamsn]\n"
 		pack .about.image .about.title .about.what -side top
@@ -990,8 +990,6 @@ namespace eval ::amsn {
 			set win_name [::amsn::chatUser $win_name]
 		}
 			
-		global starting_dir
-
 #		set filename [ $w.top.fields.file get ]
 		if { $filename == "" } {
 			set filename [chooseFileDialog "" [trans sendfile] $win_name]
@@ -999,9 +997,6 @@ namespace eval ::amsn {
 		}
 
 		if { $filename == "" } { return }
-
-		#Remember last directory
-		set starting_dir [file dirname $filename]
 
 		if {![file readable $filename]} {
 			msg_box "[trans invalidfile [trans filename] $filename]"
@@ -1145,6 +1140,7 @@ namespace eval ::amsn {
 	#  GotFileTransferRequest ( chatid dest branchuid cseq uid sid filename filesize)
 	#  This procedure is called when we receive an MSN6 File Transfer Request
 	proc GotFileTransferRequest { chatid dest branchuid cseq uid sid filename filesize} {
+		global HOME
 		set win_name [::ChatWindow::For $chatid]
 
 		if { [::ChatWindow::For $chatid] == 0} {
@@ -1158,8 +1154,10 @@ namespace eval ::amsn {
 		WinWriteIcon $chatid greyline 3
 		WinWrite $chatid " \n" green
 
-		if { [::skin::loadPixmap "FT_preview_${sid}"] != "" } {
-			WinWriteIcon $chatid FT_preview_${sid} 5 5
+		set dir [file join $HOME FT cache]
+		set file [file join $dir ${sid}.png]
+		if { $file != "" && ![catch {set img [image create photo [TmpImgName] -file $file]} res]} {
+			WinWriteIcon $chatid $img 5 5
 			WinWrite $chatid "\n" green
 		}
 
@@ -2322,10 +2320,10 @@ namespace eval ::amsn {
 			}
 		} elseif {[llength $typers_list] == 1} {
 			set statusmsg " [trans istyping $typingusers]."
-			set icon typingimg
+			set icon typing
 		} else {
 			set statusmsg " [trans aretyping $typingusers]."
-			set icon typingimg
+			set icon typing
 		}
 
 		::ChatWindow::Status [::ChatWindow::For $chatid] $statusmsg $icon
@@ -4522,7 +4520,7 @@ proc preLogout {postCommand {force 0}} {
 
 #///////////////////////////////////////////////////////////////////////
 proc cmsn_draw_main {} {
-	global pgBuddy pgBuddyTop pgNews argv0 argv
+	global pgBuddy pgBuddyTop argv0 argv
 
 	create_states_menu .my_menu
 	create_other_menus .user_menu .menu_invite
@@ -4556,18 +4554,13 @@ proc cmsn_draw_main {} {
 		.main.f.nb insert end buddies -text "Buddies"
 		.main.f.nb insert end news -text "News"
 		set pgBuddy [.main.f.nb getframe buddies]
-		set pgNews  [.main.f.nb getframe news]
 		.main.f.nb raise buddies
 		.main.f.nb compute_size
 		pack .main.f.nb -fill both -expand true -side top
 	} else {
 		# Set what's necessary to make it work without the notebook
 		set pgBuddy .main.f
-		set pgNews  ""
 	}
-
-	# Set default pixmap names
-	::skin::SetPixmapNames
 
 	set pgBuddyTop $pgBuddy.top
 	frame $pgBuddyTop -background [::skin::getKey topcontactlistbg] -width 30 -height 30 -cursor left_ptr \
@@ -4911,9 +4904,14 @@ proc resetBanner {} {
 		# This one is not a banner but a branding. When adverts are enabled
 		# they share this space with the branding image. The branding image
 		# is cycled in between adverts.
-		.main.banner configure -background [::skin::getKey bannerbg] -image [::skin::loadPixmap logolinmsn]
+		if { [OnMac] } {
+			.main.banner configure -background [::skin::getKey bannerbg] -image [::skin::loadPixmap logomacmsn]			
+		} else {
+			.main.banner configure -background [::skin::getKey bannerbg] -image [::skin::loadPixmap logolinmsn]			
+		}
+		
 	} else {
-		.main.banner configure -background [::skin::getKey mainwindowbg] -image [::skin::loadPixmap nullimage]
+		.main.banner configure -background [::skin::getKey mainwindowbg] -image [::skin::loadPixmap null]
 	}
 }
 #///////////////////////////////////////////////////////////////////////
@@ -5891,15 +5889,15 @@ proc cmsn_draw_buildtop_wrapped {} {
 		} elseif {$unread == 1} {
 			set mailmsg "[trans onenewmail]"
 			set balloon_message "[trans onenewmail]\n$fromsText"
-			set mail_img mailbox_new
+			set mail_img mailbox_unread
 		} elseif {$unread == 2} {
 			set mailmsg "[trans twonewmail 2]"
 			set balloon_message "[trans twonewmail 2]\n$fromsText"
-			set mail_img mailbox_new
+			set mail_img mailbox_unread
 		} else {
 			set mailmsg "[trans newmail $unread]"
 			set balloon_message "[trans newmail $unread]\n$fromsText"
-			set mail_img mailbox_new
+			set mail_img mailbox_unread
 		}
 
 		clickableImage $pgBuddyTop.mail mailbox $mail_img "::hotmail::hotmail_login" [::skin::getKey mailbox_xpad] [::skin::getKey mailbox_ypad]
@@ -6566,19 +6564,19 @@ proc cmsn_change_name {} {
 	label $w.f.nick_label -font sboldf -text "[trans enternick]:"
 	entry $w.f.nick_entry -width 40 -font splainf
 	label $w.f.nick_smiley -image [::skin::loadPixmap butsmile] -relief flat -padx 3 -highlightthickness 0
-	label $w.f.nick_newline -image [::skin::loadPixmap butnewline] -relief flat -padx 3
+	label $w.f.nick_newline -image [::skin::loadPixmap newline] -relief flat -padx 3
 	label $w.f.nick_textcounter -font sboldf
 
 	label $w.f.psm_label -font sboldf -text "[trans enterpsm]:"
 	entry $w.f.psm_entry -width 40 -font splainf
 	label $w.f.psm_smiley -image [::skin::loadPixmap butsmile] -relief flat -padx 3 -highlightthickness 0
-	label $w.f.psm_newline -image [::skin::loadPixmap butnewline] -relief flat -padx 3
+	label $w.f.psm_newline -image [::skin::loadPixmap newline] -relief flat -padx 3
 	label $w.f.psm_textcounter -font sboldf
 
 	label $w.f.p4c_label -font sboldf -text "[trans friendlyname]:"
 	entry $w.f.p4c_entry -width 40 -font splainf
 	label $w.f.p4c_smiley -image [::skin::loadPixmap butsmile] -relief flat -padx 3 -highlightthickness 0
-	label $w.f.p4c_newline -image [::skin::loadPixmap butnewline] -relief flat -padx 3
+	label $w.f.p4c_newline -image [::skin::loadPixmap newline] -relief flat -padx 3
 	
 	grid $w.f.nick_label -row 0 -column 0 -sticky w
 	grid $w.f.nick_entry -row 0 -column 1 -sticky we
@@ -8053,7 +8051,7 @@ proc chooseFileDialog { {initialfile ""} {title ""} {parent ""} {entry ""} {oper
 
 	global  starting_dir
 
-	if { ![file isdirectory $starting_dir] } {
+	if { ![info exists starting_dir || ![file isdirectory $starting_dir] } {
 		set starting_dir [pwd]
 	}
 

@@ -275,6 +275,7 @@ snit::widget pixmapbutton {
 	# Reloading images methods
 	#/////////////////////////////////////////////////
 	typemethod loadimage { imagename } {
+		puts "loadimge $imagename"
 		return [image create photo -file $imagename.gif]
 	}
 

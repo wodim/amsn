@@ -121,101 +121,23 @@ namespace eval ::Event {
 }
 
 
+
+
+
+
 ################################################
-# Functions to know which platform we're on    #
+# Utility functions                            #
 ################################################
-
-#Test for Aqua GUI
-proc OnMac {} {
-	if {![catch {tk windowingsystem} wsystem] && $wsystem == "aqua"} {
-		return 1
-	} else {
-		return 0
-	}
+proc lprepend {varName args} {
+   upvar $varName var
+   set var [eval [list linsert $var 0] $args]
 }
 
-#Test for Darwin OS
-#Will return 1 for X11 on Mac, OnMac returns 0 in that case
-proc OnDarwin {} {
-	global tcl_platform
-	if { $tcl_platform(os) == "Darwin" } {
-		return 1
-	} else {
-		return 0
-	}
+proc load_console {} {
+	package require tkConsole
+	console show
 }
 
-#Test for Windows
-proc OnWin {} {
-	global tcl_platform
-	if { $tcl_platform(platform) == "windows" } {
-		return 1
-	} else {
-		return 0
-	}
-}
-
-#Test for Windows Vista
-proc OnWinVista {} {
-	global tcl_platform
-	if { [OnWin] && $tcl_platform(os) == "Windows NT" && $tcl_platform(osVersion) == "6.0" } {
-		return 1
-	} else {
-		return 0
-	}
-}
-
-#Test for BSD
-proc OnBSD {} {
-	global tcl_platform
-	if { $tcl_platform(os) == "OpenBSD" || 
-             $tcl_platform(os) == "FreeBSD" ||
-             $tcl_platform(os) == "NetBSD"} {
-		return 1
-	} else {
-		return 0
-	}
-}
-
-#Test for Linux
-proc OnLinux {} {
-	global tcl_platform
-	if { $tcl_platform(os) == "Linux" } {
-		return 1
-	} elseif { $tcl_platform(os) == "SunOS" } {
-		# Really not correct at all, but closer than BSD.
-		return 1
-	} else {
-		return 0
-	}
-}
-
-#Test for Unix platform (Linux/Mac/*BSD/etc.)
-proc OnUnix {} {
-	global tcl_platform
-	if { $tcl_platform(platform) == "unix" } {
-		return 1
-	} else {
-		return 0
-	}
-}
-
-#Test for X11 windowing system
-proc OnX11 {} {
-	if { ![catch {tk windowingsystem} wsystem] && $wsystem  == "x11" } {
-		return 1
-	} else {
-		return 0
-	}
-}
-
-proc GetPlatformModifier {} {
-	if {[OnMac]} {
-		return "Command"
-	} else {
-		return "Control"
-	}
-}
 
 ################################################
 # 'Missing' image commands                     #
@@ -328,37 +250,6 @@ proc ::tk::TextKeySelect {w new} {
 }
 }
 
-#///////////////////////////////////////////////////////////////////////////////
-# if a button has a -image, -relief flat but not -overrelief, it will actually be created as a label
-# this is a workaround for platforms like macos and tileqt which have a problem with buttons (like
-# not honouring "-relief flat" (tileqt) or not supporting alpha transparancy(macos))
-# TODO: add a bind that works as -command on a button (mousebutton press, move away, release does not trigger)
-proc buttons2labels { } {
-	if { [info commands ::tk::button2] == "" } { rename button ::tk::button2 }
-	proc button { pathName args } {
-		array set options $args
-		if { [info exists options(-image)] && [info exists options(-relief)] && $options(-relief) == "flat" } {
-			if { [info exists options(-command)] } {
-				set command $options(-command)
-				unset options(-command)
-			}
-			if { [info exists options(-overrelief)] } { unset options(-overrelief) }
-			set ret [eval label [list $pathName] [array get options]]
-			if { [info exists command] } {
-				puts $command
-				bind $pathName <<Button1>> "$command"
-			}
-		} else {
-			set ret [eval ::tk::button2 [list $pathName] $args]
-		}
-		return $ret
-	}
-}
-# apply buttons2labels on Mac, because there seem to be problems with buttons there
-# TODO: as soon as it is fixed in tk on mac, make it version-conditional
-if { [OnMac] } {
-	buttons2labels
-}
 
 #///////////////////////////////////////////////////////////////////////////////
 # highlight_selected_tags (text, tags)

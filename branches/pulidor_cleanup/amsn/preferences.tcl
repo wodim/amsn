@@ -17,17 +17,6 @@ namespace eval Preferences {
 			return
 		}
 		
-		#Set pixmaps
-		::skin::setPixmap prefpers prefpers.gif
-		::skin::setPixmap prefprofile prefprofile.gif
-		::skin::setPixmap preffont preffont.gif
-		::skin::setPixmap prefphone prefphone.gif
-
-		::skin::setPixmap preflook preflook.gif
-		::skin::setPixmap prefemotic prefemotic.gif
-		::skin::setPixmap prefalerts prefalerts.gif
-		
-		
 		if { [LoginList exists 0 [::config::getKey login]] == 1 } {
 			PreferencesWindow .prefs -title "[trans preferences] - [trans profiledconfig] - [::config::getKey login]" -savecommand ::Preferences::Save
 		} else {
@@ -1571,10 +1560,9 @@ proc filter_prefs { frm str action } {
 }
 
 proc Preferences { { settings "personal"} } {
-	global myconfig proxy_server proxy_port temp_BLP list_BLP Preftabs libtls proxy_user proxy_pass rbsel rbcon pager
+	global myconfig proxy_server proxy_port temp_BLP list_BLP Preftabs proxy_user proxy_pass rbsel rbcon pager
 	
 	set temp_BLP $list_BLP
-	::config::setKey libtls_temp $libtls
 	set pager "N"
 	if {[ winfo exists .cfg ]} {
 		raise .cfg
@@ -1631,11 +1619,6 @@ proc Preferences { { settings "personal"} } {
 
 	#  .----------.
 	# _| Personal |________________________________________________
-	::skin::setPixmap prefpers prefpers.gif
-	::skin::setPixmap prefprofile prefprofile.gif
-	::skin::setPixmap preflocale globe.png
-	::skin::setPixmap preffont preffont.gif
-	::skin::setPixmap prefphone prefphone.gif
 	#set frm [Rnotebook:frame $nb $Preftabs(personal)]
 	set frm [$nb.nn getframe personal]
 	#Scrollable frame that will contain options
@@ -1686,7 +1669,7 @@ proc Preferences { { settings "personal"} } {
 	## Internationalization Frame ##
 	set lfname [labelframe $frm.lfname2a -text [trans preflocale] -font splainf]
 	pack $frm.lfname2a -anchor n -side top -expand 1 -fill x
-	label $lfname.plocale -image [::skin::loadPixmap preflocale]
+	label $lfname.plocale -image [::skin::loadPixmap globe]
 	label $lfname.llocale -text [trans preflocale2] -padx 10
 	combobox::combobox $lfname.clocale -editable true -width 20
 	pack $lfname.plocale $lfname.llocale -side left
@@ -1761,9 +1744,6 @@ proc Preferences { { settings "personal"} } {
 	
 	#  .------------.
 	# _| Appearance |________________________________________________
-	::skin::setPixmap preflook preflook.gif
-	::skin::setPixmap prefemotic prefemotic.gif
-	::skin::setPixmap prefalerts prefalerts.gif
 	#set frm [Rnotebook:frame $nb $Preftabs(appearance)]
 	set frm [$nb.nn getframe appearance]
 	#Scrollable frame that will contain options
@@ -1875,10 +1855,6 @@ proc Preferences { { settings "personal"} } {
 
 	#  .---------.
 	# _| Session |________________________________________________
-	::skin::setPixmap prefstatus prefstatus.gif
-	::skin::setPixmap prefaway prefaway.gif
-	::skin::setPixmap prefmsg prefmsg.gif
-
 	#set frm [Rnotebook:frame $nb $Preftabs(session)]
 	set frm [$nb.nn getframe session]
 	#Scrollable frame that will contain options
@@ -2029,10 +2005,6 @@ proc Preferences { { settings "personal"} } {
 	#  .------------------.
 	# _| Group Management |_______________________________________
 	
-	::skin::setPixmap prefpersc prefpers.gif
-	::skin::setPixmap prefprofilec prefprofile.gif
-	::skin::setPixmap prefmobile prefmobile.gif	
-		
 	set frm [$nb.nn getframe groups]
 	ScrolledWindow $frm.sw
 	ScrollableFrame $frm.sw.sf -constrainedwidth 1
@@ -2056,9 +2028,6 @@ proc Preferences { { settings "personal"} } {
 
 	#  .--------.
 	# _| Loging |________________________________________________
-	::skin::setPixmap prefhist prefhist.gif
-	::skin::setPixmap prefhist2 prefhist2.gif
-#	::skin::setPixmap prefhist3 prefhist3.gif
 
 	#set frm [Rnotebook:frame $nb $Preftabs(loging)]
 	set frm [$nb.nn getframe loging]
@@ -2156,10 +2125,6 @@ proc Preferences { { settings "personal"} } {
 	#  .------------.
 	# _| Connection |________________________________________________
 	
-	::skin::setPixmap prefnat prefnat.gif
-	::skin::setPixmap prefproxy prefproxy.gif
-	::skin::setPixmap prefremote prefpers.gif
-
 	#set frm [Rnotebook:frame $nb $Preftabs(connection)]
 	set frm [$nb.nn getframe connection]
 	#Scrollable frame that will contain options
@@ -2269,7 +2234,7 @@ proc Preferences { { settings "personal"} } {
 	## Remote Control Frame ##
 	set lfname [labelframe $frm.lfname3 -text [trans prefremote]]
 	pack $frm.lfname3 -anchor n -side top -expand 1 -fill x
-	label $lfname.pshared -image [::skin::loadPixmap prefremote]
+	label $lfname.pshared -image [::skin::loadPixmap prefpers]
 	pack $lfname.pshared -side left -anchor nw
 	frame $lfname.1
 	frame $lfname.2
@@ -2287,7 +2252,6 @@ proc Preferences { { settings "personal"} } {
 
 	#  .--------.
 	# _| Others |________________________________________________
-	::skin::setPixmap prefapps prefpers.gif
 
 	#set frm [Rnotebook:frame $nb $Preftabs(others)]
 	set frm [$nb.nn getframe others]
@@ -2302,7 +2266,7 @@ proc Preferences { { settings "personal"} } {
 	## Delete Profiles Frame ##
 	set lfname [labelframe $frm.lfname3 -text [trans prefprofile3]]
 	pack $frm.lfname3 -anchor n -side top -expand 1 -fill x
-	label $lfname.pprofile -image [::skin::loadPixmap prefapps]
+	label $lfname.pprofile -image [::skin::loadPixmap prefpers]
 	pack $lfname.pprofile -side left -anchor nw
 	frame $lfname.1
 	label $lfname.1.ldelprofile -text "[trans delprofile2]" -font sboldf -padx 5
@@ -2316,7 +2280,7 @@ proc Preferences { { settings "personal"} } {
 	## Applications Frame ##
 	set lfname [labelframe $frm.lfname -text [trans prefapps]]
 	pack $frm.lfname -anchor n -side top -expand 1 -fill x
-	label $lfname.pshared -image [::skin::loadPixmap prefapps]
+	label $lfname.pshared -image [::skin::loadPixmap prefpers]
 	pack $lfname.pshared -side left -anchor nw
 	frame $lfname.1
 	pack $lfname.1 -anchor w -side left -padx 0 -pady 5 -expand 0 -fill both
@@ -2388,7 +2352,7 @@ proc Preferences { { settings "personal"} } {
 	## File transfert directory frame ##
 	set lfname [labelframe $frm.lfname4 -text [trans receiveddir]]
 	pack $frm.lfname4 -anchor n -side top -expand 1 -fill x
-	label $lfname.pshared -image [::skin::loadPixmap prefapps]
+	label $lfname.pshared -image [::skin::loadPixmap prefpers]
 	pack $lfname.pshared -side left -anchor nw
 
 	frame $lfname.1
@@ -2508,7 +2472,7 @@ proc Preferences { { settings "personal"} } {
          # Allow/Block lists
 	set lfname [labelframe $frm.lfname -text [trans prefprivacy]]
 	pack $frm.lfname -anchor n -side top -expand 1 -fill both
-	label $lfname.pprivacy -image [::skin::loadPixmap prefapps]
+	label $lfname.pprivacy -image [::skin::loadPixmap prefpers]
 	pack $lfname.pprivacy -anchor nw -side left
 
 	frame $lfname.allowlist -relief sunken -borderwidth 3
@@ -2557,7 +2521,7 @@ proc Preferences { { settings "personal"} } {
 	set lfname [labelframe $frm.lfname2 -text [trans prefprivacy2]]
 	set framePrivacyReverseList $lfname.reverselist
 	pack $frm.lfname2 -anchor n -side top -expand 1 -fill both
-	label $lfname.pprivacy -image [::skin::loadPixmap prefapps]
+	label $lfname.pprivacy -image [::skin::loadPixmap prefpers]
 	pack $lfname.pprivacy -anchor nw -side left
 
 	frame $lfname.contactlist -relief sunken -borderwidth 3
@@ -2628,7 +2592,7 @@ proc Preferences { { settings "personal"} } {
 	## Check on disconnect ##
 	#set lfname [labelframe $frm.lfname -text [trans prefblock1]]
 	#pack $frm.lfname -anchor n -side top -expand 1 -fill x
-	#label $lfname.ppref1 -image [::skin::loadPixmap prefapps]
+	#label $lfname.ppref1 -image [::skin::loadPixmap prefpers]
 	#pack $lfname.ppref1 -side left -padx 5 -pady 5 
 	#checkbutton $lfname.enable -text "[trans checkonfln]" -onvalue 1 -offvalue 0 -variable [::config::getVar checkonfln]
 	#pack $lfname.enable  -anchor w -side left -padx 0 -pady 5 
@@ -2636,7 +2600,7 @@ proc Preferences { { settings "personal"} } {
 	## "You have been blocked" group ##
 	#set lfname [labelframe $frm.lfname3 -text [trans prefblock3]]
 	#pack $frm.lfname3 -anchor n -side top -expand 1 -fill x
-	#label $lfname.ppref3 -image [::skin::loadPixmap prefapps]
+	#label $lfname.ppref3 -image [::skin::loadPixmap prefpers]
 	#pack $lfname.ppref3 -side left -padx 5 -pady 5 
 	#checkbutton $lfname.group -text "[trans blockedyougroup]" -onvalue 1 -offvalue 0 -variable [::config::getVar showblockedgroup]
 	#pack $lfname.group  -anchor w -side left -padx 0 -pady 5 
@@ -2644,7 +2608,7 @@ proc Preferences { { settings "personal"} } {
 	## Continuously check ##
 	#set lfname [labelframe $frm.lfname2 -text [trans prefblock2]]
 	#pack $frm.lfname2 -anchor n -side top -expand 1 -fill x
-	#label $lfname.ppref2 -image [::skin::loadPixmap prefapps]
+	#label $lfname.ppref2 -image [::skin::loadPixmap prefpers]
 	#pack $lfname.ppref2 -side left -padx 5 -pady 5 
 
 	#frame $lfname.enable -class Degt
@@ -3217,7 +3181,7 @@ proc setCfgFonts {path value} {
 
 proc SavePreferences {} {
 	global auto_path HOME2 tlsinstalled
-	global myconfig proxy_server proxy_port list_BLP temp_BLP Preftabs libtls proxy_user proxy_pass pager locale_codes
+	global myconfig proxy_server proxy_port list_BLP temp_BLP Preftabs proxy_user proxy_pass pager locale_codes
 
 	set nb .cfg.notebook
 
@@ -3351,30 +3315,6 @@ proc SavePreferences {} {
 	if { $list_BLP != $temp_BLP } {
 		AllowAllUsers $temp_BLP
 	}
-
-
-	# Save tls package configuration
-	if { [::config::getKey libtls_temp] != $libtls } {
-		set libtls [::config::getKey libtls_temp]
-		if { $libtls != "" && [lsearch $auto_path $libtls] == -1 } {
-			lprepend auto_path $libtls
-		}
-	
-		if { $tlsinstalled == 0 && [catch {package require tls}] } {
-			# Either tls is not installed, or $auto_path does not point to it.
-			# Should now never happen; the check for the presence of tls is made
-			# before this point.
-			status_log "Could not find the package tls on this system.\n"
-			set tlsinstalled 0
-		} else {
-			set tlsinstalled 1
-		}
-	
-		set fd [open [file join $HOME2 tlsconfig.tcl] w]
-		puts $fd "set libtls [list $libtls]"
-		close $fd
-	}
-
 
 	# Blocking
 	#if { [::config::getKey blockusers] == "" } { ::config::setKey blockusers 1}

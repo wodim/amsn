@@ -9,8 +9,13 @@ namespace eval ::draw {
 
 	variable ink_text_pack [list]
 	variable window ""
+	variable plugin_dir ""
 
 	proc Init { dir } {
+		
+		variable plugin_dir
+		
+		set plugin_dir $dir
 		
 		#Register the plugin to the plugins-system
 		::plugins::RegisterPlugin "Inkdraw"
@@ -18,24 +23,8 @@ namespace eval ::draw {
 		#Register events
 		::plugins::RegisterEvent "Inkdraw" chatwindowbutton AddInkSwitchButton
 
-		#Load our pixmaps
-		::skin::setPixmap grid grid.gif pixmaps [file join $dir pixmaps]
-
-		::skin::setPixmap butdraw butdraw.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butdraw_hover butdraw_hover.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap buttext buttext.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap buttext_hover buttext_hover.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butgridon butgridon.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butgridon_hover butgridon_hover.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butgridoff butgridoff.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butgridoff_hover butgridoff_hover.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butwipe butwipe.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butwipe_hover butwipe_hover.gif pixmaps [file join $dir pixmaps]
 		#load pencils
 		::draw::LoadPencils [file join $dir pencils]
-		::skin::setPixmap ink_tiny ink_tiny.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap ink_normal ink_normal.gif pixmaps [file join $dir pixmaps]
-		::skin::setPixmap ink_huge ink_huge.gif pixmaps [file join $dir pixmaps]
 		
 		package require drawboard
 
@@ -50,7 +39,6 @@ namespace eval ::draw {
 		foreach file [glob -nocomplain -directory $dir *.{png,gif,jpg,jpeg} ] {
 			if { [file readable $file] } {
 				set filename [lindex [file split $file] end]
-				::skin::setPixmap [file rootname $filename] $filename pixmaps $dir
 				lappend pencilslist [file rootname $filename]
 			}
 		}
@@ -76,11 +64,12 @@ namespace eval ::draw {
 
 	proc AddInkSwitchButton { event evpar } {
 		upvar 2 $evpar newvar
+		variable plugin_dir
 
 		set buttonbar $newvar(bottom)		
 
 		set inkswitch $buttonbar.inkswitchbut
-		label $inkswitch -image [::skin::loadPixmap butdraw] -relief flat -padx 0 \
+		label $inkswitch -image [::skin::loadPixmap butdraw pixmaps [file join $plugin_dir pixmaps]] -relief flat -padx 0 \
 			-background [::skin::getKey buttonbarbg] -highlightthickness 0 -borderwidth 0 \
 			-highlightbackground [::skin::getKey buttonbarbg] -activebackground [::skin::getKey buttonbarbg]
 		pack $inkswitch -side left -padx 0 -pady 0
@@ -88,13 +77,14 @@ namespace eval ::draw {
 		set window $newvar(window_name)	
 		
 		bind $inkswitch  <<Button1>> "::draw::AddDrawboard $window $buttonbar"
-		bind $inkswitch  <Enter> "$inkswitch configure -image [::skin::loadPixmap butdraw_hover]"
-		bind $inkswitch  <Leave> "$inkswitch configure -image [::skin::loadPixmap butdraw]"	
+		bind $inkswitch  <Enter> "$inkswitch configure -image [::skin::loadPixmap butdraw_hover pixmaps [file join $plugin_dir pixmaps]]"
+		bind $inkswitch  <Leave> "$inkswitch configure -image [::skin::loadPixmap butdraw pixmaps [file join $plugin_dir pixmaps]]"	
 	}
 
 
 	proc AddDrawboard { window buttonbar} {
 		variable ink_text_pack
+		variable plugin_dir
 
 		set smileybut $buttonbar.smileys
 		set fontbut $buttonbar.fontsel
@@ -127,7 +117,7 @@ namespace eval ::draw {
 			pack $drawwidget -side left -padx 0 -pady 0 -expand true -fill both			
 		} else {
 			status_log "creating drawwidget"
-			drawboard $drawwidget -pencil pencil_7 -color black -drawmode free -grid 0;#-gridimg [::skin::loadPixmap grid]
+			drawboard $drawwidget -pencil pencil_7 -color black -drawmode free -grid 0;#-gridimg [::skin::loadPixmap grid pixmaps [file join $plugin_dir pixmaps]]
 			pack $drawwidget -side left -padx 0 -pady 0 -expand true -fill both
 		}		
 
@@ -149,10 +139,10 @@ namespace eval ::draw {
 
 		#SWITCHBUTTON
 		set inkswitch $buttonbar.inkswitchbut
-		$inkswitch configure -image [::skin::loadPixmap buttext]
+		$inkswitch configure -image [::skin::loadPixmap buttext pixmaps [file join $plugin_dir pixmaps]]
 		bind $inkswitch  <<Button1>> "::draw::ResetTextInput $window $buttonbar"
-		bind $inkswitch  <Enter> "$inkswitch configure -image [::skin::loadPixmap buttext_hover]"
-		bind $inkswitch  <Leave> "$inkswitch configure -image [::skin::loadPixmap buttext]"	
+		bind $inkswitch  <Enter> "$inkswitch configure -image [::skin::loadPixmap buttext_hover pixmaps [file join $plugin_dir pixmaps]]"
+		bind $inkswitch  <Leave> "$inkswitch configure -image [::skin::loadPixmap buttext pixmaps [file join $plugin_dir pixmaps]]"	
 
 		#SENDBUTTON (if sendbutton in inputfield is not present)
 		set sendbuttonframe $w.f.bottom.left.in.inner.sbframe
@@ -185,6 +175,7 @@ namespace eval ::draw {
 
 
 	proc ToggleGrid { gridbut widget } {
+		variable plugin_dir
 #		set widget $window.f.bottom.left.in.inner.draw
 		set gridstate [$widget cget -grid]
 		if {$gridstate} {
@@ -194,12 +185,12 @@ namespace eval ::draw {
 			set butimg "butgridoff"
 		}
 		
-		$gridbut configure -image [::skin::loadPixmap $butimg]
+		$gridbut configure -image [::skin::loadPixmap $butimg pixmaps [file join $plugin_dir pixmaps]]
 
 		#bind $gridbut  <<Button1>> "::draw::SwitchGrid $gridbut $drawwidget"
 		status_log "reconfigure gridbut with $butimg"
-		bind $gridbut  <Enter> "$gridbut configure -image [::skin::loadPixmap ${butimg}_hover]"
-		bind $gridbut  <Leave> "$gridbut configure -image [::skin::loadPixmap $butimg]"		
+		bind $gridbut  <Enter> "$gridbut configure -image [::skin::loadPixmap ${butimg}_hover pixmaps [file join $plugin_dir pixmaps]]"
+		bind $gridbut  <Leave> "$gridbut configure -image [::skin::loadPixmap $butimg pixmaps [file join $plugin_dir pixmaps]]"		
 
 		$widget ToggleGrid
 	}
@@ -210,6 +201,7 @@ namespace eval ::draw {
 
 	proc ResetTextInput { window buttonbar } {
 		variable ink_text_pack
+		variable plugin_dir
 		status_log "reset to text mode"
 
 		set smileybut $buttonbar.smileys
@@ -228,10 +220,10 @@ namespace eval ::draw {
 	
 #...
 		#reconfigure inkswitch
-		$inkswitch configure -image [::skin::loadPixmap butdraw]
+		$inkswitch configure -image [::skin::loadPixmap butdraw pixmaps [file join $plugin_dir pixmaps]]
 		bind $inkswitch  <<Button1>> "::draw::AddDrawboard $window $buttonbar"
-		bind $inkswitch  <Enter> "$inkswitch configure -image [::skin::loadPixmap butdraw_hover]"
-		bind $inkswitch  <Leave> "$inkswitch configure -image [::skin::loadPixmap butdraw]"	
+		bind $inkswitch  <Enter> "$inkswitch configure -image [::skin::loadPixmap butdraw_hover pixmaps [file join $plugin_dir pixmaps]]"
+		bind $inkswitch  <Leave> "$inkswitch configure -image [::skin::loadPixmap butdraw pixmaps [file join $plugin_dir pixmaps]]"	
 	
 
 		#repack the text/smiley controls		
@@ -293,8 +285,9 @@ status_log "reset sendbutton binding"
 
 
 	proc CreatePencilWidget { drawwidget widget } {
+		variable plugin_dir
 		if {![winfo exists $widget]} {
-			label $widget -image [::skin::loadPixmap ink_huge] -relief flat -padx 0 \
+			label $widget -image [::skin::loadPixmap ink_huge pixmaps [file join $plugin_dir pixmaps]] -relief flat -padx 0 \
 				-bg [::skin::getKey buttonbarbg] -highlightthickness 0 -borderwidth 0 \
 				-highlightbackground [::skin::getKey buttonbarbg] -activebackground [::skin::getKey buttonbarbg]
 			bind $widget  <<Button1>> [list ::draw::PencilMenu $drawwidget $widget %X %Y]
@@ -303,6 +296,8 @@ status_log "reset sendbutton binding"
 	}
 
 	proc PencilMenu {drawwidget pencilbutton {x 0} {y 0}} {
+		variable plugin_dir
+		
 		set w .pencil_selector	
 		if {[catch {[toplevel $w]} res]} {
 			destroy $w
@@ -314,19 +309,19 @@ status_log "reset sendbutton binding"
 		wm overrideredirect $w 1
 		wm transient $w
 
-		label $w.tiny -image [::skin::loadPixmap ink_tiny] -relief flat -padx 0 \
+		label $w.tiny -image [::skin::loadPixmap ink_tiny pixmaps [file join $plugin_dir pixmaps]] -relief flat -padx 0 \
 				-bg [::skin::getKey buttonbarbg] -highlightthickness 0 -borderwidth 0 \
 				-highlightbackground [::skin::getKey buttonbarbg] \
 				-activebackground [::skin::getKey buttonbarbg]
 		bind $w.tiny <<Button1>> [list ::draw::ChangePencil $drawwidget 1 $pencilbutton]
 
-		label $w.normal -image [::skin::loadPixmap ink_normal] -relief flat -padx 0 \
+		label $w.normal -image [::skin::loadPixmap ink_normal pixmaps [file join $plugin_dir pixmaps]] -relief flat -padx 0 \
 				-bg [::skin::getKey buttonbarbg] -highlightthickness 0 -borderwidth 0 \
 				-highlightbackground [::skin::getKey buttonbarbg] \
 				-activebackground [::skin::getKey buttonbarbg]
 		bind $w.normal <<Button1>> [list ::draw::ChangePencil $drawwidget 3 $pencilbutton]
 
-		label $w.huge -image [::skin::loadPixmap ink_huge] -relief flat -padx 0 \
+		label $w.huge -image [::skin::loadPixmap ink_huge pixmaps [file join $plugin_dir pixmaps]] -relief flat -padx 0 \
 				-bg [::skin::getKey buttonbarbg] -highlightthickness 0 -borderwidth 0 \
 				-highlightbackground [::skin::getKey buttonbarbg] \
 				-activebackground [::skin::getKey buttonbarbg]
@@ -357,15 +352,17 @@ status_log "reset sendbutton binding"
 	}
 
 	proc ChangePencil {drawwidget pencil_id pencilbutton} {
+		variable plugin_dir
+		
 		switch $pencil_id {
 			1 {
-				$pencilbutton configure -image [::skin::loadPixmap ink_tiny]
+				$pencilbutton configure -image [::skin::loadPixmap ink_tiny pixmaps [file join $plugin_dir pixmaps]]
 			}	
 			3 {
-				$pencilbutton configure -image [::skin::loadPixmap ink_normal]
+				$pencilbutton configure -image [::skin::loadPixmap ink_normal pixmaps [file join $plugin_dir pixmaps]]
 			}
 			7 {
-				$pencilbutton configure -image [::skin::loadPixmap ink_huge]
+				$pencilbutton configure -image [::skin::loadPixmap ink_huge pixmaps [file join $plugin_dir pixmaps]]
 			}
 		}
 		$drawwidget configure -pencil pencil_${pencil_id}
@@ -393,14 +390,16 @@ status_log "reset sendbutton binding"
 	}
 
 	proc CreateToolButton { widget imgname command } {
+		variable plugin_dir
+		
 		if {![winfo exists $widget]} {
-			label $widget -image [::skin::loadPixmap ${imgname}] -relief flat -padx 0 \
+			label $widget -image [::skin::loadPixmap ${imgname} pixmaps [file join $plugin_dir pixmaps]] -relief flat -padx 0 \
 			-background [::skin::getKey buttonbarbg] -highlightthickness 0 -borderwidth 0 \
 			-highlightbackground [::skin::getKey buttonbarbg] -activebackground [::skin::getKey buttonbarbg]
 
 			bind $widget  <<Button1>> $command
-			bind $widget  <Enter> "$widget configure -image [::skin::loadPixmap ${imgname}_hover]"
-			bind $widget  <Leave> "$widget configure -image [::skin::loadPixmap ${imgname}]"
+			bind $widget  <Enter> "$widget configure -image [::skin::loadPixmap ${imgname}_hover pixmaps [file join $plugin_dir pixmaps]]"
+			bind $widget  <Leave> "$widget configure -image [::skin::loadPixmap ${imgname} pixmaps [file join $plugin_dir pixmaps]]"
 		}
 		pack $widget -side left -padx 0 -pady 0
 	}

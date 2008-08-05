@@ -18,26 +18,16 @@ snit::widgetadaptor pixmapmenu {
 	typevariable radiotickimg		;# Radiobutton tick image
 
 	typeconstructor {
-		::skin::setPixmap menuarrowdown menu_arrow_down.png
-		::skin::setPixmap menuarrowright menu_arrow_right.png
-		::skin::setPixmap menubackground1 menu_background1.gif
-		::skin::setPixmap menubackground2 menu_background2.gif
-		::skin::setPixmap menuselect menu_select.gif
-		::skin::setPixmap menuseparator menu_separator.gif
-		::skin::setPixmap checkbox checkbox.png
-		::skin::setPixmap checktick checkmark.png
-		::skin::setPixmap radiobox radiobox.png
-		::skin::setPixmap radiotick radiomark.png
 		set checkboximg [::skin::loadPixmap checkbox]
-		set checktickimg [::skin::loadPixmap checktick]
+		set checktickimg [::skin::loadPixmap checkmark]
 		set radioboximg [::skin::loadPixmap radiobox]
-		set radiotickimg [::skin::loadPixmap radiotick]
-		set arrowdownimg [::skin::loadPixmap menuarrowdown]
-		set arrowrightimg [::skin::loadPixmap menuarrowright]
-		set backgroundimg1 [::skin::loadPixmap menubackground1]
-		set backgroundimg2 [::skin::loadPixmap menubackground2]
-		set selectimg [::skin::loadPixmap menuselect]
-		set separatorimg [::skin::loadPixmap menuseparator]
+		set radiotickimg [::skin::loadPixmap radiomark]
+		set arrowdownimg [::skin::loadPixmap menu_arrow_down]
+		set arrowrightimg [::skin::loadPixmap menu_arrow_right]
+		set backgroundimg1 [::skin::loadPixmap menu_background1]
+		set backgroundimg2 [::skin::loadPixmap menu_background2]
+		set selectimg [::skin::loadPixmap menu_select]
+		set separatorimg [::skin::loadPixmap menu_separator]
 		set backgroundborder {1 1 1 1}
 		set selectborder {1 1 1 1}
 		set separatorborder {0 0 0 0}
@@ -714,10 +704,10 @@ snit::widgetadaptor pixmapmenu {
 		set options(-orient) $value
 		switch $value {
 			horizontal {
-				#set arrowimg [::skin::loadPixmap menuarrowdown]
+				#set arrowimg [::skin::loadPixmap menu_arrow_down]
 			}
 			vertical {
-				#set arrowimg [::skin::loadPixmap menuarrowright]
+				#set arrowimg [::skin::loadPixmap menu_arrow_right]
 			}
 		}
 	}

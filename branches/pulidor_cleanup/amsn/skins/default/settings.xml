@@ -39,7 +39,7 @@
 	<Login>
 		<Colors>
 			<loginbg>#ffffff</loginbg>
-			<loginwidgetbg>#ffffff</loginwidgetbg>
+			<loginwidgetbg>#efefef</loginwidgetbg>
 			<loginfg>#000000</loginfg>
 			<loginurlfg>#0000ff</loginurlfg>
 			<logincheckfg>#ffffff</logincheckfg>

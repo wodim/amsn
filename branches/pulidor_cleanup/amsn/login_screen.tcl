@@ -101,7 +101,7 @@ snit::widgetadaptor loginscreen {
 		set dp_label_tag [$self create window 0 0 -anchor nw -window $dp_label]
 		# Username
 		set user_label_tag [$self create text 0 0 -anchor nw -text "[trans user]:" -fill [::skin::getKey loginfg]]
-		set user_field [combobox::combobox $self.user -editable true -relief solid -bd [::skin::getKey loginfieldbd 1] -width 25 -command "$self UserSelected" -background [::skin::getKey loginwidgetbg] -buttonbackground [::skin::getKey loginwidgetbg] -highlightthickness 0]
+		set user_field [combobox::combobox $self.user -editable true -relief solid -bd 2 -width 30 -command "$self UserSelected" -background [::skin::getKey loginwidgetbg] -buttonbackground [::skin::getKey loginwidgetbg] -highlightthickness 0 -borderwidth 1]
 		set user_field_tag [$self create window 0 0 -anchor nw -window $user_field]
 		# Password
 		set pass_label_tag [$self create text 0 0 -anchor nw -text "[trans pass]:" -fill [::skin::getKey loginfg]]
@@ -127,7 +127,7 @@ snit::widgetadaptor loginscreen {
 		set auto_login_field [checkbutton $self.auto_login -variable [::config::getVar autoconnect] -background [::skin::getKey loginbg] -command [list $self ValidateCheckbuttonsAC]]
 		set auto_login_field_tag [$self create window 0 0 -anchor nw -window $auto_login_field]
 
-		set login_button_background [scalable-bg ::$self.login.bg -source [::skin::loadPixmap loginbutton] \
+		set login_button_background [scalable-bg ::$self.login.bg -source [::skin::loadPixmap loginbut] \
 			-n [::skin::getKey loginbuttony 1] -e [::skin::getKey loginbuttonx 1] \
 			-s [::skin::getKey loginbuttony 1] -w [::skin::getKey loginbuttonx 1] \
 			-resizemethod [::skin::getKey loginbuttonresize "tile"]]
@@ -135,7 +135,7 @@ snit::widgetadaptor loginscreen {
 		# Login button
 		set login_button [button $self.login \
 				-text [trans login] \
-				-image [::skin::loadPixmap nullimage] \
+				-image [::skin::loadPixmap null] \
 				-background [::skin::getKey loginbuttonbg] \
 				-activebackground [::skin::getKey loginbuttonbg] \
 				-foreground [::skin::getKey loginbuttonfg] \
@@ -147,9 +147,9 @@ snit::widgetadaptor loginscreen {
 		bind $login_button <Configure> [list $self ResizeLoginButton %w %h]
 		bind $login_button <Destroy> [list $login_button_background destroy]
 		bind $login_button <Enter> \
-			[list $login_button_background configure -source [::skin::loadPixmap loginbutton_hover]]
+			[list eval $login_button_background configure -source \[ ::skin::loadPixmap loginbut_hover \]]
 		bind $login_button <Leave> \
-			[list $login_button_background configure -source [::skin::loadPixmap loginbutton]]
+			[list eval $login_button_background configure -source \[ ::skin::loadPixmap loginbut \]]
 
 		set login_button_tag [$self create window 0 0 -anchor nw -window $login_button]
 		# Useful links

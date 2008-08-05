@@ -20,6 +20,10 @@ namespace eval ::winks {
 	#----------------------------------------------------------------------------------
 	proc Init { dir } {
 		
+		variable plugin_dir
+		
+		set plugin_dir $dir
+		
 		status_log "Loading Winks plugin...\n" green
 
 		global HOME wink_unknown_thumbnail wink_readme_path cabextract_version
@@ -49,10 +53,6 @@ namespace eval ::winks {
 		::plugins::RegisterEvent Winks DataCastPacketReceived ReceiveSomething
 		::plugins::RegisterEvent Winks PacketReceived ReceiveSomething
 
-		# load plugin pixmaps
-		::skin::setPixmap unknown_wink unknown_wink.png pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butwinks winksbut.png pixmaps [file join $dir pixmaps]
-		::skin::setPixmap butwinks_hover winksbut_hover.png pixmaps [file join $dir pixmaps]
 		# remind the unknown wink thumbnail
 		set wink_unknown_thumbnail [file join "$dir" pixmaps "unknown_wink.png"]
 		# remind the README.txt path
@@ -522,12 +522,13 @@ namespace eval ::winks {
 	#----------------------------------------------------------------------------------
 	proc AddWinksButton { event evpar } {
 		
+		variable plugin_dir
 		upvar 2 $evpar newvar
 			
 		set buttonbar $newvar(bottom)		
 
 		set winksbut $buttonbar.winksbut
-		label $winksbut -image [::skin::loadPixmap butwinks] -relief flat -padx 0 \
+		label $winksbut -image [::skin::loadPixmap butwinks [file join $plugin_dir pixmaps]] -relief flat -padx 0 \
 			-background [::skin::getKey buttonbarbg] -highlightthickness 0 -borderwidth 0 \
 			-highlightbackground [::skin::getKey buttonbarbg] -activebackground [::skin::getKey buttonbarbg]
 		pack $winksbut -side left -padx 0 -pady 0
@@ -538,8 +539,8 @@ namespace eval ::winks {
 		
 		bind $winksbut <<Button2>> "::winks::WinksMenuDestroy"
 		bind $winksbut  <<Button3>> "::winks::AddWinkFromMCO $window"
-		bind $winksbut  <Enter> "$winksbut configure -image [::skin::loadPixmap butwinks_hover]"
-		bind $winksbut  <Leave> "$winksbut configure -image [::skin::loadPixmap butwinks]"	
+		bind $winksbut  <Enter> "$winksbut configure -image [::skin::loadPixmap butwinks_hover [file join $plugin_dir pixmaps]]"
+		bind $winksbut  <Leave> "$winksbut configure -image [::skin::loadPixmap butwinks [file join $plugin_dir pixmaps]]"	
 		bind $winksbut  <<Button1>> "::winks::WinksMenu $window \[winfo pointerx $window\] \[winfo pointery $window\] [::ChatWindow::GetInputText $window] \"\" 0"
 	}
 	

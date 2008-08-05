@@ -17,11 +17,6 @@ snit::widget toolbar {
 	typevariable button_border
 
 	typeconstructor {
-		# Load images
-		::skin::setPixmap toolbar_background toolbar_background.png
-		::skin::setPixmap toolbar_button toolbar_button.png
-		::skin::setPixmap toolbar_button_down toolbar_button_down.png
-		::skin::setPixmap toolbar_more toolbar_more.png
 		set backgroundimg [::skin::loadPixmap toolbar_background]
 		set buttonimg [::skin::loadPixmap toolbar_button]
 		set buttondownimg [::skin::loadPixmap toolbar_button_down]
