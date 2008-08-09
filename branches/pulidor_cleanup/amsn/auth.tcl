@@ -134,26 +134,22 @@ snit::type SSOAuthentication {
 		if { [$soap GetStatus] == "success" } {
 			set xml  [$soap GetResponse]
 			set server_clock [GetXmlAttribute $xml "S:Envelope:S:Header:psf:pp:psf:serverInfo" "ServerTime"]
-			set i 0
-			while {1} {
-				set subxml [GetXmlNode $xml "S:Envelope:S:Body:wst:RequestSecurityTokenResponseCollection:wst:RequestSecurityTokenResponse" $i]
-				incr i
-				if  { $subxml == "" } {
-					break
-				}
-			
-				set address [GetXmlEntry $subxml "wst:RequestSecurityTokenResponse:wsp:AppliesTo:wsa:EndpointReference:wsa:Address"]
+			foreach {key attrs children} [GetXmlNodeChildren $xml "S:Envelope:S:Body:wst:RequestSecurityTokenResponseCollection" ] {
+
+				if { [string first "wst:RequestSecurityTokenResponse" $key] != 0 } { continue }
+
+				set address [GetXmlEntry $children "wsp:AppliesTo:wsa:EndpointReference:wsa:Address"]
 				set token [$self GetSecurityTokenByAddress $address]
-				#puts "$subxml\n\n\n"
+
 				if {$token != "" } {
-					$token configure -type [GetXmlEntry $subxml "wst:RequestSecurityTokenResponse:wst:TokenType"]
-					$token configure -created [GetXmlEntry $subxml "wst:RequestSecurityTokenResponse:wst:LifeTime:wsu:Created"]
-					$token configure -expires [GetXmlEntry $subxml "wst:RequestSecurityTokenResponse:wst:LifeTime:wsu:Expires"]
-					$token configure -ticket [GetXmlEntry $subxml "wst:RequestSecurityTokenResponse:wst:RequestedSecurityToken:wsse:BinarySecurityToken"]
+					$token configure -type [GetXmlEntry $children "wst:TokenType"]
+					$token configure -created [GetXmlEntry $children "wst:LifeTime:wsu:Created"]
+					$token configure -expires [GetXmlEntry $children "wst:LifeTime:wsu:Expires"]
+					$token configure -ticket [GetXmlEntry $children "wst:RequestedSecurityToken:wsse:BinarySecurityToken"]
 					if {[$token cget -ticket] == "" } {
-						catch {$token configure -ticket [list2xml [GetXmlNode $subxml "wst:RequestSecurityTokenResponse:wst:RequestedSecurityToken:EncryptedData"]]}
+						catch {$token configure -ticket [list2xml [GetXmlNode $children "wst:RequestedSecurityToken:EncryptedData"]]}
 					}
-					$token configure -proof [GetXmlEntry $subxml "wst:RequestSecurityTokenResponse:wst:RequestedProofToken:wst:BinarySecret"]
+					$token configure -proof [GetXmlEntry $children "wst:RequestedProofToken:wst:BinarySecret"]
 					$token configure -local_clock [clock seconds]
 					$token configure -server_clock $server_clock
 

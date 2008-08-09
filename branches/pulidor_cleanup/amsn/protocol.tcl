@@ -6205,21 +6205,22 @@ proc cmsn_ns_handler {item {message ""}} {
 			return 0
 		}
 		GCF {
+			
+			#Until we do something with the censored expressions, why expend time on parsing?
+			return
+
 			catch {
 				set xml [xml2list [$message getBody]]
 				set i 0
-				while {1} {
-					if {[config::getKey protocol] >= 15} {
-						set subxml [GetXmlNode $xml "Policies:Policy:config:block:regexp:imtext" $i]
-					} else { 
-						set subxml [GetXmlNode $xml "config:block:regexp:imtext" $i]
-					}
-				
-					incr i
-					if {$subxml == "" } {
-						break
-					}
-					status_log "Found new censored regexp : [base64::decode [GetXmlAttribute $subxml imtext value]]"
+				if {[config::getKey protocol] >= 15} {
+					set subxml [GetXmlNodeChildren $xml "Policies:Policy:config:block:regexp"]
+				} else { 
+					set subxml [GetXmlNodeChildren $xml "config:block:regexp"]
+				}
+
+				foreach {key attrs children} $subxml {
+					array set attributes $attrs
+					status_log "Found new censored regexp : [base64::decode $attributes(value)]"
 				}
 			}
 			return 0

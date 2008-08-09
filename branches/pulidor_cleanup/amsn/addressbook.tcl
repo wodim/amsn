@@ -179,44 +179,40 @@ snit::type Addressbook {
 	}
 
 	method ABFindAllCallback { callbk soap } {
+
 		status_log "ABFindALL Callback called : [$soap GetStatus] - [$soap GetLastError]"
 		if { [$soap GetStatus] == "success" } {
-			set xml  [$soap GetResponse]
 
-			set ownercid [GetXmlEntry $xml "soap:Envelope:soap:Body:ABFindAllResponse:ABFindAllResult:ab:abInfo:OwnerCID"]
+			set xml  [GetXmlNodeChildren [$soap GetResponse] "soap:Envelope:soap:Body:ABFindAllResponse:ABFindAllResult"]
+
+			set ownercid [GetXmlEntry $xml "ab:abInfo:OwnerCID"]
 			if {$ownercid != "" } {
+				status_log "Setting ownercid: $ownercid" black
 				::abook::setPersonal cid $ownercid
 			}
 
-			set i 0
 			# can go later
-			while {1} {
-				set subxml [GetXmlNode $xml "soap:Envelope:soap:Body:ABFindAllResponse:ABFindAllResult:groups:Group" $i]
-				incr i
-				if  { $subxml == "" } {
-					break
-				}
+			foreach {key attrs children} [GetXmlNodeChildren $xml "groups"] {
+				set subxml [list $key $attrs $children]
+
 				set groupId [GetXmlEntry $subxml "Group:groupId"]
 				set groupName [GetXmlEntry $subxml "Group:groupInfo:name"]
 				::groups::Set $groupId $groupName
 			}
 
-			set i 0
-			while {1} {
-				set subxml [GetXmlNode $xml "soap:Envelope:soap:Body:ABFindAllResponse:ABFindAllResult:contacts:Contact" $i]
-				incr i
-				if  { $subxml == "" } {
-					break
-				}
+			foreach {key attrs children} [GetXmlNodeChildren $xml "contacts"] {
+				set subxml [list $key $attrs $children]
+				
+				set contact_info [GetXmlNode $subxml "Contact:contactInfo"]
 
-				set username [GetXmlEntry $subxml "Contact:contactInfo:passportName"]
+				set username [GetXmlEntry $contact_info "contactInfo:passportName"]
 				set username [string tolower $username]
-				set nickname [GetXmlEntry $subxml "Contact:contactInfo:displayName"]
+				set nickname [GetXmlEntry $contact_info "contactInfo:displayName"]
 				set contactguid [GetXmlEntry $subxml "Contact:contactId"]
-				set contacttype [GetXmlEntry $subxml "Contact:contactInfo:contactType"]
-				set cid [GetXmlEntry $subxml "Contact:contactInfo:CID"]
-				set is_in_fl [GetXmlEntry $subxml "Contact:contactInfo:isMessengerUser"]
-				set is_mobile [GetXmlEntry $subxml "Contact:contactInfo:isMobileIMEnabled"]
+				set contacttype [GetXmlEntry $contact_info "contactInfo:contactType"]
+				set cid [GetXmlEntry $contact_info "contactInfo:CID"]
+				set is_in_fl [GetXmlEntry $contact_info "contactInfo:isMessengerUser"]
+				set is_mobile [GetXmlEntry $contact_info "contactInfo:isMobileIMEnabled"]
 
 				# This is a generic addressbook so we can have in it contacts that have no passport..
 				# These can be phone numbers or just emails without anything more associated to them...  
@@ -225,28 +221,20 @@ snit::type Addressbook {
 				}
 
 				set groups [list]
-				set j 0
-				while { 1 } {
-					set group [GetXmlEntry $subxml "Contact:contactInfo:groupIds:guid" $j]
-					incr j
-					if {$group == "" } {
-						break
-					}
-					lappend groups $group
+				foreach {key attrs children} [GetXmlNodeChildren $contact_info "contactInfo:groupIds"] {
+					set group [list $key $attrs $children]
+					lappend groups [GetXmlEntry $group "guid"]
 				}
 
 				if { $groups == [list] } {
 					set groups 0
 				}
 
-				set j 0
-				while { 1 } {
-					set phone_type [GetXmlEntry $subxml "Contact:contactInfo:phones:ContactPhone:contactPhoneType" $j]
-					set phone_number [GetXmlEntry $subxml "Contact:contactInfo:phones:ContactPhone:number" $j]
-					incr j
-					if {$phone_type == "" } {
-						break
-					}
+				foreach {key attrs children} [GetXmlNodeChildren $contact_info "contactInfo:phones"] {
+					set phone [list $key $attrs $children]
+
+					set phone_type [GetXmlEntry $phone "ContactPhone:contactPhoneType"]
+					set phone_number [GetXmlEntry $phone "ContactPhone:number"]
 
 					if {$phone_type == "ContactPhonePersonal" } {
 						if {$contacttype == "Me" } {
@@ -271,14 +259,10 @@ snit::type Addressbook {
 				}
 			       
 				if {$contacttype == "Me" } {
-					set j 0
-					while { 1 } {
-						set annotation_k [GetXmlEntry $subxml "Contact:contactInfo:annotations:Annotation:Name" $j]
-						set annotation_v [GetXmlEntry $subxml "Contact:contactInfo:annotations:Annotation:Value" $j]
-						incr j
-						if {$annotation_k == "" } {
-							break
-						}
+					foreach {key attrs children} [GetXmlNodeChildren $contact_info "contactInfo:annotations"] {
+						set annotation [list $key $attrs $children]
+						set annotation_k [GetXmlEntry $annotation "Annotation:Name"]
+						set annotation_v [GetXmlEntry $annotation "Annotation:Value"]
 
 						if {$annotation_k == "MSN.IM.BLP" } {
 							global list_BLP
@@ -328,14 +312,11 @@ snit::type Addressbook {
 
 			}
 
-			set i 0
 			set users_with_space [list]
-			while {1} {
-				set subxml [GetXmlNode $xml "soap:Envelope:soap:Body:ABFindAllResponse:ABFindAllResult:DynamicItems:DynamicItem" $i]
-				incr i
-				if  { $subxml == "" } {
-					break
-				}
+			foreach {key attrs children} [GetXmlNodeChildren $xml "DynamicItems"] {
+
+				set subxml [list $key $attrs $children]
+
 				set username [GetXmlEntry $subxml "DynamicItem:PassportName"]
 				set username [string tolower $username]
 				set space_status [GetXmlEntry $subxml "DynamicItem:SpaceStatus"]
@@ -395,7 +376,7 @@ snit::type Addressbook {
 				bgerror $result
 			}
 
-		} elseif { [$soap GetStatus] == "fault" } { 
+		} elseif { [$soap GetStatus] == "fault" } {
 			set errorcode [$soap GetFaultDetail]
 			if {$errorcode == "ABDoesNotExist" } {
 				$soap destroy

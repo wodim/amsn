@@ -932,8 +932,10 @@ proc xml2list xml {
 	# the regsub {<!--.*-->} would remove from the first <!-- to the last --> which means we end up with <tag2/> and we loose <tag/>.. 
 	# if it's greedy, it will match all possible chars, with non-greedy, it will match only the smallest number: only the comment... 
 	if { $xml == "" } { return "" }
+
 	regsub -all {<\?xml.*?\?>} $xml "" xml
 	regsub -all {<!--.*?-->} $xml "" xml
+
 	# Avoid unmatched braces in list, in case we have a left or right accolade in the xml data
 	set xml [string map {"\{" "&right_accolade;" "\}" "&left_accolade;" "\\" "&escape_char;"}  $xml]
 
@@ -945,26 +947,35 @@ proc xml2list xml {
 	set res ""   ;# string to collect the result
 	set stack {} ;# track open tags
 	set rest {}
+
 	foreach item "{$xml}" {
+
 		switch -regexp -- $item {
-			^# {append res "{[lrange $item 0 end]} " ; #text item}
+			^# {
+				append res "[lrange $item 0 end] {}" ; #text item
+
+			}
 			^/ {
 				regexp {/(.+)} $item -> tagname ;# end tag
 				set expected [lindex $stack end]
 				if {$tagname!=$expected} {error "$item != $expected"}
 				set stack [lrange $stack 0 end-1]
-				append res "\}\} "
+
+				append res "\} "
+
 			}
 			/$ { # singleton - start and end in one <> group
 				regexp {([^ ]+)( (.+))?/$} $item -> tagname - rest
 				set rest [lrange [string map {= " "} $rest] 0 end]
-				append res "{$tagname [list $rest] {}} "
+
+				append res "$tagname [list $rest] {} "
+
 			}
 			default {
 				set tagname [lindex $item 0] ;# start tag
 				set rest [lrange [string map {= " "} $item] 1 end]
 				lappend stack $tagname
-				append res "\{$tagname [list $rest] \{"
+				append res "$tagname [list $rest] \{"
 			}
 		}
 		if {[llength $rest]%2} {error "att's not paired: $rest"}
@@ -972,27 +983,21 @@ proc xml2list xml {
 	if [llength $stack] {error "unresolved: $stack"}
 
 	# Unescape chars and accolades
-	string map {"\} \}" "\}\}" "&amp;" "&" "&lt;" "<" "&gt;" ">" "&apos;" "\'" "&quot;" "\"" "&right_accolade;" "\\\{" "&left_accolade;" "\\\}" "&escape_char;" "\\\\"} [lindex $res 0]
+	set res [string map {"\} \}" "\}\}" "&amp;" "&" "&lt;" "<" "&gt;" ">" "&apos;" "\'" "&quot;" "\"" "&right_accolade;" "\\\{" "&left_accolade;" "\\\}" "&escape_char;" "\\\\"} $res]
+
+	return $res
 }
 
 proc list2xml {list {depth -1}} {
 	set res ""
-	switch -- [llength $list] {
-		2 {
-			if {$depth > 0} {
-				append res [string repeat "    " [expr {$depth - 1}]]
-				append res "  "
-			}
-			append res [xmlencode [lindex $list 1]]
-			if {$depth >= 0} {
-				append res "\n"
-			}
+	foreach {tag attributes children} $list {
+		if {$depth > 0} {
+			append res [string repeat "    " $depth]
 		}
-		3 {
-			foreach {tag attributes children} $list break
-			if {$depth > 0} {
-				append res [string repeat "    " $depth]
-			}
+
+		if { $tag == "#text" } {
+			append res $attributes
+		} else {
 			append res <$tag
 			foreach {name value} $attributes {
 				append res " $name=\"[xmlencode $value]\""
@@ -1000,28 +1005,26 @@ proc list2xml {list {depth -1}} {
 			if [llength $children] {
 				set child_depth $depth
 				append res >
+
 				if {$depth >= 0} {
 					append res "\n"
 					incr child_depth
 				}
-				foreach child $children {
-					append res [list2xml $child $child_depth]
-				}
+
+				append res [list2xml $children $child_depth]
+
 				if {$depth > 0} {
 					append res [string repeat "    " $depth]
 				}
 				append res </$tag>
-				if {$depth >= 0} {
-					append res "\n"
-				}
 			} else {
 				append res />
-				if {$depth >= 0} {
-					append res "\n"
-				}
 			}
 		}
-		default {error "could not parse $list"}
+		if {$depth >= 0} {
+			append res "\n"
+		}
+
 	}
 	return $res
 }
@@ -1030,66 +1033,23 @@ proc xml2prettyxml { xml } {
 	return [list2xml [xml2list $xml] 0]
 }
 
-proc GetXmlEntry {list find {no 0} {stack ""}} {
-    global xmlEntry_occurences
-    if {$stack == "" } {
-	set xmlEntry_occurences 0
-    }
-    set current_stack $stack
-    foreach { entry attributes content} $list {
-	set current_stack "$stack:$entry"
-	if {$current_stack == $find || $current_stack == ":$find" } {
-	    #status_log "Found it in $current_stack\n" red
-	    foreach subkey $content {
-		set key [lindex $subkey 0]
-		set value [lindex $subkey 1]
-		if {$key == "#text" } { 
-		    if { $no == $xmlEntry_occurences } {
-			#status_log "Found value : $value for index $xmlEntry_occurences " blue
-			return [string map {"\\\\" "\\" "\\\{" "\{" "\\\}" "\}" } $value ]
-		    } else {
-			#status_log "Found value : $value for index $xmlEntry_occurences... looking for index $no"
-			incr xmlEntry_occurences
-		    }
-		}
-	    }
-	    return ""
-	} else {
-	    if {[string first $current_stack $find] == -1 &&
-		[string first $current_stack ":$find"] == -1 } {
-		#status_log "$find not in $current_stack" red
-		continue
-	    } else { 
-		#status_log "$find is in a subkey of $current_stack\n" red
-		foreach subkey $content {
-		    set result [GetXmlEntry $subkey $find $no $current_stack]
-		    if { $result != "" } {
-			return $result
-		    }
-		}
-	    }
-	}	
-    }
-    
-    return ""
-}
+
 
 proc GetXmlNode {list find {no 0} {stack ""}} {
-    global xmlEntry_occurences
-    if {$stack == "" } {
-	set xmlEntry_occurences 0
-    }
+    set xmlEntry_occurences 0
     set current_stack $stack
+
     foreach { entry attributes content} $list {
 	set current_stack "$stack:$entry"
+
 	if {$current_stack == $find || $current_stack == ":$find" } {
 	    #status_log "Found it in $current_stack\n" red
 	    if { $no == $xmlEntry_occurences } {
-		return $list
+		return [list $entry $attributes $content]
+		#return $list
 	    } else {
 		incr xmlEntry_occurences
 	    }
-	    return ""
 	} else {
 	    if {[string first $current_stack $find] == -1 &&
 		[string first $current_stack ":$find"] == -1 } {
@@ -1097,11 +1057,9 @@ proc GetXmlNode {list find {no 0} {stack ""}} {
 		continue
 	    } else { 
 		#status_log "$find is in a subkey of $current_stack\n" red
-		foreach subkey $content {
-		    set result [GetXmlNode $subkey $find $no $current_stack]
-		    if { $result != "" } {
-			return $result
-		    }
+		set result [GetXmlNode $content $find $no $current_stack]
+		if { $result != "" } {
+                    return $result
 		}
 	    }
 	}	
@@ -1110,107 +1068,36 @@ proc GetXmlNode {list find {no 0} {stack ""}} {
     return ""
 }
 
-proc GetXmlAttribute { list find attribute_name {stack ""}} {
+proc GetXmlAttribute { list find attribute_name {no 0}} {
 
-	set current_stack $stack
-	foreach { entry attributes content} $list {
-		set current_stack "$stack:$entry"
-		if {$current_stack == $find || $current_stack == ":$find" } {
-			#status_log "Found it in $current_stack\n" blue
-			array set attributes_arr $attributes
-			if { [info exists attributes_arr($attribute_name)] } {
-				return [string map {"\\\\" "\\" "\\\{" "\{" "\\\}" "\}" } [set attributes_arr($attribute_name)]]
-			} else {
-				return ""
-			}
-		} else {
-			if {[string first $current_stack $find] == -1 &&
-			    [string first $current_stack ":$find"] == -1 } {
-				#status_log "$find not in $current_stack" red
-				continue
-			} else { 
-				#status_log "$find is in a subkey of $current_stack\n" red
-				foreach subkey $content {
-					set result [GetXmlAttribute $subkey $find $attribute_name $current_stack]
-					if { $result != "" } {
-						return $result
-					}
-				}
-			}
-		}	
-	}
-	
-	return ""
-	
-}
+	set node [GetXmlNode $list $find $no]
+	if { $node == "" } { return "" }
 
-
-proc ListXmlChildren {list find {stack ""}} {
-    global xmlEntry_occurences
-    if {$stack == "" } {
-	set xmlEntry_occurences 0
-    }
-    set current_stack $stack
-    foreach { entry attributes content} $list {
-	set current_stack "$stack:$entry"
-	if {$current_stack == $find || $current_stack == ":$find" } {
-	    #status_log "Found it in $current_stack\n" red
-  	    set keys [list]
-	    foreach subkey $content {
-		set key [lindex $subkey 0]
-		set value [lindex $subkey 1]
-		lappend keys $key
-	    }
-	    return $keys
+	array set attributes_arr [lindex $node 1]
+	if { [info exists attributes_arr($attribute_name)] } {
+		return [string map {"\\\\" "\\" "\\\{" "\{" "\\\}" "\}" } [set attributes_arr($attribute_name)]]
 	} else {
-	    if {[string first $current_stack $find] == -1 &&
-		[string first $current_stack ":$find"] == -1 } {
-		#status_log "$find not in $current_stack" red
-		continue
-	    } else { 
-		#status_log "$find is in a subkey of $current_stack\n" red
-		foreach subkey $content {
-		    set result [ListXmlChildren $subkey $find $current_stack]
-		    if { $result != "" } {
-			return $result
-		    }
-		}
-	    }
-	}	
-    }
-    
-    return ""
-}
-
-proc ListXmlAttributes { list find {stack ""}} {
-
-	set current_stack $stack
-	foreach { entry attributes content} $list {
-		set current_stack "$stack:$entry"
-		if {$current_stack == $find || $current_stack == ":$find" } {
-			#status_log "Found it in $current_stack\n" blue
-			array set attributes_arr $attributes
-			return [array names attributes_arr]
-		} else {
-			if {[string first $current_stack $find] == -1 &&
-			    [string first $current_stack ":$find"] == -1 } {
-				#status_log "$find not in $current_stack" red
-				continue
-			} else { 
-				#status_log "$find is in a subkey of $current_stack\n" red
-				foreach subkey $content {
-					set result [ListXmlAttributes $subkey $find $current_stack]
-					if { $result != "" } {
-						return $result
-					}
-				}
-			}
-		}	
+		return ""
 	}
 	
-	return ""
-	
 }
+
+proc GetXmlNodeChildren {list find} {
+	return [lindex [GetXmlNode $list $find] 2]
+}
+
+proc GetXmlEntry {list find {no 0}} {
+	set node [GetXmlNode $list $find $no]
+	if { $node == "" } { return "" }
+
+	foreach { key value children } [lindex $node 2] {
+		if {$key == "#text" } { 
+			return [string map {"\\\\" "\\" "\\\{" "\{" "\\\}" "\}" } $value ]
+		}
+	}
+	return ""
+}
+
 
 proc xmlencode {string} {
 	return [string map { "<" "&lt;" ">" "&gt;" "&" "&amp;" "\"" "&quot;" "'" "&apos;"} $string]
