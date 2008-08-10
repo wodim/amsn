@@ -88,6 +88,14 @@ proc OnX11 {} {
 	}
 }
 
+#####################################################
+# Cache the result of On{Platform} calls            #
+#####################################################
+foreach platform_proc [list OnMac OnDarwin OnWin OnWinVista OnBSD OnLinux OnUnix OnX11] {
+	set res [eval $platform_proc]
+	rename $platform_proc {}
+	proc $platform_proc {} [list return $res]
+}
 
 #####################################################
 # Functions and variables that could be replaced    #

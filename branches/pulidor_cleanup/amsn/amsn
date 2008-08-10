@@ -128,8 +128,8 @@ source amsncore.tcl
 #Specific folder to check for package on platforms
 source [file join $program_dir "platform" "common.tcl"]
 
-if { [OnDarwin] } {
-	source [file join $program_dir "platform" "darwin.tcl"]
+if { [OnMac] || [OnDarwin] } {
+	source [file join $program_dir "platform" "mac.tcl"]
 } elseif { [OnWin] } {
 	source [file join $program_dir "platform" "windows.tcl"]
 } elseif { [OnLinux] || [OnBSD]} {

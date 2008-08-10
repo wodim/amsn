@@ -1,13 +1,10 @@
 set HOME [file join $env(HOME) Library/Application\ Support/amsn]
 
 proc GetPlatformModifier {} {
-	if {[OnMac]} {
-		return "Command"
-	} else {
-		return "Control"
-	}
+	return "Command"
 }
 
+lprepend auto_path [file join [pwd] utils macosx]
 
 #///////////////////////////////////////////////////////////////////////////////
 # if a button has a -image, -relief flat but not -overrelief, it will actually be created as a label
@@ -26,7 +23,6 @@ proc buttons2labels { } {
 			if { [info exists options(-overrelief)] } { unset options(-overrelief) }
 			set ret [eval label [list $pathName] [array get options]]
 			if { [info exists command] } {
-				puts $command
 				bind $pathName <<Button1>> "$command"
 			}
 		} else {
@@ -38,6 +34,4 @@ proc buttons2labels { } {
 
 # apply buttons2labels on Mac, because there seem to be problems with buttons there
 # TODO: as soon as it is fixed in tk on mac, make it version-conditional
-if { [OnMac] } {
-	buttons2labels
-}
+buttons2labels
