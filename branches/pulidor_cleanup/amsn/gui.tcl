@@ -8051,7 +8051,7 @@ proc chooseFileDialog { {initialfile ""} {title ""} {parent ""} {entry ""} {oper
 
 	global  starting_dir
 
-	if { ![info exists starting_dir || ![file isdirectory $starting_dir] } {
+	if { ![info exists starting_dir] || ![file isdirectory $starting_dir] } {
 		set starting_dir [pwd]
 	}
 
