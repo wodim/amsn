@@ -1717,7 +1717,6 @@ namespace eval ::MSN {
 
 	#Add user to our Forward (contact) list
 	proc addUser { userlogin {username ""} {gid 0} } {
-		set userlogin [string map {" " ""} $userlogin]
 		if {[string match "*@*" $userlogin] < 1 } {
 			set domain "@hotmail.com"
 			set userlogin $userlogin$domain

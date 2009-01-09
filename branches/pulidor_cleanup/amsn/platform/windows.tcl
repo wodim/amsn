@@ -3,3 +3,5 @@ if { [info exists env(USERPROFILE)] } {
 } else {
     set HOME "[file join [pwd] amsn_config]"
 }
+
+lprepend auto_path [file join [pwd] utils windows]
