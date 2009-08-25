@@ -1,0 +1,1101 @@
+amsn_lang_version 2
+abort Prekini
+about O programu
+aboutamsn O Alvarovem Messengerju
+accept Sprejmi
+acceptfile Ali želiš sprejeti datoteko $1, njena velikost je $2? Shranjena bo v $3
+account Račun
+accountkid  Ta otroški račun ne more biti uporabljen z Messengerjem. Pojdite na Kids Passport spletno stran in dajte starševsko dovoljenje.
+actions Akcije
+activeautoupdate Aktivirajte avtomatsko posodabljanje
+add Dodaj
+addacontact Dodaj stik
+addedyou $1 ($2) vas je dodal/a na svoj seznam stikov
+addprofile Dodaj profil
+addprofiledesc Vpišite uporabniško ime, kateremu želite ustvariti nof profil. \nProfili omogočajo različne nastavitve za različne prijave.\nBrez profilov ni mogoče uporabljati Zgodovine, Alarmov ali funkcije "Zapomni si gesla".
+addstate Dodaj novo stanje
+addto Dodaj na $1
+addtoal Dodaj v AL
+addtobl Dodaj v BL
+addtocontacts Dodaj na seznam stikov
+addtofl Dodaj v FL
+addtoo Dodaj to osebo na moj seznam stikov
+admincontacts Uredi stike
+admingroups Uredi skupine
+advanced Dodatno
+advancedprefs Dodatne nastavitve
+adverts Reklame
+agotinvitation $1 te vabi na zvočni pogovor
+alarmonconnect Vklopi alarm, ko se ta stik prijavi
+alarmondisconnect Vklopi alarm, ko se ta stik odjavi
+alarmonmsg Vklopi alarm, ko ti ta stik pošlje sporočilo
+alarmonstatus Vklopi alarm, ko ta stik zamenja stanje
+alarmpref Nastavitve alarma za stike
+alarmpref2 Nastavitve alarma za vsak kontakt
+alarms Alarmi
+alarmstatus Alarm omogočen za ta stik
+allfiles Vse datoteke
+allmonths Vsi meseci
+allowallbutbl Dovoli vsem uporabnikom, razen blokiranim, da me kontaktirajo
+allowbadwords Onemogoči cenzuro vzdevkov
+allowlist Seznam dovoljenih stikov (AL):
+allowonlyinal Dovoli kontakt le uporabnikom v Allow seznamu
+allowseen Dovoli tej osebi da vidi moj status, ko sem prijavljen
+allow_sms Dovoli stikom, da me kontaktirajo na mobilni napravi
+allprofilesinuse Vsi obstoječi profili so v uporabi
+always Vedno
+animatedemoticon Ta emotikon je animiran
+animatedsmileys Omogoči animirane emotikone
+animatenotify Animirana obvestila
+appearance Izgled
+appearoff Na videz neprijavljen
+areacode Omrežna številka
+aretyping $1 pišejo sporočilo
+askcam Povprašaj za spletno kamero
+askcontactwebcam povprašati za sliko s stikove spletne kamere, ali
+askeachtime Vprašaj vsakič
+asksendingyourwebcam če želiš pokazati sliko s svoje spletne kamere
+asksendoim Bi rad to poslal stiku v načinu brez povezave?
+askwebcam Ogled preko spletne kamere stika
+assistantainput Izberi vhodno zvočno napravo in poskusi z snemanjem zvoka. Snemanje PREKINEMO ROČNO S TIPKO (STOP) in nato pritisnemo tipko (PREDVAJAJ).V primeru, da nimate mikrofona ali ga ne želite uporabljati boste z tipko (Nimam Mikrofona) zaključili čarovnik.
+assistantaoutput Izberi zvočno izhodno napravo, in poskusi predvajati pripravljeno datoteko za preizkus.Nastavitve spreminjaj dolker pri pritisku na gumb (PREDVAJAJ) ne zaslišiš zvoka.
+assistantawarn Ni mogoče snemanje ali pogovor z prijatelji.Odgovore kako namestiti to razširitev najdeš na Wiki straneh
+assistantfinetunepic Spremeni spodnje nastavitve, če želiš spremeniti parametre slike spletne kamere
+assistantnote ta nastavitev je samo za $1 funkcijo.
+assistantselectcam Izberi kamero iz seznama.V primeru, da uporabljaš za vhodno napravo TV kartico z video vhodom ali kakšno drugo napravo z več kanali izberi tudi kanal iz katerega boš zajemal video signal.Dobro je, da se naprava priklopi sedaj saj v nadaljevanju sledijo nastavitve slike.
+assistantstarting Zaganjam pomočnika
+assistanttitle Avdio in Video pomočnik
+assistantwelcome Ta pomočnik vas bo vodil skozi zvočne in video nastavitve za aMSN.\n\nPregledal bo če so določene razširitve prisotne in nameščene.Nastavlja se zvočno vhodno in izhodno napravo,video napravo in kanal(video naprave),podrobno nastavitev slike in resolucijo.Pred nastavljanjem preveri če so vse zaželjene naprave priklopljene.(kamera,mikrofon,zvočniki)
+audioconfigured Izbral si naslednje Avdio nastavitve:\n Izhodna Naprava: $1\nVhodna Naprava:$2
+audiovideo Avdio in Video nastavitve
+author Avtor
+autoaccepted Prenos datoteke avtomatično sprejet
+autoacceptft Avtomatično sprejmi prihajajoče datoteke
+autoacceptwc Avtomatsko sprejmi zahteve spletne kamere. 
+autoaudiosinkdesc Samodejno zaznaj najbolj primerno Avdio Izhodno napravo za vaš sistem
+autoaudiosrcdesc Samodejno zaznaj najbolj primerno Avdio Vhodno napravo za vaš sistem
+autoaway Prikaži me kot odsotnega, ko sem neaktiven
+autocheckver Samodejno preveri za novo različico
+autoconnect Prijavi se ob zagonu aMSN
+autoconnect2 Prijavi se ob zagonu aMSN
+autodetectip Samodejno zaznaj IP naslov
+autohotmaillog Samodejna prijava v Hotmail
+autoidle Samodejno neaktivno stanje
+autoip Samodejni IP
+autolisten_voiceclips Samodejno predvajaj zvočne posnetke, ko so sprejeti
+automaticsink Samodejno prepoznaj Izhod
+automaticsrc Samodejno prepoznaj Vhod
+automessage Samodejno sporočilo
+autonoact Prikaži me kot neaktivnega, ko sem neaktiven
+autoresizedp Samodejno spremeni velikost prikaznim slikam na privzeto velikost
+autovideosinkdesc Samodejno zaznaj najbolj primerno izhodno video metodo za vaš sistem
+autovideosrcdesc Samodejno zaznaj zajem spletne kamere na vašem sistemu
+av Video konferenca
+avaccepted Video konferenca sprejeta
+avcanceled Video konferenca preklicana
+avgotinvitation $1 te vabi na video konferenco
+avinitfailed Zagon avdio/video vstavka ni uspel. Klic preklican
+avoidseen Ne dovoli tej osebi, da vidi moj status, ko sem prijavljen
+away Odsoten
+awaymsg1 Vprašam za away sporočilo vsakič, ko zamenjam stanje na Odsoten/Zaposlen?
+awaymsg2 Vedno uporabi to sporočilo
+back Nazaj
+baduserpass Napačno uporabniško ime ali geslo
+badwebcam Ne morem prikazati slike s spletne kamere. Preveri, če je povezana in nameščena.
+bgcolor Zamenjaj barvo ozadja
+blankdirect Pustite prazno za neposredno povezavo
+block Blokiraj
+blocked Blokiran
+blockedyougroup Pokaži posebej stike, ki so te blokirali
+blocking Blokiranje
+blockinter1 Ko si prijavljen, preveri vsakih
+blockinter2 sekund, sicer pa
+blockinter3 ljudi vsakih
+blockinter4 sekund.
+blocklist Seznam BLokiranih stikov (BL)
+blockmessage Ti ljudje so prijavljeni in so te blokirali
+blocknotifications Onemogoči prikazovanje opozorilnih okenc
+blocksounds Onemogoči zvoke
+blockusers Hkrati preveri
+bouncedock aMSNjeva ikona v opravilni vrstici naj utripa ob prejetem sporočilu
+brightness Svetlost
+bringtofront Prikaži vse spredaj
+broughtby Naredili naslednji programerji
+browse Prebrskaj
+browser Brskalnik
+browserexample ( \$url bo zamenjan z URL-jem). Npr.: mozilla \$url
+bugerror Napaka pri povezovanju na bazo hroščev. Preveri internetno povezavo.
+bugnocomment Naj pošljem brez komentarja? Komentarji k hroščem nam pomagajo ugotoviti, kaj je šlo narobe in jih odpraviti.
+busy Zaposlen
+bytesymbol b
+cachedpics $1 shranjenih slik
+cachedpicsfor Shranjene osebne slike uporabnika
+cagreement Izjava o zaupnosti
+cam_in_cw Prikaži spletno kamero vdelano v oknih za klepet
+cancel Prekliči
+cancelled Preklicano
+cannotdeleteprofile Ne morem izbrisati računa, ker je v Amsn seji
+cantexec Ne morem izvesti programa $1. Preveri nastavitve.
+cantget Ne morem dobiti $1
+cantloadonlineversion Ne morem dobiti nazadnje posodobljenega seznama jezikov z interneta
+cantremoveothers Ni mogoče izbrisati skupine "Ostali"
+captureextloaded Dodatek za zajemanje -$1- je naložen
+captureextnotloaded Dodatek za zajemanje -$1- ni naložen, najprej ga moraš prevesti
+captureproperties Lastnosti slike s spletne kamere
+capturewarn Ne bo bilo mogoče pošiljati svoje spletne kamere, če jo imate. Če je nimate,je to normalno. Odgovore kako se namesti to razširitev najdeš na Wiki strani:
+casesensitive Občutljiv na velikost črk
+cfgalarm Nastavi zvočni/slikovni alarm
+cfgalarmall Nastavi globalni alarm
+change Zamenjaj
+change_account_info Spremeni podatke računa
+changecustomstate Preklopi v
+changedisplaypic Spremeni prikazno sliko
+changefont Zamenjaj pisavo
+changeglobnick Spremeni globalni vzdevek
+change_mobile Spremeni nastavitve mobilnih naprav
+changenick Zamenjaj vzdevek
+changepsm Spremeni osebno sporočilo
+changesize Spremeni velikost
+changestate $1 je spremenil/a stanje na $2
+changestatus Spremeni Status
+changevideosettings Spremeni nastavitve videa
+channels Kanali
+charscounter Natipkani znaki v oknu s pogovorom
+chat Pogovor
+chatack Sprejemam pogovor od
+chatmaxmin Ko stik začne pogovor z mano, hočem, da je:
+chatreq Zahtevam pogovor
+chatsmileys Smeški
+chatsmileys2 Prikaži emotikone in smeške v pogovornih oknih
+checkblocking Preverjaj, če te ostali blokirajo
+checkemail Pokaži obvestilo o novi pošti v seznamu stikov
+checkfilman Prejete datoteke bodo shranjene v $1. Preveri nastavitve upravljalca datotek v nastavitvah.
+checkingaudio Preverjam če je avdio razširitev (Snack) naložena ...
+checkingcam Preverjam če je spletna kamera priklopljena ...
+checkingcapext Preverjam če je '$1' razširitev naložena...
+checkingextensions Preverjam in nastavljam video naprave
+checkingver Preverjam za novo različico
+checkonfln Preveri, če te je uporabnik blokiral, ko se odjavi
+checkopenfilecommand Preveri ukaz za odpiranje datotek v oknu z nastavitvami
+checkver Preveri za novo različico
+choosearq Izberi arhitekturo sistema
+chooseaudiosink Izberite Avdio Izhod
+chooseaudiosrc Izberite Avdio Vhod
+choosebasefont Izberi vrsto pisave
+choosebgcolor Izberi barvo ozadja
+choosechannel Izberi kanal
+choosecontact Prosim izberi stik s seznama
+choosedevice Izberi napravo
+choosefontcolor Izberi barvo pisave
+chooseinputdev Izberi vhodno napravo
+chooselocation Izberi novo lokacijo datoteke
+choosemixerdev Izberi mikser
+chooseoutputdev Izberi izhodno napravo
+chooseskin Izberi preobleko/grafično podobo, ki bi jo rad uporabil
+choosevideosrc Izberite Video Vhod
+ch_to_state Preklopi v novo stanje
+clear Počisti
+clearlog Počisti dnevnik
+clearlog2 Počisti zgodovino za vse stike
+clearlog3 Počisti vse dnevnike
+clearwebcamlogs Počisti vse video dnevnike
+clickhere Klikni sem
+clicktoadd Klikni na gumb Dodaj za novo opombo
+clicktologin Klikni sem za prijavo
+clientcaps Pošlji x-clientcaps paketek drugim odjemalcem
+clientname Odjemalec
+close Zapri
+closeall Zaprem vse zavihke v tem oknu?
+closealltabs Zapri vse zavihke
+closechatwindows Zapri vsa pogovorna okna pred izhodom?
+closed Povezava z $1 zaprta zaradi neaktivnosti
+closelabel Ko klikneš na gumb za zaprtje v oknu z zavihki
+closeonly Zapri samo trenutni zavihek
+closeorcall Zapreti ali preklicati morate avdio klic preden zaprete okno.
+closeorcallvideo Potrebno je zapreti/končati Video klic preden zaprete  okno.
+closeordock Zapiranje okna kontaktne liste bo zaprlo aMSN. Mogoče si hotel samo zapreti okno in pustiti aMSN odprt na pultu.\n\nSi prepričan da hočeš zapreti aMSN?
+closeothers Zapri vse ostale zavihke
+closingdocks Gumb za zaprtje pomanjša okno
+color Barva
+command Ukaz
+commandstatus Izvedi ukaz
+compactstyle Kompaktni Stil
+configure Nastavi
+configuremic Nastavi vhodno zvočno napravo
+configureplugin Konfiguriraj vstavek $1
+configuringaudio Nastavi izhodno zvočno napravo
+confirm Ali si prepričan?
+confirmbl Ali si prepričan, da želiš blokirati ta stik?
+confirmdelete Ali si prepričan, da želiš zbrisati $1?
+confirmdg Ali si prepričan, da želiš zbrisati to skupino?
+confirmdu Ali si prepričan, da želiš zbrisati ta stik?
+confirmeg Ali si prepričan, da želiš izprazniti to skupino?
+confirmfulldelete Odstrani tudi iz Windows Live adresarja.
+confirmpurge Vse shranjene slike drugih stikov (tvoje bodo ostale) bodo izbrisane. Si prepričan?
+confirmrfl Ali si prepričan, da želiš ta stik odstraniti iz te skupine?
+congrats Čestitam
+connected Zdaj si povezan
+connectedat Povezan ob:
+connectedwith Povezan z $1
+connecterror Napaka pri povezavi na strežnik
+connectfirst Prosim najprej se poveži
+connecting Povezujem se
+connection Povezava
+connectionlost Povezava s strežnikom prekinjena
+contact Stik
+contactadded Stik dodan
+contactdoesnotexist Stik ne obstaja!
+contactlist Seznam stikov
+contacts Stiki
+contentroamingsetting Shrani prikazno sliko na strežniku.
+continuously Neprestano
+contrast Kontrast
+conversationwith $1 uporabnikov v pogovoru
+convertexplain Pot do programa CONVERT iz ImageMagicka (potreben za osebne slike).\n Pusti prazno, če je pot že določena.
+copy Kopiraj
+copytoclipboard Kopiraj $1 na odložišče
+copytogroup Dodaj v skupino
+corruptconfig Nastavitvena datoteka je pokvarjena. Ustvarjam novo. Stara datoteka bo shranjena v $1. Prosim, pošlji jo, da preverimo, kaj se je zgodilo.
+corruptstates Datoteka z osebnimi stanji je pokvarjena. Ustvarjam novo. Stara datoteka bo shranjena v $1. Prosim, pošlji jo, da preverimo, kaj se je zgodilo.
+couldnotrename Ni bilo mogoče preimenovati datoteke $1
+countrycode Oznaka moje države
+cprofile Ustvari račun
+created Ustvarjeno
+credits Zasluge
+curdisplaypic Trenutna prikazna slika
+curfssinknotworking Trenutno izbran izhod ne deluje, uporabite raje '$1'
+curfssrcnotworking Trenutno izbran vhod ne deluje, uporabite raje '$1'
+currentdate Trenutni datum
+currentdynrate Trenutna realno-časovna hitrost (v milisekundah)
+currentlanguage Jezik, ki ga trenutno uporabljaš
+currentnotes Trenutne opombe
+custnotifymsg Prikaži obvestilo, ko ti ta stik pošlje sporočilo
+custnotifyoffline Prikaži obvestilo, ko se ta stik odjavi
+custnotifyonline Prikaži obvestilo, ko se ta stik prijavi
+custnotifystatus Prikaži obvestilo, ko ta stik spremeni stanje
+customcolor Barva
+customdp Prikazna slika po meri
+custom_edit Uredi svoje smeške
+custom_new Dodaj svojega smeška
+customnick Prikazni vzdevek
+customsmileys Prikazuj smeške drugih uporabnikov
+customstyle Uporabniški način pogovora
+custshowcustomsmileys Prikaži uporabnikove poljubne smeške
+cut Izreži
+cutimagebox Izberi del slike, ki ga hočeš uporabiti
+cutimageboxreset Ponastavi velikost\nizbirnega polja na:
+cyclewindows Kroži po oknih
+date Datum
+dateformat Spremeni obliko datuma
+day Dan
+days Dni
+dcprofile Ne ustvari računa
+default Privzete nastavitve
+default2 Privzeta
+defaultloginradio Prijavi se s privzetimi nastavitvami
+defchatwinsize Privzeta velikost okna s pogovorom (XxY)
+delete Izbriši
+deleteall Izbriši vse
+deleteblock Izbriši in blokiraj
+deletecustomstate Izbriši osebno stanje
+delimiters Krajišči prikaza časa
+deliverfail Tega sporočila ni bilo mogoče dostaviti
+delprofile Izbriši račun
+delprofile2 Izberi račun, ki bi ga rad izbrisal
+description Opis
+detach Odklopi
+details Podrobnosti
+devicebusy Naprava $1 je zasedena
+devices Naprave
+directconnection Neposredna povezava (vrata 1863)
+disabled Izključeno
+disabledaudiosrcdesc Onemogoči Avdio vhod in ne pošiljaj zvoka iz mikrofona
+disabledvideosrcdesc Onemogoči Video vhod in ne pošiljaj spletne kamere
+disableprofiles Izključi shranjevanje računov (Uporabno v kiberkavarnah in skupinskem okolju)
+disablessl Onemogoči SSL
+disableuserfonts Prezri sogovornikove nastavitve pisave
+disconnect $1 se je odjavil/a.
+disconnectedfrom Povezava z $1 prekinjena
+displaychat Prikaži nastavitve besedila
+displayeventconnect Prikazuj prijave stikov
+displayeventdisconnect Prikazuj odjave stikov
+displayeventemail Prikazuj prejetja e-mailov
+displayeventnick Prikaži ko kontakti zamenjajo Vzdevek
+displayeventpsm Prikaži ko kontakti zamenjajo Osebno sporočilo
+displayeventstate Prikazuj spremembe stanja stikov
+displayp4context Prikaži kontekst P4
+displaypic Prikazna slika
+dockfreedesktop Prikleni na pult (KDE3/Gnome2)
+dockgtk gtk gtk gtk gtk pomol
+docking Pristaja
+dockingoff Pristaja prekinjena
+dockkde kde kde kde kde pomol
+done Narejeno
+dontaskweek Ne vprašaj po posodobitvi za en teden
+dontdownload Ne poberi TLS-ja, namestil ga bom sam
+dontshow Ne prikaži
+dontshowdp Uporabniku ne dovoli prenašanja tvojih novih prikaznih slik
+download Poberi
+downloadcanceled Prenos prekinjen.
+downloadingtls Pobiram modul TLS iz:\n $1
+downloadingwait Prenaša se nova verzija aMSN. Prosimo počakajte...
+dynamicrate Uporabi dinamično spreminjanje hitrosti števila posnetkov za simulacijo realno-časovne hitrosti
+edit Uredi
+editavsettings Uredi zvočne in video nastavitve
+editcontent Uredi vsebino polj za naslov in opombo
+editcustomstate Uredi
+editmyprofile Uredi svoj MSN račun
+editnewstate Novo osebno stanje za avtomatsko sporočilo
+editprofile Uredi račun
+editstate Uredi obstoječe stanje za avtomatsko sporočilo
+editvalue Uredi vrednost
+email E-pošta
+emailnotverified (Email še ni preverjen)
+emailsinlist Pokaži poštne naslove namesto vzdevkov v seznamu stikov
+emoticon_steal Dodaj med emotikone
+emotisounds Igraj zvok na določene emotikone
+emptygroup Izprazni skupino
+enabled Vključeno
+enableproxy Omogoči proxy
+enableremote Omogoči nadzor na daljavo
+enablesound Igraj zvok
+enablespaces Omogoči Windows Live Spaces podporo (EKSPERIMENTALNO).
+encoding Izberi kodiranje
+encoding2 Spremeni način kodiranja znakov
+enterbugdesc Vnesi opis tvojega početja, da nam pomagaš reproducirati hrošča:
+entercontactemail Vnesi e-mail osebe
+enterfilename Prosim vnesi ime datoteke
+enternick Vnesi svoj vzdevek
+enterpsm Osebno sporočilo
+error Napaka!
+errortls Napaka pri namestitvi modula TLS:
+escapeclosescw Tipka Esc zapira pogovorna okna
+eventhistory Prikaži zgodovino dogodkov
+examples Primeri
+exitamsn Ali si prepričan, da želiš zapustiti program?
+extras Dodatne storitve
+failed Neuspešno
+faileddelete Izbris ni uspel
+faileddeleteperso Te slike ni mogoče izbrisati, ker ne pripada tvojemu računu. Samo slike, ki pripadajo tvojemu osebnemu računu, lahko tako izbrišeš.
+faq FAQ (Pogosta vprašanja)
+farsightextchecking Preverjanje ali je Farsight2 razširitev nameščena...
+farsightextwarn Sprejem SIP klicev ni mogoč. Odgovore kako se namesti Farsight se dobi na Wiki strani:
+fetching Sprejemam podatke...
+file Datoteka
+filedoesnotexist Datoteka ne obstaja
+fileman Upravljalec datotek
+filemanexample ( \$location bo zamenjan z mapo ) Npr.: nautilus \$location
+filename Ime datoteke
+filenotwritable Datoteke ni mogoče izbrisati
+filetransfer Prenos datoteke
+filetransfercancelled Prenos datoteke preklican
+filetransfercomplete Prenos datoteke končan
+filters Filtri
+filtersselect Izberi želene filtre\n(Če ni noben izbran, bo prikazano vse)
+filtersx Izbira filtrov
+find Najdi
+findasyoutype Išči med tipkanjem
+findnext Najdi naprej
+findprev Najdi nazaj
+finetunesettings Podrobno nastavi sliko
+finish Končaj
+finish2apply Pritisni Končaj, če se strinjaš z zgornjimi nastavitvami.
+firewalled Si za požarnim zidom ali usmerjevalnikom/routerjem
+firewalled2 Si za požarnim zidom, prostim preveri nastavitve Povezave v Nastavitvah
+followtext Sledi novemu besedilu
+forget_me Pozabi moj račun
+forgot_pass Pozabil/a sem svoje geslo
+formatcsv CSV format
+formatctt CTT format
+friendlyname Prijazno ime
+fsautoaudiosinkchosen Samodejno izbran '$1' za Avdio izhod
+fsautoaudiosrcchosen Samodejno izbran '$1' za Avdio vhod
+fsautovideosrcchosen Samodejno izbran '$1' za Video vhod
+fsnodevfound Nobena naprava ni na voljo
+fsnosuitablesrc Nobena primerna Vhodna naprava ni na voljo, uporabljam '$1' samo za preskušanje
+fssrcdisabledusing Onemogočen vnos, uporabljam '$1' samo za preskušanje
+ftaccepted Prenos datoteke sprejet
+ftacceptedby $1 je sprejel/a povabilo za prenos datoteke '$2'
+ftaccepting Sprejemam povabilo za prenos datoteke
+ftautoclose Zapri okno, ko se konča prenos datoteke
+ftconnecterror Napaka pri povezovanju z drugo stranjo
+ftconnecting Povezujem se na $1, vrata $2
+ftconnectionlost Povezava z drugo stranjo prekinjena
+ftgotinvitation $1 ti želi poslati datoteko '$2' ($3 bajtov). Shranjena bo v $4. Jo želiš sprejeti?
+ftportpref Uporabi ta in višja vrata za prenos datotek
+ftportpref2 Zaganjam vrata za direktno povezavo (za spletno kamero in prenos datotek
+ftporttest Testiraj vrata
+ftrejected Prenos datoteke je bil zavrnjen.
+ftrejectedby $1 je zavrnil/a povabilo za prenos datoteke '$2'.
+ftsendinvitation $1 bo prejel/a povabilo za prenos datoteke '$2' ($3 bajtov).
+fullcontactlist Tvoj seznam stikov je poln. Da bi dodal novega, moraš izbrisati katerega od trenutnih stikov.
+gameaccepted $1 je sprejel povabilo za igro
+gameclosedbyother $1 je preklical igro z vami.
+gameclosedbyself Preklicali ste igro z $1
+gameinvitation $1 vas je povabil na igro $2. Sprejmem povabilo?
+gamepluginnotfound $1 vas je povabil na igro $2 vendar ni vstavka za igranje te igre. Najprej aktivirajte in konfigurirajte vstavek.
+gamerejected $1 je zavrnil vaše povabilo za igro
+gamerequest Povabili ste  $1 na igro $2
+getdisppic Omogoči prejemanje osebne slike od drugih uporabnikov
+getmoreplugins Dobi več vstavkov!
+getmoreskins Dobi več preoblek za aMSN!
+globalcontainer Globalni vsebovalec
+globalnick Vnesi vzorec za tvorbo vzdevkov vseh tvojih stikov. Lahko uporabljaš te spremenljivke: \$user_login za naslov stika, \$nick za njegov vzdevek in \$customnick za njegov prikazni vzdevek. Primer: '\$user_login je \$nick' bo prikazano kot 'stik@msn.com je Stik'
+globalnicktitle Globalni vzdevek
+globaloverride Prikaži globalni vzdevek namesto prikaznega
+gonelunch Na kosilu
+gotink $1 ti je poslal/a črnilo.
+goto Pojdi na $1
+gotoinbox Pojdi v Inbox
+goto_prefs_removeprofile Klikni tu da greš v nastavitve in zbrišeš svoj račun
+group Skupina
+groupadd Dodaj skupino
+groupcontacts Kontakti v skupini
+groupcontactsbystatus Razvrsti kontakte po statusu
+groupdelete Izbriši skupino
+groupexists Skupina že obstaja
+groupmissing Ne morem najti skupine
+groupnewname Novo ime
+groupnonim Združi vse stike, ki ne uporabljajo IM. 
+groupnotempty Skupina ni prazna!
+groupoldname Staro ime
+grouprename Preimenuj skupino
+groups Skupine
+groupunknown Neznana skupina
+handle Ime
+hangup Odloži klic.
+havenomic Nimam mikrofona
+help Pomoč
+helpcontents Vsebina pomoči
+hidebuttonbar Skrij pasico z gumbi
+hidedetails Skrij podrobnosti.
+hidedisplaypic Skrij prikazno sliko
+hidemenu Skrij/Prikaži menije
+hidemenumessage Si prepričan da hočeš skriti menuje?\nNazaj jih lahko pokažeš z Skrij/Prikaži tipkovnično bližnico 'Ctrl-M'.
+hiden Ne pokaži emotikona v meniju smeškov
+hideuserscw Skrij uporabnike v tem oknu s klepetom
+hidewindow Skrij okno
+history Prikaži zgodovino
+history2 Zgodovina
+home Doma
+howto_remove_profile Da zbrišeš račun (forget $1) moraš to storiti iz Nastavitev. \n\n Zaradi varnostnih vidikov brisanje iz prijavnega okna ni dovoljeno.
+httpconnection HTTP povezava (vrata 80)
+hue Odtenek
+huge Ogromna
+hybrid Hibridni način
+ident Identificiram
+identity Identiteta
+ignore Ignoriraj
+ignorecontact Ignoriraj pogovor z kontaktom
+ignoreerrors Ne prikazuj več sporočil o napakah do zaprtja programa
+imagefiles Slike
+inbox Pošta-prejeto
+insertsmiley Vstavi emotikon
+inserttextnote Vpiši besedilo v polji za naslov in opombo ter klikni na gumb Shrani
+installconvert Namestiti moraš ImageMagick (program za pretvarjanje), da bi pretvarjal slike v format, ki ga potrebujejo MSN-jevi strežniki. Binarne datoteke za tvoj operacijski sistem lahko pobereš s ftp://ftp.imagemagick.net/pub/ImageMagick/binaries/ . Če ga že imap, je to hrošč. Prosim, povej zanj.
+internalerror Notranja napaka strežnika
+invalidfile Datoteka $2 iz polja "$1" ne obstaja ali ni berljiva
+invalidfile2 Datoteke $1 ni mogoče ustvariti, prepričaj se, da imaš prava dovoljenja za ta cilj.
+invalidgroup Napačna skupina
+invalidparameter Napaka pri povezovanju na strežnik: napačen parameter
+invalidpic Slika ne obstaja
+invalidpicsize Slika je prevelika, izberi manjšo
+invalidsound Zvok ne obstaja
+invalidusername Napačno uporabniško ime
+invitationcancelled Povabilo je bilo preklicano
+invite Povabi
+ipaddress IP Naslov
+ipdetect Zaznaj IP za prenose datotek preko HTTP
+ircstyle IRC način pogovora
+istyping $1 piše sporočilo
+joins $1 se je pridružil/a pogovoru
+justonce Samo enkrat
+keepalive Drži živo (NAT)
+keeplog Hrani dnevnik pogovorov
+keeplog2 Beleži vse pogovore v aMSN dnevnik za kasnejši pregled
+language Jezik
+language_manager Upravljalnik jezikov
+large Velika
+largest Največji
+lastlogin Zadnja prijava
+lastlogout Zadnja odjava
+lastmsgedme Zadnje sporočilo
+lastmsgtime Zadnje sporočilo prejeto ob $1
+lastseen Nazadnje prijavljen/a
+lazypicretrieval Počasno prejemanje prikaznih slik
+lclosedwin $1 je zaprl/a okno $2
+lconftopriv Konferenca spremenjena v zasebni pogovor z $1
+lconvstarted Pogovor se je pričel ($1)
+lconvstartedOIM Začel sem pogovor brez povezave s kontaktom $1
+leaveblankforhotmail Pusti prazno za uporabo Hotmail storitve
+leavejoinsinchat Pokazi obvestilo o pridružitvi/zapuščanju pogovora znotraj okna
+leaves $1 je zapustil/a pogovor
+lenteredconf $1 je vstopil/a v konferenco na $2
+lineflushlog Piši dnevnik vrstico za vrstico (brez medpomnilnika)
+linprivate ZASEBNO
+listening Poslušam
+listeningon Poslušam na vratih $1
+listsmileys Seznam smeškov
+listsmileys2 Prikaži emotikone in smeške v seznamu stikov
+ljoinedconf $1 se je pridružil/a konferenci
+lleftconf $1 je zapustil/a konferenco
+load Naloži
+loadcontacts Naloži seznam stikov
+loadotherdisplaypic Nalagam osebne slike od $1, prosim počakaj...
+logbigger Dnevniška datoteka za vsak stik je lahko velika največ
+logeventconnect Beleži prijave
+logeventdisconnect Beleži odjave
+logeventemail Beleži prejetje e-mailov
+logeventnick Shranjuj spremembe Vzdevkov
+logeventpsm Shranjuj spremembe Osebnih sporočil
+logeventstate Beleži spremembe statusov
+logfandexp Velikost dnevniških datotek in izteka zgodovine
+loggedotherlocation Povezava prekinjena. Povezan drugje.
+loggingin Prijavljam
+login Prijavi se
+loginas Prijavi se kot
+loging Beleženje
+logolder Beleži samo pogovore, ki so izpred
+logout Odjavi se
+logoutwincloselabel Zapri pogovore, ko se odjavim
+logsbydate Razvrsti loge po datumu (Hitrejše nalaganje zgodovine)
+logschats Shranjuje pogovor
+logsin se je ravnokar prijavil/a
+logsmileys Prikaži emotikone in smeške v zgodovini
+logsout se je ravnokar odjavil/a
+logwebcam Shrani vse aktivnosti spletne kamere v zgodovino
+longnick Tvoj vzdevek je daljši od 130 zankov. To ni uradno podprto v MSNjevem protokolu. Si prepričan, da hočeš imeti tak vzdevek?
+longp4c Tvoje prijazno ime je daljše od 130 znakov. Prijazno ime, ki bo prikazano na uradnem MSNjevem odjemalcu, bo $1. Si prepričan, da hočeš imeti tako prijazno ime?
+longpsm Tvoje osebno sporočilo je predolgo. To uradno ni podprto z MSN protokolom. Si prepričan da ga hočeš videti?
+lowrescam Uporabljaj nižjo resolucijo (manjša pasovna širina)
+lprivtoconf Zasebni pogovor spremenjen v konferenco ($1)
+luclosedwin Zaprli ste okno ($1)
+mailer e-poštni program
+mailerexample ( \$recipient = prejemnik ) Pusti prazno za uporabo Hotmaila
+maintenance Strežnik čez $1 minut ne bo več dostopen zaradi vzdrževanja
+maximised Maksimiran
+medium Srednji
+minimised V pomanjšanem oknu
+minimize Pomanjšaj okno v ikono na pultu
+minimizeplain Pomanjšaj
+mins minut
+mobile Mobilni
+mobilegrp1 Skupina uporabnikov prenosnih naprav
+mobilegrp2 Uporabniki prenosnih naprav naj bodo v svoji skupini, ko niso prijavljeni
+modified Popravljeno
+month Mesec
+more Več
+morepersonal Več stanj ->
+move Premakni
+movetogroup Premakni v skupino
+msg Sporočilo
+msgflicker Naslov okna s pogovorom naj utripa, če prejme sporočilo, ko ni aktivno
+msgmaxmin Ko prispe novo sporočilo, hočem da je:
+msgmode Izberi način prikazovanja več pogovornih oken:
+msn AMSN
+msnstatus Status MSN omrežja
+msnstyle MSN način pogovora
+mustrestart Da bi spremembe prišle v veljavo, je potrebno program ponovno zagnati
+myfriendlyname Moje prijazno ime
+myhomephone Domači telefon
+mymobilephone Mobilni telefon
+mynick Moj vzdevek
+mypic Moja prikazna slika:
+mypics Osebne slike
+mystatus Moje stanje
+myworkphone Službeni telefon
+name Ime
+natip IP poizvedba s spletne strani
+natkeepalive Če te velikokrat odjavi, označi to možnost
+needonline Še vedno si/izgledaš neprijavljen!
+needwinico2 Da bi pristaja delovala v Oknih, potrebuješ datoteko winico05.dll v mapi utils/windows
+never Nikoli
+new_account Ustvari nov MSN račun
+newchat Nov pogovor
+new_ft_protocol Uporabi nov protokol za prenos datotek (še nekaj hroščev)
+newline Nova vrstica
+newmail $1 novih sporočil v Inboxu
+newmailfolder $1 novih sporočil v ostalih imenikih
+newmailfrom Novo sporočilo od $1 ($2)
+newmailfromother Novo sporočilo v drugem imeniku od $1 ($2)
+newmsg Novo sporočilo
+newoim Nova sporočila brez povezave
+newstate Dodaj osebno stanje
+newtabbedfeature aMSN ima nov način upravljanja pogovorov: sedaj lahko združi vse pogovore s stiki iz iste skupine oziroma pogovore z vsemi stiki v isto okno z zavihki. Izberi način, kako naj aMSN dela s pogovori
+newupdate Nove posodobitve za aMSN so na voljo
+newveravailable Nova različica $1 je na voljo za prenos
+next Naslednji
+nick Vzdevek
+nickchanged $1 je spremenil/a vzdevek v '$2
+no Ne
+noactivity Neaktiven
+no_blocked_notif Ne prikazuj opozorilnih oken za blokirane kontakte. 
+nocacheddps Brez prikaznih slik v hranjenju za tega uporabnika
+nocamwarn Spletna kamera ni bila najdena ali pa jo uporablja drug program (kar pomeni da jo aMSN ne more uporabljati).Kako rešiti ta problem dobiš na Wiki strani:
+nodataavailable Ni podatkov za $1
+nodevices Trenutno ni nameščena nobena naprava
+noftpreview Onemogoči pošiljanje predogleda slik pri prenosu datotek
+nogap Brez praznega prostora med skupinami
+nogroup Brez skupine
+nojavascript Javascript ni omogočen.Avtomatski vpis verjetno ne bo deloval.
+nologfile Brez dnevnika za $1
+nomic Ni mikrofona
+noneavailable Noben ni na voljo
+nonewmail Ni novih sporočil v Inboxu
+nonewver Ni novih različic na voljo za prenos
+nonimgroup  Kontakti brez IM skupaj
+nooimconfirmation Ne zahtevaj potrdila pri pošiljanju/sprejemanju Sporočil brez povezave
+nopic Brez slike
+noprofileexists Trenutno ni računov.\nUstvari nov račun\nz gumbom dodaj račun.
+noresizesmileys Ne pomanjšuj prihajajočih emotikonov
+normal Normalno
+noskins Privzetega skina ni v imeniku skins/ . AMSNja ni mogoče zagnati.
+nosound Zvoka nisem zaznal.Prepričaj se, da je mikrofon pravilno priklopljen.
+nosound_or_hold Zvoka nisem zaznal.Za pošiljanje glasovnega sporočila moraš držati gumb PRITISNJEN ko govoriš in ga spustiti da zvočno sporočilo pošlješ.
+nospace Tu ni ničesar več
+nosystemtray Tray ni na voljo
+note Opomba
+notificationserver Začetni MSNjev strežnik (MSN Messengerjev strežnik)
+notify obvesti
+notify1 Prikaži obvestilo, ko se kdo prijavi
+notify1_5 Prikaži obvestilo, ko se kdo odjavi
+notify1_75 Prikaži obvestilo, ko kdo zamenja stanje
+notify2 Prikaži obvestilo ob novem sporočilu
+notify3 Prikaži obvestilo ob novem e-mailu
+notify4 Prikaži obvestilo ob novem e-mailu v drugem imeniku
+notifyoffset Nastavitve položaja obvestilnega okna
+notifytimeout Čas prikaza obvestila v milisekundah
+notifytyping Pošiljaj sogovornikom obvestilo o tipkanju
+notifywin Obvestila
+notimcontact Ta kontakt ni IM kontakt.
+notinlist Nisi na njegovem/njenem seznamu stikov
+notls MSN protokol 9 potrebuje tls. Zgleda, da ni nameščen na tem računalniku. Če je, vnesi pot do njegovega imenika v nastavitvah (npr.: /opt/tls/lib).\n\ntls lahko pobereš s http://tls.sf.net.
+nottabbed Navadna okna brez zavihkov
+nousersinsession Ni uporabnikov v seji
+nouserspecified Uporabnika ni določenega
+nudge $1 zahteva pozornost
+offline Neprijavljen
+oim Sporočilo v načinu brez povezave
+oimauthenticationfailed Overjanje spodletelo
+oimflood Preveč poslanih sporočil brez povezave... prosimo počakajte in poskusite znova
+oimmessagetoolarge Sporočilo poslano brez povezave je preveliko... razdelite ga in pošljite znova
+oimsystemunavailable Sistem za pošiljanje sporočil brez povezave trenutno ni na voljo
+oimunexpectederror Nepričakovana napaka
+ok V redu
+onenewmail 1 novo sporočilo v Inboxu
+online Prijavljen
+onlinehelp Pomoč na spletu
+onphone Na telefonu
+opendir Odpri imenik
+openfile Odpri
+openfilecommand Ukaz za odpiranje datotek
+openreceived Odpri sprejete datoteke
+options Nastavitve
+ordercontactsby Uredi stike
+ordergroupsby Uredi skupine
+original Izvirnik
+other Ostalo
+otherdisplaypic Ostale shranjene osebne slike za ta stik (desni klik nad sliko za več možnosti)
+otherdps Ostale osebne slike
+others Ostalo
+p4contextprefix Predpona konteksta P4
+pager Klicni opozorilnik(pager)
+pass Geslo
+passportnotverified Vaš račun mora biti preverjen preden lahko spreminjate osebne podatke (kot je vzdevek).Preveri Inbox za aktivacijski email.
+paste Prilepi
+pause Pavza
+pausedwebcamreceive Uporabnik je pavziral video
+pausewebcamsend Pavziraj pošiljanje spletne kamere
+personal Osebno
+phone Telefon
+phones Telefonske številke
+picbrowser Brskalnik slik
+picfile Slikovna datoteka
+picstatus Slika omogočena
+play Predvajaj
+playbackposition Pozicija predvajanja
+playbackspeed Hitrost predvajanja (milisekunde med vsako sliko videa)
+playerror Prišlo je do napake pri igranju zvoka : $1
+playgame Igraj igro
+playgame2 Igraj $1
+playing Igram: $1
+playtest Predvajaj preizkusno datoteko
+playwebcamsend Zopet predvajaj video spletne kamere
+pluginselector Izberi vstavke/plugine
+port Vrata
+portswellconfigured Tvoja vrata so prav nastavljena
+prefalerts Alarmi in zvoki
+prefapps Aplikacije
+prefawaymsg Sporočilo ob odsotnosti
+prefblock1 Preveri ob odjavi
+prefblock2 Preverjaj
+prefblock3 Skupina "Blokirajo te"
+prefconnection Nastavitve povezave
+prefemotic Emotikoni in smeški
+preferences Nastavitve
+preffont Sporočila
+preffont2 Spremeni pisavo, ki jo vidijo drugi
+preffont3 Spremeni pisavo uporabniškega vmesnika
+preffont4 Spremeni pisavo za vse sogovornike
+prefft Nastavitve prenosa datotek, P2P in NAT
+preflibs Imenik s knjižicami
+preflocale Lokalne nastavitve.
+preflocale2 Nastavi jezik/kodo države
+preflog1 Zgodovina in dnevnik
+preflogevent Zgodovina dogodkov
+preflook Izgled uporabniškega vmesnika
+prefmsging Uporabniški vmesnik sporočil
+prefname Moje ime/Vzdevek(nick)
+prefphone Moje telefonske številke
+prefphone2 Vpiši telefonske številke za katere želiš, da so vidne\ntistim, ki so na Allow seznamu.\n
+prefprivacy Seznama dovoljenih (AL) in blokiranih (BL) stikov
+prefprivacy2 Seznam stikov
+prefprofile Moj javni profil
+prefprofile2 Ustvari/spremeni javni profil \n(tvoj opis, ki ga lahko vidijo drugi)
+prefprofile3 aMSNjevi uporabniški profili nastavitev
+prefproxy Nastavitve proxy strežnika
+prefremote Nastavitve nadzora na daljavo
+prefsession Moja prijava in stanje
+prefshared Deljena povezava (samo NAT)
+prefsound Zvoki
+preview Ogled
+privacy Zasebnost
+profiledconfig Nastavitve profilov
+profileexists Ni mogoče ustvariti profila s tem uporabniškim imenom,\nker ta že obstaja. Uporabi drugo uporabniško ime.
+profileinuse Ta profil uporablja druga seja Amsn. Prosim izberi drugega.
+profileloginradio Prijavi se s profilom
+profiles Profili
+properties Lastnosti
+proxy Sem za proxy strežnikom (HTTP ali SOCKS5)
+proxyconf Nastavitve proxyja
+proxyconfhttp Podpora HTTP proxyju
+proxyconnection Proxy povezava:
+psm Osebno sporočilo
+psmatend Prikaži osebno sporočilo ob vzdevku
+psmchanged $1 je spremenil PSM v '$2'
+psmdontshow Ne prikaži osebnega sporočila, če ni del globalnega/prikaznega vzdevka
+psmnewline Prikaži osebno sporočilo pod vzdevkom
+psmplace Kje naj bo osebno sporočilo?
+publishphones Objavi moje tel. številke
+purge Očisti
+pwcdriver Uprabljaš pwc gonilnik
+quit Izhod
+raised V oknu
+readonlymsgbox Prenos datoteke je preklican, ker je ciljna mapa samo za branje. Popravi njena dovoljenja.
+readonlywarn OPOZORILO: Datoteka verjetno NE bo shranjena pravilno, ker je mapa "Prejete datoteke" zaščitena za pisanje. Pred prenosom preveri, če so dovoljenja ciljne mape ($1) nastavljena pravilno.
+receivedbytes Prejeto $1 od $2 bajtov
+receiveddir Mapa s prejetimi datotekami
+receivedoimread Imač $1 novih sporočil oddanih v načinu brez povezave. Bi jih rad prebral?
+receivedvoice Prejel/a si glasovno sporočilo
+receivefile Sprejmi datoteko
+recentmsg Prepreči zapiranje okna s pogovorom takoj po prejemu sporočila
+reconnect Čakam, da se $1 ponovno poveže
+reconnect2 Ponovna prijava ob prekinitvi povezave
+reconnecting Povezujem se s strežnikom
+reconnectnow Ponovno se poveži
+record Snemaj
+recorderror Napaka se je pojavila med poskušanjem snemanja zvoka : $1
+recvwebcamaccepted $1 je sprejel/a tvoje povabilo za ogled kamere.Povezujem...
+redirect Klikni tu za prevezavo
+reject zavrni
+rememberaccount Zapomni si moj račun
+rememberpass Shrani geslo
+remembersetting Zapomni si to nastavitev
+removeempty Odstrani prazne skupine iz seznama stikov
+removefromgroup Odstrani iz skupine
+removefromlist Zbriši s tega seznama
+rename Preimenuj
+renameep Preimenuj to lokacijo ($1)
+renamelocation Preimenuj to lokacijo
+report Javi napako
+reporting Poročam
+required_version Ne morem naložiti plugina, ker za delovanje potrebuje vsaj aMSN $1.
+resetincomingfont Ponastavi font (uporabljaj font ki ga uporablja počiljatelj)
+restartforskin Opomba: Morda bo potrebno aMSN ponovno zagnati za pravilen izgled skina!
+retry Ponovno poskusi
+reversed Zamenjano
+reverselist Ljudje, ki si jim stik
+rightback Takoj bom nazaj
+save Shrani
+saveas Shrani kot
+savechatwinsize Shrani spremembe velikosti oken s pogovori
+savecontacts Shrani seznam stikov
+saveddefaultloc spravi na splošno lokacijo
+savelocation Bi rad shranil datoteko v $1?
+savelocationerror Datoteka ne more biti shranjena tu.
+saveotherdirectory Shrani v drug imenik
+savetofile Shrani v datoteko
+says $1 pravi
+sbcon Povezujem se na Switch Board
+searchadvprefs Išči v naprednih nastavitvah:
+searchdown Išči dol
+searchup Išči gor
+selectall Izberi vse
+selectcontact Izberi kontakt
+selectplugins Izberi plugin, ki ga želiš omogočiti
+selectskin Izberi skin s seznama
+send Pošlji
+sendcam Ponudi svojo spletno kamero
+sendemail Pošlji moj e-poštni naslov za obveščanje o spremembah
+sendfeedback aMSN forum
+sendfile Pošlji datoteko
+sendmail Pošlji e-mail
+sendmobmsg Pošlji sporočilo na prenosno napravo
+sendmsg Pošlji sporočilo
+sendoim Pošlji sporočilo v načinu brez povezave
+sendsip Začni Avdio klic
+sendvideosip Začni video klic
+sendvoice Pošlji Zvočno sporočilo
+sendwebcamaccepted $1 je sprejel/a tvoje povabilo za pošiljanje spletne kamere.Povezujem...
+sendwebcaminvite Pokaži sliko tvoje spletne kamere stiku
+sentbytes Poslano $1 od $2 bajtov
+sentvoice Zvočno sporočilo poslano
+server Strežnik
+serverbusy Strežnik je zaseden
+servergoingdown Povezava prekinjena
+serverunavailable Strežnik ni dosegljiv
+session Seja
+setasmydp Nastavi za mojo prikazno sliko
+setbackinitialstate Nastavili ste aMSN za povezavo kot $1, ampak sedaj ste $2. Ste prepričani da hočete nastaviti status na $1?
+setupcam Nastavljam video napravo kot spletno kamero
+setupcamfinetune Nastavljam kamero in popravljam sliko
+shareswebcam Ima spletno kamero
+showbanner Prikaži aMSNjevo pasico
+showblockedlist Pokaži seznam ljudi, ki so te blokirali
+showcachedpics Pokaži shranjene osebne slike
+show_contactdps_in_cl Prikaži pomanjšane osebne slike v seznamu stikov
+showcontactemail Prikaži kontakte z E-mail naslovi
+showcontactnick Prikaži kontakte z vzdevkom
+showdetailedview Pokaži podrobno predstavitev kontaktov.
+showdetails Pokaži podrobnosti.
+showdisplaypic Prikaži prikazno sliko
+showdisplaypic2 Prikaži prikazno sliko, ko se odpre pogovor
+showlinksinlogin Prikaži povezave v prijavnem oknu
+showmailicon Prikaži ikono v opravilni vrstici, ko prejmeš pošto
+showmypic Moja prikazna slika
+shownonim Pokaži kontakte, ki ne uporabljajo IM.
+shownotify Pokaži obvestilo ob nekaterih dogodkih
+showofflinegroup Pokaži skupino brez povezave
+showonedpframe Prikaži samo en okvir za prikazne slike v pogovornih oknih
+showpicnotify Prikaži prikazno sliko v obvestilnem oknu
+showspaces Pokaži Spaces ikono v listi kontaktov
+showuserpic Prikazna slika uporabnika $1
+showuserscw V tem pogovoru je trenutno $1 oseb/klepetulj. Če bi jih rad prikazal ali skril klikni tu.
+signinstatus Status ob vpisu
+signout Odjavi se
+signoutep Odjavi se iz $1
+signouteverywhere Povsod se odjavi
+signouthere Odjavi se od tu ($1)
+sipcallaccepted Avdio klic sprejet
+sipcallback Pokliči nazaj
+sipcallconnected Tvoj avdio klic je sedaj povezan!
+sipcalldeclined Avdio klic zavrnjen
+sipcalleeaccepted Uporabnik je sprejel vaš Avdio klic
+sipcalleebusy Uporabnik je trenutno Zaseden
+sipcalleecanceled Uporabnik je preklical povabilo za Avdio klic
+sipcalleeclosed Uporabnik je končal Avdio klic
+sipcalleedeclined Uporabnik je Preklical povabilo za Avdio klic.
+sipcalleenoanswer Uporabnik se ni javil na vaš klic.
+sipcalleeunavailable Uporabnik trenutno ni dosegljiv
+sipcallended Vaš Avdio klic se je zaključil
+sipcallimpossible2 Avdio ali Video klic ni mogoč. Instalira Farsight2 in poskusi ponovno.
+sipcallmissed Zgrešili ste Avdio klic od $1
+sipcallnosipflag Uporabnik nima podprtih Avdio klicev.
+sipcallsent Kličem $1
+sipcallyouarebusy2 Lahko imaš samo en Audio ali Video klic na enkrat.
+sipgotinvitation Sprejel sem povabilo za Avdio klic od $1
+sipvideocallaccepted Video klic sprejet
+sipvideocallconnected Vodep klic je sedaj povezan!
+sipvideocalldeclined Video klic zavrnjen
+sipvideocalleeaccepted Uporabnik je sprejel tvoj Video klic
+sipvideocalleecanceled Uporabnik je preklical povabilo na Video klic
+sipvideocalleeclosed Uporabnik je končal tvoj Video klic
+sipvideocalleedeclined Uporabnik je zavrnil tvoje povabilo za Video klic
+sipvideocallended Tvoj Video klic se je končal
+sipvideocallmissed Zgrešil si Video klic $1
+sipvideocallnosipflag Uporabnik nima podpore za Video klice
+sipvideogotinvitation Dobil si povabilo za video klic od $1
+skin Preobleka
+skinselector Izberi videz
+small Majhna
+smallest Najmanjši
+smileconfig Nastavitve tvojih emotikonov
+smilefile Datoteka
+smileintro Izpolni potrebna polja, če želiš ustvariti novega lastnega smeška (poglej v FAQ za pomoč)
+smileintro2 Uredi potrebna polja, če želiš spremeniti tega smeška (poglej v FAQ za pomoč)
+smiletoobig Izbrani smeško je večji kot običajni. Ga želiš zmanjšati?
+smileynotavailable Smeško ni na voljo!
+snackfailed Snack se ni uspel naložiti, ponastavljam
+snackneeded Potrebujem Snack knjižnico verzija > 2.2.9 za uporabo te funkcije.
+snapshot Posnetek/Snapshot
+sngdblclick Enojni klik odpre okno s pogovorom
+sortcontactgroup Razporedi kontakte po Skupini
+sortcontacthybrid Razporedi kontakte Hibridno
+sortcontactsasc Razvrsti kontakte naraščajoče
+sortcontactsby Razvrsti kontakte po
+sortcontactsbylogsize Sortiraj kontakte po velikosti zgodovine pogovorov
+sortcontactsdesc Razvrsti kontakte padajoče
+sortcontactstatus Razporedi kontakte po Statusu
+sortgroupsasc Razporedi kontakte Naraščajoče
+sortgroupsdesc Razporedi kontakte Padajoče
+sound Zvok dogodka
+sound2 Predvajaj zvoke ob nekaterih dogodkih
+soundactive Predvajaj zvok tudi ob prejetem sporočilu v aktivnem oknu
+soundcommand To mora biti ukaz play (npr. esdplay)
+soundexample ( \$sound = Zvočna datoteka) Npr.: esdplay \$sound
+soundfile Zvočna datoteka
+soundfiles Zvoki
+soundloop Ponavljaj
+soundnoavail Zvočna naprava ni na razpolago.Prosim ustavi aplikacijo, ki uporablja to zvočno napravo.
+soundserver Zvočni strežnik
+soundstatus Zvok omogočen
+sourcecode Izvorna koda (potrebno jo je prevesti in namestiti)
+splashstart Zagon
+sslwarning POZOR!! Onemogočenje SSL-ja bo onemogočilo enkripcijo, tako da bo tvoje geslo poslano kot navadno besedilo. Uporabi le pri kompliciranih nastavitvah proxyja in omrežja.
+startoffline Začni neprijavljen
+startoffline2 Prijavi se kot "Na videz neprijavljen"
+startonboot Zaženi AMSN ob zagonu Oken
+startontray Zaženi AMSN kot ikono na pultu
+state Želim biti viden kot
+stateautomsg Avtomatsko sporočilo
+statechange je status spremenil/a na:
+stateedittext Prosim uredi polja, ki bi\njih rad spremenil in pritisni Shrani.
+stateinfo Nastavitev osebnega stanja
+statename Ime osebnega stanja
+statenewtext Prosim vpiši potrebne podatke za\ntvoje novo osebno stanje in pritisni Shrani.
+statenick Vzdevek v tem stanju (pusti prazno, če naj se ne spremeni)
+statepsm Osebno sporočilo v tem stanju (pusti prazno, če naj se ne spremeni)
+stats Statistika
+status Stanje
+step Korak
+stop Ustavi
+stopalarm Ustavi alarm
+stopwebcamreceive Končaj s sprejemanjem slike s spletne kamere
+stopwebcamsend Končaj s pošiljanjem slike s spletne kamere
+storenickname Zamenjaj vzdevek na prejšnjega po vrnitvi iz osebnega stanja
+strictfonts Vse pisave naj bodo po moji izbiri (Statusna vrstica in ostalo)
+style Način pogovora
+stylechat Enak izgled kot pogovori
+stylehist Izgled zgodovine
+stylelog Izberi zapis, v katerem želiš videti zgodovino
+subject Naslov
+subjectrequired Naslov je potreben
+svnversion SVN različica
+syntaxerror Napaka v sintaksi
+tabbed Okna z zavihki
+tabbedglobal Okno z zavihki za vse stike
+tabbedgroups Okno z zavihki za stike iz iste skupine
+tabtitlenick Vzdevki namesto e-poštnih naslovov v zavihkih
+temp_state Ne shrani (Trenutno, bo ponastavljeno ob ponovnem zagonu AMSN)
+textsize Velikost besedila
+thismonth Ta mesec
+throughserver Preko strežnika
+timeremaining Čas do konca prenosa
+timestamp Prikaz časa
+timestamps Omogoči prikaz časa v pogovorih
+title Naslov
+tkerror Napaka v TKju. To je amsnjev hrošč, prosim povej zanj. Pošlji datoteko $1 na amsn-bugs@lists.sf.net
+tkerror1 TK (jedro) je javilo napako, prosim javite napako (v angleščini) in jo pošljite z gumbom Javi napako.Lahko kliknete na Podrobnosti , če bi radi videli informacije o hrošču.Kliknite Ignoriraj, če hočete naprej uporabljati AMsn.
+tlsdowncompleted Datoteka $1 se je prenesla v imenik $2. Moraš jo izvleči, prevesti (če si pobral izvorno kodo) in namestiti v $3.
+tlsexplain Mapa, kjer je tcl TLS modul. Če ga AMSN ne najde, nastavi pot.\n(Potrebno za SSL overjenje).
+tlsinstall Čarovnik za namestitev modula TLS
+tlsinstallexp AMSN uporablja MSNP9, ki potrebuje varno\npovezavo s SSL-jem. Da bi uporabljal SSL, mora AMSN namestiti modul TLS,\nki ga ni na tvojem računalniku. Ta čarovnik ti bo pomagal pobrati in\nnamestiti TLS. Prosim izberi tvoj sistem, da lahko poberem\npotrebne TLS datoteke.
+tlsinstcompleted Namestitev modula TLS je bila uspešna; zdaj naj bi bilo mogoče uporabljati MSNP9. Če ne deluje, verjetno nisi izbral pravega modula ali pa prevedenega ni na voljo za tvoj sistem.
+to Za
+today Danes
+tomobile Na prenosno napravo
+tools Orodja
+tooltips Omogoči tooltipe
+totalsize Celotna velikost
+transnotexists Zahtevana datoteka še ni bila prevedena v slovenščino.
+trayicon Pokaži statusno ikono v trayu
+traynotcompiled Plugin za tray ikono ni preveden. Preveri plugins/traydock.
+triggers Smeška sprožijo
+truncatenames1 Skrajšaj vzdevke, ki ne stojijo v naslovu okna in v seznamu stikov
+truncatenames2 Skrajšaj vzdevke, ki ne stojijo v oknu s pogovorom
+truncatenicks Skrajšaj vzdevke, ki ne stojijo v oknu
+twonewmail 2 novi sporočili v Inboxu
+type Tip
+unavailablecountryserver Strežnik za tvojo državo trenutno ni na voljo. Poskusi kasneje. Ta problem lahko rešiš tudi z spremembo nastavitve države v tvojem Passport računu na www.passport.net . 
+unblock Odblokiraj
+unknown Neznan
+unload Ustavi
+unselectall Odznači vse
+untitled_space brez naslova
+uoffline Neprijavljeni
+uonline Prijavljeni
+update Posodobi
+updateonlycurrentlanguage Posodabljaj samo trenutni jezik
+updatesaved Narejeno\n Shranjeno $1 v $2.
+updating Posodabljam
+useasdp Uporabi kot prikazno sliko
+useasregexp Uporabi regularni izraz (regexp)
+useother Uporabi drugi program
+user Uporabnik
+useralreadyonlist Uporabnik je že na seznamu stikov
+userblocked Uporabnik je prijavljen, a te je blokiral
+userdata Podatki o uporabniku
+userdps Osebne slike
+usernotonline Uporabnik ni prijavljen
+userproperties Lastnosti uporabnika $1
+usersettings Nastavitve
+useryourself Ne moreš govoriti sam s seboj
+usesnack Uporabi knjižnico Snack (vgrajena v Tcl)
+verifyblocked Preveri, kdo te blokira
+version Različica
+videoconversationrequest Prejel/a si povabilo na video pogovor (dvosmerna zvok in slika). Tega aMSN še ne podpira, zato ga je zavrnil. Lahko pa vseeno uporabljaš standarden pogovor preko spletne kamere.
+view Pogled
+viewcontactsby Prikaz stikov
+viewprofile Poglej profil
+viewspace Prikaži predmete iz Live Spaces
+voiceclip Glasovni izrezek
+volume Glasnost
+wanttosharecam Obkljukaj če hočeš da stik vidi da imaš spletno kamero
+web Splet
+webcam Spletna kamera
+webcamcanceled Povezava spletne kamere z $1 je bila preklicana
+webcamclosebefcancel Moraš zapreti vse povezave spletne kamere pred zaprtjem tega okna
+webcamconfigure Nastavi spletno kamero
+webcamconfiguredLinux Uporabil si naslednje nastavitve spletne kamere:\nNaprava: $1\nKanal: $2
+webcamconfiguredMac Nastavitve spletne kamere so bile vnešene
+webcamconfiguredWin Uporabil si naslednjo spletno kamero: $1
+webcamextchecking Preverjam, če je razširitev za uporabo spletne kamere naložena...
+webcamextloaded Dodatek Webcamsn je naložen
+webcamextnotloaded Dodatek Webcamsn ni naložen. Moraš ga prevesti.
+webcamextwarn Ni mogoče opazovati spletne kamere sogovornika.Več odgovorov kako naložiti vstavek na strani Wiki:
+webcamfaq FAQ/Pomoč za spletno kamero
+webcamhistory Predvajaj zgodovino video posnetkov za stik
+webcamhistory2 Seje spletne kamere
+webcaminvite $1 te je povabil/a na videokonferenco, a aMSN tega ne podpira.
+webcaminvitereceived $1 te vabi na ogled preko spletne kamere. Sprejmeš povabilo?
+webcaminvitereceivedauto $1 vas je povabil pogovor z spletno kamero. Pogovor je avtomatično sprejet.
+webcaminvitereceiving Povabljen si da si ogledaš spletno kamero od $1 .Sprejmem povabilo?
+webcaminvitereceivingauto Povabljen si za ogled $1 kamere. Ta seja je avtomatsko sprejeta.
+webcaminvitesending $1 bi rad/a gledal/a tvojo spletno kamero. Sprejmem povabilo?
+webcaminvitesendingauto $1 bi rad gledal tvojo kamero. Ta seja je avtomatsko sprejeta.
+webcamrejected $1 je zavrnil/a povabilo za ogled preko spletne kamere.
+webcamrequestreceive Poslal si prošnjo za ogled stikove spletne kamere
+webcamrequestsend Poslal si povabilo za ogled tvoje spletne kamere
+webcamsending Seznam ljudi, ki vidijo preko tvoje spletne kamere\nKlikni za preklic
+whatisamsn aMSN od platforme neodvisen klon MSN Messengerja
+whatsize Zahtevana slika ni običajne velikosti osebne\nslike (96x96). Kakšne velikosti naj bo?
+willjoin Čakam, da se $1 pridruži pogovoru
+winkreceived $1 ti je pomežiknil/a. aMSN trenutno tega ne podpira.
+wintitlenick Vzdevki namesto e-poštnih naslovov v oknih z zavihki
+work Delo
+wrongfields Polja "$1", "$2" in/ali "$3" niso veljavna
+wrongprofileversion Napačna datoteka nastavitev profila. Da bi jo popravil, odstrani imenik $1 ali posodobi amsn.
+xmmscurrent Pokaži trenutno pesem
+xmmserr Nič se ne predvaja ali nimaš nameščenega xmms-infopipe.
+xmmssend Pošlji trenutno pesem
+xoffset X odstopanje
+xplaces $1 Places 
+year Leto
+yes Da
+yesblock Ja in blokiraj
+yesterday Včeraj
+yoffset Y odstopanje
+youblocked Blokirajo te
+yousay Praviš
+youwant Hočeš
+zoom Povečava

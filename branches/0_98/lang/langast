@@ -1,0 +1,1075 @@
+amsn_lang_version 2
+abort Albortar
+aboutamsn Tocante a Alvaro's Messenger
+about Tocante a
+accept Aceutar
+acceptfile ¿Aceutar ficheru $1, tamañu $2 bytes? Guardaráse en $3
+account Cuenta
+accountkid Esta cuenta pa guahes nun puede usase con Messenger. Tienes que dir al sitiu web de pasaporte pa guahes y dar el consentimientu paternal.
+actions Aiciones
+activeautoupdate Activar anovamientu automáticu
+addacontact Amestar un contautu
+add Amestar
+addedyou $1 ($2) amestóse-y a la so llista de contautos
+addprofile Amestar un perfil
+addprofiledesc Introduz el nome d'usuariu pal que quies criar un perfil. \nLos perfiles permiten tener configuraciones distintes pa cada usuariu.\nEnsin un perfil nun puede usase l'hestorial, alarmes o remembrar contraseña.
+addstate Amestar nuevu estáu
+addtoal Amestar a AL
+addto Amestar a $1
+addtobl Amestar a BL
+addtocontacts Amestar a contautos
+addtofl Amestar a FL
+addtoo Amestar esta persona a la mio llista de contautos
+admincontacts Alministrar contautos
+admingroups Alministrar grupos
+advanced Avanzaes
+advancedprefs Configuración de opciones avanzaes
+adverts Anuncios
+agotinvitation Recibióse invitación d'audio de $1
+alarmonconnect Activar alarma pa esti usuariu cuando se coneute
+alarmondisconnect Activar alarma pa esti usuariu cuando se desconeute
+alarmonmsg Activar alarma pa esti usuariu cuando-y unvíe un mensaxe
+alarmonstatus Activar alarma pa esti usuariu cuando camude l'estáu
+alarmpref2 Axustes d'alarma pa cada contautu
+alarmpref Configuración d'alarma pa l'usuariu
+alarms Alarmes
+alarmstatus Activar alarma pa esti usuariu
+allfiles Tolos ficheros
+allmonths Tolos meses
+allowallbutbl Permitir que tolos usuarios esceutu los bloquiaos puedan contautame
+allowbadwords Saltase la censura nos nomatos
+allowlist Llista d'aceutaos (AL):
+allowonlyinal Permitir namái a los usuarios aceutaos contautar conmigo
+allowseen Permitir a esta persona ver cuándo tas coneutáu y contautar
+allow_sms Permitir que los usuarios contauten conmigo nel mio preséu móvil MSN
+allprofilesinuse Tolos perfiles qu'esisten tan usándose anguaño
+always Siempre
+animatedemoticon Fustaxe con animación
+animatedsmileys Activar fustaxes animaos
+animatenotify Ventana de notificaciones con animación
+appearance Aspeutu
+appearoff Invisible
+areacode Códigu d'estaya
+aretyping $1 ta escribiendo un mensaxe
+askcam Solicitar receición de cámara web
+askcontactwebcam Entrugar polos tos contautos de cámara web, o
+askeachtime Entrugar siempres
+asksendingyourwebcam Entrugar pa unviar la to cámara web
+asksendoim ¿Quies unviar el mensaxe como un mensaxe ensin conexón?
+askwebcam Solicitar al usuariu ver la so cámara web
+assistantainput Escueyi'l to preséu d'entrada ya tenta grabar con él.
+assistantaoutput Escueyi'l to preséu de salida, ya tenta reproducir esti ficheru pa prebalu.
+assistantawarn Nun podrás grabate o falar colos tos collacios. Puedes atopar información sobro cómo instalar esta estensión nel nuesu Wiki:
+assistantfinetunepic Camuda les siguientes opciones p'axustar la calidá d'imaxe de la to cámara web
+assistantselectcam Seleiciona la to cámara web de la llista
+assistantstarting Aniciando el Asistente
+assistanttitle Asistente d'audio y vídeo
+assistantwelcome Esti asistente empobinaráte nel procesu de configuración d'audio y video en aMSN.\n\nComprobará que les estensiones requeríes tean presentes y cargaes, y podrás escoyer el preséu y canal, axustar la configuración d'imaxe y la resolución.
+audioconfigured Escoyéronse les siguientes configuraciones d'audio:\nPreséu de salida: $1\nPreséu d'entrada:$2
+audiovideo Configuración d'Audio y Video
+author Autor
+autoaccepted Tresferencia de ficheru aceutada automáticamente
+autoacceptft Aceutar ficheros automáticamente en tresferencies
+autoacceptwc Aceutar peticiones de cámara web automáticamente
+autoaway Amosame "Ausente" cuando nun hai actividá en
+autocheckver Guetar automáticamente nueves versiones al entamar aMSN
+autoconnect2 Coneutase automáticamente cuando s'anicie aMSN
+autoconnect Coneutar al arrancar aMSN
+autodetectip Deteutar la direición IP automáticamente
+autohotmaillog Ingresu en Hotmail automáticu
+autoidle Deteición d'inactividá
+autoip IP automática
+autolisten_voiceclips Reproducir clips de voz recibíos automáticamente
+automessage Mensax automáticu
+autonoact Amosame como "Ensin actividá" cuando nun hai actividá en
+autoresizedp Redimensionar automáticamente la imaxe al tamañu predetermináu
+avaccepted Aceutóse la llamada pa videoconferencia
+avcanceled Refugóse la llamada pa videoconferencia
+avgotinvitation Recibióse invitación pa videoconferencia de $1
+avinitfailed Fallu n'anicialización del plug-in d'Audio/Video. Llamada encaboxada.
+avoidseen Evitar qu'esta persona vea la to conexón y te contaute
+away Ausente
+awaymsg1 Entrugar cuando cambee l'estáu a Ausente/Vuelvo Enseguida/Ocupáu
+awaymsg2 Nun entrugar nunca y usar el mensaxe a continuación
+back Volver
+baduserpass Nome d'usuariu o contraseña incorreutos
+badwebcam Nun puede visualizase la imaxe de la cámara web. Decátese de que la cámara web tea instalada y coneutada
+bgcolor Camuda'l color de fondu de aMSN
+blankdirect Dexar en blancu pa conexón direuta
+blocked Bloquiáu
+blockedyougroup Amosar un grupu aparte colos contautos que te bloquien
+blocking Bloquéu
+blockinter1 Cuando tas n'estáu Coneutáu, comprobar cada:
+blockinter2 segundos, sinón, comprobar cada :
+blockinter3 contautos cada
+blockinter4 segundos
+blocklist Llista de bloquiaos (BL):
+blockmessage Los siguientes contautos tan coneutaos y bloquiándote
+block Non almitir
+blocknotifications Deshabilitar amosar ventanes de notificación
+blocksounds Deshabilitar soníos
+blockusers Comprobar continuamente 
+bouncedock Animación del iconu aMSN cuando se recibe un mensaxe
+brightness Rellumu
+bringtofront Traer too al frente
+broughtby Traíu pa ti polos siguientes programadores
+browse Desaminar
+browserexample ( \$url sustituyiráse pola direición). Ex: firefox \$url
+browser Restolador
+bugerror Sentímoslo, pero asocedió un fallu coneutando a la Base de Datos de Fallos. Por favor verifique la so conexón a Internet.
+bugnocomment ¿Unviar ensin un comentariu?. Comentar un fallu áidanos a facenos una idega de qué foi mal y d'esta miente poder igualo cenciellamente.
+busy Non disponible
+bytesymbol b
+cachedpics $1 imáxenes p'amosar atroxaes
+cachedpicsfor Imáxenes p'amosar atroxaes por
+cagreement Alcuerdu de confidencialidá
+cam_in_cw Amosar fluxos de cámara web incrustaos nes ventanes de chat
+cancel Encaboxar
+cancelled Encaboxáu
+cannotdeleteprofile Nun puede desaniciase esti perfil porque paez que ta siendo usáu por otra sesión de aMSN
+cantexec Nun puede executase l'aplicación: $1. Comprueba les preferencies
+cantget Nun pudo obtenese $1
+cantloadonlineversion Nun pudo baxase d'Internet la llista anovada de llingües
+cantremoveothers Nun puede desaniciase'l grupu "Otros"
+captureextloaded La estensión de captura -$1- cargóse
+captureextnotloaded La estensión de captura -$1- nun se cargó. Has compilala
+captureproperties Propiedaes de la cámara web
+capturewarn Nun podrás unviar imáxenes de cámara web si tienes una. Sinón, esto ye normal. Puedes atopar instrucciones sobro cómo instalar esta estensión nel nuesu Wiki:
+casesensitive Diferenciar mayúscules/minúscules en disparador
+cfgalarmall Camudar/Amestar/Quitar alarma global
+cfgalarm Camudar/Quitar alarma
+change_account_info Camudar la información de la cuenta
+change Camudar
+changecustomstate Camudar a
+changedisplaypic Camudar imaxe amosada
+changefont Camudar fonte
+changeglobnick Camudar nomatu personalizáu globalmente
+change_mobile Camudar la configuración del móvil
+changenick Camudar nomatu
+changepsm Camudar mensaxe personal
+changesize Camudar tamañu
+changestate $1 camuda'l so estáu a $2
+changestatus Camudar estáu
+changevideosettings Camudar configuración de vídeo
+channels Canales
+charscounter Cuntador de carauteres tecleaos en ventana de chat
+chatack Aceutando conversación de
+chat Conversación
+chatmaxmin Cuando un contautu m'abre una conversación, quiero que seya:
+chatreq Solicitando una conversación
+chatsmileys2 Amosar fustaxes en ventanes de chat
+chatsmileys Emoticonos en chat
+checkblocking Comprobar continuamente si te bloquiaron
+checkemail Amosar llinia de notificación d'email (Bandexa d'entrada) en llista de contautos
+checkfilman Los ficheros recibíos guardaránse en $1. Comprueba la opción d'Alministrador de Ficheros na ventana de preferencies.
+checkingaudio Comprobando si la estensión d'audio (Snack) ta cargada...
+checkingcam Comprobando si hai una cámara web coneutada...
+checkingcapext Comprobando si la estensión '$1' ta cargada...
+checkingextensions Comprobando estensiones de vídeo requeríes...
+checkingver Guetando si hai disponible una nueva versión
+checkonfln Comprobar si un usuariu te bloquia cuando aparentemente se desconeuta
+checkopenfilecommand Por favor, comprueba'l comandu d'Abrir Ficheru na ventana de preferencies
+checkver Guetar nueves versiones
+choosearq Escueye l'arquitectura del to sistema
+choosebasefont Escoyer triba de lletra
+choosebgcolor Escoyer color de fondu
+choosechannel Por favor escueye una canal
+choosecontact Por favor esbilla un contautu de la llista
+choosedevice Por favor escueye un preséu
+choosefontcolor Escoyer color de la lletra
+chooseinputdev Seleiciona'l to preséu d'entrada
+chooselocation Escueyi'l camín del nuevu ficheru
+choosemixerdev Esbilla'l to preséu entemecedor
+chooseoutputdev Esbilla'l to preséu de salida
+chooseskin Por favor, escueyi'l Tema que quies usar
+ch_to_state Camudar al nuevu estáu
+clear Llimpiar
+clearlog2 Llimpiar hestorial pa tolos contautos
+clearlog3 Llimpiar tolos rexistros
+clearlog Llimpiar hestorial
+clearwebcamlogs Llimpiar los hestóricos de cámara web
+clickhere Clic equí
+clicktoadd Fae clic en Amestar pa criar una nueva nota
+clicktologin Fae clic equí pa entamar sesión
+clientcaps Unviar paquetes x-clientcaps a otros veceros
+clientname Nome del veceru
+closealltabs Zarrar toles llingüetes
+closeall ¿Zarrar toles llingüetes de la ventana?
+closechatwindows ¿Zarrar toles conversaciones enantes de zarrar la sesión?
+closed Conversación con $1 zarrada por inactividá
+closelabel Al zarrar una ventana de chat que caltién delles llingüetes
+closeonly Zarrar namái la llingüeta actual
+closeorcall Tienes de zarrar/encaboxar la llamada d'audio enantes de zarrar la ventana.
+closeorcallvideo Tienes de zarrar/encaboxar la videollamada enantes de zarrar la ventana.
+closeordock Al zarrar la llista de contautos colará de aMSN. Seique namái quieras zarrar la ventana y que aMSN permaneza na bandexa del sistema.\n\n¿Daveres que quies colar de aMSN?
+closeothers Zarrar les demás llingüetes
+close Zarrar
+closingdocks Botón de zarrar iconifica la ventana
+color Color
+command Comandu
+commandstatus Executar comandu
+compactstyle Estilu compautu
+configure Configurar
+configuremic Configurando'l to micrófonu
+configureplugin Configurar plug-in $1
+configuringaudio Configurando los axustes d'audio
+confirmbl ¿Daveres que deseas bloquear a esti contautu?
+confirmdelete ¿Seguru que quies desaniciar a $1?
+confirm ¿ De xuru ?
+confirmdg ¿Daveres que quies desaniciar esti grupu?
+confirmdu ¿Daveres que quies desaniciar esti usuariu?
+confirmeg ¿Daveres que quies vaciar esti grupu?
+confirmfulldelete Desaniciar arriendes de l'axenda de contautos de Windows Live
+confirmpurge Toes les imáxenes p'amosar del restu de los contautos (no les tuyas) desaniciaránse. ¿ De xuru ?
+confirmrfl ¿Daveres que quies desaniciar esti usuariu de esti grupu?
+congrats Felicitaciones
+connected Agora tas coneutáu
+connectedat Coneutáu en:
+connectedwith Coneutáu como $1
+connecterror Error coneutándose al sirvidor
+connectfirst Por favor conéutate primero
+connecting Coneutando
+connection Conexón
+connectionlost Desconectado: Conexón col sirvidor zarrada
+contactadded Contautu amestáu
+contact Contautu
+contactdoesnotexist El contautu qu'intentes amestar nun esiste
+contactlist Llista de Contautos (FL):
+contacts Contautos
+contentroamingsetting Atroxar imaxe p'amosar nel sirvidor
+continuously De mou contínuu
+contrast Contraste
+conversationwith $1 usuarios na conversación
+convertexplain Camín al ficheru executable CONVERT, del programa ImageMagick (necesariu pa les\nimáxenes p'amosar). Dexar en blanco si CONVERT se puede atopar nel camín (PATH).
+copy Copiar
+copytoclipboard Copiar $1 al cartafueyu
+copytogroup Copiar al grupu
+corruptconfig El ficheru de configuración ta toyíu. Criando uno nuevu. L'antiguu atroxaráse como $1. Por favor, unvíanoslo pa ver qué asocedió.
+corruptstates El ficheru de la configuración de los autoestaos ta toyíu. Criando unu nuevu. L'antiguu atroxaráse como $1. Por favor, unvíanoslo pa ver qué asocedió.
+couldnotrename Nun se puede renomar $1
+countrycode Códigu de país/rexón
+cprofile Criar perfil
+created Creaú
+credits Créditos
+curdisplaypic Imaxe amosada anguaño
+currentdate Data actual
+currentdynrate Velocidá actual en tiempu real (en milisegundos)
+currentlanguage Esta ye la llingua usada anguaño
+currentnotes Notes actuales
+custnotifymsg Amosar ventana d'avisu cuando esti contautu unvía un nuevu mensaxe
+custnotifyoffline Amosar ventana d'avisu cuando esti contautu se desconeute
+custnotifyonline Amosar ventana d'avisu cuando esti contautu se coneute
+custnotifystatus Amosar ventana d'avisu cuando esti contautu camude'l so estáu
+customcolor Color personal
+customdp Imaxe personalizada p'amosar
+custom_edit Editar fustax personalizáu
+custom_new Amestar fustax personalizáu
+customnick Nomatu personal
+customsmileys Amosar fustaxes personalizaos d'otros usuarios
+customstyle Estilu personalizáu
+custshowcustomsmileys Amosar fustaxes personalizaos del usuariu
+cut Cortar
+cutimageboxreset Reanicia'l \ntamañu de la caxa d'Escoyeta a:
+cutimagebox  Seleiciona la parte de la imaxe que quies usar, redimensionándola y moviendo la caxa d'Escoyeta
+cyclewindows Ciclu a traviés de les ventanes
+date Data
+dateformat Camudar formatu de la data
+day Día
+days Díes
+dcprofile Nun criar perfil
+default2 Predefiníu
+default Configuración por defeutu
+defaultloginradio Usar configuración por defeutu
+defchatwinsize Tamañu por defeutu pa les ventanes de chat (HORIZONTAL x VERTICAL)
+deleteall Desaniciar too
+deleteblock Desaniciar y bloquiar
+deletecustomstate Desaniciar estáu personalizáu
+delete Desaniciar
+delimiters Dellimitadores de la hora:
+deliverfail Asocedió un problema al unviar el siguiente mensaxe
+delprofile2 Escueyi'l perfil que te prestaría desaniciar
+delprofile Desaniciar Perfil
+description Descripción
+detach Desempotrar
+details Detalles
+devicebusy El preséu $1 ta ocupáu 
+devices Preseos
+directconnection Tengo una conexón direuta a internet (usa'l puertu 1863)
+disabled Desactiváu
+disableprofiles Desactivar perfiles (útil pa cibercafés o entornos compartíos)
+disablessl Desactivar SSL
+disableuserfonts Inorar la triba de lletra del otru usuariu nel chat, y usar siempres la to triba de lletra
+disconnect $1 desconeutóse
+disconnectedfrom Desconeutáu de $1
+displaychat Configuración de mensaxes
+displayeventconnect Amosar cuándo se coneuten los contautos
+displayeventdisconnect Amosar cuándo se desconeuten los contautos
+displayeventemail Amosar cuándo se recibe un email
+displayeventnick Amosar cuándo los contautos camuden el so nomatu
+displayeventpsm Amosar cuándo los contautos camuden el so mensaxe personal
+displayeventstate Amosar cuándo los contautos camuden d'estáu
+displayp4context Amosar conteníu del campu P4-Context como remitente del mensaxe
+displaypic Imaxe p'amosar
+dockfreedesktop FreeDesktop (KDE3/Gnome2)
+dockgtk Iconu GTK
+docking Iconu en bandexa del sistema
+dockingoff Desactiváu
+dockkde Iconu KDE
+done Fecho
+dontaskweek Nun volver a entrugar l'anovamientu fasta dientro d'una selmana
+dontdownload Nun baxar TLS, instalarélo yo mesmu
+dontshowdp Nun permitir a esti usuariu baxar les tos nueves imáxenes p'amosar
+dontshow Non amosar
+download Baxar
+downloadcanceled Descarga encaboxada.
+downloadingtls Descargando'l módulu TLS dende:\n $1
+downloadingwait Descargando una nueva versión de aMSN. Por favor, espere...
+dynamicrate Usar tasa de trama dinámica pa simular la velocidá en tiempu real
+editavsettings Configurar cámara web
+editcontent Editar el conteníu del campu Asuntu y el campu Nota
+editcustomstate Editar estáu personalizáu
+edit Edición
+editmyprofile Editar el mio perfil de Messenger
+editnewstate Nuevu mensaxe automáticu pa estáu personalizáu
+editprofile Editar perfil
+editstate Editar mensaxe automáticu pa estáu personalizáu
+editvalue Editar valor
+email  Corréu electrónicu
+emailnotverified (¡Email entá ensin verificar!)
+emailsinlist Amosar direición de corréu electrónicu n'arróu de nomatos na llista de contautos
+emoticon_steal Amestar a los fustaxes
+emotisounds Reproducir soníos asociaos a ciertos fustaxes
+emptygroup Vaciar grupu
+enabled Activaú
+enableproxy Activar proxy
+enableremote Activar sirvidor de control remotu
+enablesound Reproducir soníu
+enablespaces Habilitar el sofitu d'Espacios de Windows Live (ESPERIMENTAL)
+encoding2 Camuda la forma na que los carauteres se codifiquen
+encoding Codificación de carauteres
+enterbugdesc Introduz una descripción de lo que tabes faciendo p'aidanos a reproducir esti fallu:
+entercontactemail Introduz el corréu electrónicu del contautu
+enterfilename Introduz el nome del ficheru
+enternick Introduz el to nomatu
+enterpsm Mensax personal
+error Fallu
+errortls Fallu instalando'l módulu TLS:
+escapeclosescw La tecla Escape zarra les ventanes de chat
+eventhistory Ver hestorial d'eventos
+examples Exemplos
+exitamsn ¿Daveres que quies colar?
+extras Servicios adicionales
+faileddelete Nun pudo desaniciase
+faileddeleteperso Esta imaxe nun puede desaniciase porque nun ye una imaxe personal p'amosar. Namái les imáxenes que pertenecen al to perfil personal pueden desaniciase d'esta miente.
+failed Fallu
+faq FAQ (Entrugues frecuentes)
+farsightextchecking Comprobar si ta cargada la estensión Farsight ...
+farsightextwarn Nun puedes facer llamaes SIP. Puedes atopar rempuestes de cómo instalar Farsight nel nuesu Wiki:
+farsightinfook Farsight ye un framework pa tratar colos protocolos de conferencies d'audio/video. ¡Con Farsight pueden unviase o recibir llamaes SIP dientro de aMSN! Echa un vistazu a farsight na nuesa Wiki:
+fetching Obteniendo datos...
+filedoesnotexist El ficheru nun esiste
+file Ficheru
+fileman Alministrador de Ficheros
+filemanexample ( \$location sedrá trocáu pol direutoriu ) Ex: nautilus \$location
+filename Nome de ficheru
+filenotwritable Esti ficheru nun puede ser desaniciáu
+filetransfercancelled Tresferencia de ficheru encaboxada
+filetransfercomplete Tresferencia de ficheru completada
+filetransfer Tresferencia de ficheros
+filters Filtros
+filtersselect Escueye los filtros que deseyes ver\n(Si nun s'esbilla dengún amosaránse toos)
+filtersx Filtrar Escoyeta
+findasyoutype Guetar al teclear
+find Guetar
+findnext Guetar Siguiente
+findprev Guetar Anterior
+finetunesettings Axuste finu d'imaxe
+finish2apply Calque Acabar p'aplicar los cambeos.
+finish Acabar
+firewalled2 Firewall deteutáu, por favor compruebe la configuración de la so Conexón na ventana de Preferencies
+firewalled Alcuéntreste darrera d'un torgafueos o d'un enrutador
+followtext Desplazar haza abaxo cuando apaezca nuevu testu
+forget_me Desaniciar esti perfil
+forgot_pass Escaecí la mio contraseña
+formatcsv En formatu CSV
+formatctt En formatu Ctt
+friendlyname Nomatu en conversación
+ftacceptedby $1 aceutó la invitación a la tresferencia del ficheru '$2'.
+ftaccepted Tresferencia de ficheru aceutada
+ftaccepting Aceutando invitación a tresferencia de ficheros
+ftautoclose Zarrar la ventana cuando fine la tresferencia
+ftconnecterror Error coneutando col usuariu remotu
+ftconnecting Coneutándose a $1 puertu $2
+ftconnectionlost Conexón perdida col usuariu remotu
+ftgotinvitation $1 quier unviate'l ficheru '$2' ($3 bytes). Atroxaráse nel direutoriu $4. ¿Quies aceutar esti ficheru?
+ftportpref2 Abriendo puertu pa conexones direutes (necesariu pa tresferencia de ficheros y cámara web)
+ftportpref Usar esti puertu y los sucesivos pa tresferencies de ficheros
+ftporttest Verificar puertu
+ftrejectedby $1 refugó la invitación a la tresferencia del ficheru '$2'.
+ftrejected Tresferencia de ficheru encaboxada
+ftsendinvitation Una invitación pa la tresferencia del ficheru '$2' ($3 bytes) unvióse a $1.
+fullcontactlist La to llista de contautos ta enllena. Necesitarás desaniciar dalgún contautu pa poder amestar nuevos.
+gameaccepted $1 aceutó la to invitación pa xugar
+gameclosedbyother $1 Encaboxó la sesión de xuegu contigo.
+gameclosedbyself Encaboxasti la sesión de xuegu con $1.
+gameinvitation $1 Invitóte a xugar $2. ¿Quies aceutar esta invitación?
+gamepluginnotfound $1 Invitóte a xugar $2 pero nun hai plug-in cargáu pa esti xuegu. Por favor activa y configura esti plug-in primero.
+gamerejected $1 refugó la to invitación pa xugar
+gamerequest Invitaste a $1 pa xugar a $2
+getdisppic Habilitar la receición d'imáxenes p'amosar d'otros usuarios
+getmoreplugins ¡Consigue más plug-ins!
+getmoreskins ¡Consigue más skins!
+globalcontainer Contenedor global
+globalnick Introduz una espresión cola que formar tolos nomatos, puedes usar les variables \$user_login pa la direición del contautu y \$nick pal to nomatu o \$customnick pal to nomatu personalizáu.\nPor exemplu: '\$user_login ye \$nick' amosaría 'contautu@hotmail.com ye Contautu'
+globalnicktitle Nomatu global
+globaloverride El nomatu global tien de sobreescribir el nomatu personalizáu
+gonelunch Salí a xintar
+gotink $1 unvióte una ink
+goto Dir a $1
+gotoinbox Dir a Bandexa d'entrada
+goto_prefs_removeprofile Pincha equí pa dir a les preferencies y desaniciar el to perfil
+groupadd Amestar un grupu
+groupcontactsbystatus Agrupar contautos por estáu
+groupcontacts Contautos del grupu
+groupdelete Desaniciar un grupu
+groupexists El grupu yá esiste
+group Grupu
+groupmissing Nun puede atopase'l grupu
+groupnewname Nuevu nome
+groupnonim Agrupar los contautos ensin messenger
+groupnotempty El grupu nun ta baleru
+groupoldname Nome antiguu
+grouprename Camudar nome a grupu
+groups Grupos
+groupunknown Grupu desconocíu
+handle Nomatu
+hangup Colingar
+havenomic Nun tengo micrófonu
+help Aida
+helpcontents Temes d'aida
+hidebuttonbar Anubrir la barra de botones
+hidedetails Anubrir detalles
+hidedisplaypic Anubrir imaxe p'amosar
+hidemenu Amosar/Anubrir menús
+hidemenumessage ¿De xuru que quies anubrir los menús?\nPuedes recuperalos en cualesquier intre usando la combinación d'amosar/anubrir menús Ctrl+M.
+hiden Nun amosar nel menú de fustaxes
+hideuserscw Anubrir usuarios nesta ventana de conversación.
+hidewindow Anubrir ventana
+history2 Hestorial
+history Ver hestorial
+home Casa
+howto_remove_profile Pa desaniciar el to perfil (escaecer $1) necesites facelo dende la ventana de preferencies. \n\nPor razones de seguridá, el desaniciu del perfil dende la pantalla d'aniciu de sesión nun ta permitíu.
+httpconnection Coneutar usando'l métodu HTTP (usa protocolu HTTP pol puertu 80)
+hue Tonalidá
+huge enorme
+hybrid Mou híbridu
+ident Identificándose
+identity Identificación
+ignorecontact Inorar les conversaciones con esti usuariu
+ignoreerrors Inorar silenciosamente los fallos de aMSN fasta'l final de la sesión
+ignore Inorar
+imagefiles Ficheros d'imáxenes
+inbox Bandexa d'entrada
+insertsmiley Inxertar fustax
+inserttextnote Inxerta'l testu nel campu Asuntu y nel campu Nota, y dempués calca Guardar
+installconvert Tienes d'instalar ImageMagick (comandu 'convert') pa poder convertir les imáxenes al formatu emplegáu polos sirvidores de MSN. Puedes baxar los binarios pal to Sistema Operativu dende ftp://ftp.imagemagick.net/pub/ImageMagick/binaries/ . Si yá los tienes, esto ye un fallu en aMSN, por favor comunícanoslo.
+internalerror Error internu del sirvidor
+invalidfile2 El ficheru $1 nun pudo criase, asegúrate de que tienes los permisos afayaízos pal ficheru destín.
+invalidfile El ficheru $2 introdúxose nel campu "$1" nun esiste o nun pudo lleese
+invalidgroup Grupu non válidu
+invalidparameter Error coneutando al sirvidor:\nparámetru non válidu
+invalidpic El ficheru d'imaxe esbilláu nun esiste
+invalidpicsize La imaxe escoyida ye enforma grande, por favor escueye una más pequeña
+invalidsound El ficheru de soníu esbilláu nun esiste
+invalidusername Nome d'usuariu non válidu
+invitationcancelled La invitación encaboxóse
+invite Invitar
+ipaddress Direición IP
+ipdetect Deteutar la IP correuta pa tresferencies usando HTTP
+ircstyle Chat estilu IRC
+istyping $1 ta escribiendo un mensaxe
+joins $1 xúnese a la conversación
+justonce Namái una vegada
+keepalive Caltener conexón activa (NAT)
+keeplog2 Rexistrar les conversaciones nel hestorial pa veles más sero
+keeplog Guardar hestorial de les conversaciones
+language Llingua
+language_manager Alministrador de llingües
+large Grande
+largest El más grande
+lastlogin Cabera conexón
+lastlogout Cabera desconexón
+lastmsgedme Caberu mensaxe
+lastmsgtime Caberu mensaxe recibíu a les $1
+lastseen Cabera vegada vistu en llinia
+lazypicretrieval Recuperación "a posteriori" de les imáxenes p'amosar
+lclosedwin $1 zarró la ventana a les $2
+lconftopriv La conversación pasa a ser un priváu con $1
+lconvstarted Entama la conversación a les $1
+lconvstartedOIM Entamar una conversación de mensaxes nel intre ensin conexón en $1
+leaveblankforhotmail Dexar en blanco pa usar Hotmail
+leavejoinsinchat Amosar notificaciones de "dexa/xúnese a la conversación" na ventana de chat
+leaves $1 dexa la conversación
+lenteredconf $1 xúnese a la conversación a les $2
+lineflushlog Escribir hestóricos a discu llinia a llinia (ensin buffer)
+linprivate En priváu
+listening Escuchando
+listeningon Escuchando nel puertu $1
+listsmileys2 Amosar fustaxes na llista de contautos de aMSN
+listsmileys Emoticonos en contautos
+ljoinedconf $1 xúnese a la conversación
+lleftconf $1 dexa la conversación
+loadcontacts Cargar llista de contautos
+load Habilitar
+loadotherdisplaypic Cargando les imáxenes amosaes de $1, por favor espere...
+logbigger Ficheros de rexistru d'un contautu nun superen los
+logeventconnect Rexistrar les conexones
+logeventdisconnect Rexistrar les desconexones
+logeventemail Rexistrar cuándo se recibe un corréu electrónicu
+logeventnick Rexistrar los cambeos de nomatu
+logeventpsm Rexistrar los cambeos de mensaxes personales
+logeventstate Rexistrar los cambeos d'estáu
+logfandexp Tamañu de ficheros de rexistru y espiración d'hestorial
+loggedotherlocation Desconeutáu: Anicióse la sesión n'otra ubicación
+loggingin Aniciando sesión
+login Aniciar sesión
+loginas Aniciando sesión como
+loging Hestorial
+logolder Rexistrar sólamente conversaciones ocurríes nel caberu
+logoutwincloselabel Al zarrar la sesión, zarrar les conversaciones
+logout Zarrar sesión
+logsbydate Tresnar hestóricos por dates (ver hestorial carga muncho más aína)
+logschats Guarda hestorial de conversaciones
+logsin acaba d'entamar sesión
+logsmileys Amosar fustaxes na ventana d'hestorial de aMSN
+logsout acaba de finar la sesión
+logwebcam Salvar toles sesiones de cámara web al hestóricu de aMSN pa poder veles de nuevu
+longnick El llargor del to nomatu ye mayor de 130 carauteres. Esto nun ta sofitao oficialmente pol protocolu MSN. ¿Daveres que quies camudalu?
+longp4c El to nomatu en conversación tien más de 130 carauteres. Y el nomatu amosáu nel veceru MSN oficial sedrá "$1". ¿ Quies siguir ?
+longpsm El to mensaxe personal ye enforma llargu. Esto nun ta sofitao oficialmente pol protocolu MSN. ¿Daveres que quies usalo?
+lowrescam Usar una cámara web de baxa resolución
+lprivtoconf El priváu conviértese en conversación múltiple con $1
+luclosedwin Zarraste la ventana a les $1
+mailer Comandu de corréu electrónicu
+mailerexample ( \$recipient = Destinatariu ) Dexar en blanco pa usar Hotmail
+maintenance El sirvidor quedará fuera de serviciu en $1 minutu/os pal so caltenimientu
+maximised Maximizada
+medium Mediu
+minimised Minimizada/Iconificada
+minimize Minimizar a la bandexa
+minimizeplain Minimizar
+mins minutos
+mobilegrp1 Grupu "Móviles"
+mobilegrp2 Poner usuarios nel grupu "Móviles" cuando tan desconeutaos (y llista axeitada por estáu)
+mobile Teléfonu móvil
+modified Camudáu
+month Mes
+more Más
+morepersonal Más estaos ->
+move Mover
+movetogroup Mover al grupu
+msgflicker Parpaguéu na barra de títulu cuando aporta un nuevu mensaxe a la conversación
+msgmaxmin Cuando un nuevu mensaxe aporte quiero que seya :
+msg Mensax
+msgmode Escueye cómo alministrar ventanes de múltiples mensaxes :
+msn aMSN
+msnstatus Estáu de la rede MSN
+msnstyle Chat estilu MSN
+mustrestart Tienes de reaniciar el programa p'aplicar los cambeos
+myfriendlyname El mio nomatu en conversación
+myhomephone El mio teléfonu de casa
+mymobilephone El mio teléfonu móvil
+mynick El mio nomatu
+mypic El mio imaxe p'amosar:
+mypics Les mios imáxenes p'amosar:
+mystatus El mio estáu
+myworkphone El mio teléfonu de trabayu
+name Nome
+natip Detección de IP por Web
+natkeepalive Si sofres desconexones davezu, activa esta opción
+needonline Entá tas/apaeces desconeutáu
+needwinico2 Requierse'l ficheru winico05.dll na carpeta utils/windows pa que furrule l'iconu na bandexa del sistema
+never Nunca
+new_account Criar una cuenta nueva
+newchat Nueva conversación
+new_ft_protocol Usar el nuevu protocolu de tresferencies de ficheros (INESTABLE)
+newline Saltu de llinia
+newmail $1 mensaxes nuevos en bandexa d'entrada
+newmailfolder Tienes $1 mensaxes nuevos n'otres carpetes de Hotmail
+newmailfrom Nuevu corréu electrónicu de $1 ($2)
+newmailfromother Nuevu corréu electrónicu de $1 ($2) n'otres carpetes
+newmsg Nuevu mensaxe
+newoim Nuevos mensaxes ensin conexón
+newstate Amestar estáu personalizáu
+newtabbedfeature aMSN tien una nueva función pa xestionar les conversaciones. Agora puedes tener toles ventanes d'un mesmu grupu, o de tola llista de contautos, nuna sola ventana con llingüetes. Por favor, escueyi'l mou en que aMSN tendría de xestionar les conversaciones
+newupdate Hai nuevos anovamientos disponibles pa aMSN
+newveravailable Nueva versión $1 disponible pa descarga
+next Siguiente
+nickchanged $1 camudó el so nomatu a '$2'
+nick Nomatu
+noactivity Ensin actividá
+no_blocked_notif No amosar ventanes d'avisu pa contautos sin admisión
+nocacheddps Nun hai imáxenes p'amosar atroxaes pa esti usuariu
+nocamwarn Nun se deteutó denguna cámara web, o la mesma ta n'usu por otru programa (lo que significa que nun puede ser usada por aMSN). Alcontrará aida pa resolver esti problema nel nuesu Wiki:
+nodataavailable Nun hai datos disponibles pa $1
+nodevices Nun tienes preseos instalaos
+noftpreview Desactivar l'unvíu de previsualización nes tresferencies de ficheros.
+nogap Nun dexar espaciu ente los grupos en llista de contautos
+nogroup Ensin grupu
+nojavascript Nun tienes javascript activáu. Puede que nun furrule l'aniciu de sesión automáticu.
+nologfile Nun esiste ficheru d'hestorial pa $1
+nomic Ensin micrófonu
+noneavailable Nun hai dengún disponible
+nonewmail Nun hai mensaxes nuevos en bandexa d'entrada
+nonewver Nun hai versiones más actuales disponibles
+nonimgroup Contautos ensin messenger
+no Non
+nooimconfirmation Nun solicitar confirmación al unviar/recibir mensaxes ensin conexón
+nopic Ensin imaxe
+noprofileexists Anguaño nun esiste dengún perfil. \n Tienes de criar uno si quies usar los perfiles d'usuariu. \nUsa'l botón "Amestar un perfil" nesta ventana pa crealu.
+noresizesmileys Non redimensionar los fustaxes personalizaos
+normal Normal
+noskins Nun se pudo atopar el perfil por defeutu (default) na carpeta skins/. Nun puede aniciase aMSN
+nosound Nun se deteutó soníu, asegúrate de que'l micrófonu ta coneutáu correcho
+nosound_or_hold Nun se deteutó soníu. Pa unviar un clip de voz tienes de caltener calcáu el botón mientres fales, y dempués soltar el botón pa unviar el mensaxe.
+nospace Res que ver equí
+nosystemtray Bandexa del sistema non disponible
+note Nota
+notificationserver Sirvidor inicial de notificaciones MSN (Sirvidor MSN Messenger)
+notify1_5 Amosar ventana d'avisu cuando un contautu se desconeute
+notify1_75 Amosar ventana d'avisu cuando un contautu camuda d'estáu
+notify1 Amosar ventana d'avisu cuando un contautu se coneute
+notify2 Amosar ventana d'avisu cuando aporten nuevos mensaxes
+notify3 Amosar ventana d'avisu al recibir un nuevu corréu electrónicu
+notify4 Amosar ventana d'avisu cuando aporta un nuevu corréu electrónicu a otres carpetes
+notify avisu
+notifyoffset Axusta la posición de la ventana d'avisu per aciu d'un desplazamientu
+notifytimeout Númberu de milisegundos que permanez la ventana de notificaciones
+notifytyping Unviar a otros usuarios notificaciones cuando se ta tecleando
+notifywin Ventana d'avisos
+notimcontact Esti contautu nun ye un contautu de mensaxería nel intre
+notinlist Nun tas na so llista de contautos
+notls La versión 9 del protocolu MSN requier usar el paquete "TLS". Esti paquete nun paez tar instaláu nel equipu. Si ta instaláu, el camín al direutoriu tendría d'especificase na ventana de Preferencies (ex: /opt/tls/lib). \n \n Es dable baxar "TLS" en http://tls.sf.net.
+nottabbed Ventanes normales ensin llingüetes
+nousersinsession Nun hai usuarios na sesión
+nouserspecified Usuariu non especificáu
+nudge $1 apella a la to atención
+offline Desconeutáu
+oim Mensaxes ensin conexón
+ok Aceutar
+onenewmail Un mensaxe nuevu en bandexa d'entrada
+online Coneutáu
+onlinehelp Aida en llinia
+onphone Al teléfonu
+opendir Abrir carpeta
+openfile Abrir
+openfilecommand Comandu Abrir ficheru
+openreceived Abrir ficheros recibíos
+options Opciones
+ordercontactsby Axeitar contautos por
+ordergroupsby Axeitar grupos por
+original Orixinal
+otherdisplaypic Otres imáxenes p'amosar d'esti usuariu (clic pa más opciones)
+otherdps Otres imáxenes p'amosar
+other Otru
+others Otres
+p4contextprefix Prefixar remitentes en P4-Context con esta cadena de carauteres
+pager Paxinador
+pass Contraseña
+passportnotverified La to cuenta pasaporte tien de verificase enantes de que puedas camudar la to información personal (como'l to nomatu). Por favor, comprueba na to bandexa d'entrada que tengas recibíu un corréu d'activación.
+paste Apegar
+pausedwebcamreceive La cámara web posóse pol otru usuariu
+pause Posa
+pausewebcamsend Posa nel unvíu de la cámara web
+personal Personal
+phones Númberos de teléfonu
+phone Teléfonu
+picbrowser Restolador d'imáxenes p'amosar
+picfile Ficheru d'imaxe (GIF < 500 x 500)
+picstatus Imaxe pa l'alarma
+playbackposition Posición de playback
+playbackspeed Velocidá de playback (milisegundos ente cada fotograma)
+playerror Ocurrió un error al tentar reproducir el soníu : $1
+playgame2 Xugar a $1
+playgame Entamar un xuegu
+playing Reproduciendo: $1
+play Reproducir
+playtest Reproducir soníu de preba
+playwebcamsend Reanudación del unvíu de cámara web
+pluginselector Seleutor de plug-ins
+port Puertu
+portswellconfigured Los puertos tan bien configurados
+prefalerts Les mios alertes y soníos d'eventos
+prefapps Aplicaciones
+prefawaymsg El mio mensax d'ausente
+prefblock1 Comprobar cuando se desconeuta
+prefblock2 Comprobar de contino
+prefblock3 Grupu "Tas bloquiáu por..."
+prefconnection Configuración de la conexón
+prefemotic Emoticonos
+preferences Preferencies
+preffont2 Camuda la forma na qu'otros ven el mio testu na conversación
+preffont3 Camudar la triba de lletra y tamañu del interface de aMSN
+preffont4 Camudar la forma na que veo'l testu d'otros usuarios nes sesiones de chat
+preffont Testu de los mios mensaxes
+prefft Tresferencies de ficheros, igual-a-igual y configuración de NAT
+preflibs Direutoriu pa biblioteques
+preflocale2 Esbilla la to llingua/códigu de país
+preflocale Axustes de la llingua
+preflog1 Les mio opciones d'hestorial y rexistros
+preflogevent Hestorial de los mios eventos
+preflook Aspeutu del mio aMSN
+prefmsging Interface de los mios mensaxes
+prefname El mio nome/nomatu en aMSN
+prefphone2 Escribi los númberos que quieras permitir\nver a los contautos na to llista de Permitíos
+prefphone Los mios númberos de teléfonu
+prefprivacy2 Llista de Contautos/Inversa de l'usuariu
+prefprivacy Llista d'Aceutaos/Bloquiaos de l'usuariu
+prefprofile2 Cria o modifica'l to perfil públicu (la \n descripción de tí mesmu qu'otros pueden ver)
+prefprofile3 Perfiles de configuración de los usuarios
+prefprofile El mio perfil públicu
+prefproxy Configuración del mio proxy
+prefremote Configuración de conexón remota
+prefsession El mio aniciu de sesión y estáu
+prefshared Conexones compartíes (namái pa NAT)
+prefsound Soníos
+preview Previsualizar
+privacy Privacidá
+profiledconfig Información de perfil
+profileexists Nun puede criase un perfil con esti nome d'usuariu,\n yá esiste ún col mesmu nome. Por favor escueye otru.
+profileinuse Esti perfil ta usándose por otra sesión de aMSN, por favor escueye otru.
+profileloginradio Usar un Perfil esistente
+profiles Perfiles
+properties Propiedaes
+proxyconf Configuración proxy
+proxyconfhttp Configurar sofitu de proxy HTTP
+proxyconnection Conéutome a Internet usando un sirvidor proxy:
+proxy Toi darrera d'un sirvidor proxy (HTTP o SOCKS5)
+psmatend Amosar Mensax Personal xunto al nomatu
+psmchanged $1 camudó'l so mensaxe personal a '$2'
+psmdontshow Nun amosar el mensaxe personal a nun ser que se defina en Nomatu Global/Personalizáu
+psmnewline Amosar Mensax Personal debaxo del nomatu
+psmplace ¿Aú tendría d'amosase'l Mensax Personal?
+psm Priváu
+publishphones Espublizar los mios númberos de teléfonu
+purge Purgar
+pwcdriver Tas usando'l controlador 'PWC'
+quit Colar
+raised Elevada/Desiconificada
+readonlymsgbox La tresferencia de ficheros encaboxóse porque'l direutoriu de receición ye de namái-llectura. Comprueba los permisos d'esti direutoriu.
+readonlywarn AVISU: El ficheru puede que NUN s'atroxe de mou correcho porque'l direutoriu de ficheros recibíos paez tar protexíu escontra escritura. Comprueba que los permisos nel direutoriu ($1) son correutos enantes de la tresferencia
+receivedbytes Recibíos $1 de $2 bytes totales
+receiveddir Carpeta de Ficheros Recibíos
+receivedoimread Tienes $1 mensaxes instantáneos ensin conexón. ¿Quies lleelos?
+receivedvoice Clip de Voz recibíu
+receivefile Recibir ficheru
+recentmsg Prevenir el zarru de la ventana de chat cuando un mensaxe acaba d'aportar
+reconnect2 Reconeutar al perder la conexón
+reconnect Esperando que $1 se reconeute
+reconnecting Reconeutando al sirvidor
+reconnectnow Reconeutar agora
+recorderror Asocedió un fallu al grabar el soníu: $1
+record Grabar
+recvwebcamaccepted $1 aceutó la to invitación pa ver la to cámara web. Coneutando...
+redirect Pinche equí pa ser redirixíu
+reject Refugar
+rememberaccount Remembrar la mio cuenta
+rememberpass Remembrar contraseña
+remembersetting Remembrar esta Escoyeta
+removeempty Desaniciar grupos baleros de la llista de contautos
+removefromgroup Desaniciar del grupu
+removefromlist Desaniciar d'esta llista
+rename Camudar nome
+renameep Renomar esti llugar ($1)
+renamelocation Renomar esti llugar
+report Informe
+reporting Xenerando informe
+required_version Imposible cargar esti plug-in. Esti plug-in requier como mínimo aMSN $1 pa funcionar
+resetincomingfont Reaniciar la fonte (usar la fonte qu'escueye el qu'unvía)
+restartforskin Nota: ¡Necesitarás reaniciar aMSN pa ver el skin bien!
+retry Reintentar
+reversed Invertíu
+reverselist Llista Inversa(RL):
+rightback Vengo darréu
+saveas Guardar como
+savechatwinsize Al camudar el tamañu de les ventanes de chat, atroxalo como tamañu por defeutu
+savecontacts Guardar llista de contautos
+saveddefaultloc Guardar nel camín predetermináu
+save Guardar
+savelocationerror El ficheru nun pudo guardase nesti camín.
+savelocation ¿Quies guardar el ficheru en $1?
+saveotherdirectory Guardar n'otru direutoriu
+savetofile Guardar en ficheru
+says $1 diz
+sbcon Coneutando a la centralita telefónica
+searchadvprefs Guetar nes preferencies avanzaes:
+searchdown Guetar arriba
+searchup Guetar abaxo
+selectall Seleicionar toos
+selectcontact Seleicionar un contautu
+selectplugins Conseña los plug-ins que quies activar
+selectskin Escueye un tema (skin) de la llista
+sendcam Unviar cámara web
+sendemail Incluyir la mio direición de corréu electrónicu pa ser avisáu de los cambeos
+sendfeedback Unviar comentarios
+sendfile Unviar ficheru
+sendmail Unviar corréu electrónicu
+sendmobmsg Unviar a preséu móvil
+sendmsg Unviar mensaxe
+sendoim Unviar un mensaxe ensin conexón
+sendsip Entamar una llamada d'audio
+send Unviar
+sendvideosip Entamar videollamada
+sendvoice Unviar un Clip de Voz
+sendwebcamaccepted $1 aceutó la to invitación pa unviar la to cámara web. Coneutando...
+sendwebcaminvite Invitar al usuariu a ver la to cámara web
+sentbytes Unviaos $1 de $2 bytes totales
+sentvoice Clip de Voz unviáu
+serverbusy Sirvidor ocupáu
+servergoingdown Desconeutáu: El sirvidor va a apagase pa caltenimientu
+server Sirvidor
+serverunavailable El sirvidor nun ta disponible
+session Sesión
+setasmydp Afitar como la mio Imaxe p'Amosar
+setbackinitialstate Axustaste aMSN pa coneutase como $1, pero agora tas $2. ¿Davers quies axustar el to estáu de vuelta a $1?
+setupcam Configurando la to cámara web
+setupcamfinetune Configurando la to cámara web, y aplicando axuste finu d'imaxe
+shareswebcam Usuariu con cámara web
+showbanner Amosar el cartel de aMSN na llista de contautos
+showblockedlist Amosar contautos que te bloquien
+showcachedpics Amosar imáxenes p'amosar atroxaes
+show_contactdps_in_cl Amosar miniatures de les imáxenes p'amosar na llista de contautos
+showcontactemail Amosar l'email de los contautos
+showcontactnick Amosar el nomatu de los contautos
+showdetailedview Amosar vista detallada de los contautos
+showdetails Amosar detalles
+showdisplaypic2 Por defeutu, ver la imaxe p'amosar al abrir una ventana de conversación.
+showdisplaypic Ver imaxe p'amosar
+showlinksinlogin Amosar los enllaces na pantalla d'aniciu de sesión
+showmailicon Amosar l'iconu de corréu na bandexa del sistema cuando aporte un nuevu corréu electrónicu
+showmypic Amosar la mio imaxe
+shownonim Amosar contautos ensin messenger
+shownotify Amosar ventana d'avisos al producise dellos eventos
+showofflinegroup Amosar el grupu "Desconeutaos"
+showonedpframe Amosar un únicu marcu cola imaxe p'amosar nes ventanes de conversación
+showpicnotify Amosar imáxenes d'usuarios nes ventanes d'avisos
+showspaces Amosar l'iconu d'espacios na llista de contautos
+showuserpic Imaxe de $1
+showuserscw Hai $1 usuarios nesta conversación. Si quies verlos u ocultarlos fae clic equí.
+signinstatus Estáu anicial
+signoutep Zarrar la sesión de $1
+signouteverywhere Zarrar toles sesiones
+signouthere Zarrar esta sesión ($1)
+signout Zarrar la sesión
+sipcallaccepted Llamada d'audio aceutada
+sipcallback Devolver la llamada
+sipcallconnected ¡La to llamada d'audio ta agora coneutada!
+sipcalldeclined Llamada d'audio refugada
+sipcalleeaccepted L'usuariu aceutó la llamada d'audio
+sipcalleebusy L'usuariu alcuéntrase n'estáu "Non disponible" nestos momentos
+sipcalleecanceled L'usuariu encaboxó la invitación de llamada d'audio
+sipcalleeclosed L'usuariu finó la llamada d'audio
+sipcalleedeclined L'usuariu refugó la invitación de llamada d'audio
+sipcalleenoanswer L'usuariu nun retrucó a la to llamada
+sipcalleeunavailable L'usuariu nun s'alcuentra disponible nestos momentos
+sipcallended Finó la to llamada
+sipcallimpossible2 Nun puedes facer una llamada d'audio o video. Por favor, instala Farsight2 y preba de nuevu.
+sipcallmissed Perdiste la to llamada d'audio con $1
+sipcallnosipflag L'usuariu nun sofita llamaes d'audio.
+sipcallsent Llamando a $1
+sipcallyouarebusy2 Namái puedes tener una llamada d'audio o video al empar.
+sipgotinvitation Invitación de llamada d'audio recibía de $1
+sipvideocallaccepted Videollamada aceutada
+sipvideocallconnected ¡La to videollamada ta agora coneutada!
+sipvideocalldeclined Videollamada refugada
+sipvideocalleeaccepted L'usuariu aceutó la to videollamada
+sipvideocalleecanceled L'usuariu encaboxó la invitación de videollamada
+sipvideocalleeclosed L'usuariu finó la to videollamada
+sipvideocalleedeclined L'usuariu declinó la to invitación de videollamada
+sipvideocallended La to videollamada finó
+sipvideocallmissed Perdiste una videollamada de $1
+sipvideocallnosipflag L'usuariu nun sofita videollamaes.
+sipvideogotinvitation Invitación de videollamada recibía de $1
+skinselector Escoyer tema (skin)
+skin Tema (skin)
+smallest El más pequeñu
+small Pequeñu
+smileconfig Configuración de fustax personalizáu
+smilefile Nome del ficheru
+smileintro2 Edita los siguientes campos pa personalizar el fustax (ver FAQ pa más información)
+smileintro Rellena los siguientes campos pa criar un fustax personalizáu (ver FAQ pa más información)
+smiletoobig El fustax esbilláu ye más grande de lo avezao. ¿ Quies camudar el tamañu ?
+smileynotavailable ¡Fustax non disponible!
+snackfailed Fallu al cargar SNACK, volviendo a configuración por defeutu
+snackneeded Necesítase la biblioteca Snack pa usar esta funcionalidá. Como mínimo ye necesariu la versión 2.2.9
+snapshot Captura de pantalla
+sngdblclick Un sólu clic p'abrir una ventana de conversación
+sortcontactgroup Axeitar contautos por grupu
+sortcontacthybrid Axeitar contautos en mou mixtu
+sortcontactsasc Orde ascendente pa los contautos
+sortcontactsby Axeitar los contautos por
+sortcontactsbylogsize Axeitar los contautos pol tamañu del hestorial
+sortcontactsdesc Orde descendente pa los contautos
+sortcontactstatus Axeitar contautos por estáu
+sortgroupsasc Orde ascendente pa grupos
+sortgroupsdesc Orde descendente pa grupos
+sound2 Reproducir soníos cuando los contautos se coneuten o unvíen mensaxes
+soundactive Reproducir soníos al recibir mensaxes tamién en ventanes actives
+soundcommand El comandu pa reproducir un soníu (por ex: esdplay)
+soundexample ( \$sound = Ficheru de soníu a reproducir) Ex: esdplay \$sound
+soundfile Ficheru de soníu
+soundfiles Ficheros de soníu
+soundloop Soníu repetitivu
+soundnoavail El preséu de soníu nun ta disponible. Por favor, salga de cualesquier aplicación que tea usando'l preséu.
+soundserver Sirvidor de soníu
+sound Soníu d'eventos
+soundstatus Soníu pa l'alarma
+sourcecode Códigu fonte
+splashstart Entamar
+sslwarning ¡¡CURIÁU!! Al desactivar SSL, desactívase'l cifráu, y la to contraseña unviaráse al traviés de la rede como testu ensin cifrar. Usar namái si ye imprescindible, como en dalgunos sirvidores proxy, o configuraciones de rede mui estrictes.
+startoffline2 Coneutase xixilosamente apareciendo "Desconeutáu"
+startoffline Entamar desconeutáu
+startonboot Entamar aMSN al entamar Windows
+startontray Entamar aMSN namái col iconu de la bandexa del sistema
+stateautomsg Mensax automáticu a unviar
+statechange camuda'l so estáu a :
+stateedittext Edita los campos que deseyes camudar\ny dempués calca Guardar
+stateinfo Configuración d'estaos personalizaos
+statename Nome del estáu personalizáu
+statenewtext Rellena la información requería pa criar \nel nuevu estáu personalizáu, y calca Aceutar
+statenick Nomatu personalizáu (en blanco pa dengún)
+statepsm Mensax Personal (dexar en blanco pa caltener l'actual)
+state Quiero apaecer como
+stats Estadístiques
+status Estáu
+step Pasu
+stopalarm Detener alarma
+stop Parar
+stopwebcamreceive Detener la receición d'imáxenes de cámara web
+stopwebcamsend Detener l'nvíu d'imáxenes de cámara web
+storenickname Volver al nomatu original trés d'un estáu personalizáu con nomatu personalizáu
+strictfonts Afitar toles fontes de aMSN al tamañu que yo seleicione (barres d'estáu, y demás)
+stylechat El mesmu que los chats
+style Estilu
+stylehist aspeutu d'hestorial de aMSN
+stylelog Escueye l'estilu nel que quies ver l'hestorial
+subject Asuntu
+subjectrequired Asuntu requeríu
+svnversion Versión SVN
+syntaxerror Error de sintaxis
+tabbedglobal Una ventana con llingüetes pa tolos usuarios
+tabbedgroups Una ventana con llingüetes pa cada grupu
+tabbed Ventanes con llingüetes
+tabtitlenick Amosar nomatos n'arróu de direcciones de corréu electrónicu nes llingüetes
+temp_state Nun atroxar (estáu temporal, perderáse al reaniciar aMSN)
+textsize Tamañu del testu
+thismonth Esti mes
+throughserver A traviés del sirvidor
+timeremaining Tiempu restante
+timestamp Marca de tiempu
+timestamps Activar hora nos mensaxes
+title aMSN
+tkerror1 Asocedió un fallu de TK, aMSN tien un fallu. Por favor, infórmanos faciendo clic nel botón Informe. Puedes facer clic en Detalles pa ver más información sobro esti error o clic nel botón OK pa siguir usando aMSN
+tkerror Asocedió un fallu de TK, hai un fallu en aMSN, por favor infórmanos. Pa ello unvía'l ficheru $1 a amsn-bugs@lists.sf.net
+tlsdowncompleted El ficheru $1 descargóse nel direutoriu $2. Agora tienes de descomprimilu, compilalu (si baxasti'l códigu fonte) ya instalarlo en $3.
+tlsexplain Carpeta au s'alcuentra el módulu TLS pa TCL. Si aMSN nun lu alcuentra,\npor favor especifícalo (necesariu pa l'autenticación per aciu de SSL).
+tlsinstall Asistente d'instalación del módulu TLS
+tlsinstallexp aMSN agora usa'l protocolu MSNP9, que requier usar una conexón\nsegura usando SSL. Pa poder usar SSL, aMSN necesita un módulu llamáu TLS,\nque nun pudo atopase nel so sistema. Esti asistente aidarálu a baxar\nya instalar TLS. Por favor, escueye la to triba de Sistema Operativu pa poder\nbaxar los ficheros requeríos pa TLS automáticamente.
+tlsinstcompleted La instalación del módulu TLS concluyó satisfactoriamente. Yá tendríes de poder usar MSNP9. Si nun furrula, ye dable que nun tengas escoyío la triba de módulu correutu, o que nun esista una versión compilada pal to Sistema Operativu.
+today Güei
+tomobile Al móvil
+tools Ferramientes
+tooltips Activar globos d'aida
+to Pa
+totalsize Tamañu total
+transnotexists El ficheru solicitáu nun s'alcuentra tornáu a la so llingua.
+trayicon Amuesa l'iconu d'estáu na estaya de notificación
+traynotcompiled Iconu de bandexa non compiláu. Mira nel direutoriu plugins/traydock
+triggers Testu disparador
+truncatenames1 Cortar nomatos más llargos que l'anchor de la ventana en títulos y llista de contautos
+truncatenames2 Cortar nomatos más llargos que l'anchor de la ventana nes conversaciones
+truncatenicks Truncar nomatos más llargos que l'anchor de la ventana
+twonewmail $1 mensaxes nuevos en bandexa d'entrada
+type Triba
+unavailablecountryserver El sirvidor pal to país ta temporalmente non disponible. Inténtalo más sero. Puedes arriendes correxir esti problema camudando l'axuste del país na to cuenta Passport en http://www.passport.net.
+unblock Almitir
+unknown Desconocíu
+unload Deshabilitar
+unselectall Deseleicionar too
+untitled_space Ensin títulu
+uoffline Desconeutaos
+uonline Coneutaos
+update Anovar
+updateonlycurrentlanguage Anovamientu namái del llinguax actual
+updatesaved Fecho\n Guardáu $1 en $2.
+updating Anovando
+useasdp Usar como imaxe p'amosar
+useasregexp Interpretar como espresión regular
+useother Usar un comandu o programa distintu
+useralreadyonlist L'usuariu yá s'alcuentra na llista de contautos.
+userblocked L'usuariu alcuéntrase conectáu pero tas bloquiáu
+userdata Datos d'usuariu 
+userdps Imáxenes p'amosar de l'usuariu
+usernotonline L'usuariu nun s'alcuentra en llinia
+userproperties Propiedaes de l'usuariu $1
+usersettings Preferencies
+user Usuariu
+useryourself Nun puedes falar contigo mesmu
+usesnack Usar la biblioteca SNACK (Estensión de TCL)
+verifyblocked Comprobar qué contautos te bloquien
+version Versión
+videoconversationrequest Acabes de recibir una petición de conversación de vídeo (audio y vídeo bidireccional). Esta carauterística nun ta soportada entá por aMSN y foi encaboxada. Sicasí, entá puedes usar la conversación standard por cámara web.
+viewcontactsby Ver contautos como
+viewprofile Ver perfil
+viewspace Ver elementos del espaciu
+view Ver
+volume Volume
+wanttosharecam Quiero que la mio cámara web tea disponible pa otros
+webcamcanceled La sesión de cámara web con $1 encaboxóse
+webcamclosebefcancel Tendrás qu'encaboxar toles sesiones de cámara web enantes de zarrar la ventana
+webcam Cámara web
+webcamconfigure Configurar cámara web
+webcamconfiguredLinux Escoyisti la siguiente configuración:\nPreséu de cámara web: $1\nCanal de cámara web: $2
+webcamconfiguredMac La to cámara web configuróse
+webcamconfiguredWin Escoyisti la siguiente cámara web: $1
+webcamextchecking Comprobando si la estensión de cámara web ta cargada...
+webcamextloaded Estensión de cámara web cargada
+webcamextnotloaded La estensión de cámara web nun se cargó. Tendrás que compilala.
+webcamextwarn Nun podrás ver imáxenes de cámara web de los tos contautos. Puedes atopar aida sobro cómo instalar dalgunes estensiones nel nuesu Wiki:
+webcamfaq FAQ(Entrugues Frecuentes)/Aida pa cámara web
+webcamhistory2 Sesiones de cámara web
+webcamhistory Ver sesiones de cámara web
+webcaminvite $1 convidóte a una sesión de videoconferencia, pero aMSN entá nun sofita esta carauterística.
+webcaminvitereceived $1 Convidóte pa entamar una sesión de cámara web. ¿Quies aceutar esti convite?
+webcaminvitereceivedauto $1 convidóte a entamar una sesión de cámara web. Esta sesión acéutase automáticamente.
+webcaminvitereceivingauto Tas convidáu a entamar a ver la cámara web de $1. Esta sesión acéutase automáticamente.
+webcaminvitereceiving Tas convidáu a ver la cámara web de $1. ¿Quies aceutar la invitación?
+webcaminvitesending $1 quier ver la to cámara web. ¿Quies aceutar la invitación?
+webcaminvitesendingauto A $1 prestaría-y ver tu cámara web. Esta sesión acéutase automáticamente.
+webcamrejected $1 refugó la invitación pa la sesión de cámara web 
+webcamrequestreceive Invitar pa entamar una sesión de cámara web  
+webcamrequestsend Invitar pa que vean la mio cámara web
+webcamsending Llista de persones qu'anguaño te tan viendo pola to cámara web\nClic pa Encaboxar
+web Web
+whatisamsn aMSN ye un clon multiplataforma de MSN Messenger
+whatsize La imaxe esbillada nun ye del tamañu predefiníu (96x96). ¿A qué tamañu-y prestaría que s'amosare?
+willjoin Esperando que $1 se xuna a la conversación
+winkreceived Recibisti un blizcu de $1, estes animaciones nun tan disponibles nesta versión de aMSN.
+wintitlenick Amosar nomatos en llugar de direiciones de corréu electrónicu nes ventanes con llingüetes
+work Trabayu
+wrongfields Los campos "$1", "$2" y/o "$3" nun son válido(s)
+wrongprofileversion Versión del ficheru de perfiles incorreuta. Por favor desanicia'l direutoriu $1 pa igualo, o anova aMSN.
+xmmscurrent Amosar la canción actual
+xmmserr Nun hai canción en reproducción, o nun tienes xmms-infopipe instaláu.
+xmmssend Unviar canción actual
+xoffset Desplazamientu X
+xplaces $1 llugares
+year Añu
+yesblock Sí, y bloquiar
+yes Sí
+yesterday Ayeri
+yoffset Desplazamientu Y
+youblocked Fuisti bloquiáu
+yousay Dices
+youwant Quies
+zoom Ampliación
