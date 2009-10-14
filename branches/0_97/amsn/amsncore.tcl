@@ -155,10 +155,10 @@ proc OnWin {} {
 	}
 }
 
-#Test for Windows Vista or Windows 7
+#Test for Windows Vista
 proc OnWinVista {} {
 	global tcl_platform
-	if { [OnWin] && $tcl_platform(os) == "Windows NT" && ($tcl_platform(osVersion) == "6.0" || $tcl_platform(osVersion) == "6.1")} {
+	if { [OnWin] && $tcl_platform(os) == "Windows NT" && $tcl_platform(osVersion) == "6.0" } {
 		return 1
 	} else {
 		return 0
