@@ -155,10 +155,19 @@ proc OnWin {} {
 	}
 }
 
-#Test for Windows Vista
+#Test for Windows Vista or Windows 7
 proc OnWinVista {} {
 	global tcl_platform
-	if { [OnWin] && $tcl_platform(os) == "Windows NT" && $tcl_platform(osVersion) == "6.0" } {
+	if { [OnWin] && $tcl_platform(os) == "Windows NT" && ($tcl_platform(osVersion) == "6.0" || $tcl_platform(osVersion) == "6.1")} {
+		return 1
+	} else {
+		return 0
+	}
+}
+
+proc OnWin7 {} {
+	global tcl_platform
+	if { [OnWin] && $tcl_platform(os) == "Windows NT" && $tcl_platform(osVersion) == "6.1" } {
 		return 1
 	} else {
 		return 0
@@ -606,7 +615,3 @@ namespace eval ::Version {
 }
 
 ::Version::setSubversionId {$Id$}
-
-
-#Try to use async resolve if available
-catch { package require asyncresolver }

@@ -19,7 +19,6 @@ snit::type Addressbook {
 			catch { $soap_req destroy }
 		}
 		set soap_requests [list]
-		
 	}
 
 	method _destroySoapReq { soap } {
@@ -109,7 +108,7 @@ snit::type Addressbook {
 			::groups::Reset
 			::groups::Set 0 [trans nogroup]
 
-			$self ABFindAll [list $self ABFindAllDone $callback]
+			after 0 [list $self ABFindAll [list $self ABFindAllDone $callback]]
 		}
 		if {$fm_done == 0 } {
 			::MSN::clearList BL
@@ -121,12 +120,11 @@ snit::type Addressbook {
 				::abook::removeContactFromList $username "BL"
 				::abook::removeContactFromList $username "RL"
 			}
-			$self FindMembership [list $self FindMembershipDone $callback]
+			after 0 [list $self FindMembership [list $self FindMembershipDone $callback]]
 		}
 		if {$fm_done && $ab_done } {
-			$self SynchronizeDone $callback 0			
+			$self SynchronizeDone $callback 0
 		}
-
 	}
 
 	method FindMembershipDone { callback error } {

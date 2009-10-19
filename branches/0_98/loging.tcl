@@ -446,11 +446,15 @@ namespace eval ::log {
 
 		set wname [::log::wname $email]
 
-		if { [catch {toplevel ${wname} -width 600 -height 400 -borderwidth 0 -highlightthickness 0 } res ] } {
-			raise ${wname}
-			focus ${wname}
-			wm deiconify ${wname}
+		if { [winfo exists $wname] } {
+		    raise ${wname}
+		    focus ${wname}
+		    wm deiconify ${wname}
+		    return 0
+		} else {
+		    if {[catch {toplevel ${wname} -width 600 -height 400 -borderwidth 0 -highlightthickness 0 } res ] } {
 			return 0
+		    }
 		}
 		
 		wm group ${wname} .
@@ -529,6 +533,7 @@ namespace eval ::log {
 		menu ${wname}.copypaste -tearoff 0 -type normal
 		${wname}.copypaste add command -label [trans copy] -command [list tk_textCopy ${wname}.blueframe.log.txt]
 		
+		pack $wname.buttons -side bottom -fill x -pady 3
 		pack $wname.top -side top -fill x
 		pack $wname.blueframe.log.ys -side right -fill y
 		pack $wname.blueframe.log.txt -side left -expand true -fill both
@@ -539,7 +544,6 @@ namespace eval ::log {
 		pack $wname.buttons.save -padx 0 -side right
 		pack $wname.buttons.clear -padx 0 -side right
 		pack $wname.buttons.find -padx 0 -side right
-		pack $wname.buttons -side bottom -fill x -pady 3
 		bind $wname <<Escape>> "destroy $wname"
 		bind ${wname}.blueframe.log.txt <<Button3>> "tk_popup ${wname}.copypaste %X %Y"
 		moveinscreen $wname 30
@@ -583,13 +587,17 @@ namespace eval ::log {
 		
 		set wname [::log::cam_wname $email]
 
-		if { [catch {toplevel ${wname} -borderwidth 0 -highlightthickness 0 } res ] } {
-			raise ${wname}
-			focus ${wname}
-			wm deiconify ${wname}
+		if { [winfo exists $wname] } {
+		    raise ${wname}
+		    focus ${wname}
+		    wm deiconify ${wname}
+		    return 0
+		} else {
+		    if { [catch {toplevel ${wname} -borderwidth 0 -highlightthickness 0 } res ] } {
 			return 0
+		    }
 		}
-		
+
 		wm group ${wname} .
 
 		if { [file exists [file join ${webcam_dir} ${email}.cam]] } {
@@ -842,7 +850,7 @@ namespace eval ::log {
 		set wname [split $email "@ .:"]
 		set wname [join $wname "_"]
 		set wname ".${wname}_hist"
-		return $wname
+		return [string tolower $wname]
 	}
 
 	proc cam_wname {email} {
@@ -850,7 +858,7 @@ namespace eval ::log {
 		set wname [split $email "@ ."]
 		set wname [join $wname "_"]
 		set wname ".${wname}_cam"
-		return $wname
+		return [string tolower $wname]
 	}
 
 	proc LogsByDate {wname email} {
@@ -1220,11 +1228,22 @@ namespace eval ::log {
 					# The color is indicated by the 6 fingers after it
 					if {[string index $line [expr {$aidx + 3}]] == "C"} {
 						set color [string range $line [expr {$aidx + 4}] [expr {$aidx + 9}]]
-						${wname}.blueframe.log.txt tag configure C_$nbline -foreground "#$color"
-						set color "C_$nbline"
-						incr aidx 10
-						# Else, it is the system with LNOR, LGRA...
+						if { [catch {${wname}.blueframe.log.txt tag configure C_$nbline -foreground "#$color"}]} {
+							# invalid color, maybe the file is corrupted... skip only digits
+							incr aidx 4
+							for {set i 0} { $i < 6 } { incr i } {
+								if { ![string is digit [string range $line $aidx $aidx]] } {
+									break
+								}
+								incr aidx
+							}
+							set color "normal"
+						} else {
+							set color "C_$nbline"
+							incr aidx 10
+						}
 					} else {
+						# Else, it is the system with LNOR, LGRA...
 						if {[string range $line $aidx [expr {$aidx + 6}]] == "\|\"LTIME"  } {
 							#it is a time in [clock seconds]
 							incr aidx 7

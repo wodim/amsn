@@ -886,6 +886,7 @@ namespace eval ::MSN {
 
 
 	proc connect { {passwd ""}} {
+
 		#Cancel any pending reconnect
 		after cancel ::MSN::connect
 		after cancel cmsn_update_reconnect_timer
@@ -5481,12 +5482,16 @@ namespace eval ::MSNOIM {
 						if {$id == "3" } {
 							::MSNP2P::RequestObjectEx $chatid $typer $data "voice"
 						} elseif {$id == "4" } {
-							# Action messages... 
-							# TODO : find a better way to write the messages ?
+							# Action messages...
 							::amsn::WinWrite $chatid "\n" gray
 							::amsn::WinWriteIcon $chatid greyline 3
 							::amsn::WinWrite $chatid "\n" gray
-							::amsn::WinWrite $chatid [encoding convertfrom identity $data] gray
+							set font [lindex [::config::getGlobalKey basefont] 0]
+							if { $font == "" } { set font "Helvetica"}
+
+							set color 333333; #TODO: needs a skin key for this one
+							set customfont [list $font [list "italic"] $color]
+							::amsn::WinWrite $chatid [encoding convertfrom identity $data] "custom" $customfont
 							::amsn::WinWrite $chatid "\n" gray
 							::amsn::WinWriteIcon $chatid greyline 3
 							::amsn::WinWrite $chatid "\n" gray
@@ -5572,7 +5577,7 @@ proc cmsn_rng {recv} {
 	#Init SB properly
 	if { [config::getKey protocol] == 11 ||
 	     ([config::getKey protocol] >= 13 && [lindex $recv 9] == "1") } {
-		$sb configure -force_gateway_server [lindex [split [lindex $recv 2] ":"]]
+		$sb configure -force_gateway_server [lindex [split [lindex $recv 2] ":"] 0]
 	}
 	set auth_username [::config::getKey login]
 	if {[::config::getKey protocol] >= 18 } {
@@ -5624,7 +5629,7 @@ proc cmsn_open_sb {sb recv} {
 
 	if { [config::getKey protocol] == 11 ||
 	     ([config::getKey protocol] >= 13 && [lindex $recv 8] == "1") } {
-		$sb configure -force_gateway_server [lindex [split [lindex $recv 3] ":"]]
+		$sb configure -force_gateway_server [lindex [split [lindex $recv 3] ":"] 0]
 	}
 	set auth_username [::config::getKey login]
 	if {[::config::getKey protocol] >= 18 } {
@@ -6074,8 +6079,14 @@ proc cmsn_update_users {sb recv} {
 proc cmsn_change_state {recv} {
 	global remote_auth HOME
 	global newstate_server
+	global last_iln
 
-	set initial_status 0
+	if {$last_iln == 0 || [expr {[clock seconds] - $last_iln}] <  5} {
+		set initial_status 1
+		set last_iln [clock seconds]
+	} else {
+		set initial_status 0
+	}
 	if {[lindex $recv 0] == "FLN"} {
 		#User is going offline
 		set user [lindex $recv 1]
@@ -6095,7 +6106,6 @@ proc cmsn_change_state {recv} {
 		set msnobj [::abook::getVolatileData $user msnobj ""]
 #		status_log "contactStateChange in protocol cmsn_change_state FLN"
 	} elseif {[lindex $recv 0] == "ILN"} {
-		set initial_status 1
 		#Initial status when we log in
 		set substate [lindex $recv 2]
 		set user [lindex $recv 3]
@@ -6161,6 +6171,10 @@ proc cmsn_change_state {recv} {
 #		status_log "contactStateChange in protocol cmsn_change_state $user"
 	}
 
+	if {$substate == "HDN"} {
+		set substate "FLN"
+	}
+
 	set oldstate [::abook::getVolatileData $user state]
 	if { $oldstate != $substate } {
 		set state_changed 1
@@ -6213,7 +6227,7 @@ proc cmsn_change_state {recv} {
 		::plugins::PostEvent ChangeState evpar
 
 		#alarm system (that must replace the one that was before) - KNO
-		if {[lindex $recv 0] == "FLN"} {
+		if {$substate == "FLN"} {
 			#User disconnected
 
 			if {  ( [::alarms::isEnabled $user] == 1 )&& ( [::alarms::getAlarmItem $user ondisconnect] == 1) } {
@@ -6303,43 +6317,45 @@ proc cmsn_change_state {recv} {
 				::amsn::notifyAdd $msg "::amsn::chatUser $user" state state $user 1
 			}
 
-		} elseif {[lindex $recv 0] == "NLN"} {	;# User was offline, now online
+		} elseif {[::abook::getVolatileData $user state FLN] == "FLN"} {	;# User was offline, now online
 
 			#Register last login and notify it in the events
 			::abook::setContactData $user last_login [clock format [clock seconds] -format "%D - %H:%M:%S"]
 			::log::event connect $custom_user_name
 			::abook::setVolatileData $user PSM ""
-			#Register PostEvent "UserConnect" for Plugins, email = email user_name=custom nick
-			set evPar(user) user
-			set evPar(user_name) custom_user_name
-			#Reset clientname, if it's not M$N it will set it again
-			#later on with x-clientcaps
-			::abook::setContactData $user clientname ""
-			::plugins::PostEvent UserConnect evPar
 
-			# Added by Yoda-BZH
-			if {$remote_auth == 1} {
-				set nameToWriteRemote "$user_name ($user)"
-				write_remote "** $nameToWriteRemote [trans logsin]" event
+			if {!$initial_status } {
+				#Register PostEvent "UserConnect" for Plugins, email = email user_name=custom nick
+				set evPar(user) user
+				set evPar(user_name) custom_user_name
+				#Reset clientname, if it's not M$N it will set it again
+				#later on with x-clientcaps
+				::abook::setContactData $user clientname ""
+				::plugins::PostEvent UserConnect evPar
+
+				# Added by Yoda-BZH
+				if {$remote_auth == 1} {
+					set nameToWriteRemote "$user_name ($user)"
+					write_remote "** $nameToWriteRemote [trans logsin]" event
+				}
+
+				if { (([::config::getKey notifyonline] == 1 && 
+				       [::abook::getContactData $user notifyonline -1] != 0) ||
+				      [::abook::getContactData $user notifyonline -1] == 1) &&
+				     ([::config::getKey no_blocked_notif 0] == 0 || ![::MSN::userIsBlocked $user]) } {
+
+					set msg $short_name
+					lappend msg [list "newline"]
+					lappend msg [list "text" "[trans logsin]."]
+					::amsn::notifyAdd $msg "::amsn::chatUser $user" online online $user 1
+				}
+
+				if {  ( [::alarms::isEnabled $user] == 1 )&& ( [::alarms::getAlarmItem $user onconnect] == 1)} {
+					run_alarm $user $user $custom_user_name "$custom_user_name [trans logsin]"
+				} elseif {  ( [::alarms::isEnabled all] == 1 )&& ( [::alarms::getAlarmItem all onstatus] == 1)} {
+					run_alarm all $user $custom_user_name "$custom_user_name [trans logsin]"
+				}
 			}
-
-			if { (([::config::getKey notifyonline] == 1 && 
-			       [::abook::getContactData $user notifyonline -1] != 0) ||
-			      [::abook::getContactData $user notifyonline -1] == 1) &&
-			     ([::config::getKey no_blocked_notif 0] == 0 || ![::MSN::userIsBlocked $user]) } {
-
-				set msg $short_name
-				lappend msg [list "newline"]
-				lappend msg [list "text" "[trans logsin]."]
-				::amsn::notifyAdd $msg "::amsn::chatUser $user" online online $user 1
-			}
-
-			if {  ( [::alarms::isEnabled $user] == 1 )&& ( [::alarms::getAlarmItem $user onconnect] == 1)} {
-				run_alarm $user $user $custom_user_name "$custom_user_name [trans logsin]"
-			} elseif {  ( [::alarms::isEnabled all] == 1 )&& ( [::alarms::getAlarmItem all onstatus] == 1)} {
-				run_alarm all $user $custom_user_name "$custom_user_name [trans logsin]"
-			}
-			
 		}
 	}
 
@@ -7049,6 +7065,9 @@ proc cmsn_auth {{recv ""}} {
 			#We need to wait until the SYN reply comes, or we can send the CHG request before
 			#the server sends the list, and then it won't work (all contacts offline)
 			if { [config::getKey protocol] >= 13 } {
+				if {![info exists ::ab]} {
+					set ::ab [::Addressbook create %AUTO%]
+				}
 				$::ab Synchronize [list ::MSN::ABSynchronizationDone 1]
 			} else {
 				set list_version [::abook::getContactData contactlist list_version]
@@ -7508,9 +7527,12 @@ proc cmsn_ns_connected {sock} {
 
 #TODO: ::abook system
 proc cmsn_ns_connect { username {password ""} {nosignin ""} } {
+	global last_iln
 	if { ($username == "") || ($password == "")} {
 		return -1
 	}
+
+	set last_iln 0
 
 	::MSN::clearList FL
 	::MSN::clearList AL

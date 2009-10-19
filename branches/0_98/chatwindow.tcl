@@ -160,7 +160,10 @@ namespace eval ::ChatWindow {
 	# Arguments:
 	#  - window => Is the chat window widget (.msg_n - Where n is an integer)
 	proc GetOutDisplayPicturesFrame { window } {
-		if { [::config::getKey old_dpframe 0] == 0 } {
+		# We check if the frame exists instead of checking the 'old_dpframe' option
+		# is set because we might change the option and it will cause a bug for
+		# existing chat windows
+		if {[winfo exists [GetOutFrame $window].f.sw.sf] } {
 			return [[GetOutFrame $window].f.sw.sf getframe]
 		} else {
 			return [GetOutFrame $window].f
@@ -562,8 +565,9 @@ namespace eval ::ChatWindow {
 		}
 	
 		#If the window changed size use checkfortoomanytabs
+		after cancel [list ::ChatWindow::CheckForTooManyTabs $window 0]
 		if { [winfo exists ${window}.bar] && $sizechanged} {
-			after idle [list ::ChatWindow::CheckForTooManyTabs $window 0]
+			after 100 [list ::ChatWindow::CheckForTooManyTabs $window 0]
 		}
 
 	}
@@ -1170,6 +1174,9 @@ namespace eval ::ChatWindow {
 
 	proc CreateTabBar { w } {
 		set bar $w.bar
+		set less ${bar}.less
+		set more ${bar}.more
+
 		::skin::setPixmap tab tab.gif
 		::skin::setPixmap tab_close tab_close.gif
 
@@ -1181,10 +1188,24 @@ namespace eval ::ChatWindow {
 		::skin::setPixmap moretabs moretabs.gif
 		::skin::setPixmap lesstabs lesstabs.gif
 		
+		set less_w [image width [::skin::loadPixmap moretabs]] 
+		set more_w [image width [::skin::loadPixmap lesstabs]]
+
 		frame $bar -class Amsn -relief solid -bg [::skin::getKey tabbarbg] -bd 0
+
+		label $less -image [::skin::loadPixmap lesstabs] \
+		    -width $less_w -bg [::skin::getKey tabbarbg] -bd 0 -relief flat \
+		    -activebackground [::skin::getKey tabbarbg] -highlightthickness 0 -pady 0 -padx 0
+		bind $less <<Button1>> "::ChatWindow::LessTabs $w $less $more"
+		label $more -image [::skin::loadPixmap moretabs] \
+		    -width $more_w -bg [::skin::getKey tabbarbg] -bd 0 -relief flat \
+		    -activebackground [::skin::getKey tabbarbg] -highlightthickness 0 -pady 0 -padx 0
+		bind $more <<Button1>> "::ChatWindow::MoreTabs $w $less $more"
 
 		if { $::tcl_version >= 8.4 } {
 			$bar configure  -padx [::skin::getKey chat_tabbar_padx] -pady [::skin::getKey chat_tabbar_pady]
+			$less configure -compound center
+			$more configure -compound center
 		}
 
 		return $bar
@@ -2558,8 +2579,10 @@ namespace eval ::ChatWindow {
 		set win [::ChatWindow::For $chatid]
 
 		set frame_in [GetInDisplayPictureFrame $win].voip
-		
+		if {[winfo exists $frame_in]} {destroy $frame_in}
 		set frame_out [GetOutDisplayPicturesFrame $win].voip
+		if {[winfo exists $frame_out]} {destroy $frame_out}
+
 
 		package require voipcontrols
 		status_log "Creating CW Voip controls"
@@ -3400,11 +3423,12 @@ namespace eval ::ChatWindow {
 		
 		$top dchars text 0 end
 		$top dchars cw_txt 0 end
+		$top dchars showhideusers 0 end
 		$top delete camicon cw_txt bg ;#remove the camicon(s) and default icons
 
 		#this code is for multichat with more then 3 users
 		if {[llength $user_list] > 3} {
-			$top dchars txt 0 end
+			$top dchars showhideusers 0 end
 			set txt [list ]
 			if {[::config::getKey hide_users_in_cw]} {
 				set len [llength $user_list]
@@ -3414,13 +3438,13 @@ namespace eval ::ChatWindow {
 			} else {
 				lappend txt [list font sboldf] [list text "[trans hideuserscw]"]
 			}
-			::guiContactList::renderContact $top "txt" $maxw $txt 0
+			::guiContactList::renderContact $top "showhideusers" $maxw $txt 0
 			$top configure -state normal 
-			$top move txt $usrsX $Ycoord
+			$top move showhideusers $usrsX $Ycoord
 			
-			$top bind txt <Button-1> "::ChatWindow::ShowHideUsers"
-			$top bind txt <Enter> "$top configure -cursor hand2"
-			$top bind txt <Leave> "$top configure -cursor left_ptr"
+			$top bind showhideusers <Button-1> "::ChatWindow::ShowHideUsers"
+			$top bind showhideusers <Enter> "$top configure -cursor hand2"
+			$top bind showhideusers <Leave> "$top configure -cursor left_ptr"
 			
 			set Ycoord [expr {$Ycoord + $incr_y + 2}]
 		}
@@ -3470,6 +3494,15 @@ namespace eval ::ChatWindow {
 					}
 					"newline" {}
 					default { lappend new_temp_list [lindex $unit] }
+				}
+			}
+			foreach unit $psmmedia {
+				switch [lindex $unit 0] {
+					"smiley" {
+						if {[image height [lindex $unit 1]] > $incr_y} {
+							set incr_y [image height [lindex $unit 1]]
+						}
+					}
 				}
 			}
 			set user_name $new_temp_list
@@ -3848,10 +3881,6 @@ namespace eval ::ChatWindow {
 		return ""
 
 	}
-	
-	proc TabsWidth {} {
-		return [image width [::skin::loadPixmap tab]]
-	}
 
 	proc ConfigureTab {tab img} {
 		$tab delete tab_bg
@@ -3880,7 +3909,7 @@ namespace eval ::ChatWindow {
 		set nick [list [list text $nick]]
 		canvas $tab -bg [::skin::getKey tabbarbg] -width $tab_width -height $tab_height
 		::guiContactList::renderContact $tab tab_text $tab_width $nick 0
-		$tab create image $tab_width [::skin::getKey tab_close_y] -image [::skin::loadPixmap tab_close] -anchor nw -tags tab_close
+		$tab create image [::skin::getKey tab_close_x] [::skin::getKey tab_close_y] -image [::skin::loadPixmap tab_close] -activeimage [::skin::loadPixmap tab_close_hover] -anchor nw -tags tab_close
 		$tab create image 1 0 -image [::skin::loadPixmap tab] -anchor nw -tags [list tab_bg]
 
 
@@ -4000,7 +4029,6 @@ namespace eval ::ChatWindow {
 		variable win2tab
 		
 
-		set tab_width [TabsWidth]
 		set tab [set win2tab($win)]
 		set users [::MSN::usersInChat $chatid]
 		# We have two ways of changing a tab button text
@@ -4010,9 +4038,6 @@ namespace eval ::ChatWindow {
 			set tabvar ${tab}_lbl
 		}
 		#status_log "naming tab $win with chatid info $chatid\n" red
-
-		incr tab_width -[image width [::skin::loadPixmap tab_close]]
-		incr tab_width -15
 		
 		$tabvar dchars tab_text 0 end
 		$tabvar delete tab_text
@@ -4038,9 +4063,8 @@ namespace eval ::ChatWindow {
 			set txt [concat $style [list [list text $txt]]]
 		}
 		
-		::guiContactList::renderContact $tabvar tab_text $tab_width $txt 0
-		incr tab_width 10
-		$tabvar create image $tab_width [::skin::getKey tab_close_y] -image [::skin::loadPixmap tab_close] -anchor ne -tags tab_close
+		::guiContactList::renderContact $tabvar tab_text [expr {[::skin::getKey tab_close_x] - 5}] $txt 0
+		$tabvar create image [::skin::getKey tab_close_x] [::skin::getKey tab_close_y] -image [::skin::loadPixmap tab_close]  -activeimage [::skin::loadPixmap tab_close_hover] -anchor nw -tags tab_close
 		
 		::ChatWindow::UpdateContainerTitle [winfo toplevel $win]
 	}
@@ -4066,7 +4090,7 @@ namespace eval ::ChatWindow {
 		if { [info exists containerwindows($container)] &&
 		     [lsearch [set containerwindows($container)] $win] == -1 } { 
 			status_log "can't switch to a window that doesn't belong to the correct container"
-			return 
+			return
 		}
 		
 #TODO:		# Don't switch if tab clicked is already current tab. > 2 used because otherwise windows for new mesages dont appear. this means this is only effective with three or more tabs open. hope someone can find how to fix this.
@@ -4210,9 +4234,6 @@ namespace eval ::ChatWindow {
 		set less_w [image width [::skin::loadPixmap moretabs]] 
 		set more_w [image width [::skin::loadPixmap lesstabs]]
 
-		#set less_w [font measure sboldf <]
-		#set more_w [font measure sboldf >]
-
 		set bar_w [expr {$bar_w - $less_w - $more_w}]
 
 		set max_tabs [expr int(floor($bar_w / $tab_w))]
@@ -4220,8 +4241,9 @@ namespace eval ::ChatWindow {
 	
 		set less ${container}.bar.less
 		set more ${container}.bar.more
-		destroy $less
-		destroy $more
+
+		pack forget $less
+		pack forget $more
 
 #		status_log "Got $number_tabs tabs in $container that has a max of $max_tabs\n" red
 
@@ -4239,22 +4261,6 @@ namespace eval ::ChatWindow {
 
 		}
 		if { $max_tabs > 0 && $number_tabs > $max_tabs } {
-			#-image [::skin::loadPixmap lesstabs] 
-			#[image width [::skin::loadPixmap lesstabs]] 
-			label $less -image [::skin::loadPixmap lesstabs] \
-			    -width $less_w -bg [::skin::getKey tabbarbg] -bd 0 -relief flat \
-			    -activebackground [::skin::getKey tabbarbg] -highlightthickness 0 -pady 0 -padx 0
-			bind $less <<Button1>> "::ChatWindow::LessTabs $container $less $more"
-			#-image [::skin::loadPixmap moretabs] 
-			#[image width [::skin::loadPixmap lesstabs]] 
-			label $more -image [::skin::loadPixmap moretabs] \
-			    -width $more_w -bg [::skin::getKey tabbarbg] -bd 0 -relief flat \
-			    -activebackground [::skin::getKey tabbarbg] -highlightthickness 0 -pady 0 -padx 0
-			bind $more <<Button1>> "::ChatWindow::MoreTabs $container $less $more"
-			if { $::tcl_version >= 8.4 } {
-				$less configure -compound center
-				$more configure -compound center
-			}			
 			pack $more -side right -expand false -fill both -anchor e
 			pack $less -side right -expand false -fill both -anchor e
 

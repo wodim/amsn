@@ -128,7 +128,7 @@ Resolver_Thread _ANSI_ARGS_((ClientData cdata))
   ResolverEvent *evPtr;
   struct addrinfo * result;
   char * ret;
-  char ip[30];
+  char ip[INET_ADDRSTRLEN];
   int error;
 
   error = getaddrinfo(data->host, NULL, NULL, &result);
@@ -150,6 +150,11 @@ Resolver_Thread _ANSI_ARGS_((ClientData cdata))
 
   Tcl_ThreadQueueEvent(data->main_tid, (Tcl_Event *)evPtr, TCL_QUEUE_TAIL);
   Tcl_ThreadAlert(data->main_tid);
+
+  
+#ifdef _WIN32
+  return 0;
+#endif
 }
 
 static int Resolver_EventProc (Tcl_Event *evPtr, int flags)

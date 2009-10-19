@@ -143,7 +143,7 @@
 		<langcode>el</langcode>
 		<name>Greek (ελληνικά)</name>
 		<version>1.16</version>
-		<encoding>iso8859-7</encoding>
+		<encoding>utf-8</encoding>
 	</lang>
 	<lang>
 		<langcode>gr2</langcode>
@@ -189,7 +189,7 @@
 	</lang>
 	<lang>
 		<langcode>ku</langcode>
-		<name>Kurdish (Kurdi)</name>
+		<name>Kurdish (Kurdî)</name>
 		<version>1.0</version>
 		<encoding>utf-8</encoding>
 	</lang>
@@ -251,7 +251,7 @@
 		<langcode>ru</langcode>
 		<name>Russian (Русский язык)</name>
 		<version>1.20</version>
-		<encoding>koi8-r</encoding>
+		<encoding>utf-8</encoding>
 	</lang>
 	<lang>
 		<langcode>sk</langcode>

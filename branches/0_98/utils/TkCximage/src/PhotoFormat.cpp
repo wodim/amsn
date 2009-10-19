@@ -377,40 +377,46 @@ int DataWrite (Tcl_Interp *interp, int Type, Tk_PhotoImageBlock *blockPtr) {
 
 #if ANIMATE_GIFS
 void AnimateGif(ClientData data) {
-	GifInfo *Info = (GifInfo *)data;
+    GifInfo *Info = (GifInfo *)data;
 
-	if (Info) { //Info is valid
-		Tk_ImageMaster master = (Tk_ImageMaster) *((void **) Info->Handle);
-		if(master == Info->ImageMaster) {
-		//Image is always the same
-			Info->CurrentFrame++;
-			if(Info->CurrentFrame >= Info->NumFrames || Info->image->GetFrame(Info->CurrentFrame) == NULL)
-				Info->CurrentFrame = 0;
-			CxImage *image = Info->image->GetFrame(Info->CurrentFrame);
-			if (image) {
-			  Tk_ImageChanged(Info->ImageMaster, 0, 0, image->GetWidth(), image->GetHeight(), image->GetWidth(), image->GetHeight());
-			  Info->timerToken = NULL;
-			}
-		} else {
-			LOG("Image destroyed, deleting... Image Master was : ");
-			APPENDLOG( master );
-			APPENDLOG(" - ");
-			APPENDLOG( Info->ImageMaster);
+    if (Info) { //Info is valid
+        if (Info->ImageMaster && Info->image) {
+            Tk_ImageMaster master = (Tk_ImageMaster) *((void **) Info->Handle);
+            if (master == Info->ImageMaster) {
+                //Image is always the same
+                Info->CurrentFrame++;
+                if (Info->CurrentFrame >= Info->NumFrames || Info->image->GetFrame(Info->CurrentFrame) == NULL)
+                    Info->CurrentFrame = 0;
+                CxImage *image = Info->image->GetFrame(Info->CurrentFrame);
+                if (image) {
+                    Tk_ImageChanged(Info->ImageMaster, 0, 0, image->GetWidth(), image->GetHeight(), image->GetWidth(), image->GetHeight());
+                    Info->timerToken = NULL;
+                }
+            } else {
+                LOG("Image destroyed, deleting... Image Master was : ");
+                APPENDLOG( master );
+                APPENDLOG(" - ");
+                APPENDLOG( Info->ImageMaster);
 
-			Info->image->DestroyFrames();
-			delete Info->image;
-			LOG("Deleting AnimatedGifInfo");
-			APPENDLOG(Info->Handle);
-			TkCxImage_lstDeleteItem(Info->Handle);
-			for(GifBuffersIterator it=Info->buffers.begin(); it!=Info->buffers.end(); it++){
-				(*it)->Close();
-				delete (*it);
-			}
-			delete Info;
-			Info = NULL;
-		}
-	}
-
+                Info->image->DestroyFrames();
+                delete Info->image;
+                LOG("Deleting AnimatedGifInfo");
+                APPENDLOG(Info->Handle);
+                Tcl_DeleteTimerHandler(Info->timerToken);
+                TkCxImage_lstDeleteItem(Info->Handle);
+                for (GifBuffersIterator it=Info->buffers.begin(); it!=Info->buffers.end(); it++) {
+                    (*it)->Close();
+                    delete (*it);
+                }
+                delete Info;
+                Info = NULL;
+            }
+        } else {
+            Tcl_DeleteTimerHandler(Info->timerToken);
+            delete Info;
+            Info = NULL;
+        }
+    }
 }
 
 void PhotoDisplayProcHook(
@@ -488,7 +494,12 @@ void PhotoDisplayProcHook(
 			}
 			item->CopiedFrame = item->CurrentFrame; //We set the copied frame before to avoid infinite loops
 			AnimatedGifFrameToTk(NULL, item, image, true);
-			item->timerToken = Tcl_CreateTimerHandler(image->GetFrameDelay()?10*image->GetFrameDelay():40, AnimateGif, item);
+			if (item->timerToken) {
+			  Tcl_DeleteTimerHandler(item->timerToken);
+			}
+			if (item->Enabled) {
+			  item->timerToken = Tcl_CreateTimerHandler(image->GetFrameDelay()?10*image->GetFrameDelay():40, AnimateGif, item);
+			}
 			//fprintf(stderr, "Copied frame n°%u\n",item->CopiedFrame);
 		}
 	}

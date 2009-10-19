@@ -790,13 +790,13 @@ proc save_config {} {
 	#Save encripted password
 	if { ([::config::getKey save_password]) && ($password != "")} {
 		set key [string range "${loginback}dummykey" 0 7]
-		binary scan [::DES::des -mode ecb -dir encrypt -key $key "${password}\n"] h* encpass
+		binary scan [::DES::des -mode ecb -dir encrypt -key $key -- "${password}\n"] h* encpass
 		puts $file_id "   <entry>\n      <attribute>encpassword</attribute>\n      <value>$encpass</value>\n   </entry>"
 	}
 
 	#Save encripted remote password
 	set key [string range "${loginback}dummykey" 0 7]
-	binary scan [::DES::des -mode ecb -dir encrypt -key $key "[::config::getKey remotepassword]\n"] h* encpass
+	binary scan [::DES::des -mode ecb -dir encrypt -key $key -- "[::config::getKey remotepassword]\n"] h* encpass
 	puts $file_id "   <entry>\n      <attribute>remotepassword</attribute>\n      <value>$encpass</value>\n   </entry>\n"
 
 	#Save custom emoticons
@@ -929,7 +929,7 @@ proc load_config {} {
 		set key [string range "[::config::getKey login]dummykey" 0 7]
 		set password [::config::getKey encpassword]
 		catch {set encpass [binary format h* [::config::getKey encpassword]]}
-		catch {set password [::DES::des -mode ecb -dir decrypt -key $key $encpass]}
+		catch {set password [::DES::des -mode ecb -dir decrypt -key $key -- $encpass]}
 		#puts "Password length is: [string first "\n" $password]\n"
 		set password [string range $password 0 [expr { [string first "\n" $password] -1 }]]
 		#puts "Password is: $password\nHi\n"
@@ -940,7 +940,7 @@ proc load_config {} {
 	if {[::config::getKey remotepassword]!=""} {
 		set key [string range "[::config::getKey login]dummykey" 0 7]
 		catch {set encpass [binary format h* [::config::getKey remotepassword]]}
-		catch {::config::setKey remotepassword [::DES::des -mode ecb -dir decrypt -key $key $encpass]}
+		catch {::config::setKey remotepassword [::DES::des -mode ecb -dir decrypt -key $key -- $encpass]}
 		#puts "Password length is: [string first "\n" [::config::getKey remotepassword]]\n"
 		::config::setKey remotepassword [string range [::config::getKey remotepassword] 0 [expr { [string first "\n" [::config::getKey remotepassword]] -1 }]]
 		#puts "Password is: [::config::getKey remotepassword]\nHi\n"
@@ -1414,10 +1414,10 @@ proc SwitchToDefaultProfile { } {
 	::config::setKey log_event_psm 0
 	::config::setKey displaypic "amsn.png"
 
-	foreach file [glob -type f [file join $::HOME2 displaypic *]] {
+	foreach file [glob -nocomplain -type f [file join $::HOME2 displaypic *]] {
 		catch {file delete $file}
 	}
-	foreach file [glob -type f [file join $::HOME2 displaypic cache *]] {
+	foreach file [glob -nocomplain -type f [file join $::HOME2 displaypic cache *]] {
 		catch {file delete $file}
 	}
 }
@@ -1657,17 +1657,17 @@ proc CheckLock { email } {
 	set Port [LoginList getlock 0 $email]
 	status_log "CheckLock: LoginList getlock called. Lock=$Port\n" blue
 	if { $Port != 0 } {
-		if { [OnWinVista] || [catch {socket -server phony $Port} newlockSock] != 0 } {
+		if { [catch {socket -server phony $Port} newlockSock] != 0 } {
 			#status_log "CheckLock Port is already in use: $newlockSock\n" red
 			# port is taken, let's make sure it's a profile lock
 			foreach {local_host} [list localhost [info hostname] 127.0.0.1] {
 				if {[catch {socket $local_host $Port} clientSock] == 0 } {
 					status_log "CheckLock: Can connect to port. Sending PING\n" blue
 					fileevent $clientSock readable "lockcltHdl $clientSock"
-					fconfigure $clientSock -buffering line
+					fconfigure $clientSock -buffering line -blocking 0
 					puts $clientSock "AMSN_LOCK_PING"
-					after 5000 [list set response failed]
-					vwait response
+					after 200 [list set response failed]
+					tkwait variable response
 
 					if { $response == "AMSN_LOCK_PONG" } {
 						status_log "CheckLock: Got PONG response\n" green
@@ -1732,12 +1732,8 @@ proc LockProfile { email } {
 	while { $tries < 6 } {
 		set Port [GetRandomProfilePort]
 		status_log "LockProfile: Got random port $Port\n" blue
-		if { [::config::getKey enableremote] == 1 } {
-			set cmd "socket -server lockSvrNew $Port"
-		} else {
-			set cmd "socket -myaddr 127.0.0.1 -server lockSvrNew $Port"
-		}
-		if { [catch {eval $cmd} newlockSock] == 0  } {
+
+		if { [catch {socket -server lockSvrNew $Port} newlockSock] == 0  } {
 			LoginList changelock 0 $email $Port
 			set lockSock $newlockSock
 			break
@@ -1758,10 +1754,10 @@ proc LockProfile { email } {
 proc lockSvrNew { sock addr port} {
 	status_log "lockSvrNew: Accepting connection on port $port\n" blue
 
-#	if { $addr == "127.0.0.1" } {
+	if {[::config::getKey enableremote] || $addr == "127.0.0.1" } {
 		fileevent $sock readable "lockSvrHdl $addr $sock"
 		fconfigure $sock -buffering line
-#	}
+	}
 }
 
 proc lockSvrHdl { addr sock } {

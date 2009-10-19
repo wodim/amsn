@@ -64,8 +64,8 @@ if { $initialize_amsn == 1 } {
 	::skin::setKey tab_text_x 5
 	::skin::setKey tab_text_y 5
 	::skin::setKey tab_text_width 80
-	::skin::setKey tab_close_x 85
-	::skin::setKey tab_close_y 5
+	::skin::setKey tab_close_x 100
+	::skin::setKey tab_close_y 10
 	::skin::setKey chat_tabbar_padx 0
 	::skin::setKey chat_tabbar_pady 0
 	::skin::setKey buttonbarbg #eeeeff
@@ -332,7 +332,7 @@ if { $initialize_amsn == 1 } {
 		set urlregexps {
 			{\w+://[\%\/\$\*\~\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
 			{www\.[\%\/\$\*\~\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
-			{[\%\/\$\*\~\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+\.(?:org|com|net)}
+			{(?:[\%\/\$\*\~\,\!\'\#\@\+\-\=\?\;\:\^\&\_[:alnum:]]+\.)+(?:org|com|net)(?:/[\%\/\$\*\~\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]*)*(?=\y)}
 			{spotify:(?:track|album|artist|search|playlist|user|radio):[^<>\s]+}
 		}
 	}
@@ -2837,8 +2837,10 @@ namespace eval ::amsn {
 		set userlist [list]
 
 		foreach user_login [::MSN::sortedContactList] {
-			if { [lsearch [::abook::getContactData $user_login lists] "EL"] != -1 } {
-				continue
+			if {!$show_nonim} {
+				if { [lsearch [::abook::getContactData $user_login lists] "EL"] != -1 } {
+					continue
+				}
 			}
 			set user_state_code [::abook::getVolatileData $user_login state FLN]
 			if { $user_state_code == "NLN" } {
@@ -2848,10 +2850,6 @@ namespace eval ::amsn {
 			}
 		}
 
-		if {$show_nonim} {
-		# TODO
-		#	lappend userlist [list "[::abook::getDisplayNick $user_login] ($user_login)" $user_login]
-		}
 		::amsn::listChoose $title $userlist $command 1 1
 	}
 
@@ -2993,22 +2991,19 @@ namespace eval ::amsn {
 		}
 	}
 
-	proc listChoose {title itemlist command {other 0} {skip 1}} {
-		global userchoose_req
+	proc listChoose {title itemlist command {other 0} {skip 1} {contacts 1}} {
+		variable itemlist_var
+		variable listChoose_contacts
+		variable original_itemlist
+
 		set itemcount [llength $itemlist]
-		variable itemlist_var $itemlist
-		
 		#If just 1 user, and $skip flag set to one, just run command on that user
 		if { $itemcount == 1 && $skip == 1 && $other == 0} {
 			eval $command [lindex [lindex $itemlist 0] 1]
 			return 0
 		}
 
-		if { [focus] == ""  || [focus] =="." } {
-			set w "._listchoose"
-		} else {
-			set w "[focus]._listchoose"
-		}
+		set w "._listchoose"
 		
 		if { [catch {toplevel $w -borderwidth 0 -highlightthickness 0 } res ] } {
 			raise $w
@@ -3017,6 +3012,10 @@ namespace eval ::amsn {
 		} else {
 			set wname $res
 		}
+
+		set itemlist_var $itemlist
+		set listChoose_contacts $contacts
+		catch {unset original_itemlist}
 
 		wm title $w $title
 		
@@ -3044,7 +3043,7 @@ namespace eval ::amsn {
 		pack $canv.ca -side left -fill both -expand true
 		pack $canv -side top -fill both -expand true
 
-		draw_listChoose $canv.ca $w $itemlist $command
+		draw_listChoose $canv.ca $w $itemlist $command $contacts
 
 		frame $w.buttons
 		button  $w.buttons.ok -text "[trans ok]" -command [list ::amsn::listChooseOk $w "" $command 1]
@@ -3074,7 +3073,7 @@ namespace eval ::amsn {
 			"after cancel [list ::amsn::listChooseSearchBar $w $canv.ca [list $command]]; \
 			after 500 [list ::amsn::listChooseSearchBar $w $canv.ca [list $command]]"
 		bind $w <<Escape>> [list destroy $w]
-		bind $w <Return> [list ::amsn::listChooseOk $w $itemlist $command 0]
+		bind $w <Return> [list ::amsn::listChooseOk $w "" $command 1]
 		
 		if {[OnMac]} {
 			bind $canv.ca <MouseWheel> [list ::amsn::scrollCanvas $canv.ca %W %D]
@@ -3096,24 +3095,34 @@ namespace eval ::amsn {
 	}
 
 
-	proc draw_listChoose { w window itemlist command} {
+	proc draw_listChoose { w window itemlist command contacts} {
 
 		$w dchars list_choose 0 end
 		$w delete list_choose bg un ov bg_selection
 
 		foreach element $itemlist {
-			set user_login [lindex $element 1]
-			set tag $user_login
-			set lst [list ]
-			lappend lst [list tag list_choose]
-			set lst [concat $lst [::abook::getDisplayNick $user_login 1]]
-			set user_state_code [::abook::getVolatileData $user_login state FLN]
-			if { $user_state_code != "NLN" } {
-				lappend lst [list text " ($user_login) - ([trans [::MSN::stateToDescription $user_state_code]])"]
+			if  {$contacts} {
+				set user_login [lindex $element 1]
+				set tag $user_login
+				set lst [list ]
+				lappend lst [list tag list_choose]
+				set lst [concat $lst [::abook::getDisplayNick $user_login 1]]
+				set user_state_code [::abook::getVolatileData $user_login state FLN]
+				if { $user_state_code != "NLN" } {
+					lappend lst [list text " ($user_login) - ([trans [::MSN::stateToDescription $user_state_code]])"]
+				} else {
+					lappend lst [list text " ($user_login)"]
+				}
+				lappend lst [list tag -list_choose]
 			} else {
-				lappend lst [list text " ($user_login)"]
+				set txt [lindex $element 0]
+				set tag [lindex $element 1]
+				set lst [list]
+				lappend lst [list tag list_choose]
+				lappend lst [list text $txt]
+				lappend lst [list tag -list_choose]
+
 			}
-			lappend lst [list tag -list_choose]
 			::guiContactList::renderContact $w $tag 1000 $lst 0
 			$w bind $tag <Button-1> [list ::amsn::listChooseSelect $w $tag]
 			$w bind $tag <Double-Button-1> [list ::amsn::listChooseOk $window $tag $command 0]
@@ -3162,6 +3171,7 @@ namespace eval ::amsn {
 	proc listChooseSearchBar {w wcanv command} {
 		variable itemlist_var
 		variable original_itemlist
+		variable listChoose_contacts
 		
 		if {![info exists original_itemlist]} {
 			set original_itemlist $itemlist_var
@@ -3182,7 +3192,7 @@ namespace eval ::amsn {
 			}
 			set itemlist_var $itemlist_temp
 		}
-		draw_listChoose $wcanv $w $itemlist_var $command
+		draw_listChoose $wcanv $w $itemlist_var $command $listChoose_contacts
 	}
 
 
@@ -3456,11 +3466,16 @@ namespace eval ::amsn {
 				  [string first "/me " $msg] == 0 } {
 				
 				set action "$nick [string range $msg 4 end]"
+				set font [lindex [::config::getGlobalKey basefont] 0]
+				if { $font == "" } { set font "Helvetica"}
+
+				set color 333333; #TODO: needs a skin key for this one
+				set customfont [list $font [list "italic"] $color]
 
 				::amsn::WinWrite $chatid "\n" gray
 				::amsn::WinWriteIcon $chatid greyline 3
 				::amsn::WinWrite $chatid "\n" gray
-				::amsn::WinWrite $chatid $action gray
+				::amsn::WinWrite $chatid $action "custom" $customfont
 				::amsn::WinWrite $chatid "\n" gray
 				::amsn::WinWriteIcon $chatid greyline 3
 				::amsn::WinWrite $chatid "\n" gray
@@ -4096,7 +4111,7 @@ namespace eval ::amsn {
 			#By default tagid=tagname unless we generate a new one
 			set tagid $tagname
 
-			if { $tagid == "user" || $tagid == "yours" || $tagid == "says" } {
+			if { $tagid == "user" || $tagid == "yours" || $tagid == "says" || $tagid == "custom" } {
 
 				if { $tagid == "says" && [::config::getKey strictfonts] == 0 } {
 					set size [lindex [::config::getGlobalKey basefont] 1]
@@ -5551,7 +5566,7 @@ proc show_encodingchoose {} {
 		}
 	}
 	set enclist [linsert $enclist 0 [list "Automatic" auto]]
-	::amsn::listChoose "[trans encoding]" $enclist set_encoding 0 1
+	::amsn::listChoose "[trans encoding]" $enclist set_encoding 0 1 0
 }
 #///////////////////////////////////////////////////////////////////////
 
@@ -7203,7 +7218,14 @@ proc ChangeNameBarEdited {w what} {
 proc change_name_ok {} {
 	set nick_changed 0
 	set psm_changed 0
+	if {![winfo exists .change_name]} {return}
 	set new_name [.change_name.f.nick_entry get]
+	set friendly [.change_name.f.p4c_entry get]
+	if { [::config::getKey protocol] >= 11} {
+		set new_psm [.change_name.f.psm_entry get]
+	}
+	destroy .change_name
+
 	if {$new_name != "" && [::abook::getContactData myself MFN] != $new_name} {
 		if { [string length $new_name] > 130} {
 			set answer [::amsn::messageBox [trans longnick] yesno question [trans confirm]]
@@ -7215,7 +7237,6 @@ proc change_name_ok {} {
 	}
 
 	if { [::config::getKey protocol] >= 11} {
-		set new_psm [.change_name.f.psm_entry get]
 		#TODO: how many chars in a Personal Message?
 		if { [string length $new_psm] > 130} {
 			set answer [::amsn::messageBox [trans longpsm] yesno question [trans confirm]]
@@ -7232,7 +7253,6 @@ proc change_name_ok {} {
 		::MSN::changeName $new_name
 	}
 
-	set friendly [.change_name.f.p4c_entry get]
 	if { [string length $friendly] > 130} {
 		set answer [::amsn::messageBox [trans longp4c [string range $friendly 0 129]] yesno question [trans confirm]]
 		if { $answer == "no" } {
@@ -7240,8 +7260,6 @@ proc change_name_ok {} {
 		}
 	}
 	::config::setKey p4c_name $friendly
-
-	destroy .change_name
 }
 #///////////////////////////////////////////////////////////////////////
 

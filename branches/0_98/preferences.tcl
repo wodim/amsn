@@ -1826,11 +1826,8 @@ proc Preferences { { settings "personal"} } {
 	radiobutton $lfname.4.ymd -text "[trans year]/[trans month]/[trans day]" -value YMD -variable [::config::getVar dateformat]
 	pack $lfname.4.mdy $lfname.4.dmy $lfname.4.ymd -side left -padx 10
 
-	# Systray doesn't exist on Mac
-	if { ![OnMac] } {
-		checkbutton $lfname.5.dock -text "[trans trayicon]" -onvalue 1 -offvalue 0 -variable [::config::getVar use_tray]
-		pack $lfname.5.dock -anchor w -side top -padx 10 -pady 0
-	}
+	checkbutton $lfname.5.dock -text "[trans trayicon]" -onvalue 1 -offvalue 0 -variable [::config::getVar use_tray]
+	pack $lfname.5.dock -anchor w -side top -padx 10 -pady 0
 
 	checkbutton $lfname.5.show_contactdps_in_cl -text "[trans show_contactdps_in_cl]" -onvalue 1 -offvalue 0 -variable [::config::getVar show_contactdps_in_cl]
 	#checkbutton $lfname.5.show_spaces -text "[trans enablespaces]" -onvalue 1 -offvalue 0 -variable [::config::getVar showspaces]
@@ -2339,7 +2336,7 @@ proc Preferences { { settings "personal"} } {
 	pack $lfname.1 -anchor w -side left -padx 0 -pady 5 -expand 0 -fill both
 	
 	#Don't change filemanager and open file manager on Mac OS X
-	if { ![OnMac] } {
+	if { ![OnMac] && ![OnWin] } {
 		label $lfname.1.lbrowser -text "[trans browser] :" -padx 5 -font sboldf
 		entry $lfname.1.browser -width 40 -textvariable [::config::getVar browser]
 		label $lfname.1.lbrowserex -text "[trans browserexample]" -font examplef
@@ -2353,9 +2350,11 @@ proc Preferences { { settings "personal"} } {
 		label $lfname.1.lopenfileex -text "(Gnome: gnome-open \$file) (KDE: kfmclient exec \$file)" -font examplef
 	}
 	
-	label $lfname.1.lmailer -text "[trans mailer] :" -padx 5 -font sboldf
-	entry $lfname.1.mailer -width 40 -textvariable [::config::getVar mailcommand]
-	label $lfname.1.lmailerex -text "[trans mailerexample]" -font examplef
+	if {![OnWin] } {
+		label $lfname.1.lmailer -text "[trans mailer] :" -padx 5 -font sboldf
+		entry $lfname.1.mailer -width 40 -textvariable [::config::getVar mailcommand]
+		label $lfname.1.lmailerex -text "[trans mailerexample]" -font examplef
+	}
 	
 	#aMSN for Mac OS X always use "QuickTimeTCL" (except in Alarms) so don't let mac user choose sound player
 	if { ![OnMac] } {
@@ -2370,9 +2369,6 @@ proc Preferences { { settings "personal"} } {
 		pack $lfname.1.sound.sound -anchor w -side top -padx 10
 		label $lfname.1.sound.lsoundex -text "[trans soundexample]" -font examplef
 		pack $lfname.1.sound.lsoundex -anchor w -side top -padx 10
-		grid $lfname.1.lbrowser -row 1 -column 1 -sticky w
-		grid $lfname.1.browser -row 1 -column 2 -sticky w
-		grid $lfname.1.lbrowserex -row 2 -column 2 -columnspan 1 -sticky w
 
 	}
 	
@@ -2383,7 +2379,11 @@ proc Preferences { { settings "personal"} } {
 		grid $lfname.1.lmailer -row 7 -column 1 -sticky w
 		grid $lfname.1.mailer -row 7 -column 2 -sticky w
 		grid $lfname.1.lmailerex -row 8 -column 2 -columnspan 1 -sticky w
-	} else {
+	} elseif {![OnWin] } {
+		grid $lfname.1.lbrowser -row 1 -column 1 -sticky w
+		grid $lfname.1.browser -row 1 -column 2 -sticky w
+		grid $lfname.1.lbrowserex -row 2 -column 2 -columnspan 1 -sticky w
+
 		grid $lfname.1.lfileman -row 3 -column 1 -sticky w
 		grid $lfname.1.fileman -row 3 -column 2 -sticky w
 		grid $lfname.1.lfilemanex -row 4 -column 2 -columnspan 1 -sticky w
@@ -2395,7 +2395,10 @@ proc Preferences { { settings "personal"} } {
 		grid $lfname.1.lmailer -row 7 -column 1 -sticky w
 		grid $lfname.1.mailer -row 7 -column 2 -sticky w
 		grid $lfname.1.lmailerex -row 8 -column 2 -columnspan 1 -sticky w
-		
+
+	}
+
+	if {![OnMac] } {		
 		grid $lfname.1.lsound -row 9 -column 1 -sticky nw
 		grid $lfname.1.sound -row 9 -column 2 -sticky w
 		#grid $lfname.1.lsoundex -row 10 -column 2 -columnspan 1 -sticky w
