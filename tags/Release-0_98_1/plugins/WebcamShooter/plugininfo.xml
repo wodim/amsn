@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>Cam Shooter</name>
+	<author>Jerome Gagnon-Voyer (mac code), Le Philousophe (lin/win code) and Karel Demeyer (plugin maintainer)</author>
+	<description>With this plugin you can take shoots of your webcam to use as display picture.</description>
+	<description_fr>Avec ce plugin vous pouvez prendre des photos avec votre webcam afin de les utiliser en tant qu'avatar.</description_fr>
+	<description_es>Con este plugin puedes tomar capturas de tu cámara web para usarla como imagen para mostrar.</description_es>
+	<description_de>Mit diesem Plugin können Sie Bilder mit Ihrer Webcam aufnehmen und direkt als Anzeigebild nutzen.</description_de>
+	<description_hu>A plugin segítségével felvételeket készíthetsz a saját webkamerádról, és e felvételeket megjelenítendő képként használhatod.</description_hu>
+	<description_nl>Met deze plug-in kun je foto's maken met je webcam om als schermafbeelding te gebruiken.</description_nl>
+	<amsn_version>0.97</amsn_version>
+	<plugin_version>0.2</plugin_version>
+	<plugin_file>camshoot.tcl</plugin_file>
+	<plugin_namespace>camshoot</plugin_namespace>
+	<init_procedure>Init</init_procedure>
+
+	<cvs_version>9316</cvs_version>
+
+	<lang>
+		<langcode>de</langcode>
+		<version>11531</version>
+	</lang>
+	<lang>
+		<langcode>en</langcode>
+		<version>9316</version>
+	</lang>
+	<lang>
+		<langcode>es</langcode>
+		<version>9676</version>
+	</lang>
+	<lang>
+		<langcode>fi</langcode>
+		<version>6945</version>
+	</lang>
+	<lang>
+		<langcode>fr</langcode>
+		<version>9682</version>
+	</lang>
+	<lang>
+		<langcode>hu</langcode>
+		<version>8921</version>
+	</lang>
+	<lang>
+		<langcode>it</langcode>
+		<version>7652</version>
+	</lang>
+	<lang>
+		<langcode>ja</langcode>
+		<version>11067</version>
+	</lang>
+	<lang>
+		<langcode>lt</langcode>
+		<version>10407</version>
+	</lang>
+	<lang>
+		<langcode>nl</langcode>
+		<version>5519</version>
+	</lang>
+	<lang>
+		<langcode>no</langcode>
+		<version>11209</version>
+	</lang>
+	<lang>
+		<langcode>pt_BR</langcode>
+		<version>7285</version>
+	</lang>
+	<lang>
+		<langcode>sv</langcode>
+		<version>7016</version>
+	</lang>
+	<lang>
+		<langcode>tr</langcode>
+		<version>11019</version>
+	</lang>
+
+	<URL>
+		<main>http://www.amsn-project.net/autoupdater/plugins2/WebcamShooter/camshoot.tcl</main>
+		<plugininfo>http://www.amsn-project.net/autoupdater/plugins2/WebcamShooter/plugininfo.xml</plugininfo>
+		<lang>http://www.amsn-project.net/autoupdater/plugins2/WebcamShooter/lang/lang$langcode</lang>
+		<file>http://www.amsn-project.net/autoupdater/plugins2/WebcamShooter/$file</file>
+	</URL>
+
+</plugin>
