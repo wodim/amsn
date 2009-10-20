@@ -451,24 +451,22 @@ AC_CHECK_PROG(HAVE_PKGCONFIG, pkg-config, yes, no)
 
 dnl Give error and exit if we don't have pkgconfig
 if test "x$HAVE_PKGCONFIG" = "xyes"; then
-  PKG_CHECK_MODULES(GLIB, \
-    glib-2.0 >= 2.14,
-    HAVE_GLIB=yes,HAVE_GLIB=no)
+  PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.14], HAVE_GLIB=yes,HAVE_GLIB=no)
 
   dnl Give error and exit if we don't have gstreamer
   if test "x$HAVE_GLIB" = "xyes"; then
-    PKG_CHECK_MODULES(GST, \
-      gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED,
+    PKG_CHECK_MODULES([GST],
+      [gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED],
       HAVE_GST=yes,HAVE_GST=no)
 
-    PKG_CHECK_MODULES(GST_INTERFACES, \
-      gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED,
+    PKG_CHECK_MODULES([GST_INTERFACES],
+      [gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED],
       HAVE_GST_INTERFACES=yes,HAVE_GST_INTERFACES=no)
 
     dnl Give error and exit if we don't have gstreamer
     if test "x$HAVE_GST" = "xyes"; then
-         PKG_CHECK_MODULES(FARSIGHT2, \
-             farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED,
+         PKG_CHECK_MODULES([FARSIGHT2],
+             [farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED],
             HAVE_FARSIGHT=yes,HAVE_FARSIGHT=no)
     fi
   fi
@@ -485,8 +483,8 @@ if test "x$HAVE_PKGCONFIG" = "xyes"; then
   HAVE_LIBV4L=no
   if test "x$WANT_V4L" != "xno"; then
     dnl Use libv4l if we have it
-    PKG_CHECK_MODULES(LIBV4L, \
-      libv4l2 >= 0.5.0,
+    PKG_CHECK_MODULES([LIBV4L],
+      [libv4l2 >= 0.5.0],
       HAVE_LIBV4L=yes,HAVE_LIBV4L=no)
   fi
   AC_SUBST(HAVE_LIBV4L)

@@ -591,14 +591,21 @@ ac_includes_default="\
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 HAVE_FARSIGHT
+HAVE_GUPNP
+GUPNP_LIBS
+GUPNP_CFLAGS
+HAVE_LIBV4L
+LIBV4L_LIBS
+LIBV4L_CFLAGS
 FARSIGHT2_LIBS
 FARSIGHT2_CFLAGS
 GST_INTERFACES_LIBS
 GST_INTERFACES_CFLAGS
 GST_LIBS
 GST_CFLAGS
-HAVE_GUPNP
-HAVE_LIBV4L
+GLIB_LIBS
+GLIB_CFLAGS
+PKG_CONFIG
 HAVE_PKGCONFIG
 USE_MMX
 LIBPTHREAD
@@ -708,7 +715,20 @@ CXX
 CXXFLAGS
 CCC
 XMKMF
-CPP'
+CPP
+PKG_CONFIG
+GLIB_CFLAGS
+GLIB_LIBS
+GST_CFLAGS
+GST_LIBS
+GST_INTERFACES_CFLAGS
+GST_INTERFACES_LIBS
+FARSIGHT2_CFLAGS
+FARSIGHT2_LIBS
+LIBV4L_CFLAGS
+LIBV4L_LIBS
+GUPNP_CFLAGS
+GUPNP_LIBS'
 
 
 # Initialize some variables set by options.
@@ -1346,6 +1366,25 @@ Some influential environment variables:
   CXXFLAGS    C++ compiler flags
   XMKMF       Path to xmkmf, Makefile generator for X Window System
   CPP         C preprocessor
+  PKG_CONFIG  path to pkg-config utility
+  GLIB_CFLAGS C compiler flags for GLIB, overriding pkg-config
+  GLIB_LIBS   linker flags for GLIB, overriding pkg-config
+  GST_CFLAGS  C compiler flags for GST, overriding pkg-config
+  GST_LIBS    linker flags for GST, overriding pkg-config
+  GST_INTERFACES_CFLAGS
+              C compiler flags for GST_INTERFACES, overriding pkg-config
+  GST_INTERFACES_LIBS
+              linker flags for GST_INTERFACES, overriding pkg-config
+  FARSIGHT2_CFLAGS
+              C compiler flags for FARSIGHT2, overriding pkg-config
+  FARSIGHT2_LIBS
+              linker flags for FARSIGHT2, overriding pkg-config
+  LIBV4L_CFLAGS
+              C compiler flags for LIBV4L, overriding pkg-config
+  LIBV4L_LIBS linker flags for LIBV4L, overriding pkg-config
+  GUPNP_CFLAGS
+              C compiler flags for GUPNP, overriding pkg-config
+  GUPNP_LIBS  linker flags for GUPNP, overriding pkg-config
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -5088,23 +5127,411 @@ fi
 
 
 if test "x$HAVE_PKGCONFIG" = "xyes"; then
-  PKG_CHECK_MODULES(GLIB, \
-    glib-2.0 >= 2.14,
-    HAVE_GLIB=yes,HAVE_GLIB=no)
+
+
+if test "x$ac_cv_env_PKG_CONFIG_set" != "xset"; then
+	if test -n "$ac_tool_prefix"; then
+  # Extract the first word of "${ac_tool_prefix}pkg-config", so it can be a program name with args.
+set dummy ${ac_tool_prefix}pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_PKG_CONFIG+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_PKG_CONFIG="$PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+PKG_CONFIG=$ac_cv_path_PKG_CONFIG
+if test -n "$PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PKG_CONFIG" >&5
+$as_echo "$PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+fi
+if test -z "$ac_cv_path_PKG_CONFIG"; then
+  ac_pt_PKG_CONFIG=$PKG_CONFIG
+  # Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if test "${ac_cv_path_ac_pt_PKG_CONFIG+set}" = set; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $ac_pt_PKG_CONFIG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_ac_pt_PKG_CONFIG="$ac_pt_PKG_CONFIG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if { test -f "$as_dir/$ac_word$ac_exec_ext" && $as_test_x "$as_dir/$ac_word$ac_exec_ext"; }; then
+    ac_cv_path_ac_pt_PKG_CONFIG="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+ac_pt_PKG_CONFIG=$ac_cv_path_ac_pt_PKG_CONFIG
+if test -n "$ac_pt_PKG_CONFIG"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_pt_PKG_CONFIG" >&5
+$as_echo "$ac_pt_PKG_CONFIG" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+  if test "x$ac_pt_PKG_CONFIG" = x; then
+    PKG_CONFIG=""
+  else
+    case $cross_compiling:$ac_tool_warned in
+yes:)
+{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: using cross tools not prefixed with host triplet" >&5
+$as_echo "$as_me: WARNING: using cross tools not prefixed with host triplet" >&2;}
+ac_tool_warned=yes ;;
+esac
+    PKG_CONFIG=$ac_pt_PKG_CONFIG
+  fi
+else
+  PKG_CONFIG="$ac_cv_path_PKG_CONFIG"
+fi
+
+fi
+if test -n "$PKG_CONFIG"; then
+	_pkg_min_version=0.9.0
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config is at least version $_pkg_min_version" >&5
+$as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
+	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	else
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+		PKG_CONFIG=""
+	fi
+
+fi
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GLIB" >&5
+$as_echo_n "checking for GLIB... " >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GLIB_CFLAGS"; then
+        pkg_cv_GLIB_CFLAGS="$GLIB_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glib-2.0 >= 2.14\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "glib-2.0 >= 2.14") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GLIB_CFLAGS=`$PKG_CONFIG --cflags "glib-2.0 >= 2.14" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GLIB_LIBS"; then
+        pkg_cv_GLIB_LIBS="$GLIB_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glib-2.0 >= 2.14\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "glib-2.0 >= 2.14") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GLIB_LIBS=`$PKG_CONFIG --libs "glib-2.0 >= 2.14" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "glib-2.0 >= 2.14"`
+        else
+	        GLIB_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "glib-2.0 >= 2.14"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GLIB_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                HAVE_GLIB=no
+elif test $pkg_failed = untried; then
+	HAVE_GLIB=no
+else
+	GLIB_CFLAGS=$pkg_cv_GLIB_CFLAGS
+	GLIB_LIBS=$pkg_cv_GLIB_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	HAVE_GLIB=yes
+fi
 
     if test "x$HAVE_GLIB" = "xyes"; then
-    PKG_CHECK_MODULES(GST, \
-      gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED,
-      HAVE_GST=yes,HAVE_GST=no)
 
-    PKG_CHECK_MODULES(GST_INTERFACES, \
-      gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED,
-      HAVE_GST_INTERFACES=yes,HAVE_GST_INTERFACES=no)
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GST" >&5
+$as_echo_n "checking for GST... " >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GST_CFLAGS"; then
+        pkg_cv_GST_CFLAGS="$GST_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GST_CFLAGS=`$PKG_CONFIG --cflags "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GST_LIBS"; then
+        pkg_cv_GST_LIBS="$GST_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GST_LIBS=`$PKG_CONFIG --libs "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GST_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED"`
+        else
+	        GST_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GST_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                HAVE_GST=no
+elif test $pkg_failed = untried; then
+	HAVE_GST=no
+else
+	GST_CFLAGS=$pkg_cv_GST_CFLAGS
+	GST_LIBS=$pkg_cv_GST_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	HAVE_GST=yes
+fi
+
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GST_INTERFACES" >&5
+$as_echo_n "checking for GST_INTERFACES... " >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GST_INTERFACES_CFLAGS"; then
+        pkg_cv_GST_INTERFACES_CFLAGS="$GST_INTERFACES_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-interfaces-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GST_INTERFACES_CFLAGS=`$PKG_CONFIG --cflags "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GST_INTERFACES_LIBS"; then
+        pkg_cv_GST_INTERFACES_LIBS="$GST_INTERFACES_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-interfaces-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GST_INTERFACES_LIBS=`$PKG_CONFIG --libs "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GST_INTERFACES_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED"`
+        else
+	        GST_INTERFACES_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GST_INTERFACES_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                HAVE_GST_INTERFACES=no
+elif test $pkg_failed = untried; then
+	HAVE_GST_INTERFACES=no
+else
+	GST_INTERFACES_CFLAGS=$pkg_cv_GST_INTERFACES_CFLAGS
+	GST_INTERFACES_LIBS=$pkg_cv_GST_INTERFACES_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	HAVE_GST_INTERFACES=yes
+fi
 
         if test "x$HAVE_GST" = "xyes"; then
-         PKG_CHECK_MODULES(FARSIGHT2, \
-             farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED,
-            HAVE_FARSIGHT=yes,HAVE_FARSIGHT=no)
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for FARSIGHT2" >&5
+$as_echo_n "checking for FARSIGHT2... " >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$FARSIGHT2_CFLAGS"; then
+        pkg_cv_FARSIGHT2_CFLAGS="$FARSIGHT2_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"farsight2-\$GST_MAJORMINOR >= \$FARSIGHT_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_FARSIGHT2_CFLAGS=`$PKG_CONFIG --cflags "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$FARSIGHT2_LIBS"; then
+        pkg_cv_FARSIGHT2_LIBS="$FARSIGHT2_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"farsight2-\$GST_MAJORMINOR >= \$FARSIGHT_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_FARSIGHT2_LIBS=`$PKG_CONFIG --libs "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        FARSIGHT2_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED"`
+        else
+	        FARSIGHT2_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$FARSIGHT2_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                HAVE_FARSIGHT=no
+elif test $pkg_failed = untried; then
+	HAVE_FARSIGHT=no
+else
+	FARSIGHT2_CFLAGS=$pkg_cv_FARSIGHT2_CFLAGS
+	FARSIGHT2_LIBS=$pkg_cv_FARSIGHT2_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	HAVE_FARSIGHT=yes
+fi
     fi
   fi
 
@@ -5122,9 +5549,77 @@ fi
 
   HAVE_LIBV4L=no
   if test "x$WANT_V4L" != "xno"; then
-        PKG_CHECK_MODULES(LIBV4L, \
-      libv4l2 >= 0.5.0,
-      HAVE_LIBV4L=yes,HAVE_LIBV4L=no)
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for LIBV4L" >&5
+$as_echo_n "checking for LIBV4L... " >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBV4L_CFLAGS"; then
+        pkg_cv_LIBV4L_CFLAGS="$LIBV4L_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libv4l2 >= 0.5.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libv4l2 >= 0.5.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_LIBV4L_CFLAGS=`$PKG_CONFIG --cflags "libv4l2 >= 0.5.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$LIBV4L_LIBS"; then
+        pkg_cv_LIBV4L_LIBS="$LIBV4L_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libv4l2 >= 0.5.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libv4l2 >= 0.5.0") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_LIBV4L_LIBS=`$PKG_CONFIG --libs "libv4l2 >= 0.5.0" 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        LIBV4L_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libv4l2 >= 0.5.0"`
+        else
+	        LIBV4L_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libv4l2 >= 0.5.0"`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$LIBV4L_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                HAVE_LIBV4L=no
+elif test $pkg_failed = untried; then
+	HAVE_LIBV4L=no
+else
+	LIBV4L_CFLAGS=$pkg_cv_LIBV4L_CFLAGS
+	LIBV4L_LIBS=$pkg_cv_LIBV4L_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	HAVE_LIBV4L=yes
+fi
   fi
 
 
@@ -5141,9 +5636,77 @@ fi
 
   HAVE_GUPNP=no
   if test "x$WANT_UPNP" != "xno"; then
-    PKG_CHECK_MODULES(GUPNP,  gupnp-igd-1.0 ,
-       HAVE_GUPNP=yes ,
-       HAVE_GUPNP=no )
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for GUPNP" >&5
+$as_echo_n "checking for GUPNP... " >&6; }
+
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GUPNP_CFLAGS"; then
+        pkg_cv_GUPNP_CFLAGS="$GUPNP_CFLAGS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \" gupnp-igd-1.0 \""; } >&5
+  ($PKG_CONFIG --exists --print-errors " gupnp-igd-1.0 ") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GUPNP_CFLAGS=`$PKG_CONFIG --cflags " gupnp-igd-1.0 " 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+if test -n "$PKG_CONFIG"; then
+    if test -n "$GUPNP_LIBS"; then
+        pkg_cv_GUPNP_LIBS="$GUPNP_LIBS"
+    else
+        if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \" gupnp-igd-1.0 \""; } >&5
+  ($PKG_CONFIG --exists --print-errors " gupnp-igd-1.0 ") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_GUPNP_LIBS=`$PKG_CONFIG --libs " gupnp-igd-1.0 " 2>/dev/null`
+else
+  pkg_failed=yes
+fi
+    fi
+else
+	pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        GUPNP_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors " gupnp-igd-1.0 "`
+        else
+	        GUPNP_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors " gupnp-igd-1.0 "`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$GUPNP_PKG_ERRORS" >&5
+
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+                 HAVE_GUPNP=no
+elif test $pkg_failed = untried; then
+	 HAVE_GUPNP=no
+else
+	GUPNP_CFLAGS=$pkg_cv_GUPNP_CFLAGS
+	GUPNP_LIBS=$pkg_cv_GUPNP_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+	 HAVE_GUPNP=yes
+fi
   fi
 
 
