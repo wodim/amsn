@@ -263,7 +263,7 @@
 		<langcode>sl</langcode>
 		<name>Slovenian (slovenščina)</name>
 		<version>1.43</version>
-		<encoding>iso8859-2</encoding>
+		<encoding>utf-8</encoding>
 	</lang>
 	<lang>
 		<langcode>af</langcode>
