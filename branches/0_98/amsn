@@ -97,9 +97,9 @@ wm state . withdrawn
 #	0.98b (after rc1)	0.97.91.svn
 #	0.98				0.98
 
-set version "0.98.1"
-set rcversion "0.98.01"
-set date "10/19/2009"
+set version "0.99b"
+set rcversion "0.98.90.svn"
+set date "08/25/2009"
 set weburl "http://www.amsn-project.net"
 set program_dir "."
 set HOME ""
@@ -392,13 +392,13 @@ if { $argv != "" && [LoginList exists 0 $argv] } {
    after idle [list auto_login_argv $argv] 
 } else {
    if { [::config::getKey autoconnect] == 1 && [::config::getKey save_password] == 1} {
-     	::MSN::connect
+     	after idle "::MSN::connect"
    }
 }
 
 
 if { [::config::getKey autocheckver] == 1 } {
-    set new [::autoupdate::check_version_silent]
+    after idle [list ::autoupdate::check_version_silent]
 }
 
 

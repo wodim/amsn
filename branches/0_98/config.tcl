@@ -56,13 +56,19 @@ namespace eval ::config {
 
 		::config::setKey playbackspeed 100
 
-		::config::setKey cam_in_cw 0
+		if {[OnMaemo]} {
+			::config::setKey cam_in_cw 1
+		} else {
+			::config::setKey cam_in_cw 0
+		}
 
 		::config::setKey protocoloverride 0
 
 		#Dir for received files
 		if { [OnDarwin] } {
 		        ::config::setKey receiveddir "[file join $::env(HOME) Desktop]"
+		} elseif { [OnMaemo] } {
+			::config::setKey receiveddir "[file join $::env(HOME) MyDocs amsn_received]"
 		} elseif { [OnUnix] } {
 			::config::setKey receiveddir "[file join $::env(HOME) amsn_received]"
 		} elseif { [OnWin] } {
@@ -86,6 +92,16 @@ namespace eval ::config {
 			::config::setKey usesnack 0
 
 			::config::setKey os "mac"
+		} elseif { [OnMaemo] } {
+			::config::setKey soundcommand "play-sound \$sound"
+			::config::setKey browser "dbus-send --system --type=method_call --dest=com.nokia.osso_browser /com/nokia/osso_browser com.nokia.osso_browser.load_url \"string:\$url\""
+			::config::setKey notifyXoffset 0
+			::config::setKey notifyYoffset 100
+			::config::setKey filemanager "xdg-open \$location"
+			::config::setKey openfilecommand "xdg-open \$file"
+			::config::setKey usesnack 0
+
+			::config::setKey os "unix"
 		} elseif { [OnUnix] } {
 			::config::setKey soundcommand "play \$sound"
 			::config::setKey browser "xdg-open \$url"
@@ -250,7 +266,11 @@ namespace eval ::config {
 		::config::setKey startontray 0		;#Start amsn on tray icon only (hide contact list)
 		::config::setKey storename 1			;#Store original nick in a variable when go to custom states to revert it when go back
 		::config::setKey strictfonts 0		;#Use strict fonts' size in _ALL_ AMSN's fonts (Disabled by default)
-		::config::setKey sngdblclick 0		;#Use single or double click to open a message window (0 double, 1 single)
+		if {[OnMaemo] } {
+			::config::setKey sngdblclick 1		;#Use single or double click to open a message window (0 double, 1 single)
+		} else {
+			::config::setKey sngdblclick 0		;#Use single or double click to open a message window (0 double, 1 single)
+		}
 		::config::setKey nogap 0			;#Remove the empty line between groups
 		::config::setKey removeempty 0		;#Remove empty groups from the contact list
 		::config::setKey tabtitlenick 1		;#Whether nick or mail is displayed in the tab
@@ -324,7 +344,7 @@ namespace eval ::config {
 		::config::setKey ABPreferredHost "byrdr.omega.contacts.msn.com"
 		
 		::config::setKey hide_users_in_cw 1	;#in a multichat don't show users in the topcw
-
+		::config::setKey show_not_in_list 1     ;# Show the 'not in list' icon/emblem
 
 		# Farsight config
                 ::config::setKey fsaudiosrc ""
@@ -373,6 +393,7 @@ namespace eval ::config {
 			[list local big_incoming_smileys bool noresizesmileys] \
 			[list local old_dpframe bool showonedpframe] \
 			[list local contentroaming bool contentroamingsetting] \
+			[list local show_not_in_list bool shownotinlist] \
 			[list title notifyoffset] \
 			[list local notifyXoffset int xoffset] \
 			[list local notifyYoffset int yoffset] \

@@ -1291,7 +1291,7 @@ namespace eval ::amsn {
 			WinWriteIcon $chatid greyline 3
 		}
 
-		if { [::config::getKey ftautoaccept] == 1 || [::abook::getContactData $dest autoacceptft] == 1 } {
+		if { [::config::getKey ftautoaccept] == 1 || [::abook::getContactData $fromlogin autoacceptft] == 1 } {
 			WinWrite $chatid "\n[trans autoaccepted]" green
 			::amsn::AcceptFT $chatid $cookie
 		}
@@ -7590,7 +7590,9 @@ proc msg_box {msg} { ::amsn::infoMsg "$msg" }
 # launch_browser(url)
 # Launches the configured browser
 proc launch_browser { url {local 0}} {
-	if { ![regexp ^\[\[:alnum:\]\]+:// $url] && $local != 1 } {
+	if { $local != 1 &&
+	     ![regexp ^\[\[:alnum:\]\]+:// $url] &&
+	     ![regexp ^spotify: $url]} {
 		set url "http://$url"
 	}
 
@@ -8404,7 +8406,7 @@ proc load_my_pic { } {
 			load_my_smaller_pic
 		} else {
 			# Image corrupted on disk
-			image delete $dpfilename
+			catch {image delete $dpfilename}
 			::config::setKey displaypic nopic.gif 
 		}
 	} else {

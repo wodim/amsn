@@ -2207,9 +2207,9 @@ ac_config_headers="$ac_config_headers utils/linux/capture/config.h"
 
 
 APPNAME=amsn
-APPVERSION=0.98.1
+APPVERSION=0.99b
 APPRELEASE=1
-APPSTABLE=yes
+APPSTABLE=no
 
 
 
@@ -5253,12 +5253,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_GLIB_CFLAGS="$GLIB_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glib-2.0 >= 2.14\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "glib-2.0 >= 2.14") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+    glib-2.0 >= 2.14\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+    glib-2.0 >= 2.14") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GLIB_CFLAGS=`$PKG_CONFIG --cflags "glib-2.0 >= 2.14" 2>/dev/null`
+  pkg_cv_GLIB_CFLAGS=`$PKG_CONFIG --cflags "\
+    glib-2.0 >= 2.14" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5271,12 +5274,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_GLIB_LIBS="$GLIB_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"glib-2.0 >= 2.14\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "glib-2.0 >= 2.14") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+    glib-2.0 >= 2.14\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+    glib-2.0 >= 2.14") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GLIB_LIBS=`$PKG_CONFIG --libs "glib-2.0 >= 2.14" 2>/dev/null`
+  pkg_cv_GLIB_LIBS=`$PKG_CONFIG --libs "\
+    glib-2.0 >= 2.14" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5295,9 +5301,11 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "glib-2.0 >= 2.14"`
+	        GLIB_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "\
+    glib-2.0 >= 2.14"`
         else
-	        GLIB_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "glib-2.0 >= 2.14"`
+	        GLIB_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "\
+    glib-2.0 >= 2.14"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GLIB_PKG_ERRORS" >&5
@@ -5326,12 +5334,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_GST_CFLAGS="$GST_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+      gstreamer-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+      gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GST_CFLAGS=`$PKG_CONFIG --cflags "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
+  pkg_cv_GST_CFLAGS=`$PKG_CONFIG --cflags "\
+      gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5344,12 +5355,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_GST_LIBS="$GST_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+      gstreamer-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+      gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GST_LIBS=`$PKG_CONFIG --libs "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
+  pkg_cv_GST_LIBS=`$PKG_CONFIG --libs "\
+      gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5368,9 +5382,11 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GST_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED"`
+	        GST_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "\
+      gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED"`
         else
-	        GST_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED"`
+	        GST_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "\
+      gstreamer-$GST_MAJORMINOR >= $GST_REQUIRED"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GST_PKG_ERRORS" >&5
@@ -5398,12 +5414,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_GST_INTERFACES_CFLAGS="$GST_INTERFACES_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-interfaces-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+      gstreamer-interfaces-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+      gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GST_INTERFACES_CFLAGS=`$PKG_CONFIG --cflags "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
+  pkg_cv_GST_INTERFACES_CFLAGS=`$PKG_CONFIG --cflags "\
+      gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5416,12 +5435,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_GST_INTERFACES_LIBS="$GST_INTERFACES_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"gstreamer-interfaces-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+      gstreamer-interfaces-\$GST_MAJORMINOR >= \$GST_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+      gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_GST_INTERFACES_LIBS=`$PKG_CONFIG --libs "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
+  pkg_cv_GST_INTERFACES_LIBS=`$PKG_CONFIG --libs "\
+      gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5440,9 +5462,11 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        GST_INTERFACES_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED"`
+	        GST_INTERFACES_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "\
+      gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED"`
         else
-	        GST_INTERFACES_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED"`
+	        GST_INTERFACES_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "\
+      gstreamer-interfaces-$GST_MAJORMINOR >= $GST_REQUIRED"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$GST_INTERFACES_PKG_ERRORS" >&5
@@ -5471,12 +5495,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_FARSIGHT2_CFLAGS="$FARSIGHT2_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"farsight2-\$GST_MAJORMINOR >= \$FARSIGHT_REQUIRED\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+             farsight2-\$GST_MAJORMINOR >= \$FARSIGHT_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+             farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_FARSIGHT2_CFLAGS=`$PKG_CONFIG --cflags "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED" 2>/dev/null`
+  pkg_cv_FARSIGHT2_CFLAGS=`$PKG_CONFIG --cflags "\
+             farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5489,12 +5516,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_FARSIGHT2_LIBS="$FARSIGHT2_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"farsight2-\$GST_MAJORMINOR >= \$FARSIGHT_REQUIRED\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+             farsight2-\$GST_MAJORMINOR >= \$FARSIGHT_REQUIRED\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+             farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_FARSIGHT2_LIBS=`$PKG_CONFIG --libs "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED" 2>/dev/null`
+  pkg_cv_FARSIGHT2_LIBS=`$PKG_CONFIG --libs "\
+             farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5513,9 +5543,11 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        FARSIGHT2_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED"`
+	        FARSIGHT2_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "\
+             farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED"`
         else
-	        FARSIGHT2_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED"`
+	        FARSIGHT2_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "\
+             farsight2-$GST_MAJORMINOR >= $FARSIGHT_REQUIRED"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$FARSIGHT2_PKG_ERRORS" >&5
@@ -5559,12 +5591,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_LIBV4L_CFLAGS="$LIBV4L_CFLAGS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libv4l2 >= 0.5.0\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "libv4l2 >= 0.5.0") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+      libv4l2 >= 0.5.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+      libv4l2 >= 0.5.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_LIBV4L_CFLAGS=`$PKG_CONFIG --cflags "libv4l2 >= 0.5.0" 2>/dev/null`
+  pkg_cv_LIBV4L_CFLAGS=`$PKG_CONFIG --cflags "\
+      libv4l2 >= 0.5.0" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5577,12 +5612,15 @@ if test -n "$PKG_CONFIG"; then
         pkg_cv_LIBV4L_LIBS="$LIBV4L_LIBS"
     else
         if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libv4l2 >= 0.5.0\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "libv4l2 >= 0.5.0") 2>&5
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"\\
+      libv4l2 >= 0.5.0\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "\
+      libv4l2 >= 0.5.0") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_LIBV4L_LIBS=`$PKG_CONFIG --libs "libv4l2 >= 0.5.0" 2>/dev/null`
+  pkg_cv_LIBV4L_LIBS=`$PKG_CONFIG --libs "\
+      libv4l2 >= 0.5.0" 2>/dev/null`
 else
   pkg_failed=yes
 fi
@@ -5601,9 +5639,11 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        LIBV4L_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "libv4l2 >= 0.5.0"`
+	        LIBV4L_PKG_ERRORS=`$PKG_CONFIG --short-errors --errors-to-stdout --print-errors "\
+      libv4l2 >= 0.5.0"`
         else
-	        LIBV4L_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "libv4l2 >= 0.5.0"`
+	        LIBV4L_PKG_ERRORS=`$PKG_CONFIG --errors-to-stdout --print-errors "\
+      libv4l2 >= 0.5.0"`
         fi
 	# Put the nasty error message in config.log where it belongs
 	echo "$LIBV4L_PKG_ERRORS" >&5
