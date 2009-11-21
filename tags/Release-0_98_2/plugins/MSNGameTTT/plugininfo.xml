@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<plugin>
+	<name>MSN-Game Tic Tac Toe</name>
+	<author>Mirko Hansen (BaaaZen)</author>
+	<description>MSN-Game Tic Tac Toe</description>
+	<description_de>MSN-Spiel Tic Tac Toe</description_de>
+	<description_es>Juego de las Tres en Raya de MSN.</description_es>
+	<description_fr>Jeu-MSN Tic Tac Toe</description_fr>
+	<description_hu>A Tic Tac Toe MSN-játék</description_hu>
+	<description_nl>MSN-spel Tic Tac Toe</description_nl>
+	<amsn_version>0.98</amsn_version>
+	<plugin_version>1.0</plugin_version>
+	<plugin_file>GameTTT.tcl</plugin_file>
+	<plugin_namespace>GameTTT</plugin_namespace>
+	<init_procedure>Init</init_procedure>
+	<deinit_procedure>DeInit</deinit_procedure>
+
+	<lang>
+		<langcode>de</langcode>
+		<version>0.1</version>
+	</lang>
+	<lang>
+		<langcode>en</langcode>
+		<version>0.1</version>
+	</lang>
+	<lang>
+		<langcode>es</langcode>
+		<version>9675</version>
+	</lang>
+	<lang>
+		<langcode>fr</langcode>
+		<version>9680</version>
+	</lang>
+	<lang>
+		<langcode>hu</langcode>
+		<version>10334</version>
+	</lang>
+	<lang>
+		<langcode>ja</langcode>
+		<version>11067</version>
+	</lang>
+	<lang>
+		<langcode>lt</langcode>
+		<version>10397</version>
+	</lang>
+	<lang>
+		<langcode>nl</langcode>
+		<version>0.1</version>
+	</lang>
+	<lang>
+		<langcode>n0</langcode>
+		<version>11209</version>
+	</lang>
+	<lang>
+		<langcode>pt_BR</langcode>
+		<version>11156</version>
+	</lang>
+	<lang>
+		<langcode>tr</langcode>
+		<version>11042</version>
+	</lang>
+
+	<file>
+		<path>pixmaps/background.png</path>
+		<version>11019</version>
+	</file>
+	<file>
+		<path>pixmaps/empty_normal.png</path>
+		<version>11019</version>
+	</file>
+	<file>
+		<path>pixmaps/o_hover.png</path>
+		<version>11019</version>
+	</file>
+	<file>
+		<path>pixmaps/o_normal.png</path>
+		<version>11019</version>
+	</file>
+	<file>
+		<path>pixmaps/x_hover.png</path>
+		<version>11019</version>
+	</file>
+	<file>
+		<path>pixmaps/x_normal.png</path>
+		<version>11019</version>
+	</file>
+
+	<URL>
+		<main>http://www.amsn-project.net/autoupdater/plugins2/MSNGameTTT/GameTTT.tcl</main>
+		<plugininfo>http://www.amsn-project.net/autoupdater/plugins2/MSNGameTTT/plugininfo.xml</plugininfo>
+		<lang>http://www.amsn-project.net/autoupdater/plugins2/MSNGameTTT/lang/lang$langcode</lang>
+		<file>http://www.amsn-project.net/autoupdater/plugins2/MSNGameTTT/$file</file>
+	</URL>
+
+
+</plugin>
