@@ -31,6 +31,7 @@ namespace eval ::config {
 		::config::setKey proxy ""			;# If using proxy, proxy host
 		::config::setKey proxytype "http"		;# Proxy type: http|ssl|socks5
 		::config::setKey proxyauthenticate 0		;# SOCKS5 use username/password
+		::config::setKey proxyauthtype "basic"		;# Proxy authentication type (if not NTLM)
 		::config::setKey proxyuser ""		;# user and password for SOCKS5 proxy
 		::config::setKey proxypass ""		;#
 
@@ -93,12 +94,12 @@ namespace eval ::config {
 
 			::config::setKey os "mac"
 		} elseif { [OnMaemo] } {
-			::config::setKey soundcommand "play-sound \$sound"
-			::config::setKey browser "dbus-send --system --type=method_call --dest=com.nokia.osso_browser /com/nokia/osso_browser com.nokia.osso_browser.load_url \"string:\$url\""
+			::config::setKey soundcommand "aplay \$sound"
+			::config::setKey browser "dbus-send --system --type=method_call --dest=com.nokia.osso_browser /com/nokia/osso_browser com.nokia.osso_browser.open_new_window \"string:\$url\""
 			::config::setKey notifyXoffset 0
 			::config::setKey notifyYoffset 100
-			::config::setKey filemanager "xdg-open \$location"
-			::config::setKey openfilecommand "xdg-open \$file"
+			::config::setKey filemanager "dbus-send --system --type=method_call --dest=com.nokia.osso_filemanager /com/nokia/osso_filemanager com.nokia.osso_filemanager.open_folder \"string:\$location\""
+			::config::setKey openfilecommand "dbus-send --system --type=method_call --dest=com.nokia.osso_filemanager /com/nokia/osso_filemanager com.nokia.osso_filemanager.open_folder \"string:\$file\""
 			::config::setKey usesnack 0
 
 			::config::setKey os "unix"
@@ -344,7 +345,7 @@ namespace eval ::config {
 		::config::setKey ABPreferredHost "byrdr.omega.contacts.msn.com"
 		
 		::config::setKey hide_users_in_cw 1	;#in a multichat don't show users in the topcw
-		::config::setKey show_not_in_list 1     ;# Show the 'not in list' icon/emblem
+		::config::setKey show_not_in_list 0     ;# Show the 'not in list' icon/emblem
 
 		# Farsight config
                 ::config::setKey fsaudiosrc ""
@@ -356,6 +357,10 @@ namespace eval ::config {
 
                 ::config::setKey fs_in_volume -5.0
                 ::config::setKey fs_out_volume -5.0
+
+
+		::config::setKey expanded_group_offline 0
+		::config::setKey expanded_group_nonim 0
 
 		#Advanced options, not in preferences window
 		# Create the entry in the list and then, set
@@ -412,7 +417,6 @@ namespace eval ::config {
 			[list title connection] \
 			[list local getdisppic bool getdisppic] \
 			[list local checkemail bool checkemail] \
-			[list local default_ns_server str notificationserver]\
 			[list local lazypicretrieval bool lazypicretrieval]\
 			[list local noftpreview bool noftpreview]\
 			[list title MSN] \
@@ -770,6 +774,7 @@ proc save_config {} {
 			set file_id [open "[file join ${HOME} config.xml.temp]" w]
 		}
 	} res]} {
+		msg_box "[trans configpermissionerror ${HOME}] : \n$res"
 		return 0
 	}
 	fconfigure $file_id -encoding utf-8
@@ -802,7 +807,7 @@ proc save_config {} {
 			set var_value [PathAbsToRel $var_value]
 		}
 
-		if { ("$var_attribute" != "remotepassword") && ("$var_attribute" != "os") } {
+		if { ("$var_attribute" != "remotepassword") && ("$var_attribute" != "os") && ([string first "tempgroup_" "$var_attribute"] != 0) } {
 			set var_value [::sxml::xmlreplace $var_value]
 			puts $file_id "   <entry>\n      <attribute>$var_attribute</attribute>\n      <value>$var_value</value>\n   </entry>"
 		}
@@ -846,8 +851,11 @@ proc save_config {} {
 	close $file_id
 	
 	#writing was successful, so move config.xml.temp to config.xml
-	file delete -force [file join ${HOME} config.xml]
-	file rename -force [file join ${HOME} config.xml.temp] [file join ${HOME} config.xml]
+	catch {file delete -force [file join ${HOME} config.xml]}
+	if {[catch {file copy -force [file join ${HOME} config.xml.temp] [file join ${HOME} config.xml]} err] } {
+		msg_box "[trans configpermissionerror ${HOME}] : \n$err"
+	}
+	catch {file delete -force [file join ${HOME} config.xml.temp]}
 
 	# re-rename os-specific keys
 	foreach dstKey $osspecific_keys {

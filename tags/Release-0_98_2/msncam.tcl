@@ -101,7 +101,7 @@ namespace eval ::MSNCAM {
 
 	#//////////////////////////////////////////////////////////////////////////////
 	# CamCanceled ( chat sid )
-	#  This function is called when a file transfer is canceled by the remote contact
+	#  This function is called when a cam conversation is canceled by the remote contact
 	proc CamCanceled { chatid sid } {
 		set grabber [getObjOption $sid grabber]
 		set window [getObjOption $sid window]
@@ -181,7 +181,7 @@ namespace eval ::MSNCAM {
 
 	#//////////////////////////////////////////////////////////////////////////////
 	# CancelFT ( chatid sid )
-	# This function is called when a file transfer is canceled by the user
+	# This function is called when a cam conversation is canceled by the user
 	proc CancelCam { chatid sid } {
 
 		set session_data [::MSNP2P::SessionList get $sid]
@@ -216,7 +216,7 @@ namespace eval ::MSNCAM {
 
 	#//////////////////////////////////////////////////////////////////////////////
 	# RejectFT ( chatid sid branchuid uid )
-	# This function is called when a file transfer is rejected/canceled
+	# This function is called when a cam conversation is rejected/canceled
 	proc RejectFT { chatid sid branchuid uid } {
 		# All we need to do is send a DECLINE
 		set slpdata [::MSNP2P::MakeMSNSLP "DECLINE" [lindex [::MSNP2P::SessionList get $sid] 3] [::config::getKey login] $branchuid 1 $uid 0 0 $sid]
@@ -236,7 +236,7 @@ namespace eval ::MSNCAM {
 
 	#//////////////////////////////////////////////////////////////////////////////
 	# AcceptFT ( chatid dest branchuid cseq uid sid filename1 )
-	# This function is called when a file transfer is accepted by the user (local)
+	# This function is called when a cam conversation is accepted by the user (local)
 	proc AcceptWebcam { chatid dest branchuid cseq uid sid producer} {
 
 		setObjOption $sid producer $producer
@@ -1838,7 +1838,7 @@ namespace eval ::CAMGUI {
 				}
 			} else {
                                 toplevel $window -class AmsnWebcam
-                                wm title $window "$chatid - [::abook::getDisplayNick $chatid]"
+                                wm title $window "[trans receive]: $chatid - [::abook::getDisplayNick $chatid]"
                                 wm protocol $window WM_DELETE_WINDOW "::MSNCAM::CancelCam $chatid $sid"
 				canvas $window.canvas -width 320 -height 240
 				set wwidth 318
@@ -2058,7 +2058,7 @@ namespace eval ::CAMGUI {
 					[winfo parent $window] configure -width [expr {160 +  [image width [::skin::loadPixmap imghide]] + (2 * [::skin::getKey chat_dp_border])} ]
 				} else {
 					toplevel $window -class AmsnWebcam
-					wm title $window "$chatid - [::abook::getDisplayNick $chatid]"
+					wm title $window "[trans send]: $chatid - [::abook::getDisplayNick $chatid]"
 					wm protocol $window WM_DELETE_WINDOW "::MSNCAM::CancelCam $chatid $sid"
 					canvas $window.canvas -width 320 -height 240
 	                                set wwidth 318
