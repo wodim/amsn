@@ -12,7 +12,7 @@
 	<plugin_namespace>music</plugin_namespace>
 	<init_procedure>InitPlugin</init_procedure>
 	<deinit_procedure>DeInit</deinit_procedure>
-	<cvs_version>11788</cvs_version>
+	<cvs_version>11861</cvs_version>
 
 	<lang>
 		<langcode>da</langcode>
@@ -36,7 +36,7 @@
 	</lang>
 	<lang>
 		<langcode>fr</langcode>
-		<version>8547</version>
+		<version>11830</version>
 	</lang>
 	<lang>
 		<langcode>fr_CA</langcode>
@@ -121,7 +121,7 @@
 	</file>
 	<file>
 		<path>infosongbird</path>
-		<version>10634</version>
+		<version>11810</version>
 	</file>
 	<file>
 		<path>infovlc</path>

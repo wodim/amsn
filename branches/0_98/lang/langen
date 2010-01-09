@@ -220,6 +220,7 @@ color Color
 command Command
 commandstatus Execute command
 compactstyle Compact Style
+configpermissionerror Error writing configuration file. Make sure you have the correct permissions for the directory $1
 configure Configure
 configuremic Configuring your microphone
 configureplugin Configure plugin $1
@@ -709,6 +710,7 @@ pausewebcamsend Pause sending of webcam
 personal Personal
 phone Phone
 phones Phone numbers
+photosharingrequest You just received a Photo Sharing request. This feature is not yet supported by aMSN and cannot be canceled from your side. Tell your contact to cancel the Photo Sharing request and send the file using a File Transfer.
 picbrowser Display Pictures Browser
 picfile Picture File (GIF < 500 x 500)
 picstatus Picture Alarm
@@ -760,6 +762,7 @@ prefshared Shared Connections (only for NAT)
 prefsound Sounds
 preview Preview
 privacy Privacy
+profileaccrualerror Your Windows Live ID account information is incomplete.\nPlease make sure your birthday and country are correctly filled in your profile.
 profiledconfig Profiled Config
 profileexists You cannot create a profile with this login \n because one already exists. Please choose another login.
 profileinuse This Profile is being used by another aMSN session, please choose another one
@@ -783,6 +786,7 @@ quit Quit
 raised Raised/Deiconified
 readonlymsgbox The file transfer has been canceled due to the received directory being read-only. Please fix the permissions on this directory.
 readonlywarn WARNING: The file will probably NOT be saved correctly as the "Received files" directory seems to be write-protected. Please ensure that the permissions on the target directory ($1) are set correctly before transfering the file.
+receive Receive
 receivedbytes Received $1 of $2 bytes
 receiveddir Received Files folder
 receivedoimread You have $1 new Offline Instant Messages. Do you want to read them ?

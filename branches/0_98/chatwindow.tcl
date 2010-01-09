@@ -489,6 +489,9 @@ namespace eval ::ChatWindow {
 		::MSN::leaveChat $chatid
 		
 		catch { unset ::amsn::lastchatwith(${chatid}) }
+		if {[OnMac]} {
+			MacBounceDone $window
+		}
 	}
 	#///////////////////////////////////////////////////////////////////////////////
 
@@ -634,8 +637,12 @@ namespace eval ::ChatWindow {
 
 		if {[llength $macbouncewindows] > 0 } {
 			set win [lindex $macbouncewindows 0]
-                        wm state $win normal
-                        raise $win
+			if {[catch {wm state $win normal}]} {
+				MacBounceDone $win
+				MacRaiseWindows
+			} else {
+				raise $win
+			}
 			return 1
 		} else {
 			return 0
@@ -4053,7 +4060,7 @@ namespace eval ::ChatWindow {
 		if { $users == "" || [llength $users] == 1} {
 			set nick [::abook::getDisplayNick $chatid 1]
 			if { $nick == "" || [::config::getKey tabtitlenick] == 0 } {
-				set txt [concat $style [list [list text $tab]]]
+				set txt [concat $style [list [list text $chatid]]]
 			} else {
 				set txt [concat $style $nick]
 			}

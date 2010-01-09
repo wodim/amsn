@@ -330,9 +330,9 @@ if { $initialize_amsn == 1 } {
 
 		#this regexp is a bit complex, but it reaches all URLs as specified in the RFC 1738 on http://www.ietf.org/rfc/rfc1738.txt
 		set urlregexps {
-			{\w+://[\%\/\$\*\~\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
-			{www\.[\%\/\$\*\~\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
-			{(?:[\%\/\$\*\~\,\!\'\#\@\+\-\=\?\;\:\^\&\_[:alnum:]]+\.)+(?:org|com|net)(?:/[\%\/\$\*\~\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]*)*(?=\y)}
+			{\w+://[\%\/\$\*\~\|\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
+			{\mwww\.[\%\/\$\*\~\,\|\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
+			{(?:[\%\/\$\*\~\,\!\'\|\#\@\+\-\=\?\;\:\^\&\_[:alnum:]]+\.)+(?:org|com|net)(?:/[\%\/\$\*\~\,\!\'\|\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]*)*(?=\y)}
 			{spotify:(?:track|album|artist|search|playlist|user|radio):[^<>\s]+}
 		}
 	}
@@ -5123,8 +5123,8 @@ proc cmsn_draw_main {} {
 		bind all <$modifier-/> "launch_browser $::weburl/wiki/Main_Page"
 		bind all <$modifier-?> "launch_browser $::weburl/wiki/Main_Page"
 
-		bind all <$modifier-m> "catch {wm state %W normal; carbon::processHICommand mini %W}"
-		bind all <$modifier-M> "catch {wm state %W normal; carbon::processHICommand mini %W}"
+		bind all <$modifier-m> {catch {wm state [winfo toplevel %W] normal; carbon::processHICommand mini [winfo toplevel %W]}}
+		bind all <$modifier-M> {catch {wm state [winfo toplevel %W] normal; carbon::processHICommand mini [winfo toplevel %W]}}
 		# Webcam bindings
 	} else {
 		#Plugins log
@@ -5144,8 +5144,10 @@ proc cmsn_draw_main {} {
 		# Default behaviour on OS X is to hide the main window, and open again when the dock icon is clicked.
 		proc ::tk::mac::ReopenApplication {} {
 			if {[::ChatWindow::MacRaiseWindows] == 0 } {
-				wm state . normal
-				raise .
+				if { [wm state .] == "withdrawn"} {
+					wm state . normal
+					raise .
+				}
 			}
 		}
 		wm protocol . WM_DELETE_WINDOW { wm state . withdrawn }

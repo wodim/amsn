@@ -99,7 +99,7 @@ wm state . withdrawn
 
 set version "0.98.2"
 set rcversion "0.98.02"
-set date "11/22/2009"
+set date "01/10/2010"
 set weburl "http://www.amsn-project.net"
 set program_dir "."
 set HOME ""
@@ -254,6 +254,7 @@ proc reload_files { } {
 	source preferences.tcl
 	source hotmail.tcl
 	source groups.tcl	;# Handle buddy groups
+	source pgu.tcl          ;# Parallel geturl
 	source soap.tcl
 
 	if { [OnDarwin] } {

@@ -4808,15 +4808,18 @@ namespace eval ::MSNOIM {
 			set contact [lindex $temp 1]
 			unset temp
 		}
+		status_log "Got UBX for contact $contact"
 
 		if {$payload != ""} {
-			if { [catch { set xml [xml2list $payload] } ] } {
+			if { [catch { set xml [xml2list $payload] } res] } {
+				status_log "Got invalid XML in UBX command : $res"
 				return
 			}
 			set psm [::sxml::replacexml [encoding convertfrom utf-8 [GetXmlEntry $xml "Data:PSM"]]]
 			set currentMedia [::sxml::replacexml [encoding convertfrom utf-8 [GetXmlEntry $xml "Data:CurrentMedia"]]]
 			set signatureSound [::sxml::replacexml [encoding convertfrom utf-8 [GetXmlEntry $xml "Data:SignatureSound"]]]
 		} else {
+			status_log "UBX payload is empty"
 			set psm ""
 			set currentMedia ""
 			set signatureSound ""
@@ -4943,9 +4946,13 @@ namespace eval ::MSNOIM {
 			}
 			status_log "Roaming last modif :$last_modif, AB last modif : $lastchange" 
 			if {$nickname != "" } {
-				::MSN::changeName $nickname 1
+				::MSN::changeName $nickname 0
 			} else {
 				::MSN::changeName [::abook::getPersonal MFN] 1
+			}
+
+			foreach username [::MSN::getList FL] {
+				after idle [list catch [list $::roaming GetProfile [list ::MSN::roaming_cl_get_profile_cb $username] $username]]
 			}
 
 			# Change status after sending the UUX stuff
@@ -4970,7 +4977,7 @@ namespace eval ::MSNOIM {
 		}
 		ChCustomState $newstate_custom
 		send_dock "STATUS" $newstate
-		if {$fail == 3} {
+		if {$fail == 3 || $fail == 4} {
 			# ItemDoesNotExist
 			$::roaming CreateProfile [list $self RoamingProfileCreated]
 		}
@@ -6069,7 +6076,7 @@ proc cmsn_change_state {recv} {
 	global newstate_server
 	global last_iln
 
-	if {$last_iln == 0 || [expr {[clock seconds] - $last_iln}] <  5} {
+	if {$last_iln == 0 || [expr {[clock seconds] - $last_iln}] <  30} {
 		set initial_status 1
 		set last_iln [clock seconds]
 	} else {
@@ -6198,7 +6205,7 @@ proc cmsn_change_state {recv} {
 		} else {
 			# Update the contact's nickname in the server's abook as well
 			if { [::abook::getContactData $user contactguid] != "" } {
-				$::ab ABContactUpdate [list ::MSN::ABUpdateNicknameCB] $user [list displayName [xmlencode $user_name]] DisplayName
+				#after idle [list $::ab ABContactUpdate [list ::MSN::ABUpdateNicknameCB] $user [list displayName [xmlencode $user_name]] DisplayName]
 			}
 		}
 
@@ -6892,12 +6899,21 @@ proc sso_authenticated { failed } {
 	global sso
 	if {$failed == 2} {
 		eval [ns cget -passerror_handler]
-	} elseif { $failed == 1 } {
-		eval [ns cget -autherror_handler]
-	} else {
+	} elseif { $failed == 0 } {
+		$sso configure -done 1
 		if { [$sso cget -nonce] != "" } {
 			sso_authenticate
 		}
+	} elseif { $failed == 4 } {
+		global reconnect_timer
+		set reconnect_timer 0
+
+		status_log "Profile Accrual is required"
+		::MSN::logout
+		::amsn::errorMsg "[trans profileaccrualerror]"
+		launch_browser "https://accountservices.passport.net/"
+	} else {
+		eval [ns cget -autherror_handler]
 	}
 }
 
@@ -6993,8 +7009,7 @@ proc cmsn_auth {{recv ""}} {
 				}
 				global sso
 				$sso configure -nonce [lindex $recv 5]
-				set token [$sso GetSecurityTokenByName MessengerClear]
-				if { [$token cget -ticket] != "" } {
+				if { [$sso cget -done] } {
 					sso_authenticate
 				}
 
@@ -7056,6 +7071,7 @@ proc cmsn_auth {{recv ""}} {
 				if {![info exists ::ab]} {
 					set ::ab [::Addressbook create %AUTO%]
 				}
+				::abook::setPersonal MFN ""
 				$::ab Synchronize [list ::MSN::ABSynchronizationDone 1]
 			} else {
 				set list_version [::abook::getContactData contactlist list_version]
@@ -7168,13 +7184,13 @@ proc ::MSN::ABSynchronizationDone { initial error } {
 				newcontact $username $nickname
 			}
 		}
-
 		::groups::Enable
 
 		if {$initial } {
 			ns setInitialStatus
 		}
-		ns authenticationDone	
+		ns authenticationDone
+	
 	} elseif {$error == 2 } {
 		#ABDoesNotExist
 		$::ab ABAdd ::MSN::ABAddDone [::config::getKey login]
@@ -7182,6 +7198,35 @@ proc ::MSN::ABSynchronizationDone { initial error } {
 		::MSN::logout
 		::amsn::errorMsg "[trans internalerror]"		
 	}
+}
+
+proc ::MSN::roaming_cl_get_profile_cb { email nick date psm fail } {
+	if { $fail == 0 && [::abook::getVolatileData $email state FLN] == "FLN"} {
+		variable get_profile_update_cl_after_id
+		::abook::setContactData $email nick $nick
+		::abook::setVolatileData $email PSM $psm
+		# Do not send the events for nick/psm updated because of GetProfile each time we get an answer,
+		# because it causes the contact list to queue the redraws for the initial status change notifications (ILN),
+		# so it makes the contact list show your online contacts a lot later than what it can, which makes the user think amsn got slower to connect... 
+		if { [info exists get_profile_update_cl_after_id] } {
+			if {[catch {set cmd [lindex [after info $get_profile_update_cl_after_id] 0]}] } {
+				set get_profile_update_cl_after_id [after 1000 [list ::MSN::get_profile_update_cl $email]]
+			} else {
+				after cancel $get_profile_update_cl_after_id
+				lappend cmd $email
+				set get_profile_update_cl_after_id [after 1000 $cmd]
+			}
+		} else {
+			set get_profile_update_cl_after_id [after 1000 [list ::MSN::get_profile_update_cl $email]]
+		}
+	}
+}
+
+proc ::MSN::get_profile_update_cl { args } {
+	variable get_profile_update_cl_after_id
+	catch {unset get_profile_update_cl_after_id}
+	::Event::fireEvent contactNickChange protocol $args
+	::Event::fireEvent contactPSMChange protocol $args
 }
 
 proc ::MSN::ABAddDone { error } {
@@ -8099,6 +8144,22 @@ namespace eval ::MSN6FT {
 
 	}
 
+
+	proc GotPhotoSharingInvitation {chatid} {			
+		SendMessageFIFO [list ::MSN6FT::GotPhotoSharingInvitationWrapped $chatid] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
+	}
+	
+	
+	#Show a message when we receive a photo sharing invitation so the user isn't clueless
+	proc  GotPhotoSharingInvitationWrapped {chatid} {
+		#Grey line
+		::amsn::WinWrite $chatid "\n" green
+		::amsn::WinWriteIcon $chatid greyline 3
+		::amsn::WinWrite $chatid " \n" green
+		#Description of the problem
+		::amsn::WinWrite $chatid "[timestamp] [trans photosharingrequest]\n" green
+			
+	}
 
 	proc SharePhoto { chatid filename filesize} {
 		global HOME
