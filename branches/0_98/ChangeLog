@@ -1,0 +1,644 @@
+2010-03-05 02:43  alexandernst
+
+	* chatwindow.tcl, trayicon.tcl: Fix some remaining bugs. Now
+	  trayblink feature should be working fine.
+
+2010-03-05 01:16  alexandernst
+
+	* skins/default/pixmaps/trayblink.png,
+	  skins/default/winicons/trayblink.ico: Add needed icons for
+	  single-image trayblink option in skin options.
+
+2010-03-05 00:38  kakaroto
+
+	* chatwindow.tcl, gui.tcl, skins/default/settings.xml,
+	  trayicon.tcl: Add skin options for the tray icon blinking and to
+	  enable a single image for the trayblink (TO BE TESTED)
+
+2010-03-05 00:07  alexandernst
+
+	* skins/default/winicons/awayb.ico,
+	  skins/default/winicons/brbb.ico,
+	  skins/default/winicons/busyb.ico,
+	  skins/default/winicons/hiddenb.ico,
+	  skins/default/winicons/inactiveb.ico,
+	  skins/default/winicons/lunchb.ico,
+	  skins/default/winicons/offlineb.ico,
+	  skins/default/winicons/onlineb.ico,
+	  skins/default/winicons/phoneb.ico: Add needed winicons for tray
+	  blink feature.
+
+2010-03-04 23:53  kakaroto
+
+	* chatwindow.tcl: avoid resetting the tray everytime if we disabled
+	  the option to blink tray.. also remove a small tk bug
+
+2010-03-04 23:28  alexandernst
+
+	* skins/default/pixmaps/dawayb.png,
+	  skins/default/pixmaps/dbrbb.png,
+	  skins/default/pixmaps/dbusyb.png,
+	  skins/default/pixmaps/dhiddenb.png,
+	  skins/default/pixmaps/dinactiveb.png,
+	  skins/default/pixmaps/dlunchb.png,
+	  skins/default/pixmaps/dofflineb.png,
+	  skins/default/pixmaps/donlineb.png,
+	  skins/default/pixmaps/dphoneb.png: Add needed tray icons for tray
+	  blinking feature.
+
+2010-03-04 23:21  alexandernst
+
+	* chatwindow.tcl, config.tcl, lang/langen, lang/langes,
+	  trayicon.tcl: Now trayicon can blink on new unread messages
+
+2010-03-02 21:55  kakaroto
+
+	* sip.tcl: if we can't connect, then let the SIP call report the
+	  error
+
+2010-03-02 21:53  kakaroto
+
+	* msncam.tcl: return an error in nbgets when nbread gets an
+	  error... also catch all nbgets calls from msncam
+
+2010-03-02 21:45  kakaroto
+
+	* msncam.tcl: properly do the nbgets, you never know if you'll get
+	  \n or \r\n or in case you get an empty string returned by nbread
+
+2010-03-02 21:28  kakaroto
+
+	* assistant.tcl, chatwindow.tcl, gui.tcl, lang/langen,
+	  protocol.tcl: Disable sip calls properly, but allow it to still
+	  exist when using MSNP18 since it works with tunneled sip. Disable
+	  from chatwindow, assistant and fs test at connect time
+
+2010-03-02 21:08  billiob
+
+	* chatwindow.tcl, gui.tcl: also disable action menu
+
+2010-03-02 20:54  billiob
+
+	* chatwindow.tcl, gui.tcl: disable sip
+
+2010-03-02 11:17  vivia
+
+	* plugins/Nudge/Nudge.tcl, utils/http/http.tcl: missing close brace
+	  fixed
+
+2010-03-01 20:46  kakaroto
+
+	* plugins/Nudge/Nudge.tcl, plugins/Nudge/plugininfo.xml: oups, fix
+	  nudge plugin, typo clientcaps/clientid. thanks morel for
+	  reporting on IRC
+
+2010-02-28 18:03  kakaroto
+
+	* plugins/Nudge/Nudge.tcl, plugins/Nudge/plugininfo.xml,
+	  plugins/winks/plugininfo.xml, plugins/winks/winks.tcl: fix
+	  nudge/winks plugins to correctly work with msnp18.. make them use
+	  the new API in 0.98.1 for clientid parsing, update version and
+	  amsn-version dependency
+
+2010-02-26 00:02  alexandernst
+
+	* sip.tcl: [$::farsight GetLocalVideoCodecs] instead of $::farsight
+	  GetLocalVideoCodecs
+
+2010-02-23 23:15  alexandernst
+
+	* gui.tcl, lang/langen, sip.tcl: Check for available codecs before
+	  duing a video call.
+
+2010-02-20 21:50  alexandernst
+
+	* plugins/Nudge/Nudge.tcl, plugins/Nudge/plugininfo.xml: Don't use
+	  global vars!
+
+2010-02-20 21:20  alexandernst
+
+	* plugins/Nudge/Nudge.tcl: Nudge plugin wont get nudge.wav from
+	  current skin. (path is hardcoded)
+
+2010-02-18 22:09  billiob
+
+	* plugins/music/infospotify, plugins/music/music.tcl,
+	  plugins/music/plugininfo.xml: add spotify (through wine) support
+	  to the music plugin. Thanks to carestad for the patch.
+
+2010-02-18 12:21  alexandernst
+
+	* plugins/music/inforhythmbox, plugins/music/plugininfo.xml:
+	  inforhythmbox wasn't returning the path of the current playing
+	  file.
+
+2010-02-16 12:59  billiob
+
+	* plugins/music/music.tcl, plugins/music/plugininfo.xml: return
+	  file path...
+
+2010-02-16 12:44  billiob
+
+	* plugins/music/music.tcl, plugins/music/plugininfo.xml: fix
+	  editing mpd_music_directory
+
+2010-02-16 12:26  billiob
+
+	* plugins/music/music.tcl, plugins/music/plugininfo.xml: do no hash
+	  mpd_music_directory
+
+2010-02-16 12:15  billiob
+
+	* plugins/music/music.tcl, plugins/music/plugininfo.xml: fix mpd
+	  file detection in music plugin
+
+2010-02-15 20:20  billiob
+
+	* plugins/music/lang/langen, plugins/music/lang/langfr,
+	  plugins/music/music.tcl, plugins/music/plugininfo.xml: add mpd
+	  music directory
+
+2010-02-12 13:32  vivia
+
+	* config.tcl: Disabling GetProfile for FLNs by default since it may
+	  affect connectivity for large contact lists (timeout?)
+
+2010-02-09 23:04  vivia
+
+	* config.tcl, lang/langen, protocol.tcl: Added option in Advanced
+	  prefs to disable GetProfile for offline users
+
+2010-02-08 23:25  billiob
+
+	* gui.tcl: fix custom nick in CW
+
+2010-02-07 20:43  kakaroto
+
+	* protocol.tcl: Set back the MSNC version to 8, which will fix the
+	  image transfers as 'photo sharing' and it doesn't seem to affect
+	  anything else.
+	  Solution found and suggested by IDCE :
+	  http://www.amsn-project.net/forums/index.php/topic,7709.0.html
+
+2010-02-03 15:17  vivia
+
+	* chatwindow.tcl, gui.tcl: WIP: tkDND2.0 ... doesnt work, dunno
+	  why, gtg
+
+2010-02-01 08:09  billiob
+
+	* lang/langfr_CA: mv aeroman's langfr to langfr_CA
+
+2010-01-28 22:26  vivia
+
+	* msncam.tcl: Enabling cam_mask_ip , see apn/wiki/HiddenFeatures
+
+2010-01-28 20:08  billiob
+
+	* utils/TkCximage/src/CxImage/ximapng.cpp: fix compilation against
+	  libpng1.4
+
+2010-01-11 20:39  kakaroto
+
+	* amsncore.tcl, gui.tcl: Remove some useless updates, and add
+	  idlers for doing some things... Also made boris and me appear as
+	  devs in the about page to make it smaller for small screens and
+	  to remove deprecated people :p
+
+2010-01-11 20:38  kakaroto
+
+	* pgu.tcl: disable keepalive in pgu because it doesn't work so
+	  well...
+
+2010-01-11 20:18  vivia
+
+	* addressbook.tcl, pgu.tcl, protocol.tcl, roaming.tcl, soap.tcl:
+	  Reverting 11890 as requested by kkrt
+
+2010-01-11 14:32  vivia
+
+	* addressbook.tcl, pgu.tcl, protocol.tcl, roaming.tcl, soap.tcl:
+	  Enabled option to disable keepalive per request. Disabled
+	  keepalive for ABFindAll and FindMembership, otherwise they ll
+	  need a very long time to reply and might time out. Disabled
+	  keepalive for GetProfile on all offline users because we d rather
+	  send all requests at once and finish quickly than send them
+	  serially on the same socket and have aMSN almost frozen for
+	  several minutes. If anyone knows why ABFindAll and FindMembership
+	  are so slow, or how to make the GetProfiles not freeze us, please
+	  let me know
+
+2010-01-11 02:12  kakaroto
+
+	* utils/http/http.tcl: ouch, fugly typo! fixes the http package
+	  once and for all! :)
+
+2010-01-11 01:48  kakaroto
+
+	* gui.tcl: add pre_paste plugin event for/by alexandernst
+
+2010-01-11 01:45  kakaroto
+
+	* pgu.tcl: Use -keepalive on the http geturl to minimize use of the
+	  sockets and allow for faster requests/less hang.
+
+2010-01-11 01:43  kakaroto
+
+	* autoupdate.tcl, proxy.tcl: Use the newest http available.
+
+2010-01-11 01:41  kakaroto
+
+	* utils/http/http.tcl: no need for a transitional 'connect'
+	  state...
+
+2010-01-11 01:17  kakaroto
+
+	* utils/http/http.tcl, utils/http/pkgIndex.tcl: Update http package
+	  to 2.7.5 with my custom patches to make it not use vwait when
+	  -command is used!!! PLZ TST!
+
+2010-01-10 20:52  kakaroto
+
+	* protocol.tcl: close/clear socket when an SB gets closed!
+
+2010-01-09 06:40  kakaroto
+
+	* pgu.tcl, soap.tcl: Correctly catch and report errors with PGU
+	  back to soap.. now, if the token is "", then use
+	  PGU::GetLastError to know wtf happened...
+	  also change the PGU degrees from 50 to 10 to lower the load...
+
+2010-01-09 06:39  kakaroto
+
+	* msnp2p.tcl: decline the photo sharing invitation instead of
+	  sending OK.. but this fails miserably, no idea why it doesn't
+	  work...
+
+2010-01-09 06:37  kakaroto
+
+	* utils/dpbrowser/dpbrowser.tcl: hehe, some logic error, the
+	  filename we get is .png, but the filename in $dps is .dat, so
+	  let's compare the filenames without extensions... also, let's
+	  break instead of continue once we found what we were looking
+	  for...
+
+2010-01-09 06:33  kakaroto
+
+	* utils/dpbrowser/dpbrowser.tcl: Fix a bug where if we get an error
+	  loading the first image of a row (any row) in the dpbrowser then
+	  we end up with an empty row, and we get a bug when we try to
+	  access dps in that row..
+
+2010-01-07 17:05  kakaroto
+
+	* protocol.tcl: if the profile exists but doesn't have an
+	  ResourceId (no ExpressionProfile), then roaming profile was
+	  incorrectly create, so it should be recreated... thanks to C10uD
+	  for letting us know.
+
+2010-01-06 01:42  kakaroto
+
+	* utils/windows/gstreamer/libgstdshowsrcwrapper.dll: I think maybe
+	  fix the bug reported here :
+	  http://www.amsn-project.net/forums/index.php/topic,7612.0
+
+2010-01-05 21:35  vivia
+
+	* lang/langde: Update langde, thanks to xmav000
+
+2010-01-05 20:57  vivia
+
+	* lang/langen, msncam.tcl: Different window title for sending and
+	  receiving webcam
+
+2010-01-04 21:20  billiob
+
+	* msncam.tcl: fix doc, thanks to Fredrik Gustafsson
+
+2010-01-03 22:22  kakaroto
+
+	* addressbook.tcl, protocol.tcl: Do not reset the nicknames (ours
+	  and the users') if we already have a nickname. This is to avoid
+	  having the nicknames reset when we resynchronize our AB after a
+	  user added us to his list.
+
+2009-12-25 12:50  square87
+
+	* chatwindow.tcl: Fix the bad behaviour of "Display nicks in the
+	  tabs instead of email" option.
+
+2009-12-23 00:04  kakaroto
+
+	* groups.tcl: typo s/key/gid/ thx to forum topic 7570
+
+2009-12-21 22:32  billiob
+
+	* plugins/music/music.tcl, plugins/music/plugininfo.xml: fix dbus
+	  VLC interaction with the music plugin
+
+2009-12-20 23:04  kakaroto
+
+	* utils/macosx/statusicon/statusicon.m: possible bug with mac's
+	  status icon.. fixing it by retaining the status item, otherwise
+	  it might get autoreleased by the garbage collector!
+
+2009-12-17 22:38  billiob
+
+	* lang.tcl: show errors related to geturl
+
+2009-12-17 22:25  kakaroto
+
+	* lang.tcl: Fix LoadOnlineVersions. missing global var. Thanks to
+	  morel on IRC for reporting the bug (change language button was
+	  not responding)
+
+2009-12-17 06:28  kakaroto
+
+	* utils/http/http.tcl: haha, found the problem with the http
+	  changes.. the ::http::wait command doesn't wait until
+	  $token(status) *changes*, it waits until it *gets defined*.. so
+	  when I got connected, and I set it to 'connect' (just as an FYI),
+	  it stopped my wait, and the second wait I added would return
+	  directly instead of waiting for the actual 'ok/error'... this is
+	  also why we had those Event errors.. you would get the
+	  http::geturl return as soon as it connects (before
+	  sending/receiving data), so we get status 'connect', oh it's
+	  unknown, so we ::http::cleanup the token, but that didn't close
+	  the socket, simply because it was expected that cleanup would be
+	  called AFTER the error/success of the http, and that would have
+	  already closed the socket for us..
+
+2009-12-16 21:58  billiob
+
+	* lang.tcl: improve lang.tcl
+
+2009-12-16 20:59  billiob
+
+	* lang.tcl: use command in geturl. start with an easy one
+
+2009-12-16 02:12  kakaroto
+
+	* pgu.tcl, soap.tcl: Add pgu.tcl, support for Parallel geturl..
+	  queues geturls (from soap atm) and only sends 50 gets at a time..
+	  will slow down resources/bandwidth and less likely to get
+	  timeouts for the getprofile on startup
+
+2009-12-16 01:10  kakaroto
+
+	* config.tcl: collapse the offline and nonim groups by default
+
+2009-12-15 21:01  billiob
+
+	* config.tcl: don't save temp vars...
+
+2009-12-14 20:21  kakaroto
+
+	* utils/farsight/src/tcl_farsight.c: oups, if you have no internet
+	  connection (no local candidates), we shouldn't try to
+	  Tcl_DuplicateObj on a NULL local_candidates pointer. Thanks to
+	  afv on IRC for reporting
+
+2009-12-11 23:05  vivia
+
+	* gui.tcl: Okay, now www. has to be at the start of a word. If you
+	  type a www.. you're looking for trouble :p
+
+2009-12-11 23:01  vivia
+
+	* gui.tcl: URLs may contain pipes, I don't like nerdy smileys on my
+	  accuweather URLs... Next step: make it not catch awww...
+
+2009-12-10 22:38  kakaroto
+
+	* utils/http/http.tcl: let's try and be a bit more robust again the
+	  Event -> state(sock) not exist error...
+
+2009-12-10 21:56  kakaroto
+
+	* config.tcl: no more need for the ns setting in advanced prefs..
+	  useless for users, and useless since MSNP15+ and SOAP
+
+2009-12-09 12:53  kakaroto
+
+	* utils/asyncresolver/asyncresolver.tcl: disable asyncresolver
+	  because it uses tkwait which causes the same issue as http
+	  package (infinite loop) that I just fixed... it also didn't
+	  always work so well on windows for some random people...
+	  was it really useful btw? or did I just write it because I
+	  thought it would be fun ?
+	  Keeping the part for avoiding a reverse lookup on an fconfigure
+	  -sockname though since that can be done synchronously
+
+2009-12-09 12:41  kakaroto
+
+	* utils/http/http.tcl: Oh God, please let this commit not crash
+	  everything...
+	  I just modified http package to work completely async when we use
+	  the -command option, so no more vwait which causes all those
+	  horrible infinite loop stack traces...
+
+2009-12-08 22:18  kakaroto
+
+	* protocol.tcl: get the nick/psm of the offline contacts only after
+	  we set our own intial status, otherwise, because of huge network
+	  bottleneck, it looks like sometimes, it could happen that the
+	  getprofile we sent initially just gets lost and the answer never
+	  reaches us... result, no nick change, no ILNs..
+
+2009-12-08 09:28  kakaroto
+
+	* protocol.tcl: Resolve nicolunacba's whining @
+	  http://www.amsn-project.net/forums/viewtopic.php?p=44066#44066
+	  Do not send the events for nick/psm updated because of GetProfile
+	  each time we get an answer, because it causes the contact list to
+	  queue the redraws for the initial status change notifications
+	  (ILN), so it makes the contact list show your online contacts a
+	  lot later than what it can, which makes the user think amsn got
+	  slower to connect...
+
+2009-12-08 00:42  kakaroto
+
+	* protocol.tcl: no errors please, let's catch the GetProfile in
+	  case $roaming is not defined
+
+2009-12-08 00:35  kakaroto
+
+	* protocol.tcl, roaming.tcl: Do not do a ABContactUpdate anymore
+	  since the server is screwed.. and now use the roaming GetProfile
+	  to get everyone's nickname/psm when available at startup.. this
+	  should make it easier for users :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=7433&postdays=0&postorder=asc&start=0
+
+2009-12-07 04:06  kakaroto
+
+	* utils/TkCximage/TkCximage.dylib,
+	  utils/farsight/tcl_farsight.dylib: Update mac binaries for
+	  farsight and tkcximage
+
+2009-12-03 22:54  kakaroto
+
+	* auth.tcl, lang/langen, protocol.tcl: Add support for the profile
+	  accrual error as reported here :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=7214&highlight=
+
+2009-12-03 21:34  kakaroto
+
+	* preferences.tcl: Avoid a bug with prefs window
+
+2009-12-03 21:26  kakaroto
+
+	* chatwindow.tcl: stop the bouncing on mac if the window got
+	  closed.. also avoid a bug if the window to raise is invalid for
+	  some reason :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=7466&highlight=
+
+2009-12-03 19:53  kakaroto
+
+	* gui.tcl: as per
+	  http://amsn-project.net/forums/viewtopic.php?t=7456 , now do not
+	  focus/open the main window when we click the dock icon.. only
+	  show it if it's withdrawn, otherwise, let the Mac take care of
+	  raising the last focused window and uniconify only the last
+	  focused window
+
+2009-12-03 18:28  kakaroto
+
+	* gui.tcl, utils/macosx/windowlist/windowlist.tcl: Add Command-M
+	  accelerator to the menu and correctly minimize the window when
+	  command-m is pressed.. the error was that %W would be the focused
+	  field, not the toplevel window
+
+2009-12-03 06:42  kakaroto
+
+	* config.tcl: Also show the permission problem if we can't create
+	  the config.xml.temp file
+
+2009-12-03 06:41  kakaroto
+
+	* config.tcl: Add some more debug in case we can't create the
+	  config file
+
+2009-12-02 05:13  kakaroto
+
+	* lang/langen, msnp2p.tcl, protocol.tcl: (NOT TESTED, PLEASE TEST!)
+	  Show a message to the user so he knows he got a photo sharing
+	  invitation so he's not clueless.. :
+	  http://www.amsn-project.net/forums/viewtopic.php?p=43803#43803
+
+2009-12-02 05:11  kakaroto
+
+	* config.tcl: Delete the config.xml file before doing the copy, on
+	  some systems you can't copy over an existing file
+
+2009-11-30 21:17  kakaroto
+
+	* config.tcl, lang/langen: Show a warning if we can't write the
+	  config file, instead of throwing an error.. also, let's copy the
+	  temp file, then delete it, instead of deleting the config then
+	  try to rename the temp file.. see
+	  http://www.amsn-project.net/forums/viewtopic.php?t=7454
+
+2009-11-27 18:39  kakaroto
+
+	* utils/TkCximage/8.5/TkCximage.dll, utils/TkCximage/TkCximage.dll,
+	  utils/TkCximage/src/CxImage/ximapng.cpp: Fix a crash in Cximage
+	  if the image was decoded successfully but the last ID tag has an
+	  invalid CRC, it would crash because we try to double free a
+	  pointer.
+	  Updating windows binaries at the same time.
+
+2009-11-25 19:28  billiob
+
+	* plugins/music/music.tcl, plugins/music/plugininfo.xml: add
+	  support for IDJC, thanks to gOLDfeesh
+
+2009-11-25 18:49  kakaroto
+
+	* protocol.tcl: Fix issue with PSM not appearing for some
+	  contacts.. this was a race condition, we call ABContactUpdate to
+	  update the nickname in the addressbook, and when that calls
+	  http::geturl, it does a tkwait which makes it handle the UBX
+	  before the ILN, and the ILN resets the psm to "" when someone
+	  just comes online.
+
+2009-11-25 12:34  tjikkun
+
+	* plugins/music/infosongbird, plugins/music/music.tcl: infosongbird
+	  script crashed when songbird was not installed, now this is
+	  catched
+
+2009-11-24 22:23  kakaroto
+
+	* abook.tcl: aah, that's why upnp fails for most people, most
+	  routers in the world only support permanent leases, so we need to
+	  create a port mapping with lease timeout of 0secs (permanent)
+	  otherwise we'd get error OnlyPermanentLeasesSupported. thanks to
+	  miha for the udp dump
+
+2009-11-24 22:22  kakaroto
+
+	* abook.tcl: this is asking for a littleDP of size 1x1 pixels.. the
+	  api changed but not this call.. remove the line since
+	  getDisplayPicture calls getLittleDisplayPicture anyways
+
+2009-11-24 20:43  billiob
+
+	* Makefile.in: install sasl and md4 files
+
+2009-11-24 18:14  vivia
+
+	* config.tcl, proxy.tcl, utils/sasl, utils/sasl/gtoken.tcl,
+	  utils/sasl/ntlm.tcl, utils/sasl/pkgIndex.tcl,
+	  utils/sasl/sasl.tcl: EXPERIMENTAL, UNTESTED, NTLM proxy support
+
+2009-11-24 01:55  kakaroto
+
+	* config.tcl: use aplay for sound on maemo since it handles volume
+	  control, and open new windows in the browser for links instead of
+	  reusing existing windows. And use dbus to open the filemanager
+	  and files
+
+2009-11-23 10:40  kakaroto
+
+	* utils/farsight/src/tcl_farsight.c: hah, apparently, some version
+	  of farsight could return a new-local-candidate signal AFTER
+	  sending the local-candidates-prepared.. and that causes amsn to
+	  abort because we try to append a candidate to the candidate list
+	  Tcl_Obj *, which has become 'shared' with the tcl code. Solution
+	  is to duplicate the object before sending it to the tcl code..
+	  This should fix :
+	  http://www.amsn-project.net/forums/viewtopic.php?t=7381&highlight=
+	  ps.: I could only reproduce on my N900 so I debugged the problem
+	  on the N900, hehe! :)
+
+2009-11-23 10:31  kakaroto
+
+	* protocol.tcl: ignore ilns for the first 30 seconds, not only the
+	  first 5 seconds... , on slow devices/connections, the ilns can be
+	  separated by 15 to 20 seconds...
+
+2009-11-23 01:19  kakaroto
+
+	* config.tcl: do not show the 'not in list' icon by default.. let's
+	  leave it to users who enable it in advanced prefs.
+
+2009-11-22 06:43  kakaroto
+
+	* protocol.tcl: oups, do not force an UpdateProfile on every
+	  connect...
+
+2009-11-19 19:20  billiob
+
+	* plugins/music/infovlc, plugins/music/music.tcl,
+	  plugins/music/plugininfo.xml: add support for vlc through dbus.
+	  thanks to nicolunacba
+
+2009-11-18 23:42  kakaroto
+
+	* protocol.tcl: ok, stop listening to the addressbook nickname and
+	  only use the roaming nickname... stupid MS servers...
+
+2009-11-16 19:30  kakaroto
+
+	* lang.tcl: try to not die if langlist.xml can't be written
+
