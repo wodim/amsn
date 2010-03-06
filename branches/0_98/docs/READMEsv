@@ -1,0 +1,33 @@
+Detta program är fri mjukvara; du får sprida det vidare och/eller modifiera 
+det enligt villkoren i GNU General Public License i den form som publicerats 
+av the Free Software Foundation; antingen version 2 av licensen eller 
+(om du så väljer) en senare version.
+
+Detta program sprids med förhoppning om att det ska vara användbart,
+men UTAN NÅGRA GARANTIER; rentav utan den underförstådda garantin för VIDAREFÖRSÄLNINGSMÖJLIGHETER eller ANVÄNDNING FÖR ETT SPECIELLT ÄNDAMÅL. 
+Se the GNU General Public License för fler detaljer.
+
+Du ska ha fått en kopia av the GNU General Public License
+med detta program, om inte, skriv till the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+========================================================
+=== Alvaro's Messenger==================================
+
+CCMSN var bra men tyvärr lade dess skapare ner projektet.
+Även fast det var väldigt funktionellt så behövdes det
+mycket jobb för att förbättra utseendet och
+färdigställa protokollsupporten såväl som många andra 
+saker. Det var då vi, de ursprungliga två, som jobbade
+var för sig, valde att börja jobba tillsammans för att
+ge er detta underbara (hoppas vi) program ;)
+
+Alvaro J. Iradier
+D. Emilio Grimaldo T.
+
+Skicka buggar, kommentarer, feedback eller förslag till
+Source Forge-projektsidan:
+http://sourceforge.net/projects/amsn
+
+Nya versioner och hemsida finns på:
+http://amsn.sourceforge.net
