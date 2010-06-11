@@ -1,0 +1,9 @@
+# ::SLPResponseMessage::constructor
+::SLPResponseMessage::constructor {args} {
+  eval configure $args
+}
+
+# ::SLPResponseMessage::destructor
+::SLPResponseMessage::destructor {} {
+}
+

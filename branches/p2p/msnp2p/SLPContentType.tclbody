@@ -1,0 +1,21 @@
+# ::SLPContentType::constructor
+::SLPContentType::constructor {args} {
+  initAttributes
+  eval configure $args
+}
+
+# ::SLPContentType::destructor
+::SLPContentType::destructor {} {
+}
+
+# ::SLPContentType::initAttributes
+body ::SLPContentType::initAttributes {} {
+  set SESSION_REQUEST application/x-msnmsgr-sessionreqbody
+  set SESSION_FAILURE application/x-msnmsgr-session-failure-respbody
+  set SESSION_CLOSE application/x-msnmsgr-sessionclosebody
+  set TRANSFER_REQUEST application/x-msnmsgr-transreqbody
+  set TRANSFER_RESPONSE application/x-msnmsgr-transrespbody
+  set TRANS_UDP_SWITCH application/x-msnmsgr-transudpswitch
+  set NULL null
+}
+

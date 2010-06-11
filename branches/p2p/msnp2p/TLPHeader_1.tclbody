@@ -1,0 +1,19 @@
+# ::TLPHeader_1::constructor
+::TLPHeader_1::constructor {args} {
+  eval configure $args
+}
+
+# ::TLPHeader_1::destructor
+::TLPHeader_1::destructor {} {
+}
+
+# ::TLPHeader_1::__init__
+body ::TLPHeader_1::__init__ { header} {
+  return
+}
+
+# ::TLPHeader_1::parse
+body ::TLPHeader_1::parse { data} {
+  return
+}
+

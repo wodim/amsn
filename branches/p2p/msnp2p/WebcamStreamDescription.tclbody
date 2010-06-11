@@ -1,0 +1,39 @@
+# ::WebcamStreamDescription::constructor
+::WebcamStreamDescription::constructor {args} {
+  eval configure $args
+}
+
+# ::WebcamStreamDescription::destructor
+::WebcamStreamDescription::destructor {} {
+}
+
+# ::WebcamStreamDescription::__init__
+body ::WebcamStreamDescription::__init__ { stream sid producer} {
+  return
+}
+
+# ::WebcamStreamDescription::candidate_encoder
+body ::WebcamStreamDescription::candidate_encoder {} {
+  return string
+}
+
+# ::WebcamStreamDescription::ips
+body ::WebcamStreamDescription::ips {} {
+  return string
+}
+
+# ::WebcamStreamDescription::ports
+body ::WebcamStreamDescription::ports {} {
+  return string
+}
+
+# ::WebcamStreamDescription::rid
+body ::WebcamStreamDescription::rid {} {
+  return string
+}
+
+# ::WebcamStreamDescription::sid
+body ::WebcamStreamDescription::sid {} {
+  return string
+}
+

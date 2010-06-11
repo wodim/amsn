@@ -1,0 +1,14 @@
+# ::SLPTransferRequestBody::constructor
+::SLPTransferRequestBody::constructor {args} {
+  eval configure $args
+}
+
+# ::SLPTransferRequestBody::destructor
+::SLPTransferRequestBody::destructor {} {
+}
+
+# ::SLPTransferRequestBody::__init__
+body ::SLPTransferRequestBody::__init__ { session_id s_channel_state capabilities_flags} {
+  return
+}
+

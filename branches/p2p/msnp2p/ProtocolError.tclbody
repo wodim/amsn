@@ -1,0 +1,19 @@
+# ::ProtocolError::constructor
+::ProtocolError::constructor {args} {
+  eval configure $args
+}
+
+# ::ProtocolError::destructor
+::ProtocolError::destructor {} {
+}
+
+# ::ProtocolError::__init__
+body ::ProtocolError::__init__ { message} {
+  return
+}
+
+# ::ProtocolError::__str__
+body ::ProtocolError::__str__ {} {
+  return string
+}
+

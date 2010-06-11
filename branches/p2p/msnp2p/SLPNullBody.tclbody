@@ -1,0 +1,14 @@
+# ::SLPNullBody::constructor
+::SLPNullBody::constructor {args} {
+  eval configure $args
+}
+
+# ::SLPNullBody::destructor
+::SLPNullBody::destructor {} {
+}
+
+# ::SLPNullBody::__init__
+body ::SLPNullBody::__init__ {} {
+  return
+}
+

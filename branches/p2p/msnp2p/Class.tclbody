@@ -1,0 +1,9 @@
+# ::Class::constructor
+::Class::constructor {args} {
+  eval configure $args
+}
+
+# ::Class::destructor
+::Class::destructor {} {
+}
+

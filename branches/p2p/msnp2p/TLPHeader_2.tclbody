@@ -1,0 +1,9 @@
+# ::TLPHeader_2::constructor
+::TLPHeader_2::constructor {args} {
+  eval configure $args
+}
+
+# ::TLPHeader_2::destructor
+::TLPHeader_2::destructor {} {
+}
+

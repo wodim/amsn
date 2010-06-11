@@ -1,0 +1,19 @@
+# ::ParseError::constructor
+::ParseError::constructor {args} {
+  eval configure $args
+}
+
+# ::ParseError::destructor
+::ParseError::destructor {} {
+}
+
+# ::ParseError::__init__
+body ::ParseError::__init__ { message infos} {
+  return
+}
+
+# ::ParseError::__str__
+body ::ParseError::__str__ {} {
+  return string
+}
+

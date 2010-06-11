@@ -1,0 +1,14 @@
+# ::SLPError::constructor
+::SLPError::constructor {args} {
+  eval configure $args
+}
+
+# ::SLPError::destructor
+::SLPError::destructor {} {
+}
+
+# ::SLPError::__init__
+body ::SLPError::__init__ { message} {
+  return
+}
+

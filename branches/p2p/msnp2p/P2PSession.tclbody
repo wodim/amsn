@@ -1,0 +1,134 @@
+# ::P2PSession::constructor
+::P2PSession::constructor {args} {
+  eval configure $args
+}
+
+# ::P2PSession::destructor
+::P2PSession::destructor {} {
+}
+
+# ::P2PSession::__init__
+body ::P2PSession::__init__ { session_manager peer euf_guid application_id message} {
+  return
+}
+
+# ::P2PSession::_generate_id
+body ::P2PSession::_generate_id { {max MAX_INT32} } {
+  return
+}
+
+# ::P2PSession::id
+body ::P2PSession::id {} {
+  return string
+}
+
+# ::P2PSession::incoming
+body ::P2PSession::incoming {} {
+  return string
+}
+
+# ::P2PSession::call_id
+body ::P2PSession::call_id {} {
+  return string
+}
+
+# ::P2PSession::peer
+body ::P2PSession::peer {} {
+  return string
+}
+
+# ::P2PSession::set_receive_data_buffer
+body ::P2PSession::set_receive_data_buffer { buffer total_size} {
+  return
+}
+
+# ::P2PSession::_invite
+body ::P2PSession::_invite { context} {
+  return
+}
+
+# ::P2PSession::_transreq
+body ::P2PSession::_transreq {} {
+  return
+}
+
+# ::P2PSession::_respond
+body ::P2PSession::_respond { status_code} {
+  return
+}
+
+# ::P2PSession::_respond_transreq
+body ::P2PSession::_respond_transreq { transreq status body} {
+  return
+}
+
+# ::P2PSession::_accept_transreq
+body ::P2PSession::_accept_transreq { transreq bridge listening nonce local_ip local_port extern_ip extern_port} {
+  return
+}
+
+# ::P2PSession::_decline_transreq
+body ::P2PSession::_decline_transreq { transreq} {
+  return
+}
+
+# ::P2PSession::_close
+body ::P2PSession::_close { context reason} {
+  return
+}
+
+# ::P2PSession::_dispose
+body ::P2PSession::_dispose {} {
+  return
+}
+
+# ::P2PSession::_send_p2p_data
+body ::P2PSession::_send_p2p_data { _data_or_file is_file} {
+  return deprecated
+}
+
+# ::P2PSession::_on_blob_sent
+body ::P2PSession::_on_blob_sent { blob} {
+  return
+}
+
+# ::P2PSession::_on_blob_received
+body ::P2PSession::_on_blob_received { blob} {
+  return
+}
+
+# ::P2PSession::peer_guid
+body ::P2PSession::peer_guid {} {
+  return string
+}
+
+# ::P2PSession::local_id
+body ::P2PSession::local_id {} {
+  return string
+}
+
+# ::P2PSession::remote_id
+body ::P2PSession::remote_id {} {
+  return string
+}
+
+# ::P2PSession::_close_end_points
+body ::P2PSession::_close_end_points { status} {
+  return
+}
+
+# ::P2PSession::_close_end_point
+body ::P2PSession::_close_end_point { end_point status} {
+  return
+}
+
+# ::P2PSession::_send_slp_message
+body ::P2PSession::_send_slp_message { message} {
+  return
+}
+
+# ::P2PSession::_send_data
+body ::P2PSession::_send_data { data} {
+  return
+}
+

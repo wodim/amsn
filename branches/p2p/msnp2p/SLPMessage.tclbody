@@ -1,0 +1,54 @@
+# ::SLPMessage::constructor
+::SLPMessage::constructor {args} {
+  eval configure $args
+}
+
+# ::SLPMessage::destructor
+::SLPMessage::destructor {} {
+}
+
+# ::SLPMessage::__init__
+body ::SLPMessage::__init__ { to frm branch cseq call_id max_forwards} {
+  return
+}
+
+# ::SLPMessage::to
+body ::SLPMessage::to {} {
+  return string
+}
+
+# ::SLPMessage::frm
+body ::SLPMessage::frm {} {
+  return string
+}
+
+# ::SLPMessage::branch
+body ::SLPMessage::branch {} {
+  return string
+}
+
+# ::SLPMessage::cseq
+body ::SLPMessage::cseq {} {
+  return int
+}
+
+# ::SLPMessage::call_id
+body ::SLPMessage::call_id {} {
+  return string
+}
+
+# ::SLPMessage::parse
+body ::SLPMessage::parse { chunk} {
+  return string
+}
+
+# ::SLPMessage::__str__
+body ::SLPMessage::__str__ {} {
+  return string
+}
+
+# ::SLPMessage::build
+body ::SLPMessage::build { raw_message} {
+  return SLPMessage
+}
+

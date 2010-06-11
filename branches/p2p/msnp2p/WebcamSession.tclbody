@@ -1,0 +1,104 @@
+# ::WebcamSession::constructor
+::WebcamSession::constructor {args} {
+  eval configure $args
+}
+
+# ::WebcamSession::destructor
+::WebcamSession::destructor {} {
+}
+
+# ::WebcamSession::__init__
+body ::WebcamSession::__init__ { producer session_manager peer euf_guid message} {
+  return
+}
+
+# ::WebcamSession::invite
+body ::WebcamSession::invite {} {
+  return
+}
+
+# ::WebcamSession::accept
+body ::WebcamSession::accept {} {
+  return
+}
+
+# ::WebcamSession::reject
+body ::WebcamSession::reject {} {
+  return
+}
+
+# ::WebcamSession::end
+body ::WebcamSession::end {} {
+  return
+}
+
+# ::WebcamSession::dispose
+body ::WebcamSession::dispose {} {
+  return
+}
+
+# ::WebcamSession::on_media_session_prepared
+body ::WebcamSession::on_media_session_prepared { session} {
+  return
+}
+
+# ::WebcamSession::_on_invite_received
+body ::WebcamSession::_on_invite_received { message} {
+  return
+}
+
+# ::WebcamSession::_on_bye_received
+body ::WebcamSession::_on_bye_received { message} {
+  return
+}
+
+# ::WebcamSession::_on_session_accepted
+body ::WebcamSession::_on_session_accepted {} {
+  return
+}
+
+# ::WebcamSession::_on_session_rejected
+body ::WebcamSession::_on_session_rejected { message} {
+  return
+}
+
+# ::WebcamSession::_on_data_blob_received
+body ::WebcamSession::_on_data_blob_received { blob} {
+  return
+}
+
+# ::WebcamSession::send_data
+body ::WebcamSession::send_data { data} {
+  return
+}
+
+# ::WebcamSession::send_binary_syn
+body ::WebcamSession::send_binary_syn {} {
+  return
+}
+
+# ::WebcamSession::send_binary_ack
+body ::WebcamSession::send_binary_ack {} {
+  return
+}
+
+# ::WebcamSession::send_binary_viewer_data
+body ::WebcamSession::send_binary_viewer_data {} {
+  return
+}
+
+# ::WebcamSession::_send_xml
+body ::WebcamSession::_send_xml {} {
+  return
+}
+
+# ::WebcamSession::_handle_xml
+body ::WebcamSession::_handle_xml { data} {
+  return
+}
+
+# ::WebcamSession::producer
+body ::WebcamSession::producer {} {
+  return bool
+}
+

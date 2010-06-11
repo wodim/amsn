@@ -1,0 +1,59 @@
+# ::MSNObject::constructor
+::MSNObject::constructor {args} {
+  eval configure $args
+}
+
+# ::MSNObject::destructor
+::MSNObject::destructor {} {
+}
+
+# ::MSNObject::__init__
+body ::MSNObject::__init__ { creator size typ location friendly shad shac data} {
+  return
+}
+
+# ::MSNObject::__ne__
+body ::MSNObject::__ne__ { other} {
+  return bool
+}
+
+# ::MSNObject::__eq__
+body ::MSNObject::__eq__ { other} {
+  return bool
+}
+
+# ::MSNObject::__hash__
+body ::MSNObject::__hash__ {} {
+  return string
+}
+
+# ::MSNObject::__set_data
+body ::MSNObject::__set_data { data} {
+  return
+}
+
+# ::MSNObject::parse
+body ::MSNObject::parse { client xml_data} {
+  return
+}
+
+# ::MSNObject::__compute_data_hash
+body ::MSNObject::__compute_data_hash { data} {
+  return string
+}
+
+# ::MSNObject::__compute_checksum
+body ::MSNObject::__compute_checksum {} {
+  return string
+}
+
+# ::MSNObject::__str__
+body ::MSNObject::__str__ {} {
+  return string
+}
+
+# ::MSNObject::__repr__
+body ::MSNObject::__repr__ {} {
+  return string
+}
+

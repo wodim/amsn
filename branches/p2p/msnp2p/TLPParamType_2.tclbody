@@ -1,0 +1,9 @@
+# ::TLPParamType_2::constructor
+::TLPParamType_2::constructor {args} {
+  eval configure $args
+}
+
+# ::TLPParamType_2::destructor
+::TLPParamType_2::destructor {} {
+}
+

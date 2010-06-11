@@ -1,0 +1,14 @@
+# ::SLPSessionError::constructor
+::SLPSessionError::constructor {args} {
+  eval configure $args
+}
+
+# ::SLPSessionError::destructor
+::SLPSessionError::destructor {} {
+}
+
+# ::SLPSessionError::__init__
+body ::SLPSessionError::__init__ { message} {
+  return
+}
+

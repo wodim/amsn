@@ -1,0 +1,20 @@
+# ::EufGuid::constructor
+::EufGuid::constructor {args} {
+  initAttributes
+  eval configure $args
+}
+
+# ::EufGuid::destructor
+::EufGuid::destructor {} {
+}
+
+# ::EufGuid::initAttributes
+body ::EufGuid::initAttributes {} {
+  set MSN_OBJECT {A4268EEC-FEC5-49E5-95C3-F126696BDBF6}
+  set FILE_TRANSFER {5D3E02AB-6190-11D3-BBBB-00C04F795683}
+  set MEDIA_RECEIVE_ONLY {1C9AA97E-9C05-4583-A3BD-908A196F1E92}
+  set MEDIA_SESSION {4BD96FC0-AB17-4425-A14A-439185962DC8}
+  set SHARE_PHOTO {41D3E74E-04A2-4B37-96F8-08ACDB610874}
+  set ACTIVITY {6A13AF9C-5308-4F35-923A-67E8DDA40C2F}
+}
+

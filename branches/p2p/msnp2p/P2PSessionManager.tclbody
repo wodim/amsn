@@ -1,0 +1,64 @@
+# ::P2PSessionManager::constructor
+::P2PSessionManager::constructor {args} {
+  eval configure $args
+}
+
+# ::P2PSessionManager::destructor
+::P2PSessionManager::destructor {} {
+}
+
+# ::P2PSessionManager::__init__
+body ::P2PSessionManager::__init__ { client} {
+  return
+}
+
+# ::P2PSessionManager::register_handler
+body ::P2PSessionManager::register_handler { handler_class} {
+  return
+}
+
+# ::P2PSessionManager::_register_session
+body ::P2PSessionManager::_register_session { session} {
+  return
+}
+
+# ::P2PSessionManager::_unregister_session
+body ::P2PSessionManager::_unregister_session { session} {
+  return
+}
+
+# ::P2PSessionManager::_on_chunk_transferred
+body ::P2PSessionManager::_on_chunk_transferred { chunk} {
+  return
+}
+
+# ::P2PSessionManager::_get_session
+body ::P2PSessionManager::_get_session { session_id} {
+  return
+}
+
+# ::P2PSessionManager::_search_session_by_call
+body ::P2PSessionManager::_search_session_by_call { call_id} {
+  return
+}
+
+# ::P2PSessionManager::_on_blob_received
+body ::P2PSessionManager::_on_blob_received { blob} {
+  return
+}
+
+# ::P2PSessionManager::_on_blob_sent
+body ::P2PSessionManager::_on_blob_sent { blob} {
+  return
+}
+
+# ::P2PSessionManager::_find_contact
+body ::P2PSessionManager::_find_contact { account} {
+  return
+}
+
+# ::P2PSessionManager::_blob_to_session
+body ::P2PSessionManager::_blob_to_session { blob} {
+  return
+}
+

@@ -1,0 +1,18 @@
+# ::PeerInfo::constructor
+::PeerInfo::constructor {args} {
+  initAttributes
+  eval configure $args
+}
+
+# ::PeerInfo::destructor
+::PeerInfo::destructor {} {
+}
+
+# ::PeerInfo::initAttributes
+body ::PeerInfo::initAttributes {} {
+  set PROTOCOL_VERSION 512
+  set IMPLEMENTATION_ID 0
+  set VERSION 3584
+  set CAPABILITIES 271
+}
+
