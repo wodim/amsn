@@ -1,0 +1,24 @@
+# ::ControlBlob::constructor
+::ControlBlob::constructor { session_id flags dw1 dw2 qw1} {
+  eval configure $args
+}
+
+# ::ControlBlob::destructor
+::ControlBlob::destructor {} {
+}
+
+# ::ControlBlob::__repr__
+body ::ControlBlob::__repr__ {} {
+  return string
+}
+
+# ::ControlBlob::get_chunk
+body ::ControlBlob::get_chunk { max_size} {
+  return string
+}
+
+# ::ControlBlob::is_control_blob
+body ::ControlBlob::is_control_blob {} {
+  return bool
+}
+

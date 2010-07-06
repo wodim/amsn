@@ -1,0 +1,119 @@
+# ::MessageChunk_1::constructor
+::MessageChunk_1::constructor { header body application_id} {
+  eval configure $args
+}
+
+# ::MessageChunk_1::destructor
+::MessageChunk_1::destructor {} {
+}
+
+# ::MessageChunk_1::id
+body ::MessageChunk_1::id {} {
+  return int
+}
+
+# ::MessageChunk_1::next_id
+body ::MessageChunk_1::next_id {} {
+  return int
+}
+
+# ::MessageChunk_1::session_id
+body ::MessageChunk_1::session_id {} {
+  return string
+}
+
+# ::MessageChunk_1::blob_id
+body ::MessageChunk_1::blob_id {} {
+  return string
+}
+
+# ::MessageChunk_1::ack_id
+body ::MessageChunk_1::ack_id {} {
+  return string
+}
+
+# ::MessageChunk_1::acked_id
+body ::MessageChunk_1::acked_id {} {
+  return string
+}
+
+# ::MessageChunk_1::size
+body ::MessageChunk_1::size {} {
+  return int
+}
+
+# ::MessageChunk_1::blob_size
+body ::MessageChunk_1::blob_size {} {
+  return int
+}
+
+# ::MessageChunk_1::is_control_chunk
+body ::MessageChunk_1::is_control_chunk {} {
+  return bool
+}
+
+# ::MessageChunk_1::is_ack_chunk
+body ::MessageChunk_1::is_ack_chunk {} {
+  return bool
+}
+
+# ::MessageChunk_1::is_nak_chunk
+body ::MessageChunk_1::is_nak_chunk {} {
+  return bool
+}
+
+# ::MessageChunk_1::is_nonce_chunk
+body ::MessageChunk_1::is_nonce_chunk {} {
+  return bool
+}
+
+# ::MessageChunk_1::is_signaling_chunk
+body ::MessageChunk_1::is_signaling_chunk {} {
+  return bool
+}
+
+# ::MessageChunk_1::has_progressed
+body ::MessageChunk_1::has_progressed {} {
+  return bool
+}
+
+# ::MessageChunk_1::set_data
+body ::MessageChunk_1::set_data { data} {
+  return
+}
+
+# ::MessageChunk_1::require_ack
+body ::MessageChunk_1::require_ack {} {
+  return bool
+}
+
+# ::MessageChunk_1::create_ack_chunk
+body ::MessageChunk_1::create_ack_chunk {} {
+  return string
+}
+
+# ::MessageChunk_1::get_nonce
+body ::MessageChunk_1::get_nonce {} {
+  return string
+}
+
+# ::MessageChunk_1::set_nonce
+body ::MessageChunk_1::set_nonce { nonce} {
+  return
+}
+
+# ::MessageChunk_1::create
+body ::MessageChunk_1::create { app_id session_id blob_id offset blob_size max_size sync} {
+  return MessageChunk_1
+}
+
+# ::MessageChunk_1::parse
+body ::MessageChunk_1::parse { data} {
+  return MessageChunk_1
+}
+
+# ::MessageChunk_1::__repr__
+body ::MessageChunk_1::__repr__ {} {
+  return string
+}
+

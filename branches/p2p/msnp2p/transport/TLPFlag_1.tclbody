@@ -1,0 +1,25 @@
+# ::TLPFlag_1::constructor
+::TLPFlag_1::constructor {} {
+  initAttributes
+  eval configure $args
+}
+
+# ::TLPFlag_1::destructor
+::TLPFlag_1::destructor {} {
+}
+
+# ::TLPFlag_1::initAttributes
+body ::TLPFlag_1::initAttributes {} {
+  set NAK 0x1
+  set ACK 0x2
+  set RAK 0x4
+  set RST 0x8
+  set FILE 0x10
+  set EACH 0x20
+  set CAN 0x40
+  set ERR 0x80
+  set KEY 0x100
+  set CRYPT 0x200
+  set UNKNOWN 0x1000000
+}
+

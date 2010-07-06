@@ -1,0 +1,9 @@
+# ::DLPType_2::constructor
+::DLPType_2::constructor {} {
+  eval configure $args
+}
+
+# ::DLPType_2::destructor
+::DLPType_2::destructor {} {
+}
+

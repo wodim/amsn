@@ -1,0 +1,59 @@
+# ::MessageBlob::constructor
+::MessageBlob::constructor { application_id data total_size session_id blob_id is_file} {
+  eval configure $args
+}
+
+# ::MessageBlob::destructor
+::MessageBlob::destructor {} {
+}
+
+# ::MessageBlob::__del__
+body ::MessageBlob::__del__ {} {
+  return
+}
+
+# ::MessageBlob::__str__
+body ::MessageBlob::__str__ {} {
+  return string
+}
+
+# ::MessageBlob::__repr__
+body ::MessageBlob::__repr__ {} {
+  return string
+}
+
+# ::MessageBlob::transferred
+body ::MessageBlob::transferred {} {
+  return int
+}
+
+# ::MessageBlob::is_complete
+body ::MessageBlob::is_complete {} {
+  return bool
+}
+
+# ::MessageBlob::is_data_blob
+body ::MessageBlob::is_data_blob {} {
+  return bool
+}
+
+# ::MessageBlob::is_control_blob
+body ::MessageBlob::is_control_blob {} {
+  return bool
+}
+
+# ::MessageBlob::read_data
+body ::MessageBlob::read_data {} {
+  return string
+}
+
+# ::MessageBlob::get_chunk
+body ::MessageBlob::get_chunk { int} {
+  return string
+}
+
+# ::MessageBlob::append_chunk
+body ::MessageBlob::append_chunk { chunk} {
+  return
+}
+

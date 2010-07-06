@@ -1,9 +1,0 @@
-# ::string_::constructor
-::string_::constructor {args} {
-  eval configure $args
-}
-
-# ::string_::destructor
-::string_::destructor {} {
-}
-
