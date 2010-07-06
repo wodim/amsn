@@ -1,5 +1,9 @@
 namespace eval ::p2p {
 
+package require snit
+
+source constants.tcl
+
 ::snit::type SLPMessage {
 
 option -headers
@@ -16,18 +20,18 @@ constructor { args } {
   set headers ""
   lappend $headers "To" [join [list "<msnmsgr:" $options(-to) ">"] ""]
   lappend $headers "From" [join [list "<msnmsgr:" $options(-frm) ">"] ""]
-  if { $options(-branch) } {
+  if { $options(-branch) != "" } {
     lappend $headers "Via" [join [list "MSNSLP/1.0/TLP ;branch=" $options(-branch)] ""]
   }
   lappend $headers "CSeq" $options(-cseq)
-  if { $call_id != "" } {
+  if { $options(-call_id) != "" } {
     lappend $headers "Call-ID" $options(-call_id)
   }
   lappend $headers "Max-Forwards" $options(-max_forwards)
 
   $self configure -headers $headers
 
-  $self configure -body [create SLPNullBody nullbody]
+  $self configure -body [SLPNullBody nullbody]
 }
 
 method parse { chunk } {
@@ -56,8 +60,8 @@ method parse { chunk } {
     }
   }
 
-  . configure -body [SLPMessageBody build content_type raw_body]
-  . configure -headers $headers
+  $self configure -body [SLPMessageBody build content_type raw_body]
+  $self configure -headers $headers
 }
 
 typemethod build {raw_message} {
@@ -96,7 +100,7 @@ delegate method * to SLPMessage
 
 constructor { args } {
   $self configurelist $args
-  set colon [string first ":" $options(-resource)
+  set colon [string first ":" $options(-resource)]
   $self configure -to [string range $options(-resource) 0 [expr {$colon - 1}]]
 }
 }
@@ -109,7 +113,6 @@ typevariable STATUS_MESSAGE { {200 OK} {404 "Not Found"} {500 "Internal Error"} 
 option -status
 option -reason
 
-}
 }
 
 ::snit::type SLPMessageBody {
@@ -125,14 +128,14 @@ option -capabilities_flags
 constructor { args } {
   $self configurelist $args
   set headers ""
-  if { $options(-session_id) } {
+  if { $options(-session_id) != "" } {
     lappend $headers "SessionID" $options(-session_id)
   }
-  if { $options(-channel_state) } {
-    lappend $headers "SChannelState" $options(-channel_state)
+  if { $options(-s_channel_state) != "" } {
+    lappend $headers "SChannelState" $options(-s_channel_state)
   }
-  if { $options(-capabilities_flags) } {
-    lappend $headers "Capabilities-Flags" $options(-capabilities_flags)}
+  if { $options(-capabilities_flags) != "" } {
+    lappend $headers "Capabilities-Flags" $options(-capabilities_flags)
   }
   $self configure -headers $headers
 }
@@ -161,10 +164,10 @@ method parse { data } {
 
 typemethod build {content_type content} {
   if { [array names content_classes -exact $content_type] == "" } {
-    SLPMessageBody create body $content_type
+    SLPMessageBody msgbody -content_type $content_type
   } else {
     set cls $content_classes($content_type)
-    $cls create body
+    $cls %AUTO%
   }
 }
 
@@ -175,20 +178,20 @@ typemethod register_content { content_type cls } {
 
 snit::type SLPNullBody {
 
-delegate option * from SLPMessageBody
-delegate method * from SLPMessageBody
+delegate option * to SLPMessageBody
+delegate method * to SLPMessageBody
 
 constructor { args } {
-  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $SLPContentType::NULL
+  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::NULL
   
-  SLPMessageBody register_content $SLPContentType::NULL SLPNullBody
+  SLPMessageBody register_content $::p2p::SLPContentType::NULL SLPNullBody
 }
 }
 
 snit::type SLPSessionRequestBody {
 
-delegate option * from SLPMessageBody
-delegate method * from SLPMessageBody
+delegate option * to SLPMessageBody
+delegate method * to SLPMessageBody
 
 option -euf_guid ""
 option -app_id ""
@@ -218,21 +221,21 @@ constructor { args } {
 }
 
 typeconstructor {
-  SLPMessageBody register_content $SLPContentType::SESSION_REQUEST SLPSessionRequestBody
+  SLPMessageBody register_content $::p2p::SLPContentType::SESSION_REQUEST SLPSessionRequestBody
 }
 }
 
 snit::type SLPTransferRequestBody {
 
-  delegate option * from SLPMessageBody
-  delegate method * from SLPMessageBody
+  delegate option * to SLPMessageBody
+  delegate method * to SLPMessageBody
 
   option -session_id ""
   option -s_channel_state ""
   option -capabilities_flags ""
 
 constructor { {session_id ""} {s_channel_state ""} {capabilities_flags ""} } {
-  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $SLPContentType::TRANSFER_REQUEST -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
+  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_REQUEST -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
   lappend $headers "NetID" -1388627126
   lappend $headers "Bridges" "TCPv1 SBBridge"
   lappend $headers "Conn-Type" "Port-Restrict-NAT"
@@ -246,8 +249,8 @@ constructor { {session_id ""} {s_channel_state ""} {capabilities_flags ""} } {
 }
 
 snit::type SLPTransferResponseBody {
-  delegate option * from SLPMessageBody
-  delegate method * from SLPMessageBody
+  delegate option * to SLPMessageBody
+  delegate method * to SLPMessageBody
 
   option -bridge ""
   option -listening ""
@@ -261,7 +264,7 @@ snit::type SLPTransferResponseBody {
   option -capabilities_flags ""
 
 constructor { {bridge ""} {listening ""} {nonce ""} {internal_ips ""} {internal_port ""} {external_ips ""} {external_port ""} {session_id ""} {channel_state ""} {capabilities_flags ""}} {
-  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $SLPContentType::TRANSFER_RESPONSE -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
+  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_RESPONSE -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
 
   $self configure -bridge $bridge
   $self configure -listening $listening
@@ -278,7 +281,7 @@ constructor { {bridge ""} {listening ""} {nonce ""} {internal_ips ""} {internal_
   }
   if { $listening == 1 } {
     lappend $headers "Listening" "true"
-  } elseif { $listening == 0}
+  } elseif { $listening == 0} {
     lappend $headers "Listening" "false"
   }
   if { $nonce != "" } {
@@ -308,13 +311,13 @@ constructor { {bridge ""} {listening ""} {nonce ""} {internal_ips ""} {internal_
 
 snit::type SLPSessionCloseBody {
 
-delegate method * from SLPMessageBody
-delegate option * from SLPMessageBody
+delegate method * to SLPMessageBody
+delegate option * to SLPMessageBody
 
 option -context ""
 
 constructor { {context ""} {session_id ""} {s_channel_state ""} {capabilities_flags ""}} {
-    install SLPMessageBody using SLPMessageBody %AUTO% -content_type $SLPContentType::SESSION_CLOSE -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
+    install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::SESSION_CLOSE -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
   $self configure -context $context
 
   if { $context != "" } {
@@ -324,20 +327,20 @@ constructor { {context ""} {session_id ""} {s_channel_state ""} {capabilities_fl
   $self configure -headers $headers
 }
 
-typecontructor {
-  SLPMessageBody::register_content $SLPContentType::SESSION_CLOSE SLPSessionCloseBody
+typeconstructor {
+  SLPMessageBody register_content $::p2p::SLPContentType::SESSION_CLOSE SLPSessionCloseBody
 }
 
 }
 
 snit::type SLPSessionFailureResponseBody {
 
-delegate method * from SLPMessageBody
-delegate option * from SLPMessageBody
+delegate method * to SLPMessageBody
+delegate option * to SLPMessageBody
 
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO%
 }
 }
-
+::p2p::SLPMessage msg1 -frm aiviv@hotmail.com -to msn@matthias-berg.eu
 }
