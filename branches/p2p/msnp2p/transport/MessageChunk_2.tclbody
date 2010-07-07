@@ -1,9 +1,0 @@
-# ::MessageChunk_2::constructor
-::MessageChunk_2::constructor {} {
-  eval configure $args
-}
-
-# ::MessageChunk_2::destructor
-::MessageChunk_2::destructor {} {
-}
-

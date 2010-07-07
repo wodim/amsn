@@ -1,9 +1,0 @@
-# ::TLPFlag_2::constructor
-::TLPFlag_2::constructor {} {
-  eval configure $args
-}
-
-# ::TLPFlag_2::destructor
-::TLPFlag_2::destructor {} {
-}
-
