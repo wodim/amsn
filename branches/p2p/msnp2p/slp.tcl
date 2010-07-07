@@ -239,8 +239,11 @@ snit::type SLPTransferRequestBody {
   option -s_channel_state ""
   option -capabilities_flags ""
 
-constructor { {session_id ""} {s_channel_state ""} {capabilities_flags ""} } {
-  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_REQUEST -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
+  variable headers
+
+constructor { args } {
+  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_REQUEST 
+  $self configurelist $args
   lappend $headers "NetID" -1388627126
   lappend $headers "Bridges" "TCPv1 SBBridge"
   lappend $headers "Conn-Type" "Port-Restrict-NAT"
@@ -249,7 +252,6 @@ constructor { {session_id ""} {s_channel_state ""} {capabilities_flags ""} } {
   lappend $headers "ICF" "false"
   lappend $headers "Nonce" "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
   lappend $headers "Nat-Trav-Msg-Type" "WLX-Nat-Trav-Msg-Direct-Connect-Req"
-  $self configure -headers $headers
 }
 }
 
@@ -268,41 +270,35 @@ snit::type SLPTransferResponseBody {
   option -channel_state ""
   option -capabilities_flags ""
 
-constructor { {bridge ""} {listening ""} {nonce ""} {internal_ips ""} {internal_port ""} {external_ips ""} {external_port ""} {session_id ""} {channel_state ""} {capabilities_flags ""}} {
-  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_RESPONSE -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
+  variable headers
 
-  $self configure -bridge $bridge
-  $self configure -listening $listening
-  $self configure -nonce $nonce
-  $self configure -internal_ips $internal_ips
-  $self configure -internal_port $internal_port
-  $self configure -external_port $external_port
-  $self configure -session_id $session_id
-  $self configure -channel_state $channel_state
-  $self configure -capabilities_flags $capabilities_flags
+constructor { args } {
+  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_RESPONSE
 
-  if { $bridge != "" } {
-    lappend $headers "Bridge" $bridge
+  $self configurelist $args
+
+  if { $options($bridge) != "" } {
+    lappend $headers "Bridge" $options($bridge)
   }
-  if { $listening == 1 } {
+  if { $options($listening) == 1 } {
     lappend $headers "Listening" "true"
-  } elseif { $listening == 0} {
+  } elseif { $options($listening) == 0} {
     lappend $headers "Listening" "false"
   }
-  if { $nonce != "" } {
-    lappend $headers "Nonce" [string toupper $nonce]
+  if { $options($nonce) != "" } {
+    lappend $headers "Nonce" [string toupper $options($nonce)]
   }
-  if { $internal_ips != "" } {
-    lappend $headers "IPv4Internal-Addrs" $internal_ips
+  if { $options($internal_ips) != "" } {
+    lappend $headers "IPv4Internal-Addrs" $options($internal_ips)
   }
-  if { $internal_port != "" } {
-    lappend $headers "IPv4Internal-Port" $internal_port
+  if { $options($internal_port) != "" } {
+    lappend $headers "IPv4Internal-Port" $options($internal_port)
   }
-  if { $external_ips != "" } {
-    lappend $headers "IPv4External-Addrs" $external_ips
+  if { $options($external_ips) != "" } {
+    lappend $headers "IPv4External-Addrs" $options($external_ips)
   }
-  if { $external_port != "" } {
-    lappend $headers "IPv4External-Port" $external_port
+  if { $options($external_port) != "" } {
+    lappend $headers "IPv4External-Port" $options($external_port)
   }
 
   lappend $headers "Nat-Trav-Msg-Type" "WLX-Nat-Trav-Msg-Direct-Connect-Req"
@@ -310,7 +306,6 @@ constructor { {bridge ""} {listening ""} {nonce ""} {internal_ips ""} {internal_
   lappend $headers "TCP-Conn-Type" "Symmetric-NAT"
   lappend $headers "IPv6-global" ""
 
-  $self configure -headers $headers
 }
 }
 
@@ -320,16 +315,16 @@ delegate method * to SLPMessageBody
 delegate option * to SLPMessageBody
 
 option -context ""
+variable headers
 
-constructor { {context ""} {session_id ""} {s_channel_state ""} {capabilities_flags ""}} {
-    install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::SESSION_CLOSE -session_id $session_id -s_channel_state $s_channel_state -capabilities_flags $capabilities_flags
-  $self configure -context $context
+constructor { args } {
+  install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::SESSION_CLOSE
+  $self configurelist $args
 
   if { $context != "" } {
     lappend $headers "Context" [base64::encode $context]
   }
 
-  $self configure -headers $headers
 }
 
 typeconstructor {
