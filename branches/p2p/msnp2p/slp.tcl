@@ -6,8 +6,6 @@ source constants.tcl
 
 ::snit::type SLPMessage {
 
-option -headers
-option -body
 option -to ""
 option -frm ""
 option -branch ""
@@ -16,6 +14,8 @@ option -call_id ""
 option -max_forwards 0
 
 constructor { args } {
+  variable headers
+  variable body
   $self configurelist $args
   set headers ""
   lappend $headers "To" [join [list "<msnmsgr:" $options(-to) ">"] ""]
@@ -29,15 +29,15 @@ constructor { args } {
   }
   lappend $headers "Max-Forwards" $options(-max_forwards)
 
-  $self configure -headers $headers
-
-  $self configure -body [SLPNullBody nullbody]
+  set body [SLPNullBody nullbody]
 }
 
 method parse { chunk } {
+  variable headers
+  variable body
+  variable found 0
+
   set lines [split $chunk "\n"]
-  set found 0
-  set headers [$self cget -headers]
   foreach line $lines {
     set line [trim $line]
     if { $found == 1 } {
@@ -60,9 +60,10 @@ method parse { chunk } {
     }
   }
 
-  $self configure -body [SLPMessageBody build content_type raw_body]
-  $self configure -headers $headers
+  set body [SLPMessageBody $build $content_type $raw_body]
 }
+
+
 
 typemethod build {raw_message} {
 
@@ -342,5 +343,5 @@ constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO%
 }
 }
-::p2p::SLPMessage msg1 -frm aiviv@hotmail.com -to msn@matthias-berg.eu
+::p2p::SLPMessage msg1 -frm sender@hotmail.com -to receiver@hotmail.com
 }
