@@ -13,9 +13,10 @@ option -cseq 0
 option -call_id ""
 option -max_forwards 0
 
+variable headers
+variable body
+
 constructor { args } {
-  variable headers
-  variable body
   $self configurelist $args
   set headers ""
   lappend $headers "To" [join [list "<msnmsgr:" $options(-to) ">"] ""]
@@ -33,8 +34,6 @@ constructor { args } {
 }
 
 method parse { chunk } {
-  variable headers
-  variable body
   variable found 0
 
   set lines [split $chunk "\n"]
@@ -85,11 +84,11 @@ typemethod build {raw_message} {
   if { [string trim [lindex $start_line 0]] == "MSNSLP/1.0" } {
     set status [string trim [lindex $start_line 1]]
     set reason [string trim [lindex $start_line 2]]
-    SLPResponseMessage slp_message status reason
+    SLPResponseMessage slp_message $status $reason
   } else {
     set method [string trim [lindex $start_line 0]]
     set resource [string trim [lindex $start_line 1]]
-    SLPRequestMessage slp_message method resource
+    SLPRequestMessage slp_message $method $resource
   }
   slp_message parse $content
 }
@@ -99,10 +98,14 @@ typemethod build {raw_message} {
 delegate option * to SLPMessage
 delegate method * to SLPMessage
 
+option -to ""
+
 constructor { args } {
   $self configurelist $args
   set colon [string first ":" $options(-resource)]
-  $self configure -to [string range $options(-resource) 0 [expr {$colon - 1}]]
+  if {  $options(-to) != "" } {
+    $self configure -to [string range $options(-resource) 0 [expr {$colon - 1}]]
+  }
 }
 }
 
@@ -118,13 +121,13 @@ option -reason
 
 ::snit::type SLPMessageBody {
 
-option -content_type
-variable -content_classes
-option -headers
-option -body
-option -session_id
-option -s_channel_state
-option -capabilities_flags
+option -content_type ""
+variable content_classes ""
+option -headers ""
+option -body ""
+option -session_id ""
+option -s_channel_state ""
+option -capabilities_flags ""
 
 constructor { args } {
   $self configurelist $args
@@ -142,13 +145,14 @@ constructor { args } {
 }
 
 method parse { data } {
+  variable found 0
+
   set headers [$self cget -headers]
   if { [string length $data] == 0 } {
     return
   }
   set data [string strip $data "\x00"]
   set lines [split $data "\n"]
-  set found 0
   foreach line $lines {
     set line [trim $line]
     if { $found == 0 } {
