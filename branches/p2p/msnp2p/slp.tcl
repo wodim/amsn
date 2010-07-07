@@ -33,6 +33,14 @@ constructor { args } {
   set body [SLPNullBody nullbody]
 }
 
+method headers { } {
+  return $headers
+}
+
+method body { } {
+  return $body
+}
+
 method parse { chunk } {
   variable found 0
 
@@ -123,8 +131,8 @@ option -reason
 
 option -content_type ""
 variable content_classes ""
-option -headers ""
-option -body ""
+variable headers ""
+variable body ""
 option -session_id ""
 option -s_channel_state ""
 option -capabilities_flags ""
@@ -141,7 +149,14 @@ constructor { args } {
   if { $options(-capabilities_flags) != "" } {
     lappend $headers "Capabilities-Flags" $options(-capabilities_flags)
   }
-  $self configure -headers $headers
+}
+
+method headers { } {
+  return $headers
+}
+
+method body { } {
+  return $body
 }
 
 method parse { data } {
@@ -160,11 +175,10 @@ method parse { data } {
          set found 1
       } else {
         set name_value [split $line ":"]
-        lappend headers [lindex $name_value 0] [lindex $name_value 1]
+        lappend $headers [lindex $name_value 0] [lindex $name_value 1]
       }
     }
   }
-  $self configure -headers $headers
 }
 
 typemethod build {content_type content} {
