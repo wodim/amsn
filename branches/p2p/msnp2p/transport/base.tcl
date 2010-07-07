@@ -21,12 +21,13 @@ snit::type BaseP2PTransport {
   }
 
   method version { } {
-    #@@@@@@@@@@@@@@@@@ look up in amsn1 code
-    if { [[[[$self cget -client] cget -profile] cget -client_id] supports_p2pv2] && [[[[$self cget -peer] cget -client] cget -capabilities] supports_p2pv2]} {
-      return 2
-    } else {
+    #@@@@@@@@@@@@@@@@@ amsn doesn't support p2pv2 yet.
+    #now, about finding whether remote peer supports p2pv2... TODO later
+    #if { [[[[$self cget -client] cget -profile] cget -client_id] supports_p2pv2] && [[[[$self cget -peer] cget -client] cget -capabilities] supports_p2pv2]} {
+    #  return 2
+    #} else {
       return 1
-    }
+    #}
   }
 
   method send {peer peer_guid blob} {

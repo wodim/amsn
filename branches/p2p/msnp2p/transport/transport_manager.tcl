@@ -19,7 +19,7 @@ namespace eval ::p2p::transport {
       $self configure -transport_signals [array set transport_signals {}]
       $self configure -data_blobs [array set data_blobs {}]
       #@@@@@@@@@@@@@@@@@@
-      $self configure -uun_transport [list NotificationP2PTransport [$self cget -client] $self]
+      #$self configure -uun_transport [list NotificationP2PTransport [$self cget -client] $self]
             
 
     }
