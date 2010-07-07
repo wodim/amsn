@@ -18,19 +18,25 @@ variable body
 
 constructor { args } {
   $self configurelist $args
-  set headers ""
-  lappend $headers "To" [join [list "<msnmsgr:" $options(-to) ">"] ""]
-  lappend $headers "From" [join [list "<msnmsgr:" $options(-frm) ">"] ""]
+  array set headers {}
+  set headers(To) [join [list "<msnmsgr:" $options(-to) ">"] ""]
+  set headers(From) [join [list "<msnmsgr:" $options(-frm) ">"] ""]
   if { $options(-branch) != "" } {
-    lappend $headers "Via" [join [list "MSNSLP/1.0/TLP ;branch=" $options(-branch)] ""]
+    set headers(Via) [join [list "MSNSLP/1.0/TLP ;branch=" $options(-branch)] ""]
   }
-  lappend $headers "CSeq" $options(-cseq)
+  set headers(CSeq) $options(-cseq)
   if { $options(-call_id) != "" } {
-    lappend $headers "Call-ID" $options(-call_id)
+    set headers(Call-ID) $options(-call_id)
   }
-  lappend $headers "Max-Forwards" $options(-max_forwards)
+  set headers(Max-Forwards) $options(-max_forwards)
 
-  set body [SLPNullBody nullbody]
+  set_body [SLPNullBody nullbody]
+  
+}
+
+method set_body { data } {
+  set body $data
+  set headers(Content-Length) [string length $body]
 }
 
 method headers { } {
@@ -54,23 +60,31 @@ method parse { chunk } {
          set found 1
       } else {
         set name_value [split $line ":"]
-        lappend headers [lindex $name_value 0] [lindex $name_value 1]
+        set headers([lindex $name_value 0]) [lindex $name_value 1]
       }
     }
   }
 
-  set content_type ""
-  foreach {type msg} $headers {
-    if { $type == "Content-Type"} {
-      set content_type $msg
-      break
-    }
+  if { [lsearch [array names headers] "Content-Type"] >= 0 } {
+    set content_type $headers(Content-Type)
+  } else {
+    set content_type ""
   }
-
-  set body [SLPMessageBody $build $content_type $raw_body]
+  set_body [SLPMessageBody $build $content_type $raw_body]
 }
 
+method toString { } {
 
+  set str ""
+  set newl \r\n
+  #content-length
+  foreach type [array names headers] {
+    set msg $headers($type)
+    set str [join [list $str $type : $msg $newl] ""] ;#concat strips newlines
+  }
+  set str [join [list $str $newl] ""]
+
+}
 
 typemethod build {raw_message} {
 
@@ -139,15 +153,15 @@ option -capabilities_flags ""
 
 constructor { args } {
   $self configurelist $args
-  set headers ""
+  array set headers {}
   if { $options(-session_id) != "" } {
-    lappend $headers "SessionID" $options(-session_id)
+    set headers(SessionID) $options(-session_id)
   }
   if { $options(-s_channel_state) != "" } {
-    lappend $headers "SChannelState" $options(-s_channel_state)
+    set headers(SChannelState) $options(-s_channel_state)
   }
   if { $options(-capabilities_flags) != "" } {
-    lappend $headers "Capabilities-Flags" $options(-capabilities_flags)
+    set headers(Capabilities-Flags) $options(-capabilities_flags)
   }
 }
 
@@ -175,7 +189,7 @@ method parse { data } {
          set found 1
       } else {
         set name_value [split $line ":"]
-        lappend $headers [lindex $name_value 0] [lindex $name_value 1]
+        set headesr([lindex $name_value 0]) [lindex $name_value 1]
       }
     }
   }
@@ -227,16 +241,15 @@ constructor { args } {
 
   set headers {}
   if { $euf_guid != "" } {
-    lappend $headers "EUF-GUID" $euf_guid
+    set headers(EUF-GUID) $euf_guid
   }
   if { $app_id != "" } {
-    lappend $headers "AppID" $app_id
+    set headers(AppID) $app_id
   }
   if { $capabilities_flags != 1 } {
-    lappend $headers "Context" [base64::encode $context]
+    set headers(Context) [base64::encode $context]
   }
 
-  $self configure -headers $headers
 }
 
 typeconstructor {
@@ -258,14 +271,14 @@ snit::type SLPTransferRequestBody {
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_REQUEST 
   $self configurelist $args
-  lappend $headers "NetID" -1388627126
-  lappend $headers "Bridges" "TCPv1 SBBridge"
-  lappend $headers "Conn-Type" "Port-Restrict-NAT"
-  lappend $headers "TCP-Conn-Type" "Symmetric-NAT"
-  lappend $headers "UPnPNat" "false"
-  lappend $headers "ICF" "false"
-  lappend $headers "Nonce" "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
-  lappend $headers "Nat-Trav-Msg-Type" "WLX-Nat-Trav-Msg-Direct-Connect-Req"
+  set headers(NetID) -1388627126
+  set headers(Bridges) "TCPv1 SBBridge"
+  set headers(Conn-Type) "Port-Restrict-NAT"
+  set headers(TCP-Conn-Type) "Symmetric-NAT"
+  set headers(UPnPNat) "false"
+  set headers(ICF) "false"
+  set headers(Nonce) "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
+  set headers(Nat-Trav-Msg-Type) "WLX-Nat-Trav-Msg-Direct-Connect-Req"
 }
 }
 
@@ -292,33 +305,33 @@ constructor { args } {
   $self configurelist $args
 
   if { $options($bridge) != "" } {
-    lappend $headers "Bridge" $options($bridge)
+    set headers(Bridge) $options($bridge)
   }
   if { $options($listening) == 1 } {
-    lappend $headers "Listening" "true"
+    set headers(Listening) "true"
   } elseif { $options($listening) == 0} {
-    lappend $headers "Listening" "false"
+    set headers(Listening) "false"
   }
   if { $options($nonce) != "" } {
-    lappend $headers "Nonce" [string toupper $options($nonce)]
+    set headers(Nonce) [string toupper $options($nonce)]
   }
   if { $options($internal_ips) != "" } {
-    lappend $headers "IPv4Internal-Addrs" $options($internal_ips)
+    set headers(IPv4Internal-Addrs) $options($internal_ips)
   }
   if { $options($internal_port) != "" } {
-    lappend $headers "IPv4Internal-Port" $options($internal_port)
+    set headers(IPv4Internal-Port) $options($internal_port)
   }
   if { $options($external_ips) != "" } {
-    lappend $headers "IPv4External-Addrs" $options($external_ips)
+    set headers(IPv4External-Addrs) $options($external_ips)
   }
   if { $options($external_port) != "" } {
-    lappend $headers "IPv4External-Port" $options($external_port)
+    set headers(IPv4External-Port) $options($external_port)
   }
 
-  lappend $headers "Nat-Trav-Msg-Type" "WLX-Nat-Trav-Msg-Direct-Connect-Req"
-  lappend $headers "Conn-Type" "Port-Restrict-NAT"
-  lappend $headers "TCP-Conn-Type" "Symmetric-NAT"
-  lappend $headers "IPv6-global" ""
+  set headers(Nat-Trav-Msg-Type) "WLX-Nat-Trav-Msg-Direct-Connect-Req"
+  set headers(Conn-Type) "Port-Restrict-NAT"
+  set headers(TCP-Conn-Type) "Symmetric-NAT"
+  set headers(IPv6-global) ""
 
 }
 }
@@ -336,7 +349,7 @@ constructor { args } {
   $self configurelist $args
 
   if { $context != "" } {
-    lappend $headers "Context" [base64::encode $context]
+    set headers(Context) [base64::encode $context]
   }
 
 }
