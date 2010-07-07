@@ -7,13 +7,14 @@ namespace eval ::p2p::transport {
     option -transports
     option -transport_signals
     option -data_blobs
+    option -client ""
 
     constructor {args} {
 
       $self configurelist $args
 
       $self configure -switchboard_manager [[$self cget -client] cget -switchboard_manager]
-      $self configure -default_transport [list SwitchboardP2PTransport handle_peer $self]
+      $self configure -default_transport [list SwitchboardP2PTransport handle_peer [$self cget -client] $self]
       $self configure -transports {}
       $self configure -transport_signals [array set transport_signals {}]
       $self configure -data_blobs [array set data_blobs {}]
@@ -77,7 +78,7 @@ namespace eval ::p2p::transport {
 
     method On_chunk_received { transport chunk} {
 
-      $self emit "chunk-transferred" $chunk
+      #$self emit "chunk-transferred" $chunk
       set session_id [$chunk cget -session_id]
       set blob_id [$blob cget -blob_id]
       set blobs [$self cget -data_blobs]
@@ -95,7 +96,7 @@ namespace eval ::p2p::transport {
 
       $blob append_chunk $chunk
       if { [$blob is_complete] == 1 } {
-        $self emit "blob-received" $blob
+        #$self emit "blob-received" $blob
         array unset blobs $session_id
         $self configure -data_blobs $blobs
       }
@@ -103,15 +104,15 @@ namespace eval ::p2p::transport {
     }
 
     method On_chunk_sent { transport chunk} {
-      $self emit "chunk-transferred" $chunk
+      #$self emit "chunk-transferred" $chunk
     }
 
     method On_blob_sent { transport blob} {
-      $self emit "blob-sent" $blob
+      #$self emit "blob-sent" $blob
     }
 
     method On_blob_received { transport blob} {
-      $self emit "blob-received" $blob
+      #$self emit "blob-received" $blob
     }
 
     #@@@@@@@@@@@@@@ $msg toString?

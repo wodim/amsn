@@ -21,6 +21,7 @@ snit::type BaseP2PTransport {
   }
 
   method version { } {
+    #@@@@@@@@@@@@@@@@@ look up in amsn1 code
     if { [[[[$self cget -client] cget -profile] cget -client_id] supports_p2pv2] && [[[[$self cget -peer] cget -client] cget -capabilities] supports_p2pv2]} {
       return 2
     } else {
@@ -72,6 +73,7 @@ snit::type BaseP2PTransport {
     if { [$self version] == 1 } {
       set pending_blob($ack_id) $blob
     } else {
+      #$self emit "blob-sent" $blob
     }
 
   }
@@ -86,7 +88,7 @@ snit::type BaseP2PTransport {
     set blob $pending_ack($blob_id)
     set pos [lsearch $chunk_id $blob]
     set blob [lreplace $blob $pos $pos]
-    $self emit "blob-sent" $blob
+    #$self emit "blob-sent" $blob
 
   }
 
@@ -124,7 +126,7 @@ snit::type BaseP2PTransport {
       if { [$chunk is_signaling_chunk] == 1 } {
         $self On_signaling_chunk_received $chunk
       } else {
-        $self emit "chunk-received" $chunk
+        #$self emit "chunk-received" $chunk
       }
     }
 
@@ -147,7 +149,7 @@ snit::type BaseP2PTransport {
 
     $blob AppendChunk $chunk
     if { [$blob is_complete] } {
-      $self emit "blob-received" blob
+      #$self emit "blob-received" blob
       array unset signaling_blobs $blob_id
     }
 
@@ -155,7 +157,7 @@ snit::type BaseP2PTransport {
 
   method On_chunk_sent { chunk } {
 
-    $self emit "chunk-sent" $chunk
+    #$self emit "chunk-sent" $chunk
     $self Process_send_queue
 
   }
