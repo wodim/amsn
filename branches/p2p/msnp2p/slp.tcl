@@ -78,9 +78,9 @@ method toString { } {
   set str ""
   set newl \r\n
   #content-length
-  foreach type [array names headers] {
-    set msg $headers($type)
-    set str [join [list $str $type : $msg $newl] ""] ;#concat strips newlines
+  foreach key [array names headers] {
+    set value $headers($key)
+    set str [join [list $str $key : $value $newl] ""] ;#concat strips newlines
   }
   set str [join [list $str $newl] ""]
 
@@ -189,7 +189,7 @@ method parse { data } {
          set found 1
       } else {
         set name_value [split $line ":"]
-        set headesr([lindex $name_value 0]) [lindex $name_value 1]
+        set headers([lindex $name_value 0]) [lindex $name_value 1]
       }
     }
   }
