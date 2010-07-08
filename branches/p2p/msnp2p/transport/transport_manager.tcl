@@ -6,6 +6,7 @@ namespace eval ::p2p::transport {
     option -default_transport
     option -transports
     option -transport_signals
+    option -supported_transports
     option -data_blobs
     option -client ""
 
@@ -18,6 +19,7 @@ namespace eval ::p2p::transport {
       $self configure -transports {}
       $self configure -transport_signals [array set transport_signals {}]
       $self configure -data_blobs [array set data_blobs {}]
+      $self configure -supported_transports [list SwitchboardP2PTransport handle_peer [$self cget -client] $self] [list DirectP2PTransport handle_peer [$self cget -client] $self]
       #@@@@@@@@@@@@@@@@@@ register NS
       #$self configure -uun_transport [list NotificationP2PTransport [$self cget -client] $self]
             

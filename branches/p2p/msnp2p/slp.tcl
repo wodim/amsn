@@ -83,6 +83,7 @@ method toString { } {
     set str [join [list $str $key : $value $newl] ""] ;#concat strips newlines
   }
   set str [join [list $str $newl] ""]
+  return $str
 
 }
 
@@ -171,6 +172,14 @@ method headers { } {
 
 method body { } {
   return $body
+}
+
+method setBody { body } {
+  $self configure -body $body
+}
+
+method setHeaders { headers } {
+  $self configure -headers $headers
 }
 
 method parse { data } {
@@ -265,6 +274,10 @@ snit::type SLPTransferRequestBody {
   option -session_id ""
   option -s_channel_state ""
   option -capabilities_flags ""
+  option -bridges {}
+  option -conn_type "Unknown-Connect"
+  option -upnp 0
+  option -firewall 0
 
   variable headers
 
