@@ -22,7 +22,7 @@ namespace eval ::p2p::transport {
     typemethod Can_handle_message { message switchboard_client} {
 
       #could we have several content types?
-      return [expr { [$message cget -content_type] == "application/x-msnmsgrp2p" } ]
+      return [expr { [string first "application/x-msnmsgrp2p" [$message cget -content_type] >= 0} ]
 
     }
 
@@ -54,12 +54,12 @@ namespace eval ::p2p::transport {
 
       set version 1
       set headers [$message headers]
-      foreach type [array names $headers] {
-        set msg $headers($type)
-        if { $type == "P2P-Dest" && [string first ";" $type] >= 0 } {
+      foreach key [array names headers] {
+        set value $headers($key)
+        if { $key == "P2P-Dest" && [string first ";" $key] >= 0 } {
           set version 2
-          set semic [string first ";" $msg]
-          set dest_guid [string range $msg [expr {$semic+1}] end]
+          set semic [string first ";" $value]
+          set dest_guid [string range $value [expr {$semic+1}] end]
           if { $dest_guid != [::config::getGlobalKey machineguid] } {
             #this chunk is for our other self
             return
@@ -87,18 +87,18 @@ namespace eval ::p2p::transport {
 
     typemethod handle_message { client switchboard message transport_manager} {
 
+      array set headers [$message cget -headers]
       set guid ""
       set peer ""
-      foreach type [array names $headers] {
-        set msg $headers($type)
-        if { $type == "P2P-Src"} {
-          if { [lsearch $msg ";"] > 0 } {
-            set semic [string first ";" $msg] ;#Or is there no chance we'll get a second semicolon in there?
-            set peer [string range $msg 0 [expr {$semic - 1}]] ;#Or should we make sure the peer is actually in the SB?
-            # Strip { } 's : not needed?
-            set guid [string range $msg [expr {$semic + 1}] end]]
+      foreach key [array names headers] {
+        set value $headers($key)
+        if { $key == "P2P-Src"} {
+          if { [lsearch $value ";"] > 0 } {
+            set semic [string first ";" $value]
+            set peer [string range $value 0 [expr {$semic - 1}]] ;#If that is our own address, check who is in the switchboard
+            set guid [string range $value [expr {$semic + 1}] end]]
           } else {
-            set peer $msg
+            set peer $value
           }
         } 
       }
