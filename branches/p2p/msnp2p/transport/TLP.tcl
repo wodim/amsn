@@ -14,6 +14,7 @@ namespace eval ::p2p::transport {
     option -blob_id ""
     option -current_size 0
     option -id ""
+    option -is_file ""
 
     constructor { args } {
 

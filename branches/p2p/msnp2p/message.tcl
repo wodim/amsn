@@ -2,14 +2,13 @@ namespace eval ::p2p {
 
 snit::type Message {
 
-variable headers
+variable headers -array {}
 variable body ""
 option -content_type
 
 constructor { args } {
   $self configurelist $args
   $self clear
-  array set headers {}
 }
 
 method add_header { key value } {

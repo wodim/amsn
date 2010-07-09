@@ -90,30 +90,202 @@ method Respond { status_code} {
 
 }
 
-method Respond_transreq { transreq status body} {}
+method Respond_transreq { transreq status body} {
 
-method Accept_transreq { transreq bridge listening nonce local_ip local_port extern_ip extern_port} {}
+  incr options(-cseq)
+  SLPResponseMessage resp -status $status -peer $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id
+$options(-call_id)
+  $resp setBody $body
+  $self Send_p2p_data $resp
 
-method Decline_transreq { transreq} {}
+}
 
-method Close { context reason} {}
+method Accept_transreq { transreq bridge listening nonce local_ip local_port extern_ip extern_port} {
 
-method Send_p2p_data { _data_or_file is_file} {}
+  set conn_type [::abook::getDemographicField conntype]
+  SLPTransferResponseBody body -bridge $bridge -listening $listening -nonce $nonce -local_ip $local_ip -local_port $local_port -extern_ip $extern_ip -extern_port $extern_port -conn_type $conn_type -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1
+  $self Respond_transreq 200 $body
 
-method On_blob_sent { blob} {}
+}
 
-method On_blob_received { blob} {}
+method Decline_transreq { transreq} {
 
-method peer_guid {} {}
+  SLPTransferResponseBody $body -session_id $options(-id)
+  $self Respond_transreq 603 $body
 
-method local_id {} {}
+}
 
-method remote_id {} {}
+method Select_address { transresp } {
 
-method Close_end_points { status} {}
+  set client_ip [::abook::getDemographicField clientip]
+  set local_ip [::abook::getDemographicField localip]
+  set port [$transresp cget -external_port]
+  set ips {}
 
-method Close_end_point { end_point status} {}
+  foreach ip [$transresp cget -external_ips] {
+    if { $ip == $client_ip} { ;#same NAT
+      set ips {}
+      break
+    }
+    lappend $ips [list $ip $port]
+  }
 
-method Send_slp_message { msg} {}
+  if { [llength $ips] > 0 } {
+    return [lindex $ips 0]
+  }
 
-method Send_data { data} {}
+  set port [$transresp cget -internal_port]
+  set dot [string last "." $local_ip]
+  set local_subnet [string range $local_ip 0 $dot]
+  foreach ip [$transresp cget -internal_ips] {
+    set dot [string last "." $ip
+    set remote_subnet [string range $ip 0 $dot]
+    if { $local_subnet == $remote_subnet} {
+      return [list $ip $port]
+    }
+  }
+
+  #Could not find any valid IPs
+  return {"" ""}
+
+}
+
+method Bridge_listening { new_bridge external_ip external_port transreq } {
+
+  #@@@@@@ TODO: add those to SB
+  $self Accept_transreq $transreq [$new_bridge cget -protocol] 1 [$new_bridge cget -nonce] [$new_bridge cget -ip] [$new_bridge cget -port] $external_ip $external_port
+
+}
+
+method Bridge_switched { new_bridge } {
+
+  $self On_bridge_selected
+
+}
+
+method Bridge_failed { new_bridge } {
+
+  $self On_bridge_selected
+
+}
+
+method Close { context reason } {
+
+  SLPSessionCloseBody body -context $context -session_id $options(-id) -s_channel_state 0
+  set options(-cseq) 0
+  set options(-branch) [$self generate_uuid]
+  SLPRequestMessage msg -method ::p2p::SLPRequestMethod::BYE -resource [concat "MSNMSGR:"$options(-peer) -frm [::abook::gerPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)
+  $msg setBody $body
+  $self Send_p2p_data $msg
+  destroy $self
+
+}
+
+method Send_p2p_data { data_or_file {is_file 0} } {
+
+  if { catch {[$data_or_file is_SLP]} } {
+    set session_id $options(-id)
+    set data $data_or_file
+    set total_size ""
+  } else {
+    set session_id 0
+    set data [$data_or_file toString]
+    set total_size [string length $data]
+  }
+
+  MessageBlob blob -application_id $application_id -data $data -total_size $total_size -session_id $session_id -is_file $is_file
+  $options(-transport_manager) send $options(-peer) $blob
+
+}
+
+method On_blob_sent { blob } {
+
+  if { [$blob cget -session_id] == 0 } {
+    return
+  }
+
+  set data [$blob read_data]
+  if { [$blob cget -total_size] == 4 && $data == "\x00\x00\x00\x00" } {
+    $self On_data_preparation_blob_sent $blob
+  } else {
+    $self On_data_blob_sent $blob
+  }
+
+}
+
+method On_blob_received { blob} {
+
+  set data [$blob read_data]
+
+  if [ $blob cget -session_id] == 0 } {
+    set msg [SLPMessage build $data]
+    if { [$msg info type] == SLPRequestMessage } {
+      if { [[$msg body] info type] == SLPSessionRequestBody } {
+        $self On_invite_received $msg
+      } elseif { [[$msg body] info type] == SLPTransferRequestBody } {
+        $self Switch_bridge $msg
+      } elseif { [[$msg body] info type] == SLPSessionCloseBody } {
+        $self On_bye_received $msg
+      } else {
+        status_log "$msg : unknown signaling blob"
+      }
+    } elseif { [$msg info type] == SLPResponseMessage] } {
+      if { [[$msg body] info type] == SLPSessionRequestBody } {
+        if { [$msg cget -status] == 200 } {
+          $self On_session_accepted
+          #$self emit "accepted"
+        } elseif { [$msg cget -status] == 603 } {
+          $self On_session_rejected $msg
+        }
+      } elseif { [[$msg body] info type] == SLPTransferResponseBody } {
+        $self Transreq_accepted [$msg body]
+      } else {
+        status_log "$msg : unknown response blob"
+      }
+    }
+    return
+  }
+
+  if { [$blob cget -total_size] == 4 && $data == "\x00\x00\x00\x00" } {
+    $self On_data_preparation_blob_received $blob
+  } else {
+    $self On_data_blob_received $blob
+  }
+
+}
+
+method On_data_chunk_transferred { chunk } {
+
+  if { [$chunk has_progressed ] } {
+    #$self emit "progressed" [string length [$chunk body]]
+  }
+
+}
+
+method On_data_blob_sent { blob } { 
+
+  $self close
+  #$self emit "completed" [$blob data]
+
+}
+
+method On_data_blob_received { blob } {
+
+  $self close
+  #$self emit "completed" [$blob data]
+
+}
+
+method On_invite_received { msg } { }
+
+method On_bye_received { msg } { }
+
+method On_session_accepted { } { }
+
+method On_session_rejected { msg } { }
+
+method On_bridge_selected { } { }
+
+}
+
+}

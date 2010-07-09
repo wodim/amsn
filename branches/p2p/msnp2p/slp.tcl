@@ -13,12 +13,11 @@ option -cseq 0
 option -call_id ""
 option -max_forwards 0
 
-variable headers
+variable headers -array {}
 variable body
 
 constructor { args } {
   $self configurelist $args
-  array set headers {}
   set headers(To) [join [list "<msnmsgr:" $options(-to) ">"] ""]
   set headers(From) [join [list "<msnmsgr:" $options(-frm) ">"] ""]
   if { $options(-branch) != "" } {
@@ -30,17 +29,22 @@ constructor { args } {
   }
   set headers(Max-Forwards) $options(-max_forwards)
 
-  set_body [SLPNullBody nullbody]
+  set body [SLPNullBody nullbody]
+  set headers(Content-Length) [string length $body]
   
 }
 
-method set_body { data } {
+method setBody { data } {
   set body $data
   set headers(Content-Length) [string length $body]
 }
 
 method headers { } {
   return $headers
+}
+
+method is_SLP { } {
+  return 1
 }
 
 method body { } {
@@ -70,7 +74,7 @@ method parse { chunk } {
   } else {
     set content_type ""
   }
-  set_body [SLPMessageBody $build $content_type $raw_body]
+  setBody [SLPMessageBody $build $content_type $raw_body]
 }
 
 method toString { } {
@@ -122,8 +126,10 @@ delegate option * to SLPMessage
 delegate method * to SLPMessage
 
 option -to ""
+option -resource ""
 
 constructor { args } {
+  install SLPMessage using SLPMessage %AUTO%
   $self configurelist $args
   set colon [string first ":" $options(-resource)]
   if {  $options(-to) != "" } {
@@ -140,13 +146,20 @@ typevariable STATUS_MESSAGE { {200 OK} {404 "Not Found"} {500 "Internal Error"} 
 option -status
 option -reason
 
+constructor { args } {
+
+  install SLPMessage using SLPMessage %AUTO%
+  $self configurelist $args
+
+}
+
 }
 
 ::snit::type SLPMessageBody {
 
 option -content_type ""
 variable content_classes ""
-variable headers ""
+variable headers -array {}
 variable body ""
 option -session_id ""
 option -s_channel_state ""
@@ -154,7 +167,6 @@ option -capabilities_flags ""
 
 constructor { args } {
   $self configurelist $args
-  array set headers {}
   if { $options(-session_id) != "" } {
     set headers(SessionID) $options(-session_id)
   }
@@ -243,6 +255,7 @@ option -s_channel_state 0
 option -capabilities_flags 1
 
 constructor { args } {
+  install SLPMessageBody using SLPMessageBody %AUTO%
   $self configurelist $args
   set euf_guid [$self cget -euf_guid]
   set app_id [$self cget -app_id]
@@ -279,7 +292,7 @@ snit::type SLPTransferRequestBody {
   option -upnp 0
   option -firewall 0
 
-  variable headers
+  variable headers -array {}
 
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_REQUEST 
@@ -307,10 +320,11 @@ snit::type SLPTransferResponseBody {
   option -external_ips ""
   option -external_port ""
   option -session_id ""
-  option -channel_state ""
+  option -s_channel_state ""
   option -capabilities_flags ""
+  option -conn_type "Port-Restrict-NAT"
 
-  variable headers
+  variable headers -array {}
 
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_RESPONSE
@@ -342,7 +356,7 @@ constructor { args } {
   }
 
   set headers(Nat-Trav-Msg-Type) "WLX-Nat-Trav-Msg-Direct-Connect-Req"
-  set headers(Conn-Type) "Port-Restrict-NAT"
+  set headers(Conn-Type) $options(-conn_type)
   set headers(TCP-Conn-Type) "Symmetric-NAT"
   set headers(IPv6-global) ""
 
@@ -355,7 +369,7 @@ delegate method * to SLPMessageBody
 delegate option * to SLPMessageBody
 
 option -context ""
-variable headers
+variable headers -array {}
 
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::SESSION_CLOSE
@@ -382,5 +396,5 @@ constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO%
 }
 }
-::p2p::SLPMessage msg1 -frm sender@hotmail.com -to receiver@hotmail.com
+::p2p::SLPRequestMessage msg1 -frm sender@hotmail.com -to receiver@hotmail.com
 }
