@@ -41,13 +41,115 @@ method Handle_message { peer guid message} {
 
 }
 
-method request { msn_object callback errback peer} {}
+method request { msnobj callback {errback ""} {peer ""}} {
 
-method publish { msn_object} {}
+  if { [$msnobj cget -data] != "" } {
+    eval [lindex $callback 0] $msnobj [lindex $callback 1]
+  }
 
-method Outgoing_session_transfer_completed { session data} {}
+  if { $peer == "" } {
+    set peer [$msnobj cget -creator]
+  }
 
-method Incoming_session_transfer_completed { session data} {}
+  if { [$msnobj cget -type] == $::p2p::MSNObjectType::CUSTOM_EMOTICON } {
+    set application_id $::p2p::ApplicationID::CUSTOM_EMOTICON_TRANSFER
+  } elseif { [$msnobj cget -type] == $::p2p::MSNObjectType::DISPLAY_PICTURE } {
+    set application_id $::p2p::ApplicationID::DISPLAY_PICTURE_TRANSFER
+#  } elseif { [$msnobj cget -type] == $::p2p::MSNObjectType::WINK } {
+#    set application_id $::p2p::ApplicationID::WINK_TRANSFER
+#  } elseif { [$msnobj cget -type] == $::p2p::MSNObjectType::VOICE_CLIP } {
+#    set application_id $::p2p::ApplicationID::VOICE_CLIP_TRANSFER
+  } else {
+    return ""
+  }
+
+  # TODO: p2pv2:  send a request to all end points of the peer and cancel the other sessions when one of them answers
+  set context [$msnobj toString]
+  MSNObjectSession session -session_manager [[$self cget -client] cget -p2p_session_manager] -peer $peer -guid "" -application_id $application_id -context $context
+  set handles {}
+  #handles.append(session.connect("accepted", self._on_session_answered))
+  #handles.append(session.connect("rejected",self._on_session_rejected))
+  #handles.append(session.connect("completed",self._outgoing_session_transfer_completed))
+  set outgoing_sessions($session) [list $handles $callback $errback $msnobj]
+  $session invite
+
+}
+
+method publish { msnobj } {
+
+  if { [$msnobj cget -data] != "" } {
+    lappend $published_objects $msnobj
+  }
+
+}
+
+method Outgoing_session_transfer_completed { session data} {
+
+  set lst $outgoing_sessions($session)
+  set handles [lindex $lst 0]
+  set callback [lindex $lst 1]
+  set errback [lindex $lst 2]
+  set msnobj [lindex $lst 3]
+
+  foreach handle_id $handles {
+    $session disconnect $handle_id
+  }
+
+  $msnobj configure -data $data
+
+  eval [lindex $callback 0] $msnobj [lindex $callback 1]
+
+  array unset outgoing_sessions $session
+
+}
+
+method Incoming_session_transfer_completed { session data } {
+
+  set handle_id $incoming_sessions($session)
+  $session disconnect $handle_id
+  array unset incoming_sessions $session
+
+}
+
+method On_session_answered { answered_session } {
+
+  foreach session [array names outgoing_sessions] {
+    if { $session == $answered_session } { continue }
+    if { [$session cget -peer] != [$answered_session cget -peer] } { continue }
+    if { [$session cget -context] != [$answered_session cget -context] } { continue }
+    set lst $outgoing_sessions($session)
+    set handles [lindex $lst 0]
+    set callback [lindex $lst 1]
+    set errback [lindex $lst 2]
+    set msnobj [lindex $lst 3]
+    foreach handle_id $handles {
+      $session disconnect $handle_id
+    }
+    $session cancel
+    array unset outgoing_sessions $session
+    
+  }
+
+}
+
+method On_session_rejected { session } {
+
+  $self On_session_answered $session
+
+  set lst $outgoing_sessions($session)
+  set handles [lindex $lst 0]
+  set callback [lindex $lst 1]
+  set errback [lindex $lst 2]
+  set msnobj [lindex $lst 3]
+  foreach handle_id $handles {
+    $session disconnect $handle_id
+  }
+  if { [info exists [lindex $errback 0]] } {
+    eval [lindex $errback 0] $msnobj [lindex $errback 1]
+  }
+  array unset outgoing_sessions $session
+
+}
 
 }
 

@@ -81,3 +81,11 @@ namespace eval ::p2p::MSNObjectType {
   set LOCATION 14
 
 }
+
+namespace eval ::p2p::ApplicationID {
+  set FILE_TRANSFER 2
+  set CUSTOM_EMOTICON_TRANSFER 11
+  set DISPLAY_PICTURE_TRANSFER 12
+  set WEBCAM 4
+
+}
