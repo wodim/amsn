@@ -5,6 +5,9 @@ namespace eval ::p2p::transport {
     delegate option * to BaseP2PTransport
     delegate method * to BaseP2PTransport
 
+    option -name "switchboard"
+    option -protocol "SBBridge"
+
     constructor { args } {
 
       install BaseP2PTransport using BaseP2PTransport %AUTO%

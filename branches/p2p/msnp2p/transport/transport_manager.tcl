@@ -3,11 +3,11 @@ namespace eval ::p2p::transport {
   snit::type P2PTransportManager {
 
     option -switchboard_manager
-    option -default_transport
-    option -transports
-    option -transport_signals
-    option -supported_transports
-    option -data_blobs
+    option -default_transport "SBBridge"
+    option -transports {}
+    option -transport_signals -array {}
+    option -supported_transports -array {}
+    option -data_blobs -array {}
     option -client ""
 
     constructor {args} {
@@ -15,11 +15,8 @@ namespace eval ::p2p::transport {
       $self configurelist $args
 
       $self configure -switchboard_manager [[$self cget -client] cget -switchboard_manager]
-      $self configure -default_transport [list SwitchboardP2PTransport handle_peer [$self cget -client] $self]
-      $self configure -transports {}
-      $self configure -transport_signals [array set transport_signals {}]
-      $self configure -data_blobs [array set data_blobs {}]
-      $self configure -supported_transports [list SwitchboardP2PTransport handle_peer [$self cget -client] $self] [list DirectP2PTransport handle_peer [$self cget -client] $self]
+      $self configure -supported_transports("SBBridge") SwitchboardP2PTransport
+      $self configure -supported_transports("TCPv1") DirectP2PTransport
       #@@@@@@@@@@@@@@@@@@ register NS
       #$self configure -uun_transport [list NotificationP2PTransport [$self cget -client] $self]
             
@@ -66,15 +63,16 @@ namespace eval ::p2p::transport {
     method Get_transport { peer peer_guid blob } {
 
       set transports [$self cget -transports]
+      array set supported_transports [$self cget -supported_transports]
 
       foreach transport $transports {
         if { [ $transport can_send $peer $peer_guid blob ] } {
-          return transport
+          return $supported_transports($transport)
         }
       }
 
       set transport [$self cget -default_transport]
-      return [list $transport $peer $peer_guid]
+      return $supported_transports($transport)
 
     }
 

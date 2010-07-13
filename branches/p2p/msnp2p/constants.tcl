@@ -1,3 +1,30 @@
+namespace eval ::p2p {
+
+variable MAX_INT32 0x7fffffff
+variable MAX_INT16 0x7fff
+
+proc generate_uuid {
+
+#  package require uuid
+#
+#  set uuid [::uuid::generate]
+#  binary scan $uuid  H2H2H2H2H2H2H2H2H4H* n1 n2 n3 n4 n5 n6 n7 n8 n9 n10
+#  set uuid [string toupper "$n4$n3$n2$n1-$n6$n5-$n8$n7-$n9-$n10"]
+#  return $uuid
+  set uuid "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [expr { int([expr {rand() * 1000000}])%65450 } ] + 4369]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
+  return $uuid
+
+}
+
+proc generate_id { {max $MAX_INT32} } {
+
+   set min 1000
+   return [expr {int($min + rand() * (1+$max-$min))}]
+
+}
+
+}
+
 namespace eval ::p2p::Codec {
   set ML20 ML20
 }

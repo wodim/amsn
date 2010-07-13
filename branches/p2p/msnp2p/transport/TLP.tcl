@@ -1,10 +1,5 @@
 namespace eval ::p2p::transport {
 
- proc generate_id {{max 2147483647}} {
-   set min 1000
-   return [expr {int($min + rand() * (1+$max-$min))}]
- }
-
  snit::type MessageBlob {
 
     option -application_id ""
@@ -27,11 +22,11 @@ namespace eval ::p2p::transport {
       }
 
       if { $session_id == "" } {
-        set session_id [::p2p::transport::generate_id]
+        set session_id [::p2p::generate_id]
       }
 
       if { $blob_id == "" } {
-        set blob_id [::p2p::transport::generate_id]
+        set blob_id [::p2p::generate_id]
       }
       set id $blob_id
 

@@ -27,31 +27,12 @@ constructor {args} {
     set options(-branch) [$message cget -branch]
     set options(-incoming) 0
   } else {
-    set options(-id) [$self generate_id]
-    set options(-call_id) [$self generate_uuid]
-    set options(-branch) [$self generate_uuid]
+    set options(-id) [::p2p::generate_id]
+    set options(-call_id) [::p2p::generate_uuid]
+    set options(-branch) [::p2p::generate_uuid]
   }
 
   $options(-session_manager) Register_session $self
-
-}
-
-method generate_uuid { } {
-
-#  package require uuid
-#
-#  set uuid [::uuid::generate]
-#  binary scan $uuid  H2H2H2H2H2H2H2H2H4H* n1 n2 n3 n4 n5 n6 n7 n8 n9 n10
-#  set uuid [string toupper "$n4$n3$n2$n1-$n6$n5-$n8$n7-$n9-$n10"]
-#  return $uuid
-  set uuid "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [expr { int([expr {rand() * 1000000}])%65450 } ] + 4369]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
-  return $uuid
-
-}
-
-method Generate_id { {max $MAX_INT32} } {
-
-   return [expr {int($min + rand() * (1+$max-$min))}]
 
 }
 
@@ -173,7 +154,7 @@ method Close { context reason } {
 
   SLPSessionCloseBody body -context $context -session_id $options(-id) -s_channel_state 0
   set options(-cseq) 0
-  set options(-branch) [$self generate_uuid]
+  set options(-branch) [::p2p::generate_uuid]
   SLPRequestMessage msg -method ::p2p::SLPRequestMethod::BYE -resource [concat "MSNMSGR:"$options(-peer) -frm [::abook::gerPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)
   $msg setBody $body
   $self Send_p2p_data $msg

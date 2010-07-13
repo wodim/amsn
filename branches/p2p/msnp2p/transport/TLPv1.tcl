@@ -1,11 +1,5 @@
 namespace eval ::p2pv1 {
 
-  proc generate_id {{max 2147483647}} {
-    set min 1000
-    return [expr {int($min + rand() * (1+$max-$min))}]
-  }
-
-
   snit::type TLPHeader {
 
     option -size 48

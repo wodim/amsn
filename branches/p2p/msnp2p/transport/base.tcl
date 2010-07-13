@@ -5,14 +5,12 @@ snit::type BaseP2PTransport {
   option -transport_manager
   option -name
   option -client
-  option -local_chunk_id
-  option -remote_chunk_id
+  option -local_chunk_id ""
+  option -remote_chunk_id ""
 
   constructor { args } {
     $self configurelist $args
 
-    $self configure -local_chunk_id ""
-    $self configure -remote_chunk_id ""
     $self configure -client [list $transport_manager cget -client]
     list $transport_manager register_transport $self
 
@@ -191,7 +189,7 @@ snit::type BaseP2PTransport {
 
   }
 
-method Send_chunk {peer peer_guid blob} {
+method __Send_chunk {peer peer_guid chunk} {
   variable local_chunk_id
 
   if { ![info exists local_chunk_id] } {
@@ -203,6 +201,15 @@ method Send_chunk {peer peer_guid blob} {
   if { [$chunk require_ack] == 1 } {
     $self add_pending_ack [$chunk cget -ack_id]
   }
+
+  $self Send_chunk $peer $peer_guid $chunk
+
+}
+
+method Send_chunk { peer peer_guid chunk } {
+
+  #Implemented in each transport on its own
+  return ""
 
 }
 
