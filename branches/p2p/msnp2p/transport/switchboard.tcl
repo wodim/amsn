@@ -18,7 +18,7 @@ namespace eval ::p2p::transport {
     method close {} {
 
       BaseP2PTransport close $self
-      #@@@@@@ Actually close switchboard
+      ::MSN::CloseSB [::MSN::SBFor $peer]
 
     }
 
@@ -81,7 +81,7 @@ namespace eval ::p2p::transport {
     }
 
     method On_contact_left { contact} {
-      #@@@@@@@@@@@@@Close SB: needed?
+      ::MSN::CloseSB [::MSN::SBFor $contact]
     }
 
     typemethod handle_peer { client transport_manager peer peer_guid } {

@@ -7,6 +7,7 @@ snit::type MSNObjectSession {
 
   option -session_manager ""
   option -peer ""
+  option -guid ""
   option -application_id ""
   option -message ""
 
@@ -15,7 +16,7 @@ snit::type MSNObjectSession {
 
   constructor { args } {
 
-    install P2PSession using P2PSession %AUTO% -application_id $::p2p::EugGuid::MSN_OBJECT
+    install P2PSession using P2PSession %AUTO% -application_id $::p2p::EufGuid::MSN_OBJECT
 
     if { $options(-message) != "" } {
       set options(-application_id) [[$message body] cget -application_id]
