@@ -179,7 +179,7 @@ snit::type BaseP2PTransport {
     set peer [[lindex $queue 0] 0]
 
     set chunk { [$blob get_chunk version max_chunk_size first] }
-    Send_chunk peer peer_guid chunk
+    __Send_chunk peer peer_guid chunk
 
     if { [$blob is_complete] } {
       lreplace $queue 0 0

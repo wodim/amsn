@@ -60,6 +60,54 @@ namespace eval ::p2p::transport {
       $self configure -transport_signals $transport_signals
     }
 
+    method get_supported_transport { choices } {
+
+      foreach choice $choices {
+        if { [info exists supported_transports($choice)] } {
+          return $choice
+        }
+      }
+      return ""
+
+    }
+
+    method create_transport { peer proto args } {
+
+      if { $proto == "" || ![info exists supported_transports($proto)] } {
+        return ""
+      }
+      $supported_transports($proto) transport {*}$args
+      return $transport
+
+    }
+
+    method close_transport { peer } {
+     
+      set transports [$self cget -transports]
+      foreach transport $transports {
+        if { [$transport cget -peer] == $peer } {
+          $transport close
+        }
+      }
+
+    }
+
+    method find_transport { peer } {
+
+      set best ""
+      foreach transport [$self cget -transports] {
+        if { [$transport cget -peer] == $peer && [$transport cget -connected] == 1 } {
+          if { $best == "" } {
+            set best $transport
+          } elseif { [$transport cget -rating] == [$best cget -rating] } {
+            set best $transport
+          }
+        }
+      }
+      return $best
+
+    }
+
     method Get_transport { peer peer_guid blob } {
 
       set transports [$self cget -transports]

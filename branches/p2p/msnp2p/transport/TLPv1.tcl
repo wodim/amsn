@@ -248,6 +248,12 @@ namespace eval ::p2pv1 {
 
     }
 
+    method toString { } {
+
+      return [concat $header$body]
+
+    }
+
   }
 
 }

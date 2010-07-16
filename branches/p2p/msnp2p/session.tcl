@@ -257,6 +257,29 @@ method On_data_blob_received { blob } {
 
 }
 
+method Transreq_accepted { transresp } {
+
+  if { [$transresp cget -listening] != 1 } {
+    $self Bridge_failed ""
+    return
+  }
+
+  set ipport [$self Select_address $transresp]
+  set ip [lindex $ipport 0]
+  set port [lindex $ipport 1]
+
+  set trspman [$self cget -transport_manager]
+  set new_bridge [$trspman create_transport $options(-peer) [$transresp cget -bridge] -ip $ip -port $port -nonce [$transresp cget -nonce] 
+  if { $new_bridge == "" || [$new_bridge connected] } {
+    $self Bridge_selected
+  } else {
+    #$new_bridge connect "connected" [list $self bridge_switched]
+    #$new_bridge.connect("failed", self._bridge_failed)
+    $new_bridge open
+  }
+
+}
+
 method On_invite_received { msg } { }
 
 method On_bye_received { msg } { }

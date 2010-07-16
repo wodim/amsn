@@ -7,6 +7,7 @@ namespace eval ::p2p::transport {
 
     option -name "switchboard"
     option -protocol "SBBridge"
+    option -rating 0
 
     constructor { args } {
 
