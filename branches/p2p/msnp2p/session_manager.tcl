@@ -16,9 +16,9 @@ constructor {args} {
   $self configure -sessions $sessions
   P2PTransportManager mngr -client $options(-client)
   $self configure -transport_manager $mngr
-  #self._transport_manager.connect("blob-received", lambda tr, blob: self._on_blob_received(blob))
-  #self._transport_manager.connect("blob-sent", lambda tr, blob: self._on_blob_sent(blob))
-  #self._transport_manager.connect("chunk-transferred", lambda tr, chunk: self._on_chunk_transferred(chunk))
+  ::Event::registerEvent p2pBlobReceived all [list $self On_blob_received]
+  ::Event::registerEvent p2pBlobSent all [list $self On_blob_sent]
+  ::Event::registerEvent p2pChunkTransferred all [list $self On_chunk_transferred]
 
 }
 

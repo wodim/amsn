@@ -214,7 +214,7 @@ method On_blob_received { blob} {
       if { [[$msg body] info type] == SLPSessionRequestBody } {
         if { [$msg cget -status] == 200 } {
           $self On_session_accepted
-          #$self emit "accepted"
+          ::Event::fireEvent p2pAccepted p2p {}
         } elseif { [$msg cget -status] == 603 } {
           $self On_session_rejected $msg
         }
@@ -238,7 +238,33 @@ method On_blob_received { blob} {
 method On_data_chunk_transferred { chunk } {
 
   if { [$chunk has_progressed ] } {
-    #$self emit "progressed" [string length [$chunk body]]
+    ::Event::fireEvent p2pProgressed p2p [string length [$chunk body]]
+  }
+
+}
+
+method Switch_bridge { transreq } {
+
+  set choices [[$transreq body] cget -bridges]
+  set proto [[$self cget -transport_manager] get_supported_transports $choices]
+  set new_bridge [[$self cget -transport_manager] create_transport [$self cget -peer] $proto]
+  if { $new_bridge == "" || {$new_bridge connected} == 1 } {
+    $self Bridge_selected
+  } else {
+    ::Event::registerEvent p2pListening all [list $self Bridge_listening $transreq]
+    ::Event::registerEvent p2pConnected all [list $self Bridge_switched]
+    ::Event::registerEvent p2pFailed all [list $self Bridge_failed]
+  }
+
+}
+
+method Request_bridhe { } {
+
+  set bridge [[$self cget -transport_manager] find_transport [$self cget -peer]]
+  if { [info exists $bridge] && $bridge != "" && [$bridge rating] > 0 } {
+    $self On_bridge_selected
+  } else {
+    $self Transreq
   }
 
 }
@@ -246,14 +272,14 @@ method On_data_chunk_transferred { chunk } {
 method On_data_blob_sent { blob } { 
 
   $self close
-  #$self emit "completed" [$blob data]
+  ::Event::fireEvent p2pCompleted p2p [$blob data]
 
 }
 
 method On_data_blob_received { blob } {
 
   $self close
-  #$self emit "completed" [$blob data]
+  ::Event::fireEvent p2pCompleted p2p [$blob data]
 
 }
 
@@ -273,8 +299,8 @@ method Transreq_accepted { transresp } {
   if { $new_bridge == "" || [$new_bridge connected] } {
     $self Bridge_selected
   } else {
-    #$new_bridge connect "connected" [list $self bridge_switched]
-    #$new_bridge.connect("failed", self._bridge_failed)
+    ::Event::registerEvent p2pConnected all [list $self Bridge_switched]
+    ::Event::registerEvent p2pFailed all [list $self Bridge_failed]
     $new_bridge open
   }
 

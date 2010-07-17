@@ -34,10 +34,13 @@ namespace eval ::p2p::transport {
       lappend $transports $transport
 
       set transport_signals [$self cget -transport_signals]
-      lappend $transport_signals [list "chunk-received" [list $self On_chunk_received]]
-      lappend $transport_signals [list "chunk-sent" [list $self On_chunk_sent]]
-      lappend $transport_signals [list "blob-sent" [list $self On_blob_sent]]
-      lappend $transport_signals [list "blob-received" [list $self On_blob_received]]
+      lappend $transport_signals [list p2pChunkReceived [list $self On_chunk_received]]
+      lappend $transport_signals [list p2pChunkSent [list $self On_chunk_sent]]
+      lappend $transport_signals [list p2pBlobSent [list $self On_blob_sent]]
+      lappend $transport_signals [list p2pBlobReceived [list $self On_blob_received]]
+      foreach {event callback} $transport_signals {
+        ::Event::registerEvent $event p2pTransportManager $callback
+      }
       set transport_signals($transport) $transport_signals
 
     }
@@ -51,8 +54,8 @@ namespace eval ::p2p::transport {
 
       set transport_signals [$self cget -transport_signals]
       set signals $transport_signals($transport)
-      foreach signal $signals {
-        $transport disconnect $signal
+      foreach {event callback} $signals {
+        ::Event::unregisterEvent $event p2pTransportManager $callback
       }
 
       array unset transport_signals $transport
@@ -126,7 +129,7 @@ namespace eval ::p2p::transport {
 
     method On_chunk_received { transport chunk} {
 
-      #$self emit "chunk-transferred" $chunk
+      ::Event::fireEvent p2pChunkTransferred p2pTransportManager $chunk
       set session_id [$chunk cget -session_id]
       set blob_id [$blob cget -blob_id]
       set blobs [$self cget -data_blobs]
@@ -144,7 +147,7 @@ namespace eval ::p2p::transport {
 
       $blob append_chunk $chunk
       if { [$blob is_complete] == 1 } {
-        #$self emit "blob-received" $blob
+        ::Event::fireEvent p2pBlobReceived p2pTransportManager $blob
         array unset blobs $session_id
         $self configure -data_blobs $blobs
       }
@@ -152,15 +155,15 @@ namespace eval ::p2p::transport {
     }
 
     method On_chunk_sent { transport chunk} {
-      #$self emit "chunk-transferred" $chunk
+      ::Event::fireEvent p2pChunkTransferred p2pTransportManager $chunk
     }
 
     method On_blob_sent { transport blob} {
-      #$self emit "blob-sent" $blob
+      ::Event::fireEvent p2pBlobSent p2pTransportManager $blob
     }
 
     method On_blob_received { transport blob} {
-      #$self emit "blob-received" $blob
+      ::Event::fireEvent p2pBlobReceived p2pTransportManager $blob
     }
 
     #@@@@@@@@@@@@@@ $msg toString?

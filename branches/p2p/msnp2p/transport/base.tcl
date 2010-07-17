@@ -72,7 +72,7 @@ snit::type BaseP2PTransport {
     if { [$self version] == 1 } {
       set pending_blob($ack_id) $blob
     } else {
-      #$self emit "blob-sent" $blob
+      ::Event::fireEvent p2pBlobSent p2p $blob
     }
 
   }
@@ -87,7 +87,7 @@ snit::type BaseP2PTransport {
     set blob $pending_ack($blob_id)
     set pos [lsearch $chunk_id $blob]
     set blob [lreplace $blob $pos $pos]
-    #$self emit "blob-sent" $blob
+    ::Event::fireEvent p2pBlobSent p2p #blob
 
   }
 
@@ -125,7 +125,7 @@ snit::type BaseP2PTransport {
       if { [$chunk is_signaling_chunk] == 1 } {
         $self On_signaling_chunk_received $chunk
       } else {
-        #$self emit "chunk-received" $chunk
+        ::Event::fireEvent p2pChunkReceived $chunk
       }
     }
 
@@ -148,7 +148,7 @@ snit::type BaseP2PTransport {
 
     $blob AppendChunk $chunk
     if { [$blob is_complete] } {
-      #$self emit "blob-received" blob
+      ::Event::fireEvent p2pBlobReceived $blob
       array unset signaling_blobs $blob_id
     }
 
@@ -156,7 +156,7 @@ snit::type BaseP2PTransport {
 
   method On_chunk_sent { chunk } {
 
-    #$self emit "chunk-sent" $chunk
+    ::Event::fireEvent p2pChunkSent $chunk
     $self Process_send_queue
 
   }

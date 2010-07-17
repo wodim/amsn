@@ -26,10 +26,11 @@ method Can_handle_message { message} {
 
 method Handle_message { peer guid message} {
 
-  MSNObjectSession session -session_manager [[$self cget -client] cget -p2p_session_manager] -peer $peer -guid $guid -application_id [[$message body] cget -application_id] -message $message
+  set session [MSNObjectSession create %AUTO%]
+  MSNObjectSession $session -session_manager [[$self cget -client] cget -p2p_session_manager] -peer $peer -guid $guid -application_id [[$message body] cget -application_id] -message $message
 
-  #session.connect("completed", self._incoming_session_transfer_completed)
-  set incoming_sessions($session) 1
+  ::Event::registerEvent p2pCompleted all [list $self Incoming_session_transfer_completed]
+  set incoming_sessions($session) {p2pCompleted Incoming_session_transfer_completed}
   set msnobj [MSNObject parse [$self cget -client] [$session cget -context]]
   foreach obj $published_objects {
     if {[$obj cget -shad] == [$msnobj cget -shad]} {
@@ -66,10 +67,10 @@ method request { msnobj callback {errback ""} {peer ""}} {
   # TODO: p2pv2:  send a request to all end points of the peer and cancel the other sessions when one of them answers
   set context [$msnobj toString]
   MSNObjectSession session -session_manager [[$self cget -client] cget -p2p_session_manager] -peer $peer -guid "" -application_id $application_id -context $context
-  set handles {}
-  #handles.append(session.connect("accepted", self._on_session_answered))
-  #handles.append(session.connect("rejected",self._on_session_rejected))
-  #handles.append(session.connect("completed",self._outgoing_session_transfer_completed))
+  set handles [list {p2pOnSessionAnswered On_session_answered} {p2pOnSessionRejected On_session_rejected{ {p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed}]
+  foreach {event callback} $handles {
+    ::Event::registerEvent $event all [list $self $handle]
+  }
   set outgoing_sessions($session) [list $handles $callback $errback $msnobj]
   $session invite
 
@@ -91,8 +92,8 @@ method Outgoing_session_transfer_completed { session data} {
   set errback [lindex $lst 2]
   set msnobj [lindex $lst 3]
 
-  foreach handle_id $handles {
-    $session disconnect $handle_id
+  foreach {event callback} $handles {
+    ::Events::unregisterEvent $event all [list $self $callback]
   }
 
   $msnobj configure -data $data
@@ -105,8 +106,8 @@ method Outgoing_session_transfer_completed { session data} {
 
 method Incoming_session_transfer_completed { session data } {
 
-  set handle_id $incoming_sessions($session)
-  $session disconnect $handle_id
+  set {event callback} $incoming_sessions($session)
+  ::Event::unregisterEvent $event all [list $self $callback]
   array unset incoming_sessions $session
 
 }
@@ -122,8 +123,8 @@ method On_session_answered { answered_session } {
     set callback [lindex $lst 1]
     set errback [lindex $lst 2]
     set msnobj [lindex $lst 3]
-    foreach handle_id $handles {
-      $session disconnect $handle_id
+    foreach {event callback} $handles {
+      ::Events::unregisterEvent $event all [list $self $callback]
     }
     $session cancel
     array unset outgoing_sessions $session
@@ -141,8 +142,8 @@ method On_session_rejected { session } {
   set callback [lindex $lst 1]
   set errback [lindex $lst 2]
   set msnobj [lindex $lst 3]
-  foreach handle_id $handles {
-    $session disconnect $handle_id
+  foreach {event callback} $handles {
+    ::Events::unregisterEvent $event all [list $self $callback]
   }
   if { [info exists [lindex $errback 0]] } {
     eval [lindex $errback 0] $msnobj [lindex $errback 1]

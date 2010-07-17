@@ -122,7 +122,7 @@ snit::type DirectP2PTransport {
     after [$self cget -timeout] "catch {close $sock};$self On_connect_timeout"
     #fileevent $sock readable [list $self On_data_received]
     $self configure -listening 1
-    #$self emit "listening" $ip $port
+    ::Event::fireEvent p2pListening p2p $ip $port
 
   }
 
@@ -156,7 +156,7 @@ snit::type DirectP2PTransport {
   }
 
   method On_failed { } {
-    #$self emit "failed"
+    ::Event::fireEvent p2pFailed p2p {}
     $self close
   }
 
@@ -175,6 +175,7 @@ snit::type DirectP2PTransport {
 
   method handshake { } {
 
+    fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
     $self send_foo
     $self send_nonce
 
@@ -222,7 +223,7 @@ snit::type DirectP2PTransport {
       $self Send_nonce
     }
     set options(-connected) 1
-    #$self emit "Connected"
+    ::Event::fireEvent p2pConnected p2p {}
 
   }
 
@@ -234,7 +235,6 @@ snit::type DirectP2PTransport {
 
     gets $sockid chunk
     set pending_chunk $pending_chunk$chunk
-    #error code 57005
 
   }
 
