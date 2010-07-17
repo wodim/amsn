@@ -234,7 +234,15 @@ snit::type DirectP2PTransport {
     }
 
     gets $sockid chunk
-    set pending_chunk $pending_chunk$chunk
+    #TODO: For p2pv2, read first 4 bytes to get size and stack all packets on pending_chunk until we've reached the size
+    if { $nonce_received == 0 } {
+      $self Receive_nonce $chunk
+    } elseif { [$chunk body] == "\x00\x00\x00\x00" } {
+      #status_log "Ignoring 0000 chunk"
+    } else {
+      #status_log "Received chunk"
+      $self On_chunk_received $chunk
+    }
 
   }
 
