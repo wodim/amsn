@@ -2,17 +2,14 @@ namespace eval ::p2p {
 
 snit::type P2PSessionManager {
 
-option -client ""
-option -sessions ""
+variable sessions -array {}
 option -handlers {}
 option -transport_manager ""
 
 constructor {args} {
 
   $self configurelist $args
-  array set sessions {}
-  $self configure -sessions $sessions
-  P2PTransportManager mngr -client $options(-client)
+  set mngr [::p2p::transport::P2PTransportManager %AUTO%]
   $self configure -transport_manager $mngr
   ::Event::registerEvent p2pBlobReceived all [list $self On_blob_received]
   ::Event::registerEvent p2pBlobSent all [list $self On_blob_sent]
@@ -29,19 +26,15 @@ method register_handler { handler_class} {
 method Register_session { session} {
 
 set sid [$session cget -id]
-array set sessions $options(-sessions)
 lappend $sessions($sid) $session
-$self configure -sessions $session
 
 }
 
 method Unregister_session { session} {
 
   set sid [$session cget -id]
-  array set sessions $options(-sessions)
   set ind [lsearch $sessions $sid]
   lreplace $sessions $ind $ind
-  $self configure -sessions $session
   if { [$self Search_session_by_peer [$session cget -peer]] < 0 } {
     $options(-transport-manager) close_transport [$session cget -peer]
   }
@@ -66,7 +59,6 @@ method On_chunk_transferred { chunk} {
 method Get_session { sid } {
 
   if { [lsearch [array names $options(-sessions)] $sid ] >= 0 } {
-    array set sessions $options(-sessions)
     return $sessions($sid)
   }
   return ""
@@ -75,7 +67,6 @@ method Get_session { sid } {
 
 method Search_session_by_call { cid } {
 
-  array set sessions $options(-sessions)
   foreach session [array names sessions] {
     if { [$session cget -call_id] == $cid } {
       return session
@@ -87,7 +78,6 @@ method Search_session_by_call { cid } {
 
 method Search_session_by_peer { peer } {
 
-  array set sessions $options(-sessions)
   foreach session [array names sessions] {  
     if { [$session cget -peer] == $peer } {
       return session
@@ -134,7 +124,6 @@ method On_blob_received { blob } {
       return ""
     }
   } elseif { [$msg info type] == "::p2p::TransferRequestBody" } {
-    array set sessions [$self cget -sessions]
     set session $sessions($sid)
   } else {
     return ""

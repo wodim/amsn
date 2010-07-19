@@ -2,19 +2,16 @@ namespace eval ::p2p::transport {
 
   snit::type P2PTransportManager {
 
-    option -switchboard_manager
     option -default_transport "SBBridge"
     option -transports {}
     variable -transport_signals -array {}
     variable -supported_transports -array {}
     variable -data_blobs -array {}
-    option -client ""
 
     constructor {args} {
 
       $self configurelist $args
 
-      $self configure -switchboard_manager [[$self cget -client] cget -switchboard_manager]
       set supported_transports("SBBridge") SwitchboardP2PTransport
       set supported_transports("TCPv1") DirectP2PTransport
       #@@@@@@@@@@@@@@@@@@ register NS

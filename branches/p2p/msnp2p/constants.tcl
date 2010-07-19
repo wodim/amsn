@@ -1,7 +1,7 @@
 namespace eval ::p2p {
 
-variable MAX_INT32 0x7fffffff
-variable MAX_INT16 0x7fff
+variable MAX_INT32 2147483647
+variable MAX_INT16 32767
 
 proc generate_uuid { } {
 
@@ -16,10 +16,16 @@ proc generate_uuid { } {
 
 }
 
-proc generate_id { {max $MAX_INT32} } {
+proc myRand { min max } {
+
+   return [expr {int($min + rand() * (1+$max-$min))}]
+
+}
+
+proc generate_id { {max 2147483647} } {
 
    set min 1000
-   return [expr {int($min + rand() * (1+$max-$min))}]
+   return [myRand $min $max]
 
 }
 

@@ -2,9 +2,6 @@ namespace eval ::p2p {
 
 snit::type P2PSession {
 
-variable MAX_INT32 0x7fffffff
-variable MAX_INT16 0x7fff
-
 option -session_manager ""
 option -peer ""
 option -euf_guid ""
@@ -20,7 +17,7 @@ constructor {args} {
 
   $self configurelist $args
 
-  if { $message != "" } {
+  if { $options(-message) != "" } {
     set options(-id) [[$message body] cget -session_id]
     set options(-call_id) [$message cget -call_id]
     set options(-cseq) [$message cget -cseq]
@@ -32,6 +29,7 @@ constructor {args} {
     set options(-branch) [::p2p::generate_uuid]
   }
 
+  puts "Session manager: $options(-session_manager)"
   $options(-session_manager) Register_session $self
 
 }
