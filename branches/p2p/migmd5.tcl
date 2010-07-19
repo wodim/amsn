@@ -20,66 +20,14 @@
 # - Don
 #
 # Modified by Miguel Sofer to use inlines and simple variables
+# Modified by Alvaro J. Iradier Muro to avoid using package Trf
 ##################################################
 
-# @mdgen EXCLUDE: md5c.tcl
+::Version::setSubversionId {$Id: migmd5.tcl 8064 2007-02-23 00:50:59Z lephilousophe $}
 
-package require Tcl 8.2
 namespace eval ::md5 {
 }
 
-if {![catch {package require Trf 2.0}] && ![catch {::md5 -- test}]} {
-    # Trf is available, so implement the functionality provided here
-    # in terms of calls to Trf for speed.
-
-    proc ::md5::md5 {msg} {
-	string tolower [::hex -mode encode -- [::md5 -- $msg]]
-    }
-
-    # hmac: hash for message authentication
-
-    # MD5 of Trf and MD5 as defined by this package have slightly
-    # different results. Trf returns the digest in binary, here we get
-    # it as hex-string. In the computation of the HMAC the latter
-    # requires back conversion into binary in some places. With Trf we
-    # can use omit these.
-
-    proc ::md5::hmac {key text} {
-	# if key is longer than 64 bytes, reset it to MD5(key).  If shorter, 
-	# pad it out with null (\x00) chars.
-	set keyLen [string length $key]
-	if {$keyLen > 64} {
-	    #old: set key [binary format H32 [md5 $key]]
-	    set key [::md5 -- $key]
-	    set keyLen [string length $key]
-	}
-    
-	# ensure the key is padded out to 64 chars with nulls.
-	set padLen [expr {64 - $keyLen}]
-	append key [binary format "a$padLen" {}]
-
-	# Split apart the key into a list of 16 little-endian words
-	binary scan $key i16 blocks
-
-	# XOR key with ipad and opad values
-	set k_ipad {}
-	set k_opad {}
-	foreach i $blocks {
-	    append k_ipad [binary format i [expr {$i ^ 0x36363636}]]
-	    append k_opad [binary format i [expr {$i ^ 0x5c5c5c5c}]]
-	}
-    
-	# Perform inner md5, appending its results to the outer key
-	append k_ipad $text
-	#old: append k_opad [binary format H* [md5 $k_ipad]]
-	append k_opad [::md5 -- $k_ipad]
-
-	# Perform outer md5
-	#old: md5 $k_opad
-	string tolower [::hex -mode encode -- [::md5 -- $k_opad]]
-    }
-
-} else {
     # Without Trf use the all-tcl implementation by Don Libes.
 
     # T will be inlined after the definition of md5body
@@ -125,8 +73,8 @@ if {![catch {package require Trf 2.0}] && ![catch {::md5 -- test}]} {
     #
     proc ::md5::time {} {
 	foreach len {10 50 100 500 1000 5000 10000} {
-	    set time [::time {md5 [format %$len.0s ""]} 100]
-	    set msec [lindex $time 0]
+	    set time [::time {md5 [format %$len.0s ""]} 10]
+	    regexp "\[0-9]*" $time msec
 	    puts "input length $len: [expr {$msec/1000}] milliseconds per interation"
 	}
     }
@@ -183,6 +131,7 @@ if {![catch {package require Trf 2.0}] && ![catch {::md5 -- test}]} {
 	# RFC doesn't say whether to use little- or big-endian
 	# code says little-endian
 	binary scan $msg i* blocks
+	set len [llength $blocks]
 
 	# loop over the message taking 16 blocks at a time
 
@@ -315,19 +264,19 @@ if {![catch {package require Trf 2.0}] && ![catch {::md5 -- test}]} {
 
     namespace eval ::md5 {
 	#proc md5pure::F {x y z} {expr {(($x & $y) | ((~$x) & $z))}}
-	regsub -all -- {\[ *F +(\$.) +(\$.) +(\$.) *\]} $md5body {((\1 \& \2) | ((~\1) \& \3))} md5body
+	regsub -all {\[ *F +(\$.) +(\$.) +(\$.) *\]} $md5body {((\1 \& \2) | ((~\1) \& \3))} md5body
 
 	#proc md5pure::G {x y z} {expr {(($x & $z) | ($y & (~$z)))}}
-	regsub -all -- {\[ *G +(\$.) +(\$.) +(\$.) *\]} $md5body {((\1 \& \3) | (\2 \& (~\3)))} md5body
+	regsub -all {\[ *G +(\$.) +(\$.) +(\$.) *\]} $md5body {((\1 \& \3) | (\2 \& (~\3)))} md5body
 
 	#proc md5pure::H {x y z} {expr {$x ^ $y ^ $z}}
-	regsub -all -- {\[ *H +(\$.) +(\$.) +(\$.) *\]} $md5body {(\1 ^ \2 ^ \3)} md5body
+	regsub -all {\[ *H +(\$.) +(\$.) +(\$.) *\]} $md5body {(\1 ^ \2 ^ \3)} md5body
 
 	#proc md5pure::I {x y z} {expr {$y ^ ($x | (~$z))}}
-	regsub -all -- {\[ *I +(\$.) +(\$.) +(\$.) *\]} $md5body {(\2 ^ (\1 | (~\3)))} md5body
+	regsub -all {\[ *I +(\$.) +(\$.) +(\$.) *\]} $md5body {(\2 ^ (\1 | (~\3)))} md5body
 
 	# bitwise left-rotate
-	if {0} {
+	if 0 {
 	    proc md5pure::<<< {x i} {
 		# This works by bitwise-ORing together right piece and left
 		# piece so that the (original) right piece becomes the left
@@ -339,41 +288,22 @@ if {![catch {package require Trf 2.0}] && ![catch {::md5 -- test}]} {
 		# shift it 1 bit, mask off the sign, and finally shift
 		# it the rest of the way.
 		
-		# expr {($x << $i) | ((($x >> 1) & 0x7fffffff) >> (31-$i))}
-
-		#
-		# New version, faster when inlining
-		# We replace inline (computing at compile time):
-		#   R$i -> (32 - $i)
-		#   S$i -> (0x7fffffff >> (31-$i))
-		#
-
-		expr { ($x << $i) | (($x >> [set R$i]) & [set S$i])}
+		expr {($x << $i) | ((($x >> 1) & 0x7fffffff) >> (31-$i))}
 	    }
 	}
 	# inline <<<
-	regsub -all -- {\[ *<<< +\[ *expr +({[^\}]*})\] +([0-9]+) *\]} $md5body {(([set x [expr \1]] << \2) |  (($x >> R\2) \& S\2))} md5body
+	regsub -all {\[ *<<< +\[ *expr +({[^\}]*})\] +([0-9]+) *\]} $md5body {(([set x [expr \1]] << \2) |  ((($x >> 1) \& 0x7fffffff) >> (31-\2)))} md5body
 
-	# now replace the R and S
-	set map {}
-	foreach i { 
-	    7 12 17 22
-	    5  9 14 20
-	    4 11 16 23
-	    6 10 15 21 
-	} {
-	    lappend map R$i [expr {32 - $i}] S$i [expr {0x7fffffff >> (31-$i)}]
-	}
-	
 	# inline the values of T
+	set map {}
 	foreach \
 		tName {
-	    T01 T02 T03 T04 T05 T06 T07 T08 T09 T10 
-	    T11 T12 T13 T14 T15 T16 T17 T18 T19 T20 
-	    T21 T22 T23 T24 T25 T26 T27 T28 T29 T30 
-	    T31 T32 T33 T34 T35 T36 T37 T38 T39 T40 
-	    T41 T42 T43 T44 T45 T46 T47 T48 T49 T50 
-	    T51 T52 T53 T54 T55 T56 T57 T58 T59 T60 
+	    T01 T02 T03 T04 T05 T06 T07 T08 T09 T10
+	    T11 T12 T13 T14 T15 T16 T17 T18 T19 T20
+	    T21 T22 T23 T24 T25 T26 T27 T28 T29 T30
+	    T31 T32 T33 T34 T35 T36 T37 T38 T39 T40
+	    T41 T42 T43 T44 T45 T46 T47 T48 T49 T50
+	    T51 T52 T53 T54 T55 T56 T57 T58 T59 T60
 	    T61 T62 T63 T64 } \
 		tVal {
 	    0xd76aa478 0xe8c7b756 0x242070db 0xc1bdceee
@@ -399,7 +329,7 @@ if {![catch {package require Trf 2.0}] && ![catch {::md5 -- test}]} {
 	    lappend map \$$tName $tVal
 	}
 	set md5body [string map $map $md5body]
-	
+
 
 	# Finally, define the proc
 	proc md5 {msg} $md5body
@@ -430,7 +360,7 @@ if {![catch {package require Trf 2.0}] && ![catch {::md5 -- test}]} {
 	# ensure the key is padded out to 64 chars with nulls.
 	set padLen [expr {64 - $keyLen}]
 	append key [binary format "a$padLen" {}]
-	
+
 	# Split apart the key into a list of 16 little-endian words
 	binary scan $key i16 blocks
 
@@ -449,6 +379,5 @@ if {![catch {package require Trf 2.0}] && ![catch {::md5 -- test}]} {
 	# Perform outer md5
 	md5 $k_opad
     }
-}
 
-package provide md5 1.4.4
+package provide md5 1.4
