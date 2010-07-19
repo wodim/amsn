@@ -67,7 +67,7 @@ method request { msnobj callback {errback ""} {peer ""}} {
   # TODO: p2pv2:  send a request to all end points of the peer and cancel the other sessions when one of them answers
   set context [$msnobj toString]
   MSNObjectSession session -session_manager [[$self cget -client] cget -p2p_session_manager] -peer $peer -guid "" -application_id $application_id -context $context
-  set handles [list {p2pOnSessionAnswered On_session_answered} {p2pOnSessionRejected On_session_rejected{ {p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed}]
+  set handles [list {p2pOnSessionAnswered On_session_answered} {p2pOnSessionRejected On_session_rejected} {p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed}]
   foreach {event callback} $handles {
     ::Event::registerEvent $event all [list $self $handle]
   }

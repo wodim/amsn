@@ -3,7 +3,7 @@ namespace eval ::p2p {
 variable MAX_INT32 0x7fffffff
 variable MAX_INT16 0x7fff
 
-proc generate_uuid {
+proc generate_uuid { } {
 
 #  package require uuid
 #

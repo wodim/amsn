@@ -132,7 +132,7 @@ namespace eval ::p2pv1 {
 
     method is_signaling_chunk {} {
 
-      return [$self get_field session_id] == 0}]
+      return [$self get_field session_id] == 0
 
     }
 
@@ -228,7 +228,7 @@ namespace eval ::p2pv1 {
 
     }
 
-    typemethod create { app_id session_id blob_id offset blob_size max_size sync } {
+    typemethod createMsg { app_id session_id blob_id offset blob_size max_size sync } {
 
       TLPHeader header
       $header configure -session_id $session_id

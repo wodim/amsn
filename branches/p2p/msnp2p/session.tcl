@@ -194,11 +194,11 @@ method On_blob_sent { blob } {
 
 }
 
-method On_blob_received { blob} {
+method On_blob_received { blob } {
 
   set data [$blob read_data]
 
-  if [ $blob cget -session_id] == 0 } {
+  if { [ $blob cget -session_id] == 0 } {
     set msg [SLPMessage build $data]
     if { [$msg info type] == SLPRequestMessage } {
       if { [[$msg body] info type] == SLPSessionRequestBody } {

@@ -9,8 +9,6 @@ option -transport_manager ""
 
 constructor {args} {
 
-#@@@@@@@@@@@@@@ TODO: events!!
-
   $self configurelist $args
   array set sessions {}
   $self configure -sessions $sessions
@@ -99,7 +97,7 @@ method Search_session_by_peer { peer } {
 
 }
 
-method On_blob_received { blob} {
+method On_blob_received { blob } {
 
   if { [catch {set session [$self Blob_to_session $blob]} ] res } {
     status_log $res
@@ -174,4 +172,4 @@ method Blob_to_session { blob} {
 
 }
 
-
+}

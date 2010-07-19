@@ -5,9 +5,9 @@ namespace eval ::p2p::transport {
     option -switchboard_manager
     option -default_transport "SBBridge"
     option -transports {}
-    option -transport_signals -array {}
-    option -supported_transports -array {}
-    option -data_blobs -array {}
+    variable -transport_signals -array {}
+    variable -supported_transports -array {}
+    variable -data_blobs -array {}
     option -client ""
 
     constructor {args} {
@@ -15,8 +15,8 @@ namespace eval ::p2p::transport {
       $self configurelist $args
 
       $self configure -switchboard_manager [[$self cget -client] cget -switchboard_manager]
-      $self configure -supported_transports("SBBridge") SwitchboardP2PTransport
-      $self configure -supported_transports("TCPv1") DirectP2PTransport
+      set supported_transports("SBBridge") SwitchboardP2PTransport
+      set supported_transports("TCPv1") DirectP2PTransport
       #@@@@@@@@@@@@@@@@@@ register NS
       #$self configure -uun_transport [list NotificationP2PTransport [$self cget -client] $self]
             
@@ -33,15 +33,19 @@ namespace eval ::p2p::transport {
 
       lappend $transports $transport
 
-      set transport_signals [$self cget -transport_signals]
-      lappend $transport_signals [list p2pChunkReceived [list $self On_chunk_received]]
-      lappend $transport_signals [list p2pChunkSent [list $self On_chunk_sent]]
-      lappend $transport_signals [list p2pBlobSent [list $self On_blob_sent]]
-      lappend $transport_signals [list p2pBlobReceived [list $self On_blob_received]]
-      foreach {event callback} $transport_signals {
+      if { [info exists transport_signals($transport)] } {
+        set trsign $transport_signals($transport)
+      } else {
+        set trsign {}
+      }
+      lappend $trsign [list p2pChunkReceived [list $self On_chunk_received]]
+      lappend $trsign [list p2pChunkSent [list $self On_chunk_sent]]
+      lappend $trsign [list p2pBlobSent [list $self On_blob_sent]]
+      lappend $trsign [list p2pBlobReceived [list $self On_blob_received]]
+      foreach {event callback} $trsign {
         ::Event::registerEvent $event p2pTransportManager $callback
       }
-      set transport_signals($transport) $transport_signals
+      set transport_signals($transport) $trsign
 
     }
 
@@ -52,7 +56,6 @@ namespace eval ::p2p::transport {
         return
       }
 
-      set transport_signals [$self cget -transport_signals]
       set signals $transport_signals($transport)
       foreach {event callback} $signals {
         ::Event::unregisterEvent $event p2pTransportManager $callback
@@ -60,7 +63,6 @@ namespace eval ::p2p::transport {
 
       array unset transport_signals $transport
 
-      $self configure -transport_signals $transport_signals
     }
 
     method get_supported_transport { choices } {
@@ -114,7 +116,6 @@ namespace eval ::p2p::transport {
     method Get_transport { peer peer_guid blob } {
 
       set transports [$self cget -transports]
-      array set supported_transports [$self cget -supported_transports]
 
       foreach transport $transports {
         if { [ $transport can_send $peer $peer_guid blob ] } {
@@ -132,24 +133,21 @@ namespace eval ::p2p::transport {
       ::Event::fireEvent p2pChunkTransferred p2pTransportManager $chunk
       set session_id [$chunk cget -session_id]
       set blob_id [$blob cget -blob_id]
-      set blobs [$self cget -data_blobs]
 
-      if { [lsearch $session_id [array names blobs]] >= 0 } {
-        set blob $blobs($session_id)
+      if { [lsearch $session_id [array names data_blobs]] >= 0 } {
+        set blob $data_blobs($session_id)
         if { [$blob transferred] == 0 } {
           $blob configure -id [$chunk cget -blob_id]
         }
       } else {
         MessageBlob blob -application_id [$chunk cget -application_id] -total_size [$chunk cget -blob_size] -session_id $session_id -blob_id $blob_id
-        set blobs($session_id) $blob
-        $self configure -data_blobs $blobs
+        set data_blobs($session_id) $blob
       }
 
       $blob append_chunk $chunk
       if { [$blob is_complete] == 1 } {
         ::Event::fireEvent p2pBlobReceived p2pTransportManager $blob
-        array unset blobs $session_id
-        $self configure -data_blobs $blobs
+        array unset data_blobs $session_id
       }
 
     }
@@ -178,15 +176,15 @@ namespace eval ::p2p::transport {
       $transport send $peer $peer_guid $blob
     }
 
-    method register_data_buffer { session_id buffer size} {}
-      set blobs [$self cget -data_blobs]
-      if { [lsearch $session_id [array names blobs] } {
+    method register_data_buffer { session_id2 buffer size} {
+      if { [lsearch $session_id2 [array names data_blobs]] } {
         #status_log
         return
       }
-      MessageBlob blob -application_id 0 -string $buffer -total_size $size -session_id $session_id
-      set blobs($session_id) $blob
-      $self configure -data_blobs $blobs
+      MessageBlob blob -application_id 0 -string $buffer -total_size $size -session_id $session_id2
+      set data_blobs($session_id2) $blob
   }
+
+}
 
 }
