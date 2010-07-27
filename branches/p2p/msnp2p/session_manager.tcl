@@ -3,17 +3,24 @@ namespace eval ::p2p {
 snit::type P2PSessionManager {
 
 variable sessions -array {}
+variable trsp_mgr ""
 option -handlers {}
-option -transport_manager ""
 
 constructor {args} {
 
   $self configurelist $args
-  set mngr [::p2p::transport::P2PTransportManager %AUTO%]
-  $self configure -transport_manager $mngr
   ::Event::registerEvent p2pBlobReceived all [list $self On_blob_received]
   ::Event::registerEvent p2pBlobSent all [list $self On_blob_sent]
   ::Event::registerEvent p2pChunkTransferred all [list $self On_chunk_transferred]
+
+}
+
+method transport_manager { } {
+
+  if { $trsp_mgr == "" } {
+    set trsp_mgr [P2PTransportManager %AUTO%]
+  }
+  return $trsp_mgr
 
 }
 
@@ -26,6 +33,7 @@ method register_handler { handler_class} {
 method Register_session { session} {
 
 set sid [$session cget -id]
+if { ![info exists sessions($sid)] } { set sessions($sid) "" }
 lappend $sessions($sid) $session
 
 }
@@ -87,15 +95,17 @@ method Search_session_by_peer { peer } {
 
 }
 
-method On_blob_received { blob } {
+method On_blob_received { event blob } {
 
-  if { [catch {set session [$self Blob_to_session $blob]} ] res } {
-    status_log $res
+  puts "Received blob: $blob"
+  if { [catch {set session [$self Blob_to_session $blob]} res] } {
+    puts "Error: $res"
     return 0
   }
   if { $session == "" } {
     if { [$blob cget -session_id] != 0 } {
       #TODO: send TLP, RESET connection
+      puts "No session!!!!!"
       return
     }
   }

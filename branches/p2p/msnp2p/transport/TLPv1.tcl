@@ -1,3 +1,19 @@
+namespace eval ::p2pv1::TLPFlag {
+
+  set NAK 0x1
+  set ACK 0x2
+  set RAK 0x4
+  set RST 0x8
+  set FILE 0x10
+  set EACH 0x20
+  set CAN 0x40
+  set ERR 0x80
+  set KEY 0x100
+  set CRYPT 0x200
+  set UNKNOWN 0x1000000
+
+}
+
 namespace eval ::p2pv1 {
 
   snit::type TLPHeader {
@@ -22,12 +38,25 @@ namespace eval ::p2pv1 {
 
     }
 
-    method parse { data} {
+    typemethod parse { data} {
 
-      set ret [binary scan [string range $data 0 48] iiiiiiiiiiii $options(-session_id) $options(-blob_id) $options(-blob_offset) $options(-blob_size) $options(-chunk_size) $options(-flags) $options(-dw1) $options(-dw2) $options(-qw1)]
-      if {$ret != 12} {
-         error "Not enough data to scan header"
-      }
+     set ret [binary scan $data iiiiiiiiiiii session_id blob_id cOffset1 cOffset2 cTotalDataSize1 cTotalDataSize2 chunk_size flags dw1 dw2 cAckSize1 cAckSize2]
+     set blob_offset [int2word $cOffset1 $cOffset2]
+     set blob_size [int2word $cTotalDataSize1 $cTotalDataSize2]
+     set qw1 [int2word $cAckSize1 $cAckSize2]
+     if {$ret != 12} {
+       error "Not enough data to scan header"
+     }
+     
+     puts "Fields are: $session_id , $blob_id , $blob_offset , $blob_size , $chunk_size , $flags , $dw1 , $dw2 , $qw1 "
+      return [TLPHeader %AUTO% -session_id $session_id -blob_id $blob_id -blob_offset $blob_offset -blob_size $blob_size -chunk_size $chunk_size -flags $flags -dw1 $dw1 -dw2 $dw2 -qw1 $qw1]
+
+    }
+
+    method toString { } {
+
+      set ret [binary format iiwwiiiiw $options(-session_id) $options(-blob_id) $options(-blob_offset) $options(-blob_size) $options(-chunk_size) $options(-flags) $options(-dw1) $options(-dw2) $options(-qw1)]
+      return $ret
 
     }
 
@@ -43,8 +72,7 @@ namespace eval ::p2pv1 {
 
       $self configurelist $args
       if { $options(-header) == "" } {
-        TLPHeader header
-        set options(-header) $header
+        set options(-header) [TLPHeader %AUTO%]
       }
 
     }
@@ -57,16 +85,16 @@ namespace eval ::p2pv1 {
 
     method set_id { val } {
 
-      $self set_field dw1 $cal
+      $self set_field dw1 $val
 
     }
 
     method next_id {} {
 
-      if { [expr { $options(-id) + 1 }] == 2147483647 } {
+      if { [expr { [$self id] + 1 }] == 2147483647 } {
         return 1
       }
-        return [expr { $options(-id) + 1 }]
+        return [expr { [$self id] + 1 }]
 
     }
 
@@ -84,13 +112,13 @@ namespace eval ::p2pv1 {
 
     method ack_id {} {
 
-      return [concat [$self get_field blob_id] [$self get_field dw1]]
+      return [concat [$self get_field blob_id][$self get_field dw1]]
 
     }
 
     method acked_id {} {
 
-      return [concat [$self get_field dw1] [$self get_field dw2]]
+      return [concat [$self get_field dw1][$self get_field dw2]]
 
     }
 
@@ -108,37 +136,37 @@ namespace eval ::p2pv1 {
 
     method is_control_chunk {} {
 
-      return [$self get_field flags] & 0xCF
+      return [expr {[$self get_field flags] & 0xCF}]
 
     }
 
     method is_ack_chunk {} {
 
-      return [$self get_field flags] & $::p2p::TLPFlag::ACK
+      return [expr {[$self get_field flags] & $::p2pv1::TLPFlag::ACK}]
 
     }
 
     method is_nak_chunk {} {
 
-      return [$self get_field flags] & $::p2p::TLPFlag::NAK
+      return [expr {[$self get_field flags] & $::p2pv1::TLPFlag::NAK}]
 
     }
 
     method is_nonce_chunk {} {
 
-      return [$self get_field flags] & $::p2p::TLPFlag::KEY
+      return [expr {[$self get_field flags] & $::p2pv1::TLPFlag::KEY}]
 
     }
 
     method is_signaling_chunk {} {
 
-      return [$self get_field session_id] == 0
+      return [expr {[$self get_field session_id] == 0}]
 
     }
 
     method has_progressed {} {
 
-      return [$self get_field flags] & $::p2p::TLPFlag::EACH
+      return [expr {[$self get_field flags] & $::p2pv1::TLPFlag::EACH}]
 
     }
 
@@ -146,13 +174,13 @@ namespace eval ::p2pv1 {
 
       $self configure -body $data
 
-      [$self set_field chunk_size [string length $data]]
+      $self set_field chunk_size [string length $data]
 
       if { [$self get_field session_id] != 0 && [$self get_field blob_size] != 4 && $data != "\x00\x00\x00\x00" } {
-        [$self get_field flags $::p2p::TLPFlag::EACH
+        [$self get_field flags $::p2pv1::TLPFlag::EACH
         if { $options(-application_id) == $::p2p::ApplicationID::FILE_TRANSFER } {
           set flags [$self get_field flags]
-          [$self get_field flags ( $flags | $::TLPFlag::FILE )]
+          $self get_field flags ( $flags | $::TLPFlag::FILE )
         }
       }
 
@@ -160,12 +188,12 @@ namespace eval ::p2pv1 {
 
     method require_ack {} {
 
-      if { $self is_ack_chunk } {
+      if { [$self is_ack_chunk] } {
         return 0
       }
 
       # chunk_size + blob_offset == blob_size : chunk is over and we need to ACK
-      if { [expr [$self get_field chunk_size] + [$self get_field blob_offset] == [$self get_field blob_size] } {
+      if { [expr { [$self get_field chunk_size] + [$self get_field blob_offset]}] == [$self get_field blob_size] } {
         return 1
       }
 
@@ -175,14 +203,14 @@ namespace eval ::p2pv1 {
 
     method create_ack_chunk {} {
 
-      set flags $::p2p::TLPFlag::ACK
-      if { [$self set_field flags & $::p2p::TLPFlag::RAK } {
-        set flags {expr [$flags | $::p2p::TLPFlag::RAK }
+      set flags $::p2pv1::TLPFlag::ACK
+      if { [expr {[$self get_field flags] & $::p2pv1::TLPFlag::RAK}] } {
+        set flags [expr {$flags | $::p2pv1::TLPFlag::RAK} ]
       }
 
       set blob_id [ ::p2p::generate_id ]
-      TLPHeader header -session_id [$self get_field session_id] -blob_id [$self get_field blob_id] -flags $flags -dw1 [$self Get_Field blob_id] dw2 [$self get_field dw1] -qw1 [$self get_field size]
-      return [MessageChunk chunk -header $header]
+      set header [TLPHeader %AUTO% -session_id [$self get_field session_id] -blob_id [$self get_field blob_id] -flags $flags -dw1 [$self get_field blob_id] -dw2 [$self get_field dw1] -qw1 [$self get_field size]]
+      return [MessageChunk %AUTO% -header $header]
 
     }
 
@@ -212,7 +240,7 @@ namespace eval ::p2pv1 {
        $self set_field dw1 [binary format H2H2H2H2 $n1 $n2 $n3 $n4]
        $self set_field dw2 [binary format H2H2H2H2 $n5 $n6 $n7 $n8]
        $self set_field qw1 [binary format H4H* $n9 $n10]
-       $self set_field flags [$self get_field flags | $::p2p::TLPFlag::KEY]
+       $self set_field flags [expr {$self get_field flags | $::p2pv1::TLPFlag::KEY}]
 
     }
 
@@ -230,27 +258,27 @@ namespace eval ::p2pv1 {
 
     typemethod createMsg { app_id session_id blob_id offset blob_size max_size sync } {
 
-      TLPHeader header
+      set header [TLPHeader %AUTO%]
       $header configure -session_id $session_id
       $header configure -blob_id $blob_id
-      $header configure -blob_offset $blob_offset
+      $header configure -blob_offset $offset
       $header configure -blob_size $blob_size
-      $header configure -chunk_size [expr min(
+      $header configure -chunk_size [expr min($blob_size - $offset, $max_size - [$header cget -size])]
+      return [MessageChunk %AUTO% -header $header -application_id $app_id]
 
     }
 
     typemethod parse { data} {
 
-      TLPHeader header
-      header parse [string range $data 0 47]
-      MessageChunk chunk -header $header -body [string range $data 48 end]
-      return chunk
+      set header [TLPHeader parse [string range $data 0 48]]
+      set chunk [MessageChunk %AUTO% -header $header -body [string range $data 48 end]]
+      return $chunk
 
     }
 
     method toString { } {
 
-      return [concat $header$body]
+      return [concat [$options(-header) toString]$options(-body)]
 
     }
 

@@ -1,20 +1,31 @@
-namespace eval ::p2p::transport {
+namespace eval ::p2p {
 
 snit::type BaseP2PTransport {
 
-  option -transport_manager
+  option -transport_manager -default ""
   option -name
-  option -client
   option -local_chunk_id ""
   option -remote_chunk_id ""
+  option -transport ""
+
+  variable data_blob_queue
+  variable pending_blob -array {}
+  variable pending_ack -array {}
+  variable signaling_blobs -array {}
+  variable first 1
+
 
   constructor { args } {
+
     $self configurelist $args
 
-    $self configure -client [list $transport_manager cget -client]
-    list $transport_manager register_transport $self
+  }
 
-    $self reset
+  method conf2 { } {
+
+    $options(-transport_manager) Register_transport $self
+
+    $self Reset
 
   }
 
@@ -29,10 +40,10 @@ snit::type BaseP2PTransport {
   }
 
   method send {peer peer_guid blob} {
-    variable data_blob_queue
 
-    lappend data_blob_queue [list $peer peer_guid blob]
-    $self process_send_queues
+    puts "Going to send blob $blob"
+    lappend data_blob_queue [list $peer $peer_guid $blob]
+    $self Process_send_queue
   }
 
   method close { } {
@@ -41,22 +52,13 @@ snit::type BaseP2PTransport {
   }
 
   method Reset { } {
-    variable data_blob_queue
-    variable pending_blob
-    variable pending_ack
-    variable signaling_blobs
-    variable first
 
     set data_blob_queue {}
-    array set pending_blob {}
-    array set pending_ack {}
-    array set signaling_blobs {}
     set first 1
 
   }
 
   method Add_pending_ack { blob_id {chunk_id 0} } {
-    variable pending_ack
 
     if { [lsearch $blob_id [array names pending_ack]] < 0 } {
       set pending_ack($blob_id) {}
@@ -66,8 +68,6 @@ snit::type BaseP2PTransport {
   }
 
   method Add_pending_blob {ack_id blob} {
-    
-    variable pending_blob
 
     if { [$self version] == 1 } {
       set pending_blob($ack_id) $blob
@@ -79,20 +79,18 @@ snit::type BaseP2PTransport {
 
   method Del_pending_blob { ack_id } {
 
-    variable pending_blob
-
     if { [lsearch $ack_id [array names pending_blob]] < 0 } {
       return
     }
-    set blob $pending_ack($blob_id)
-    set pos [lsearch $chunk_id $blob]
+    set blob $pending_blob($ack_id)
+    set pos [lsearch $ack_id $blob]
     set blob [lreplace $blob $pos $pos]
+    set pending_blob($ack_id) $blob
     ::Event::fireEvent p2pBlobSent p2p #blob
 
   }
 
   method Del_pending_ack {blob_id {chunk_id 0} } {
-    variable pending_ack
 
     if { [lsearch $blob_id [array names pending_ack]] < 0 } {
       return
@@ -108,17 +106,18 @@ snit::type BaseP2PTransport {
     }
   }
 
-  method On_chunk_received { chunk } {
-    variable pending_blob
-    variable pending_ack
-
+  method On_chunk_received { peer peer_guid chunk } {
+    
+    puts "Received data from $peer $chunk"
     if { [$chunk require_ack] == 1 } {
-      $self Send_ack $chunk
+      puts "Going to send ack!!!"
+      set ack_chunk [$chunk create_ack_chunk]
+      $self __Send_chunk $peer $peer_guid $ack_chunk
     }
 
     if { [$chunk is_ack_chunk] || [$chunk is_nak_chunk]} {
-      $self Del_pending_ack [$chunk cget -acked_id]
-      $self Del_pending_blob [$chunk cget -acked_id]
+      $self Del_pending_ack [$chunk acked_id]
+      $self Del_pending_blob [$chunk acked_id]
     }
 
     if { [$chunk is_control_chunk] == 0 } {
@@ -129,89 +128,99 @@ snit::type BaseP2PTransport {
       }
     }
 
-    $self process_send_queues
+    $self Process_send_queue
 
   }
 
   method On_signaling_chunk_received { chunk } {
 
-    variable signaling_blobs
+    puts "Received chunk"
 
-    set blob_ib [$chunk cget -blob_id]
+    set blob_id [$chunk blob_id]
 
-    if { [lsearch [array names $signaling_blobs] $blob_id] >= 0 } {
+    if { [lsearch [array names signaling_blobs] $blob_id] >= 0 } {
       set blob $signaling_blobs($blob_id)
     } else {
-      MessageBlob blob -application_id [$chunk cget -application_id] -blob_size [$chunk cget -blob_size] -session_id [$chunk cget -session_id] -blob_id $blob_id
-      set $signaling_blobs($blob_id) $blob
+      set blob [MessageBlob %AUTO% -application_id [$chunk cget -application_id] -blob_size [$chunk blob_size] -session_id [$chunk session_id] -blob_id $blob_id]
+      set signaling_blobs($blob_id) $blob
     }
 
-    $blob AppendChunk $chunk
+    $blob append_chunk $chunk
+    puts "Is it complete?"
     if { [$blob is_complete] } {
-      ::Event::fireEvent p2pBlobReceived $blob
+      puts "The blob $blob is complete"
+      ::Event::fireEvent p2pBlobReceived p2pBaseTransport $blob
       array unset signaling_blobs $blob_id
+    } else {
+      puts "Waiting for more data"
     }
 
   }
 
   method On_chunk_sent { chunk } {
 
-    ::Event::fireEvent p2pChunkSent $chunk
+    ::Event::fireEvent p2pChunkSent p2pBaseTransport $chunk
     $self Process_send_queue
 
   }
 
   method Process_send_queue { } {
-    variable data_blob_queue
-    variable pending_blob
-    variable first
 
-    if { [llength $data_blob_queue] >= 0 } {
-      set queue data_blob_queue
+    if { [llength $data_blob_queue] > 0 } {
+      set queue $data_blob_queue
     } else {
       return 0
     }
 
+    puts "Queue now: $data_blob_queue"
     set first 0
 
-    set blob [[lindex $queue 0] 2]
-    set peer_guid [[lindex $queue 0] 1]
-    set peer [[lindex $queue 0] 0]
+    set blob [lindex [lindex $queue 0] 2]
+    set peer_guid [lindex [lindex $queue 0] 1]
+    set peer [lindex [lindex $queue 0] 0]
 
-    set chunk { [$blob get_chunk version max_chunk_size first] }
-    __Send_chunk peer peer_guid chunk
+    set chunk [$blob get_chunk [$self version] [$self max_chunk_size] $first] 
+    $self __Send_chunk $peer $peer_guid $chunk
 
     if { [$blob is_complete] } {
       lreplace $queue 0 0
-      Add_pending_blob [$chunk cget -ack_id] $blob
+      Add_pending_blob [$chunk ack_id] $blob
     }
     return 1
 
   }
 
+method max_chunk_size { } {
+
+  return ""
+
+}
+
 method __Send_chunk {peer peer_guid chunk} {
   variable local_chunk_id
+  puts "Sending chunk $chunk to $peer"
 
   if { ![info exists local_chunk_id] } {
     set local_chunk_id [expr {int(1000 + rand() * (1+65540-1000))}]
   }
-  $chunk configure -id $local_chunk_id
+  $chunk set_id $local_chunk_id
   set local_chunk_id [$chunk next_id]
 
   if { [$chunk require_ack] == 1 } {
-    $self add_pending_ack [$chunk cget -ack_id]
+    $self Add_pending_ack [$chunk ack_id]
   }
 
-  $self Send_chunk $peer $peer_guid $chunk
+  puts "I am $self of class [$self info type] and belong to $options(-transport)"
+  $options(-transport) Send_chunk $peer $peer_guid $chunk
 
 }
 
-method Send_chunk { peer peer_guid chunk } {
+#method Send_chunk { peer peer_guid chunk } {
 
   #Implemented in each transport on its own
-  return ""
+#  return ""
 
-}
+#}
 
 }
 

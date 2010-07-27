@@ -1,10 +1,10 @@
-namespace eval ::p2p::transport {
+namespace eval ::p2p {
 
  snit::type MessageBlob {
 
     option -application_id ""
     option -data ""
-    option -total_size ""
+    option -blob_size ""
     option -session_id ""
     option -blob_id ""
     option -current_size 0
@@ -17,18 +17,21 @@ namespace eval ::p2p::transport {
       set data $options(-data)
       if { $data != "" } {
         if { [string length $data] > 0 } {
-          set total_size [expr {[string length $data] - 2}]
+          set blob_size [expr {[string length $data] - 2}]
+	  if { $options(-blob_size) == "" } {
+            set options(-blob_size) $blob_size
+          }
         }
       }
 
-      if { $session_id == "" } {
-        set session_id [::p2p::generate_id]
+      if { $options(-session_id) == "" } {
+        $self configure -session_id [::p2p::generate_id]
       }
 
-      if { $blob_id == "" } {
-        set blob_id [::p2p::generate_id]
+      if { $options(-blob_id) == "" } {
+        $self configure -blob_id [::p2p::generate_id]
       }
-      set id $blob_id
+      $self configure -id [$self cget -blob_id]
 
     }
 
@@ -40,7 +43,8 @@ namespace eval ::p2p::transport {
 
     method is_complete {} {
 
-      return [expr {$options(-total_size) == $options(-transferred)}]
+      puts "Size is $options(-blob_size) and we have [$self transferred]"
+      return [expr {$options(-blob_size) == [$self transferred]}]
 
     }
 
@@ -51,15 +55,18 @@ namespace eval ::p2p::transport {
     }
 
     method get_chunk { version max_size {sync 0} } {
-      set chunk [MessageChunk createMsg $version $options(-application_id) $options(-session_id) $options(-id) $options(-transferred) $options(-total_size) $max_size $sync]
-      if { $options(-data) != "" } {
-        set newsize [expr {$options(-current_size) + [$chunk cget -size]}]
-        if { $newsize > $options(-total_size) } {
+      set module ::p2pv$version
+      set chunk [${module}::MessageChunk createMsg $options(-application_id) $options(-session_id) $options(-id) [$self transferred] $options(-blob_size) $max_size $sync]
+      set data $options(-data)
+      if { $data != "" } {
+        set newsize [expr {$options(-current_size) + [$chunk size]}]
+        if { $newsize > $options(-blob_size) } {
           set data [string range $data $options(-current_size) $newsize]
         } else {
           set data [string range $data $options(-current_size) end]
         }
-        $chunk configure -data $data
+	puts "Chunk is of type [$chunk info type]"
+        $chunk set_data $data
         $self configure -current_size $newsize
         return $chunk
         
@@ -68,10 +75,10 @@ namespace eval ::p2p::transport {
 
     method append_chunk { chunk} {
 
-      if { $options(-session_id) != $chunk cget -session_id || $options(-id) != $chunk cget -blob_id } { return }
+      if { ($options(-session_id) != [$chunk session_id]) || ($options(-id) != [$chunk blob_id]) } { return }
       set body [$chunk cget -body]
-      set data [concat $data$body]
-      set current_size [string length $data]
+      set options(-data) [concat $options(-data)$body]
+      set options(-current_size) [string length $options(-data)]
 
     }
 
@@ -82,14 +89,14 @@ namespace eval ::p2p::transport {
     typemethod parse {version data} {
 
       set module ::p2pv$version
-      return [$module MessageChunk parse $data]
+      return [${module}::MessageChunk parse $data]
 
     }
 
     typemethod createMsg { version app_id session_id blob_id offset blob_size max_size sync} {
 
       set module ::p2pv$version
-      return [$module MessageChunk createMsg $app_id $session_id $blob_id $offset $blob_size $max_size $sync]
+      return [${module}::MessageChunk createMsg $app_id $session_id $blob_id $offset $blob_size $max_size $sync]
 
     }
   };# end of class

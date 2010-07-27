@@ -1,18 +1,23 @@
-namespace eval ::p2p::transport {
+namespace eval ::p2p {
 
   snit::type SwitchboardP2PTransport {
 
-    delegate option * to BaseP2PTransport
     delegate method * to BaseP2PTransport
+    delegate option * to BaseP2PTransport
 
     option -name "switchboard"
     option -protocol "SBBridge"
     option -rating 0
+    option -peer ""
+    option -peer_guid ""
+    option -switchboard ""
+    option -contacts ""
 
     constructor { args } {
 
-      install BaseP2PTransport using BaseP2PTransport %AUTO%
+      install BaseP2PTransport using BaseP2PTransport %AUTO% -transport $self
       $self configurelist $args
+      $BaseP2PTransport conf2
 
     }
 
@@ -40,56 +45,65 @@ namespace eval ::p2p::transport {
 
     method Send_chunk { peer peer_guid chunk } {
 
-      if { [$self version] == 1 } {
-        set headers(P2P-Dest) $peer
-      } else {
-        set headers(P2P-Src) [concat [::abook::getPersonal login]\;[::config::getGlobalKey machineguid]]
-        set headers(P2P-Src) [concat $peer\;$peer_guid]
-      }  
       set content_type "application/x-msnmsgrp2p"
-      binary scan [$chunk cget -application_id] iu appid
-      set body $chunk$appid
-      set head [$headers toString]
-      set data $head$body
-      ::MSN::WriteSBNoNL $peer $data
+      set sendme [Message %AUTO%]
+      $sendme add_header MIME-Version 1.0
+      $sendme add_header Content-Type $content_type
+      if { [$self version] == 1 } {
+        $sendme add_header P2P-Dest $peer
+      } else {
+        $sendme add_header P2P-Src [concat [::abook::getPersonal login]\;[::config::getGlobalKey machineguid]]
+        $sendme add_header P2P-Dest [concat $peer\;$peer_guid]\n]
+      }  
+      #binary scan [$chunk cget -application_id] iu appid
+      set body [$chunk toString]
+      $sendme set_body $body
+      set data [$sendme toString]
+      set data_len [expr [string length $data]]
+      set chatid [::MSN::chatTo $peer]
+      set sb [::MSN::SBFor $chatid]
+      ::MSN::ChatQueue $chatid [list ::MSN::WriteSBNoNL $sb "MSG" "D $data_len\r\n$data"]
     }
 
     method On_message_received { message} {
 
+      puts "Incoming message: $message"
       set version 1
       set headers [$message headers]
-      foreach key [array names headers] {
-        set value $headers($key)
+      foreach {key value} $headers {
         if { $key == "P2P-Dest" && [string first ";" $key] >= 0 } {
           set version 2
           set semic [string first ";" $value]
           set dest_guid [string range $value [expr {$semic+1}] end]
           if { $dest_guid != [::config::getGlobalKey machineguid] } {
             #this chunk is for our other self
+            puts "Ignoring our other self"
             return
           }
         }
-        set chunk [MessageChunk parse $version [string range [$message body] 0 end-4]]
-        binary scan [string range [$message body] end-4 end] iu appid
-        $message configure -application_id $appid
-        $self On_chunk_received $options(-peer) $options(-peer_guid) $chunk
       }
+      set chunk [MessageChunk parse $version [string range [$message get_body] 0 end-4]]
+      binary scan [string range [$message get_body] end-4 end] iu appid
+      $message configure -application_id $appid
+      puts "Going to On_chunk_received for chunk $chunk"
+      $self On_chunk_received $options(-peer) $options(-peer_guid) $chunk
 
     }
 
     method On_contact_joined { contact} {
-      #Do nothing?
+      set options(-contacts) [lappend $options(-contacts) $contact]
     }
 
     method On_contact_left { contact} {
-      ::MSN::CloseSB [::MSN::SBFor $contact]
+      #::MSN::CloseSB [::MSN::SBFor $contact]
     }
 
-    typemethod handle_peer { client transport_manager peer peer_guid } {
-      return [SwitchboardP2PTransport trsp -client $client -peer $peer -peer_guid $peer_guid -transport_manager $transport_manager -contacts $client -switchboard ""]
+    typemethod handle_peer { transport_manager peer peer_guid } {
+      puts "Creating new SB for manager $transport_manager"
+      return [SwitchboardP2PTransport %AUTO% -peer $peer -peer_guid $peer_guid -transport_manager $transport_manager -contacts $peer ]
     }
 
-    typemethod handle_message { client switchboard message transport_manager} {
+    typemethod handle_message { switchboard message transport_manager} {
 
       array set headers [$message cget -headers]
       set guid ""
@@ -106,13 +120,13 @@ namespace eval ::p2p::transport {
           }
         } 
       }
-      return [SwitchboardP2PTransport trsp -client $client -switchboard $switchboard -peer $peer -guid $guid -transport_manager $transport_manager]
+      return [SwitchboardP2PTransport %AUTO% -switchboard $switchboard -peer $peer -guid $guid -transport_manager $transport_manager]
 
     }
 
     method peer_guid {} {}
 
-    method can_send { peer peer_guid blob bootstrap} {
+    method can_send { peer peer_guid blob {bootstrap}} {
       return [expr { $options(-peer)==$peer && $options(-peer_guid)==peer_guid } ]
     }
 

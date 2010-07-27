@@ -15,6 +15,7 @@ constructor {args} {
 
 method Can_handle_message { message} {
 
+  puts "Can I handle $message?"
   set euf_guid [[$message body] cget -euf_guid]
   if { $euf_guid == $::p2p::EufGuid::MSN_OBJECT } {
     return 1
@@ -26,8 +27,8 @@ method Can_handle_message { message} {
 
 method Handle_message { peer guid message} {
 
-  set session [MSNObjectSession create %AUTO%]
-  MSNObjectSession $session -session_manager [[$self cget -client] cget -p2p_session_manager] -peer $peer -guid $guid -application_id [[$message body] cget -application_id] -message $message
+  puts "Received message!!!"
+  set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [[$message body] cget -application_id] -message $message]
 
   ::Event::registerEvent p2pCompleted all [list $self Incoming_session_transfer_completed]
   set incoming_sessions($session) {p2pCompleted Incoming_session_transfer_completed}
@@ -35,7 +36,7 @@ method Handle_message { peer guid message} {
   foreach obj $published_objects {
     if {[$obj cget -shad] == [$msnobj cget -shad]} {
       $session accept [$obj cget -data]
-      return session
+      return $session
     }
   }
   $session reject
@@ -66,13 +67,17 @@ method request { msnobj callback {errback ""} {peer ""}} {
 
   # TODO: p2pv2:  send a request to all end points of the peer and cancel the other sessions when one of them answers
   set context [$msnobj toString]
-  MSNObjectSession session -session_manager [[$self cget -client] cget -p2p_session_manager] -peer $peer -guid "" -application_id $application_id -context $context
+  puts "Context: $context"
+  puts "Peer: $peer"
+  set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid "" -application_id $application_id -context $context]
+  puts "Session $session created with peer [$session cget -peer]"
   set handles [list {p2pOnSessionAnswered On_session_answered} {p2pOnSessionRejected On_session_rejected} {p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed}]
+  puts $handles
   foreach {event callback} $handles {
-    ::Event::registerEvent $event all [list $self $handle]
+    ::Event::registerEvent $event all [list $self $callback]
   }
   set outgoing_sessions($session) [list $handles $callback $errback $msnobj]
-  $session invite
+  $session invite $context
 
 }
 
@@ -158,7 +163,7 @@ snit::type MSNObject {
 
   option -creator ""
   option -size 0
-  option -typ ""
+  option -type ""
   option -location ""
   option -friendly ""
   option -shad ""
@@ -169,15 +174,15 @@ constructor {args} {
 
   $self configurelist $args
 
-  if { $shad == "" } {
-    if { $data == "" } {
+  if { $options(-shad) == "" } {
+    if { $options(-data) == "" } {
       return ""
     }
-    $self configure -shad [Compute_data_hash $data]
+    $self configure -shad [Compute_data_hash $options(-data)]
   }
 
-  if { $shac == "" } {
-    $self configure -shac [Compute_checksum $data]
+  if { $options(-shac) == "" } {
+    $self configure -shac [Compute_checksum $options(-data)]
   }
 
 }
@@ -186,28 +191,30 @@ method Set_data {data} {
 
   $self configure -size [string length $data]
   $self configure -data $data
+  $self configure -shad [Compute_data_hash $data]
   $self configure -shac [Compute_checksum $data]
 
 }
 
-typemethod parse { client xml_data } {
+typemethod parse { xml_data } {
 
   set elements [split $xml_data " "]
-  set creator [$self retrieve $elements "Creator"]
-  set size [$self retrieve $elements "Size"]
-  set type [$self retrieve $elements "Type"]
-  set location [::sxml::replacexml [encoding convertfrom utf-8 [$self retrieve $elements "Location"]]]
-  set friendly [base64::decode [::sxml::replacexml [encoding convertfrom utf-8 [$self retrieve $elements "Friendly"]]]]
-  set shad [$self retrieve $elements "SHA1D"]
-  if { [$shad] != "" } {
-    set shad [Decode_shad [$shad]]
-  }
-  set shac [$self retrieve $elements "SHA1C"]
-  if { [$shac] != "" } {
+  set creator [MSNObject retrieve $elements "Creator"]
+  set size [MSNObject retrieve $elements "Size"]
+  set type [MSNObject retrieve $elements "Type"]
+  set location [encoding convertfrom utf-8 [MSNObject retrieve $elements "Location"]]
+  set friendly [base64::decode [::sxml::replacexml [encoding convertfrom utf-8 [MSNObject retrieve $elements "Friendly"]]]]
+  set shad ""
+  set shad [MSNObject retrieve $elements "SHA1D"]
+  #if { [info exists shad] && $shad != "" } {
+  #  set shad [MSNObject Decode_shad $shad]
+  #}
+  set shac [MSNObject retrieve $elements "SHA1C"]
+  if { [info exists shac] && $shac != "" } {
     set shac [base64::decode $shac]
   }
 
-  MSNObject result -creator $creator -size $size -type $type -location $location -friendly $friendly -shad $shad -shac $shac
+  set result [MSNObject %AUTO% -creator $creator -size $size -type $type -location $location -friendly $friendly -shad $shad -shac $shac]
 
   return $result
 
@@ -215,11 +222,29 @@ typemethod parse { client xml_data } {
 
 typemethod retrieve { elem data } {
 
-  set idx [lsearch $elem [concat $data=*]
+  set idx [lsearch $elem [concat $data=*]]
   if { $idx < 0 } { return "" }
   set ret [lindex $elem $idx]
   set ret [string range $ret [expr { [string length $data]+1}] end]
+  if { [string index $ret 0] == "\"" } { set ret [string range $ret 1 end] }
+  if { [string index $ret end] == "\"" } { set ret [string range $ret 0 end-1] }
   return $ret
+
+}
+
+typemethod Decode_shad { shad } {
+
+  set shad [base64::decode $shad]
+  if { [string first " " $shad] >= 0 } {
+    set parts [split $shad " "]
+    set shad [Decode_shad [lindex $parts 0]]
+    if { $shad == "" } {
+      set shad [Decode_shad [lindex $parts 1]]
+    }
+  } else {
+    set shad ""
+  }
+  return $shad
 
 }
 
@@ -238,7 +263,10 @@ method Compute_checksum {} {
   set friendly [$self cget -friendly]
   set sha1d [$self cget -shad]
 
-  return [::base64::encode [binary format H* [::sha1::sha1 "Creator${creator}Size${size}Type${type}Location${file}.tmpFriendly${friendly}SHA1D${sha1d}"]]]
+  set sha1d [base64::encode $sha1d]
+  set friendly [base64::encode $friendly]
+
+  return [::base64::encode [binary format H* [::sha1::sha1 "Creator${creator}Size${size}Type${type}Location${file}Friendly${friendly}SHA1D${sha1d}"]]]
 
 }
 
@@ -252,7 +280,11 @@ method toString { } {
   set sha1d [$self cget -shad]
   set sha1c [$self cget -shac]
 
-  set msnobj "<msnobj Creator=\"$Creator\" Size=\"$size\" Type=\"$type\" Location=\"[urlencode $file].tmp\" Friendly=\"${friendly}\" SHA1D=\"$sha1d\" SHA1C=\"$sha1c\"/>"
+  set friendly [base64::encode $friendly]
+  set file [encoding convertto utf-8 $file]
+  set sha1c [base64::encode $sha1c]
+
+  set msnobj "<msnobj Creator=\"$creator\" Size=\"$size\" Type=\"$type\" Location=\"$file\" Friendly=\"${friendly}\" SHA1D=\"$sha1d\" SHA1C=\"$sha1c\"/>\x00"
   return $msnobj
 
 }

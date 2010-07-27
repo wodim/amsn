@@ -2,20 +2,25 @@ namespace eval ::p2p {
 
 snit::type P2PSession {
 
-option -session_manager ""
-option -peer ""
-option -euf_guid ""
-option -application_id 0
-option -message ""
-option -id ""
-option -call_id ""
-option -cseq 0
-option -branch ""
-option -incoming 0
+option -session_manager -default ""
+option -peer -readonly no -default ""
+option -euf_guid -default ""
+option -application_id -default 0
+option -message -default ""
+option -id -default ""
+option -call_id -default ""
+option -cseq -default 0
+option -branch -default ""
+option -incoming -default 0
 
 constructor {args} {
 
   $self configurelist $args
+  puts "Options array: [array get options]"
+
+}
+
+method conf2 { } {
 
   if { $options(-message) != "" } {
     set options(-id) [[$message body] cget -session_id]
@@ -29,22 +34,31 @@ constructor {args} {
     set options(-branch) [::p2p::generate_uuid]
   }
 
-  puts "Session manager: $options(-session_manager)"
-  $options(-session_manager) Register_session $self
+  puts "Session manager: [$self cget -session_manager]"
+  [$self cget -session_manager] Register_session $self
+
+}
+
+method transport_manager { } {
+
+  return [ [$self cget -session_manager] transport_manager]
 
 }
 
 method set_receive_data_buffer { buffer total_size} {
 
-  MessageBlob blob -application_id [$self cget -application_id] -data $buffer -total_size $total_size -sid [$self cget -id]
-  [$self cget -transport_manager] register_writable_blob $blob
+  set blob [MessageBlob %AUTO% -application_id [$self cget -application_id] -data $buffer -total_size $total_size -sid [$self cget -id]]
+  [$self transport_manager] register_writable_blob $blob
 
 }
 
-method Invite { context } {
+method invite { context } {
+  puts "Inviting"
 
-  SLPSessionRequestBody body -euf_guid $options(-euf_guid) -app_id $options(-application_id) -context $context -session_id $options(-id)
-  SLPRequestMessage msg -method $::p2p::SLPRequestMethod::INVITE -resource [concat "MSNMSGR:"$options(-peer) -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)
+  set body [SLPSessionRequestBody %AUTO% -euf_guid $options(-euf_guid) -app_id $options(-application_id) -context $context -session_id $options(-id)]
+  $body conf2
+  set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource [concat MSNMSGR:$options(-peer)] -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
+  $msg conf2
   $msg setBody $body
   $self Send_p2p_data $msg
 
@@ -53,7 +67,7 @@ method Invite { context } {
 method Transreq {} {
 
   set options(-cseq) 0
-  SLPTransferRequestBody body -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -bridges [[$self cget -transport_manager] cget -supported_transports] -conn_type [::abook::getDemographicField conntype]
+  SLPTransferRequestBody body -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -bridges [[$self transport_manager] cget -supported_transports] -conn_type [::abook::getDemographicField conntype]
   $msg setBoy $body
   $self Send_p2p_data $msg
 
@@ -61,7 +75,8 @@ method Transreq {} {
 
 method Respond { status_code} {
 
-  SLPSessionRequestBody body -session_id $options(-id)
+  set body [SLPSessionRequestBody %AUTO% -session_id $options(-id)]
+  $body conf2
   incr options(-cseq)
   SLPResponseMessage resp -status $status_code -peer $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id $options(-call_id)
   $resp setBody $body
@@ -150,10 +165,12 @@ method Bridge_failed { new_bridge } {
 
 method Close { context reason } {
 
-  SLPSessionCloseBody body -context $context -session_id $options(-id) -s_channel_state 0
+  set body [SLPSessionCloseBody %AUTO% -context $context -session_id $options(-id) -s_channel_state 0]
+  $body conf2
   set options(-cseq) 0
   set options(-branch) [::p2p::generate_uuid]
-  SLPRequestMessage msg -method ::p2p::SLPRequestMethod::BYE -resource [concat "MSNMSGR:"$options(-peer) -frm [::abook::gerPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)
+  set msg [SLPRequestMessage %AUTO% -method ::p2p::SLPRequestMethod::BYE -resource [concat "MSNMSGR:"$options(-peer) -frm [::abook::gerPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]]
+  $msg conf2
   $msg setBody $body
   $self Send_p2p_data $msg
   destroy $self
@@ -161,8 +178,9 @@ method Close { context reason } {
 }
 
 method Send_p2p_data { data_or_file {is_file 0} } {
+  puts "Sending p2p data"
 
-  if { catch {[$data_or_file is_SLP]} } {
+  if { [catch {$data_or_file is_SLP}] } {
     set session_id $options(-id)
     set data $data_or_file
     set total_size ""
@@ -172,8 +190,8 @@ method Send_p2p_data { data_or_file {is_file 0} } {
     set total_size [string length $data]
   }
 
-  MessageBlob blob -application_id $application_id -data $data -total_size $total_size -session_id $session_id -is_file $is_file
-  $options(-transport_manager) send $options(-peer) $blob
+  set blob [MessageBlob %AUTO% -application_id $options(-application_id) -data $data -total_size $total_size -session_id $session_id -is_file $is_file]
+  [$self transport_manager] send $options(-peer) "" $blob
 
 }
 
@@ -244,8 +262,8 @@ method On_data_chunk_transferred { chunk } {
 method Switch_bridge { transreq } {
 
   set choices [[$transreq body] cget -bridges]
-  set proto [[$self cget -transport_manager] get_supported_transports $choices]
-  set new_bridge [[$self cget -transport_manager] create_transport [$self cget -peer] $proto]
+  set proto [[$self transport_manager] get_supported_transports $choices]
+  set new_bridge [[$self transport_manager] create_transport [$self cget -peer] $proto]
   if { $new_bridge == "" || {$new_bridge connected} == 1 } {
     $self Bridge_selected
   } else {
@@ -258,7 +276,7 @@ method Switch_bridge { transreq } {
 
 method Request_bridhe { } {
 
-  set bridge [[$self cget -transport_manager] find_transport [$self cget -peer]]
+  set bridge [[$self transport_manager] find_transport [$self cget -peer]]
   if { [info exists $bridge] && $bridge != "" && [$bridge rating] > 0 } {
     $self On_bridge_selected
   } else {
@@ -292,8 +310,7 @@ method Transreq_accepted { transresp } {
   set ip [lindex $ipport 0]
   set port [lindex $ipport 1]
 
-  set trspman [$self cget -transport_manager]
-  set new_bridge [$trspman create_transport $options(-peer) [$transresp cget -bridge] -ip $ip -port $port -nonce [$transresp cget -nonce] 
+  set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp cget -bridge] -ip $ip -port $port -nonce [$transresp cget -nonce] ]
   if { $new_bridge == "" || [$new_bridge connected] } {
     $self Bridge_selected
   } else {

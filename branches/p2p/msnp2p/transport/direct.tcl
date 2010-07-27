@@ -1,4 +1,4 @@
-namespace eval ::p2p::transport {
+namespace eval ::p2p {
 
 snit::type DirectP2PTransport {
 

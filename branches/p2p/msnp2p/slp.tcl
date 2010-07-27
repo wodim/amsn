@@ -2,8 +2,6 @@ namespace eval ::p2p {
 
 package require snit
 
-source constants.tcl
-
 ::snit::type SLPMessage {
 
 option -to ""
@@ -14,33 +12,57 @@ option -call_id ""
 option -max_forwards 0
 
 variable headers -array {}
+variable headernames {}
 variable body
 
 constructor { args } {
-  $self configurelist $args
-  set headers(To) [join [list "<msnmsgr:" $options(-to) ">"] ""]
-  set headers(From) [join [list "<msnmsgr:" $options(-frm) ">"] ""]
-  if { $options(-branch) != "" } {
-    set headers(Via) [join [list "MSNSLP/1.0/TLP ;branch=" $options(-branch)] ""]
-  }
-  set headers(CSeq) $options(-cseq)
-  if { $options(-call_id) != "" } {
-    set headers(Call-ID) $options(-call_id)
-  }
-  set headers(Max-Forwards) $options(-max_forwards)
 
-  set body [SLPNullBody nullbody]
-  set headers(Content-Length) [string length $body]
+  $self configurelist $args
+
+}
+
+method conf2 { } {
+
+  puts "From $options(-frm) to $options(-to)"
+  $self add_header To [join [list "<msnmsgr:" $options(-to) ">"] ""]
+  $self add_header From [join [list "<msnmsgr:" $options(-frm) ">"] ""]
+  if { $options(-branch) != "" } {
+    $self add_header Via [join [list "MSNSLP/1.0/TLP ;branch={" $options(-branch) "}"] ""]
+  }
+  $self add_header CSeq $options(-cseq)
+  if { $options(-call_id) != "" } {
+    $self add_header Call-ID [join [list "{" $options(-call_id) "}"] ""]
+  }
+  $self add_header Max-Forwards $options(-max_forwards)
+
+  set body [SLPNullBody %AUTO%]
+  $self add_header Content-Type [$body cget -content_type]
+  $self add_header Content-Length [expr [string length $body]]
   
+}
+
+method add_header { key value } {
+  set headers($key) $value
+  if { [lsearch $headernames $key] < 0 } {
+    set headernames [lappend headernames $key]
+  }
+
 }
 
 method setBody { data } {
   set body $data
-  set headers(Content-Length) [string length $body]
+  $self add_header Content-Type [$body cget -content_type]
+  $self add_header Content-Length [string length $body]
 }
 
 method headers { } {
-  return $headers
+  return [array get headers]
+}
+
+method setHeader { key val } {
+
+  $self add_header $key $val
+
 }
 
 method is_SLP { } {
@@ -64,7 +86,7 @@ method parse { chunk } {
          set found 1
       } else {
         set name_value [split $line ":"]
-        set headers([lindex $name_value 0]) [lindex $name_value 1]
+        $self add_header [lindex $name_value 0] [lindex $name_value 1]
       }
     }
   }
@@ -74,7 +96,7 @@ method parse { chunk } {
   } else {
     set content_type ""
   }
-  setBody [SLPMessageBody $build $content_type $raw_body]
+  setBody [SLPMessageBody build $content_type $raw_body]
 }
 
 method toString { } {
@@ -82,11 +104,13 @@ method toString { } {
   set str ""
   set newl \r\n
   #content-length
-  foreach key [array names headers] {
+  foreach key $headernames {
+    puts "Processing header $key"
     set value $headers($key)
-    set str [join [list $str $key : $value $newl] ""] ;#concat strips newlines
+    set str [join [list $str $key ": " $value $newl] ""] ;#concat strips newlines
   }
-  set str [join [list $str $newl] ""]
+  set bodyStr [$body toString]
+  set str [join [list $str $newl $bodyStr] ""]
   return $str
 
 }
@@ -104,20 +128,21 @@ typemethod build {raw_message} {
   set i 0
   foreach line $content {
     set line [string trim $line]
-    lreplace $content i i $line
+    lreplace $content $i $i $line
     incr i
   }
 
   if { [string trim [lindex $start_line 0]] == "MSNSLP/1.0" } {
     set status [string trim [lindex $start_line 1]]
     set reason [string trim [lindex $start_line 2]]
-    SLPResponseMessage slp_message $status $reason
+    set slp_message [SLPResponseMessage %AUTO% -status $status -reason $reason]
   } else {
     set method [string trim [lindex $start_line 0]]
     set resource [string trim [lindex $start_line 1]]
-    SLPRequestMessage slp_message $method $resource
+    set slp_message [SLPRequestMessage %AUTO% -method $method -resource $resource]
+    $slp_message conf2
   }
-  slp_message parse $content
+  $slp_message parse $content
 }
 }
 
@@ -125,31 +150,60 @@ typemethod build {raw_message} {
 delegate option * to SLPMessage
 delegate method * to SLPMessage
 
-option -to ""
+#option -to ""
 option -resource ""
+option -method ""
 
 constructor { args } {
   install SLPMessage using SLPMessage %AUTO%
   $self configurelist $args
+}
+
+method conf2 { } {
+  $SLPMessage conf2
   set colon [string first ":" $options(-resource)]
-  if {  $options(-to) != "" } {
-    $self configure -to [string range $options(-resource) 0 [expr {$colon - 1}]]
+  if {  [SLPMessage cget -to] == "" } {
+    $SLPMessage configure -to [string range $options(-resource) 0 [expr {$colon - 1}]]
   }
 }
+
+method toString { } {
+
+  set msg [$SLPMessage toString]
+  set start_line [concat $options(-method) $options(-resource) MSNSLP/1.0]
+  return [join [list $start_line \r\n $msg] ""]
+
+}
+
 }
 
 ::snit::type SLPResponseMessage {
 delegate option * to SLPMessage
 delegate method * to SLPMessage
 
-typevariable STATUS_MESSAGE { {200 OK} {404 "Not Found"} {500 "Internal Error"} {603 "Decline"} {606 "Unacceptable"}}
-option -status
-option -reason
+typevariable STATUS_MESSAGE { {200 OK} {404 "Not Found"} {500 "Internal Error"} {603 Decline} {606 Unacceptable}}
+option -status ""
+option -reason ""
 
 constructor { args } {
 
   install SLPMessage using SLPMessage %AUTO%
   $self configurelist $args
+  $SLPMessage conf2
+
+}
+
+method toString { } {
+
+  set msg [$SLPMessage toString]
+  if { $options(-reason) == "" } {
+    foreach stat $STATUS_MESSAGE { if { [lindex $stat 1] == $options(-status) } { set reason [lindex $status 0] } }
+  } else {
+    set reason $options(-reason)
+  }
+
+  set start_line [concat MSNSLP/1.0 $options(-status) $reason
+  return [join [list $start_line \r\n $msg] ""]
 
 }
 
@@ -160,38 +214,70 @@ constructor { args } {
 option -content_type ""
 variable content_classes ""
 variable headers -array {}
+variable headernames {}
 variable body ""
+option -euf_guid ""
 option -session_id ""
 option -s_channel_state ""
 option -capabilities_flags ""
 
 constructor { args } {
   $self configurelist $args
+}
+
+method conf2 { } {
+  if { $options(-euf_guid) != "" } {
+    $self setHeader EUF-GUID [join [list "{" $options(-euf_guid) "}"] ""]
+  }
   if { $options(-session_id) != "" } {
-    set headers(SessionID) $options(-session_id)
+    $self setHeader SessionID $options(-session_id)
   }
   if { $options(-s_channel_state) != "" } {
-    set headers(SChannelState) $options(-s_channel_state)
+    $self setHeader SChannelState $options(-s_channel_state)
   }
   if { $options(-capabilities_flags) != "" } {
-    set headers(Capabilities-Flags) $options(-capabilities_flags)
+    $self setHeader Capabilities-Flags $options(-capabilities_flags)
   }
 }
 
 method headers { } {
-  return $headers
+  return [array get headers]
 }
 
 method body { } {
   return $body
 }
 
-method setBody { body } {
-  $self configure -body $body
+method setBody { newBody } {
+  set body $newBody
 }
 
 method setHeaders { headers } {
   $self configure -headers $headers
+}
+
+method setHeader { key val } {
+  set headers($key) $val
+  puts "Processing header $key"
+  if { [lsearch $headernames $key] < 0 } {
+    set headernames [lappend headernames $key]
+  }
+  puts "New headers: $headernames"
+
+}
+
+method toString { } {
+
+  set str ""
+  set newl \r\n
+  #content-length
+  foreach key $headernames {
+    set value $headers($key)
+    set str [join [list $str $key ": " $value $newl] ""] ;#concat strips newlines
+  }
+  set str [join [list $str $newl $body \x00] ""]
+  return $str
+
 }
 
 method parse { data } {
@@ -210,7 +296,7 @@ method parse { data } {
          set found 1
       } else {
         set name_value [split $line ":"]
-        set headers([lindex $name_value 0]) [lindex $name_value 1]
+        $self addHeader [lindex $name_value 0] [lindex $name_value 1]
       }
     }
   }
@@ -218,10 +304,12 @@ method parse { data } {
 
 typemethod build {content_type content} {
   if { [array names content_classes -exact $content_type] == "" } {
-    SLPMessageBody msgbody -content_type $content_type
+    set returnme [SLPMessageBody %AUTO% -content_type $content_type]
+    $returnme conf2
+    return $returnme
   } else {
     set cls $content_classes($content_type)
-    $cls %AUTO%
+    return [$cls %AUTO%]
   }
 }
 
@@ -237,6 +325,7 @@ delegate method * to SLPMessageBody
 
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::NULL
+  $SLPMessageBody conf2
   
   SLPMessageBody register_content $::p2p::SLPContentType::NULL SLPNullBody
 }
@@ -247,29 +336,26 @@ snit::type SLPSessionRequestBody {
 delegate option * to SLPMessageBody
 delegate method * to SLPMessageBody
 
-option -euf_guid ""
 option -app_id ""
 option -context ""
-option -session_id ""
-option -s_channel_state 0
-option -capabilities_flags 1
 
 constructor { args } {
-  install SLPMessageBody using SLPMessageBody %AUTO%
+  install SLPMessageBody using SLPMessageBody %AUTO% -session_id 0 -s_channel_state 0 -capabilities_flags 1 -content_type $::p2p::SLPContentType::SESSION_REQUEST
   $self configurelist $args
+}
+
+method conf2 { } {
+  $SLPMessageBody conf2
   set euf_guid [$self cget -euf_guid]
   set app_id [$self cget -app_id]
   set context [$self cget -context]
 
   set headers {}
-  if { $euf_guid != "" } {
-    set headers(EUF-GUID) $euf_guid
-  }
   if { $app_id != "" } {
-    set headers(AppID) $app_id
+    $SLPMessageBody setHeader AppID $app_id
   }
-  if { $capabilities_flags != 1 } {
-    set headers(Context) [base64::encode $context]
+  if { $context != 1 } {
+    $SLPMessageBody setHeader Context [base64::encode $context]
   }
 
 }
@@ -297,14 +383,15 @@ snit::type SLPTransferRequestBody {
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::TRANSFER_REQUEST 
   $self configurelist $args
-  set headers(NetID) -1388627126
-  set headers(Bridges) "TCPv1 SBBridge"
-  set headers(Conn-Type) "Port-Restrict-NAT"
-  set headers(TCP-Conn-Type) "Symmetric-NAT"
-  set headers(UPnPNat) "false"
-  set headers(ICF) "false"
-  set headers(Nonce) "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
-  set headers(Nat-Trav-Msg-Type) "WLX-Nat-Trav-Msg-Direct-Connect-Req"
+  $SLPMessageBody conf2
+  $SLPMessageBody setHeader NetID -1388627126
+  $SLPMessageBody setHeader Bridges "TCPv1 SBBridge"
+  $SLPMessageBody setHeader Conn-Type "Port-Restrict-NAT"
+  $SLPMessageBody setHeader TCP-Conn-Type "Symmetric-NAT"
+  $SLPMessageBody setHeader UPnPNat "false"
+  $SLPMessageBody setHeader ICF "false"
+  $SLPMessageBody setHeader Nonce "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
+  $SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
 }
 }
 
@@ -331,34 +418,36 @@ constructor { args } {
 
   $self configurelist $args
 
+  $SLPMessageBody conf2
+
   if { $options($bridge) != "" } {
-    set headers(Bridge) $options($bridge)
+    $SLPMessageBody setHeader Bridge $options($bridge)
   }
   if { $options($listening) == 1 } {
-    set headers(Listening) "true"
+    $SLPMessageBody setHeader Listening "true"
   } elseif { $options($listening) == 0} {
-    set headers(Listening) "false"
+    $SLPMessageBody setHeader Listening "false"
   }
   if { $options($nonce) != "" } {
-    set headers(Nonce) [string toupper $options($nonce)]
+    $SLPMessageBody setHeader Nonce [string toupper $options($nonce)]
   }
   if { $options($internal_ips) != "" } {
-    set headers(IPv4Internal-Addrs) $options($internal_ips)
+    $SLPMessageBody setHeader IPv4Internal-Addrs $options($internal_ips)
   }
   if { $options($internal_port) != "" } {
-    set headers(IPv4Internal-Port) $options($internal_port)
+    $SLPMessageBody setHeader IPv4Internal-Port $options($internal_port)
   }
   if { $options($external_ips) != "" } {
-    set headers(IPv4External-Addrs) $options($external_ips)
+    $SLPMessageBody setHeader IPv4External-Addrs $options($external_ips)
   }
   if { $options($external_port) != "" } {
-    set headers(IPv4External-Port) $options($external_port)
+    $SLPMessageBody setHeader IPv4External-Port $options($external_port)
   }
 
-  set headers(Nat-Trav-Msg-Type) "WLX-Nat-Trav-Msg-Direct-Connect-Req"
-  set headers(Conn-Type) $options(-conn_type)
-  set headers(TCP-Conn-Type) "Symmetric-NAT"
-  set headers(IPv6-global) ""
+  $SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
+  $SLPMessageBody setHeader Conn-Type $options(-conn_type)
+  $SLPMessageBody setHeader TCP-Conn-Type "Symmetric-NAT"
+  $SLPMessageBody setHeader IPv6-global ""
 
 }
 }
@@ -374,6 +463,7 @@ variable headers -array {}
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::SESSION_CLOSE
   $self configurelist $args
+  $SLPMessageBody conf2
 
   if { $context != "" } {
     set headers(Context) [base64::encode $context]
@@ -394,7 +484,8 @@ delegate option * to SLPMessageBody
 
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO%
+  $SLPMessageBody conf2
 }
 }
-::p2p::SLPRequestMessage msg1 -frm sender@hotmail.com -to receiver@hotmail.com
+#::p2p::SLPRequestMessage msg1 -frm sender@hotmail.com -to receiver@hotmail.com
 }

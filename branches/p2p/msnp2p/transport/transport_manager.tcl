@@ -1,26 +1,37 @@
-namespace eval ::p2p::transport {
+namespace eval ::p2p {
 
   snit::type P2PTransportManager {
 
-    option -default_transport "SBBridge"
+    option -default_transport SBBridge
     option -transports {}
-    variable -transport_signals -array {}
-    variable -supported_transports -array {}
-    variable -data_blobs -array {}
+    variable transport_signals -array {}
+    variable supported_transports -array {}
+    variable data_blobs -array {}
 
     constructor {args} {
 
       $self configurelist $args
 
-      set supported_transports("SBBridge") SwitchboardP2PTransport
-      set supported_transports("TCPv1") DirectP2PTransport
+      puts "Configured P2PTransportManager $self"
+      set supported_transports(SBBridge) SwitchboardP2PTransport
+      set supported_transports(TCPv1) DirectP2PTransport
       #@@@@@@@@@@@@@@@@@@ register NS
       #$self configure -uun_transport [list NotificationP2PTransport [$self cget -client] $self]
-            
 
     }
 
-    method Register_transport { transport} {
+    #@@@@@@@@ TODO: delme
+    method ping { } {
+      puts "Pong!"
+    }
+
+    method get_default_transport { } {
+
+      return $supported_transports($options(-default_transport))
+
+    }
+
+    method Register_transport { transport } {
 
       set transports [$self cget -transports]
 
@@ -46,7 +57,7 @@ namespace eval ::p2p::transport {
 
     }
 
-    method Unregister_transport { transport} {
+    method Unregister_transport { transport } {
       set transports [$self cget -transports]
 
       if { [lsearch $transport $transports] < 0 } {
@@ -125,7 +136,7 @@ namespace eval ::p2p::transport {
 
     }
 
-    method On_chunk_received { transport chunk} {
+    method On_chunk_received { chunk transport } {
 
       ::Event::fireEvent p2pChunkTransferred p2pTransportManager $chunk
       set session_id [$chunk cget -session_id]
@@ -137,7 +148,7 @@ namespace eval ::p2p::transport {
           $blob configure -id [$chunk cget -blob_id]
         }
       } else {
-        MessageBlob blob -application_id [$chunk cget -application_id] -total_size [$chunk cget -blob_size] -session_id $session_id -blob_id $blob_id
+        set blob [MessageBlob %AUTO% -application_id [$chunk cget -application_id] -total_size [$chunk cget -blob_size] -session_id $session_id -blob_id $blob_id]
         set data_blobs($session_id) $blob
       }
 
@@ -161,9 +172,18 @@ namespace eval ::p2p::transport {
       ::Event::fireEvent p2pBlobReceived p2pTransportManager $blob
     }
 
-    #@@@@@@@@@@@@@@ $msg toString?
     method send_slp_message { peer peer_guid application_id msg} {
       $self send_data $peer $peer_guid $application_id 0 $msg
+    }
+
+    method send { peer peer_guid blob } {
+
+      puts "Going to send $blob!"
+      set transport [$self Get_transport $peer $peer_guid $blob]
+      set tr2 [$transport %AUTO% -transport_manager $self]
+      puts "Using transport $transport to send $blob to $peer"
+      $tr2 send $peer $peer_guid $blob
+
     }
 
     method send_data { peer peer_guid application_id session_id data} {
