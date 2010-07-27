@@ -936,6 +936,13 @@ namespace eval ::MSN {
 		#Setup the conection
 		setup_connection ns
 
+                if { ![info exists ::ses_mgr] } {
+                	set ::ses_mgr [::p2p::P2PSessionManager %AUTO%]
+                	set ::obj_stor [::p2p::MSNObjectStore %AUTO% -client $::ses_mgr]
+                        $::ses_mgr register_handler $::obj_stor
+	  		set ::trsp_mgr [$::ses_mgr transport_manager]
+                }
+
 		::plugins::PostEvent OnConnecting evPar
 
 		global tlsinstalled
@@ -4122,6 +4129,7 @@ namespace eval ::MSNOIM {
 	variable fields
 	variable headers
 	variable body ""
+        variable payld ""
 
 	constructor {args} {
 	}
@@ -4132,8 +4140,13 @@ namespace eval ::MSNOIM {
 		array set fields $fields_list
 	}
 
+        method getPayload { } {
+                return $payld
+        }
+
 	#creates a message object from a received payload
 	method createFromPayload { payload } {
+                set payld $payload
 		set idx [string first "\r\n\r\n" $payload]
 		if {$idx == -1 } { 
 			$self setRaw $payload 
@@ -5404,29 +5417,39 @@ namespace eval ::MSNOIM {
 				}
 			}
 			application/x-msnmsgrp2p {
-				set dest [$message getHeader "P2P-Dest"]
-				set semic [string first ";" $dest]
-				set destid ""
-				if { $semic > 0 } {
-					set destid [string range $dest [expr { $semic + 1}] end]
-					set dest [string range $dest 0 [expr {$semic - 1}]]
+                                puts "Received $message"
+                                set msg [::p2p::Message create %AUTO%]
+                                $msg parse [$message getPayload]
+                                if { [::abook::getVolatileData $typer p2p_sb] == "" } {
+					#@@@@@@@@@@p2pv2
+					::abook::setVolatileData $typer p2p_sb [::p2p::SwitchboardP2PTransport handle_peer $::trsp_mgr $typer ""]
 				}
-				if { [string compare -nocase $dest [::config::getKey login]] == 0 } {
-					if { $destid == "" ||
-					     [string compare -nocase $destid [::config::getGlobalKey machineguid]] == 0 } {
-						set p2pmessage [P2PMessage create %AUTO%]
-						if {[catch {$p2pmessage createFromMessage $message}] } {
-							status_log "ouch.. invalid data for p2p.. might be a WLM beta bug.."
-						} else {
-							::MSNP2P::ReadData $p2pmessage $chatid
+				set handler [::abook::getVolatileData $typer p2p_sb]
+				puts [$handler cget -transport_manager]
+				$handler On_message_received $msg
+				#set dest [$message getHeader "P2P-Dest"]
+				#set semic [string first ";" $dest]
+				#set destid ""
+				#if { $semic > 0 } {
+#					set destid [string range $dest [expr { $semic + 1}] end]
+#					set dest [string range $dest 0 [expr {$semic - 1}]]
+#				}
+#				if { [string compare -nocase $dest [::config::getKey login]] == 0 } {
+#					if { $destid == "" ||
+					    # [string compare -nocase $destid [::config::getGlobalKey machineguid]] == 0 } {
+				#		set p2pmessage [P2PMessage create %AUTO%]
+			#			if {[catch {$p2pmessage createFromMessage $message}] } {
+		#					status_log "ouch.. invalid data for p2p.. might be a WLM beta bug.."
+	#					} else {
+#							::MSNP2P::ReadData $p2pmessage $chatid
 							#status_log [$p2pmessage toString 1]
-						}
-						catch { $p2pmessage destroy }
-					} else {
-						status_log "Received an MSNP2P message not addressed to us... ignoring"
-                                        }
-
-				}
+#						}
+#						catch { $p2pmessage destroy }
+#					} else {
+#						status_log "Received an MSNP2P message not addressed to us... ignoring"
+ #                                       }
+#
+#				}
 			}
 
 			text/x-mms-emoticon -
