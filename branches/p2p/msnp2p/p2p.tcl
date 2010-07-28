@@ -28,11 +28,12 @@ method Can_handle_message { message} {
 method Handle_message { peer guid message} {
 
   status_log "Received message of type [$message info type]!!!"
-  set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [$message cget -application_id] -message $message]
+  set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [$message cget -application_id] -message $message -context [[$message body] cget -context]]
+  $session conf2
 
   ::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
   set incoming_sessions($session) {p2pIncomingCompleted Incoming_session_transfer_completed}
-  set msnobj [MSNObject parse [$session cget -context]]
+  set msnobj [MSNObject parse [base64::decode [$session cget -context]]]
   foreach obj $published_objects {
     if {[$obj cget -shad] == [$msnobj cget -shad]} {
       $session accept [$obj cget -data]
@@ -73,6 +74,7 @@ method request { msnobj callback {errback ""} {peer ""}} {
   status_log "Context: $context"
   status_log "Peer: $peer"
   set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid "" -application_id $application_id -context $context]
+  $session conf2
   status_log "Session $session created with peer [$session cget -peer]"
   set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]
   foreach {event callb} $handles {
@@ -86,7 +88,8 @@ method request { msnobj callback {errback ""} {peer ""}} {
 method publish { msnobj } {
 
   if { [$msnobj cget -data] != "" } {
-    lappend $published_objects $msnobj
+    if { [lsearch $published_objects $msnobj] >= 0 } { return }
+    set published_objects [lappend $published_objects $msnobj]
   }
 
 }
@@ -169,7 +172,7 @@ constructor {args} {}
 
 method Can_handle_message { message} {}
 
-method Handle_message { peer message} {}
+#method Handle_message { peer message} {}
 
 method Invite { peer producer} {}
 

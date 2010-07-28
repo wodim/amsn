@@ -81,24 +81,22 @@ method parse { chunk {type ""} } {
   variable found 
   if { ![info exists found] } { set found 0 }
 
-  set raw_body ""
-  set lines [split $chunk "\n"]
-  foreach line $lines {
-    set line [string trim $line]
-    if { $found == 1 } {
-      if { $raw_body == "" } {
-        set raw_body $line
-      } else {
-        set raw_body [join [list $raw_body $line] "\r\n"]
-      }
-    } else {
+  if { $found == 1 } {
+    set raw_body $chunk
+  } else {
+    set idx [string first "\r\n\r\n" $chunk]
+    set head [string range $chunk 0 [expr {$idx -1}]]
+    set raw_body [string range $chunk [expr {$idx+4}] end]
+    set head [string map {"\r\n" "\n"} $head]
+    set lines [split $head "\n"]
+    foreach line $lines {
       if { $line == "" } {
          set found 1
       } else {
-        set colon [string first : $line]
-        set key [string range $line 0 [expr {$colon -1}]]
-        set value [string range $line [expr {$colon +1}] end]
-        $self add_header [string trim $key] [string trim $value]
+        set colon [string first ": " $line]
+        set key [string range $line 0 [expr {$colon - 1}]]
+        set value [string range $line [expr {$colon + 2}] end]
+        $self add_header $key $value
       }
     }
   }
@@ -129,7 +127,7 @@ method parse { chunk {type ""} } {
   set call_id [$self get_header Call-ID]
   set left [string first "{" $call_id]
   set right [string first "}" $call_id]
-  set options(-branch) [string range $call_id [expr {$left+1}] [expr {$right-1}]]
+  set options(-call_id) [string range $call_id [expr {$left+1}] [expr {$right-1}]]
 
   set options(-content_type) [$self get_header Content-Type]
 
@@ -140,7 +138,9 @@ method parse { chunk {type ""} } {
   } elseif { $type == "response" } {
     status_log "Building response"
   }
-  $self setBody [SLPMessageBody build $content_type $raw_body]
+  set new_body [SLPMessageBody build $content_type $raw_body]
+  $new_body conf2
+  $self setBody $new_body
   
 }
 
@@ -182,6 +182,7 @@ typemethod build {raw_message} {
     set reason [string trim [lindex $start_line 2]]
     status_log "We have a response message"
     set slp_message [SLPResponseMessage %AUTO% -status $status -reason $reason]
+    $slp_message conf2
     set type request
   } else {
     set method [string trim [lindex $start_line 0]]
@@ -247,12 +248,18 @@ method toString { } {
 
   set msg [$SLPMessage toString]
   if { $options(-reason) == "" } {
-    foreach stat $STATUS_MESSAGE { if { [lindex $stat 1] == $options(-status) } { set reason [lindex $status 0] } }
+    foreach stat $STATUS_MESSAGE { 
+      if { [lindex $stat 0] == $options(-status) } { 
+        set reason [lindex $stat 1] 
+        puts "Found $reason"
+      } 
+    }
   } else {
     set reason $options(-reason)
   }
+  set $options(-reason) $reason
 
-  set start_line [concat MSNSLP/1.0 $options(-status) $options(-reason)]
+  set start_line [concat MSNSLP/1.0 $options(-status) $reason]
   return [join [list $start_line \r\n $msg] ""]
 
 }
@@ -360,7 +367,7 @@ method parse { data } {
   catch {set options(-session_id) [$self get_header SessionID]}
   catch {set options(-s_channel_state) [$self get_header SChannelState]}
   catch {set options(-capabilities_flags) [$self get_header Capabilities-Flags]}
-  catch { set options(-context) [$self get_header Context] } 
+  catch {set options(-context) [$self get_header Context] } 
 
   if { [info exists headers(EUF-GUID) ] } {
     set euf_guid [$self get_header EUF-GUID]
@@ -421,13 +428,18 @@ method conf2 { } {
   $SLPMessageBody conf2
   set euf_guid [$self cget -euf_guid]
   set app_id [$self cget -app_id]
-  set context [$self cget -context]
+  set context [$SLPMessageBody cget -context]
+  if { $context != "" } { 
+    set options(-context) $context 
+  } else { 
+    $SLPMessageBody configure -context $options(-context) 
+  }
 
   set headers {}
   if { $app_id != "" } {
     $SLPMessageBody setHeader AppID $app_id
   }
-  if { $context != 1 } {
+  if { $context != "" } {
     $SLPMessageBody setHeader Context [base64::encode $context]
   }
 

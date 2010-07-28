@@ -26,6 +26,12 @@ namespace eval ::p2p {
 
     }
 
+    method supported_transports { } {
+
+      return [array get supported_transports]
+
+    }
+
     method Register_transport { transport } {
 
       status_log "@@@@@@@@@@@@@@@@@@ Registering $transport"

@@ -25,8 +25,8 @@ method Parse {body} {}
 }
 
 snit::type WebcamSession {
-delegate option * from P2PSession
-delegate method * from P2PSession
+delegate option * to P2PSession
+delegate method * to P2PSession
 
 constructor {args} {}
 

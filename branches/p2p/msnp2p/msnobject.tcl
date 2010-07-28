@@ -146,12 +146,17 @@ snit::type MSNObjectSession {
     install P2PSession using P2PSession %AUTO% -euf_guid $::p2p::EufGuid::MSN_OBJECT
     $self configurelist $args
 
+  }
+
+  method conf2 { } {
+
     $P2PSession conf2
     set msg [$P2PSession cget -message]
     if { $msg != "" } {
       set options(-application_id) [$msg cget -application_id]
       set options(-context) [string trim [[$msg body] cget -context] \x00 ]
     }
+    $P2PSession configure -context $options(-context)
 
   }
 

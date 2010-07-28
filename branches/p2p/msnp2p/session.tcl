@@ -12,6 +12,7 @@ option -call_id -default ""
 option -cseq -default 0
 option -branch -default ""
 option -incoming -default 0
+option -context -default ""
 
 constructor {args} {
 
@@ -53,7 +54,7 @@ method set_receive_data_buffer { buffer total_size} {
 }
 
 method invite { context } {
-  status_log "Inviting"
+  status_log "Inviting for $context"
 
   set body [SLPSessionRequestBody %AUTO% -euf_guid $options(-euf_guid) -app_id $options(-application_id) -context $context -session_id $options(-id)]
   $body conf2
@@ -67,15 +68,17 @@ method invite { context } {
 method Transreq {} {
 
   set options(-cseq) 0
-  SLPTransferRequestBody body -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -bridges [[$self transport_manager] cget -supported_transports] -conn_type [::abook::getDemographicField conntype]
-  $msg setBoy $body
+  set body [SLPTransferRequestBody %AUTO% -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -bridges [[$self transport_manager] supported_transports] -conn_type [::abook::getDemographicField conntype]]
+  set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource [concat MSNMSGR:$options(-peer)] -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
+  $msg conf2
+  $msg setBody $body
   $self Send_p2p_data $msg
 
 }
 
 method Respond { status_code} {
 
-  set body [SLPSessionRequestBody %AUTO% -session_id $options(-id)]
+  set body [SLPSessionRequestBody %AUTO% -session_id $options(-id) -context $options(-context)]
   $body conf2
   incr options(-cseq)
   set resp [SLPResponseMessage %AUTO% -status $status_code -to $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id $options(-call_id)]

@@ -36,7 +36,7 @@ namespace eval ::p2pv2 {
 
     constructor {}
 
-
+  }
 
   snit::type TLPParamType {
 
