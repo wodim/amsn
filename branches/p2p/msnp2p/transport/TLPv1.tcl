@@ -48,7 +48,7 @@ namespace eval ::p2pv1 {
        error "Not enough data to scan header"
      }
      
-     puts "Fields are: $session_id , $blob_id , $blob_offset , $blob_size , $chunk_size , $flags , $dw1 , $dw2 , $qw1 "
+     status_log "Fields are: $session_id , $blob_id , $blob_offset , $blob_size , $chunk_size , $flags , $dw1 , $dw2 , $qw1 "
       return [TLPHeader %AUTO% -session_id $session_id -blob_id $blob_id -blob_offset $blob_offset -blob_size $blob_size -chunk_size $chunk_size -flags $flags -dw1 $dw1 -dw2 $dw2 -qw1 $qw1]
 
     }
@@ -268,7 +268,7 @@ namespace eval ::p2pv1 {
       $header configure -blob_id $blob_id
       $header configure -blob_offset $offset
       $header configure -blob_size $blob_size
-      puts "Blob size $blob_size, offset $offset, max size $max_size, size [$header cget -size]"
+      status_log "Blob size $blob_size, offset $offset, max size $max_size, size [$header cget -size]"
       $header configure -chunk_size [expr min($blob_size - $offset, $max_size - [$header cget -size])]
       return [MessageChunk %AUTO% -header $header -application_id $app_id]
 

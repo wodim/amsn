@@ -165,7 +165,7 @@ snit::type DirectP2PTransport {
     set ip $options(-ip)
     set port $options(-port)
     set peer $options(-peer)
-    status_log "$peer ($hostaddr:$hostport) connected to $ip:$port"
+    puts "$peer ($hostaddr:$hostport) connected to $ip:$port"
     fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
     fileevent $sock readable [list $self On_data_received $sock]
     catch { close $options(-sock) }
@@ -211,9 +211,9 @@ snit::type DirectP2PTransport {
     }
 
     set nonce [string toupper [$chunk get_nonce]]
-    status_log "Received nonce $nonce"
+    puts "Received nonce $nonce"
     if { [string toupper $options(-nonce)] != $nonce } {
-      status_log "Received log $nonce doesn't match local $options(-nonce)!"
+      puts "Received log $nonce doesn't match local $options(-nonce)!"
       $self On_failed
       return
     }
@@ -238,9 +238,9 @@ snit::type DirectP2PTransport {
     if { $nonce_received == 0 } {
       $self Receive_nonce $chunk
     } elseif { [$chunk body] == "\x00\x00\x00\x00" } {
-      #status_log "Ignoring 0000 chunk"
+      #puts "Ignoring 0000 chunk"
     } else {
-      #status_log "Received chunk"
+      #puts "Received chunk"
       $self On_chunk_received $chunk
     }
 

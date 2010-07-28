@@ -107,9 +107,9 @@ snit::type BaseP2PTransport {
 
   method On_chunk_received { peer peer_guid chunk } {
     
-    puts "Received data from $peer $chunk"
+    status_log "Received data from $peer $chunk"
     if { [$chunk require_ack] == 1 } {
-      puts "Going to send ack!!!"
+      status_log "Going to send ack!!!"
       set ack_chunk [$chunk create_ack_chunk]
       $self __Send_chunk $peer $peer_guid $ack_chunk
     }
@@ -120,12 +120,12 @@ snit::type BaseP2PTransport {
     }
 
     if { [$chunk is_control_chunk] == 0 } {
-      puts "It is not a control chunk"
+      status_log "It is not a control chunk"
       if { [$chunk is_signaling_chunk] == 1 } {
-        puts "It is a signaling chunk"
+        status_log "It is a signaling chunk"
         $self On_signaling_chunk_received $chunk
       } else {
-        puts "It is not a signaling chunk either"
+        status_log "It is not a signaling chunk either"
         ::Event::fireEvent p2pChunkReceived p2pBaseTransport $chunk
       }
     }
@@ -147,11 +147,11 @@ snit::type BaseP2PTransport {
 
     $blob append_chunk $chunk
     if { [$blob is_complete] } {
-      puts "The blob $blob is complete"
+      status_log "The blob $blob is complete"
       ::Event::fireEvent p2pBlobReceived p2pBaseTransport $blob
       array unset signaling_blobs $blob_id
     } else {
-      puts "Waiting for more data"
+      status_log "Waiting for more data"
     }
 
   }
@@ -172,20 +172,22 @@ snit::type BaseP2PTransport {
     }
 
     set first 0
+    puts $data_blob_queue
 
     set blob [lindex [lindex $queue 0] 2]
     set peer_guid [lindex [lindex $queue 0] 1]
     set peer [lindex [lindex $queue 0] 0]
-    puts "Blob $blob for $peer"
-    puts "Data of $blob is [$blob cget -data]"
+    status_log "Blob $blob for $peer"
+    status_log "Data of $blob is [$blob cget -data]"
 
     set chunk [$blob get_chunk [$self version] [$self max_chunk_size] $first] 
-    puts "Sending $chunk"
+    status_log "Sending $chunk"
     $self __Send_chunk $peer $peer_guid $chunk
 
     if { [$blob is_complete] } {
-      puts "Queue says blob is complete"
-      lreplace $queue 0 0
+      puts "Queue says blob $blob is complete"
+      set queue [lreplace $queue 0 0]
+      set data_blob_queue $queue
       $self Add_pending_blob [$chunk ack_id] $blob
     } else {
       puts "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
@@ -202,7 +204,7 @@ method max_chunk_size { } {
 
 method __Send_chunk {peer peer_guid chunk} {
   variable local_chunk_id
-  puts "Sending chunk $chunk to $peer"
+  status_log "Sending chunk $chunk to $peer"
 
   if { ![info exists local_chunk_id] } {
     set local_chunk_id [expr {int(1000 + rand() * (1+65540-1000))}]

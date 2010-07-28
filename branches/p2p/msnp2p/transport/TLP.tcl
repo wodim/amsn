@@ -43,7 +43,7 @@ namespace eval ::p2p {
 
     method is_complete {} {
 
-      puts "Size is $options(-blob_size) and we have [$self transferred]"
+      status_log "Size is $options(-blob_size) and we have [$self transferred]"
       return [expr {$options(-blob_size) == [$self transferred]}]
 
     }
@@ -58,7 +58,7 @@ namespace eval ::p2p {
       set module ::p2pv$version
       set chunk [${module}::MessageChunk createMsg $options(-application_id) $options(-session_id) $options(-id) [$self transferred] $options(-blob_size) $max_size $sync]
       set data $options(-data)
-      puts "Data of $self !!!!!!!!!! $data"
+      status_log "Data of $self !!!!!!!!!! $data"
       if { $data != "" } {
         set newsize [expr {$options(-current_size) + [$chunk size]}]
         if { $newsize > $options(-blob_size) } {
@@ -66,8 +66,8 @@ namespace eval ::p2p {
         } else {
           set data [string range $data $options(-current_size) end]
         }
-	puts "Chunk of $self is of size [$chunk size] from $options(-current_size) to $newsize"
-	puts "Chunk: $data"
+	status_log "Chunk of $self is of size [$chunk size] from $options(-current_size) to $newsize"
+	status_log "Chunk: $data"
         $chunk set_data $data
         $self configure -current_size $newsize
         return $chunk

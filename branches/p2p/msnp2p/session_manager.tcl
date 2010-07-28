@@ -96,16 +96,16 @@ method Search_session_by_peer { peer } {
 
 method On_blob_received { event blob } {
 
-  puts "Received blob: $blob"
+  status_log "Received blob: $blob"
   #if { [catch {set session [$self Blob_to_session $blob]} res] } {
-  #  puts "Error: $res"
+  #  status_log "Error: $res"
   #  return 0
   #}
   set session [$self Blob_to_session $blob]
   if { $session == "" } {
     if { [$blob cget -session_id] != 0 } {
       #TODO: send TLP, RESET connection
-      puts "No session!!!!!"
+      status_log "No session!!!!!"
       return
     }
     set slp_data [$blob read_data]
@@ -118,17 +118,17 @@ method On_blob_received { event blob } {
       return
     }
   
-    puts "Message is [$msg info type] and the body is [[$msg body] info type]"
+    status_log "Message is [$msg info type] and the body is [[$msg body] info type]"
     if { [$msg info type] == "::p2p::SLPRequestMessage" } {
       set peer [$msg cget -frm]
-      puts "Received session request from $peer"
+      status_log "Received session request from $peer"
       foreach handler $options(-handlers) {
-        puts "Trying $handler"
+        status_log "Trying $handler"
         if {[$handler Can_handle_message $msg] } {
           #@@@@@@ p2pv2: $guid!!!
           set session [$handler Handle_message $peer "" $msg]
           if { $session != "" } {
-            puts "Got session $session"
+            status_log "Got session $session"
             $self Register_session $session
             break
           }
@@ -141,7 +141,7 @@ method On_blob_received { event blob } {
     } elseif { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
       set session $sessions($sid)
     } else {
-      puts "[$msg info type] : What is this type?"
+      status_log "[$msg info type] : What is this type?"
       return ""
     }
   }

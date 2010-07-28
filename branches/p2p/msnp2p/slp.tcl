@@ -134,11 +134,11 @@ method parse { chunk {type ""} } {
   set options(-content_type) [$self get_header Content-Type]
 
   if { $type == "" } {
-    puts "Building null body!""
+    status_log "Building null body!""
   } elseif { $type == "request" } {
-    puts "Building request"
+    status_log "Building request"
   } elseif { $type == "response" } {
-    puts "Building response"
+    status_log "Building response"
   }
   $self setBody [SLPMessageBody build $content_type $raw_body]
   
@@ -180,13 +180,13 @@ typemethod build {raw_message} {
   if { [string trim [lindex $start_line 0]] == "MSNSLP/1.0" } {
     set status [string trim [lindex $start_line 1]]
     set reason [string trim [lindex $start_line 2]]
-    puts "We have a response message"
+    status_log "We have a response message"
     set slp_message [SLPResponseMessage %AUTO% -status $status -reason $reason]
     set type request
   } else {
     set method [string trim [lindex $start_line 0]]
     set resource [string trim [lindex $start_line 1]]
-    puts "We have a request message"
+    status_log "We have a request message"
     set slp_message [SLPRequestMessage %AUTO% -method $method -resource $resource]
     set type response
     $slp_message conf2
@@ -338,7 +338,7 @@ method parse { data } {
   if { ![info exists found] } { set found 0 }
 
   if { [string length $data] == 0 } {
-    puts "Parsing null data!!!!!!!"
+    status_log "Parsing null data!!!!!!!"
     return
   }
   set data [string trim $data \x00]

@@ -96,7 +96,7 @@ namespace eval ::p2p {
     }
 
     typemethod handle_peer { transport_manager peer peer_guid } {
-      puts "Creating new SB for manager $transport_manager"
+      status_log "Creating new SB for manager $transport_manager"
       return [SwitchboardP2PTransport %AUTO% -peer $peer -peer_guid $peer_guid -transport_manager $transport_manager -contacts $peer ]
     }
 

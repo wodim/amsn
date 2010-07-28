@@ -34,7 +34,7 @@ method conf2 { } {
     set options(-branch) [::p2p::generate_uuid]
   }
 
-  puts "Session manager: [$self cget -session_manager]"
+  status_log "Session manager: [$self cget -session_manager]"
   [$self cget -session_manager] Register_session $self
 
 }
@@ -53,7 +53,7 @@ method set_receive_data_buffer { buffer total_size} {
 }
 
 method invite { context } {
-  puts "Inviting"
+  status_log "Inviting"
 
   set body [SLPSessionRequestBody %AUTO% -euf_guid $options(-euf_guid) -app_id $options(-application_id) -context $context -session_id $options(-id)]
   $body conf2
@@ -173,12 +173,12 @@ method Close { context reason } {
   $msg conf2
   $msg setBody $body
   $self Send_p2p_data $msg
-  destroy $self
+  #destroy $self
 
 }
 
 method Send_p2p_data { data_or_file {is_file 0} } {
-  puts "Sending p2p data"
+  status_log "Sending p2p data"
 
   if { [catch {$data_or_file is_SLP}] } {
     set session_id $options(-id)
@@ -214,39 +214,39 @@ method On_blob_received { blob } {
 
   set data [$blob read_data]
 
-  puts "Received a new blob: $blob"
+  status_log "Received a new blob: $blob"
   if { [ $blob cget -session_id] == 0 } {
     set msg [SLPMessage build $data]
     $msg configure -application_id [$blob cget -application_id]
-    puts "Type: [$msg info type] and body: [[$msg body] info type]"
+    status_log "Type: [$msg info type] and body: [[$msg body] info type]"
     if { [$msg info type] == "::p2p::SLPRequestMessage" } {
-      puts "It is SLPRequestMessage"
+      status_log "It is SLPRequestMessage"
       if { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
-        puts "Received an invite"
+        status_log "Received an invite"
         $self On_invite_received $msg
       } elseif { [[$msg body] info type] == "::p2p::SLPTransferRequestBody" } {
-        puts "Received a transfer request"
+        status_log "Received a transfer request"
         $self Switch_bridge $msg
       } elseif { [[$msg body] info type] == "::p2p::SLPSessionCloseBody" } {
-        puts "Received a BYE"
+        status_log "Received a BYE"
         $self On_bye_received $msg
       } else {
         status_log "$msg : unknown signaling blob"
       }
     } elseif { [$msg info type] == "::p2p::SLPResponseMessage" } {
-      puts "Received a response"
+      status_log "Received a response"
       if { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
-        puts "Session request"
+        status_log "Session request"
         if { [$msg cget -status] == 200 } {
-          puts "Our session got accepted"
+          status_log "Our session got accepted"
           $self On_session_accepted
           ::Event::fireEvent p2pAccepted p2p {}
         } elseif { [$msg cget -status] == 603 } {
-          puts "Our session got rejected :("
+          status_log "Our session got rejected :("
           $self On_session_rejected $msg
         }
       } elseif { [[$msg body] info type] == "::p2p::SLPTransferResponseBody" } {
-        puts "Our transfer request got accepted"
+        status_log "Our transfer request got accepted"
         $self Transreq_accepted [$msg body]
       } else {
         status_log "$msg : unknown response blob"
@@ -256,10 +256,10 @@ method On_blob_received { blob } {
   }
 
   if { [$blob cget -blob_size] == 4 && $data == "\x00\x00\x00\x00" } {
-    puts "Received a data preparation blob"
+    status_log "Received a data preparation blob"
     $self On_data_preparation_blob_received $blob
   } else {
-    puts "Received a data blob"
+    status_log "Received a data blob"
     $self On_data_blob_received $blob
   }
 
@@ -302,14 +302,14 @@ method Request_bridge { } {
 method On_data_blob_sent { blob } { 
 
   ::Event::fireEvent p2pIncomingCompleted p2p [$blob cget -data]
-  destroy $self ;#Suicide????
+  #destroy $self ;#Suicide????
 
 }
 
 method On_data_blob_received { blob } {
 
   ::Event::fireEvent p2pOutgoingSessionTransferCompleted p2p $self [$blob cget -data]
-  destroy $self
+  #destroy $self
 
 }
 

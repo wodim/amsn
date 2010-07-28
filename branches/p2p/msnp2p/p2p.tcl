@@ -15,7 +15,7 @@ constructor {args} {
 
 method Can_handle_message { message} {
 
-  puts "Can I handle $message with body [$message body]?"
+  status_log "Can I handle $message with body [$message body]?"
   set euf_guid [[$message body] cget -euf_guid]
   if { $euf_guid == $::p2p::EufGuid::MSN_OBJECT } {
     return 1
@@ -27,7 +27,7 @@ method Can_handle_message { message} {
 
 method Handle_message { peer guid message} {
 
-  puts "Received message of type [$message info type]!!!"
+  status_log "Received message of type [$message info type]!!!"
   set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [$message cget -application_id] -message $message]
 
   ::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
@@ -36,12 +36,12 @@ method Handle_message { peer guid message} {
   foreach obj $published_objects {
     if {[$obj cget -shad] == [$msnobj cget -shad]} {
       $session accept [$obj cget -data]
-      puts "Returning session $session!!!!!!"
+      status_log "Returning session $session!!!!!!"
       return $session
     }
   }
   $session reject
-  puts "No such object, rejecting"
+  status_log "No such object, rejecting"
   return $session
 
 }
@@ -70,10 +70,10 @@ method request { msnobj callback {errback ""} {peer ""}} {
 
   # TODO: p2pv2:  send a request to all end points of the peer and cancel the other sessions when one of them answers
   set context [$msnobj toString]
-  puts "Context: $context"
-  puts "Peer: $peer"
+  status_log "Context: $context"
+  status_log "Peer: $peer"
   set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid "" -application_id $application_id -context $context]
-  puts "Session $session created with peer [$session cget -peer]"
+  status_log "Session $session created with peer [$session cget -peer]"
   set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]
   foreach {event callb} $handles {
     ::Event::registerEvent $event all [list $self $callb]
@@ -93,13 +93,13 @@ method publish { msnobj } {
 
 method Outgoing_session_transfer_completed { event session data} {
 
-  puts "Outgoing session transfer completed!!!!!!!"
+  status_log "Outgoing session transfer completed!!!!!!!"
   set lst $outgoing_sessions($session)
   set handles [lindex $lst 0]
   set callback [lindex $lst 1]
   set errback [lindex $lst 2]
   set msnobj [lindex $lst 3]
-  puts "Callback is $callback"
+  status_log "Callback is $callback"
 
   foreach {event callb} $handles {
     ::Event::unregisterEvent $event all [list $self $callb]

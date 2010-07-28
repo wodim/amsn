@@ -12,7 +12,7 @@ namespace eval ::p2p {
 
       $self configurelist $args
 
-      puts "Configured P2PTransportManager $self"
+      status_log "Configured P2PTransportManager $self"
       set supported_transports(SBBridge) SwitchboardP2PTransport
       set supported_transports(TCPv1) DirectP2PTransport
       #@@@@@@@@@@@@@@@@@@ register NS
@@ -28,7 +28,7 @@ namespace eval ::p2p {
 
     method Register_transport { transport } {
 
-      puts "@@@@@@@@@@@@@@@@@@ Registering $transport"
+      status_log "@@@@@@@@@@@@@@@@@@ Registering $transport"
       set transports [$self cget -transports]
 
       if { [lsearch $transport $transports] >= 0 } {
@@ -86,7 +86,7 @@ namespace eval ::p2p {
       if { $proto == "" || ![info exists supported_transports($proto)] } {
         return ""
       }
-      puts "Creating $supported_transports($proto)"
+      status_log "Creating $supported_transports($proto)"
       set transport [$supported_transports($proto) %AUTO% -peer $peer -transport_manager $self {*}$args]
       return $transport
 
@@ -105,10 +105,10 @@ namespace eval ::p2p {
 
     method find_transport { peer } {
 
-      puts "$self actually trying to find a transport!"
+      status_log "$self actually trying to find a transport!"
       set best ""
       foreach transport [$self cget -transports] {
-        puts "Trying $transport first for peer [$transport cget -peer] vs $peer and [$transport cget -connected]"
+        status_log "Trying $transport first for peer [$transport cget -peer] vs $peer and [$transport cget -connected]"
         if { [$transport cget -peer] == $peer && [$transport cget -connected] == 1 } {
           if { $best == "" } {
             set best $transport
@@ -133,7 +133,7 @@ namespace eval ::p2p {
 
     method On_chunk_received { transport chunk } {
 
-      puts "Transport manager received $chunk"
+      status_log "Transport manager received $chunk"
       ::Event::fireEvent p2pChunkTransferred p2pTransportManager $chunk
       set session_id [$chunk session_id]
       set blob_id [$chunk blob_id]
@@ -150,11 +150,11 @@ namespace eval ::p2p {
 
       $blob append_chunk $chunk
       if { [$blob is_complete] == 1 } {
-        puts "Blob $blob is complete"
+        status_log "Blob $blob is complete"
         ::Event::fireEvent p2pBlobReceived p2pTransportManager $blob
         array unset data_blobs $session_id
       } else {
-        puts "$blob size is [$blob cget -blob_size] and we have [$blob transferred] so not complete"
+        status_log "$blob size is [$blob cget -blob_size] and we have [$blob transferred] so not complete"
       }
 
     }
@@ -178,7 +178,7 @@ namespace eval ::p2p {
     method send { peer peer_guid blob } {
 
       set transport [$self Get_transport $peer $peer_guid $blob]
-      puts "Using transport $transport to send $blob to $peer"
+      status_log "Using transport $transport to send $blob to $peer"
       $transport send $peer $peer_guid $blob
 
     }
