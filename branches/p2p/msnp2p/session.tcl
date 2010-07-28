@@ -61,7 +61,6 @@ method invite { context } {
   set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource [concat MSNMSGR:$options(-peer)] -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
   $msg conf2
   $msg setBody $body
-  puts [[$msg body] toString]
   $self Send_p2p_data $msg
 
 }

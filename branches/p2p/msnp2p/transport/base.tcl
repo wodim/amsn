@@ -190,8 +190,8 @@ snit::type BaseP2PTransport {
       $self Add_pending_blob [$chunk ack_id] $blob
     } else {
       status_log "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
-      set queue [lreplace $queue 0 0]
-      set data_blob_queue $queue
+      #set queue [lreplace $queue 0 0]
+      #set data_blob_queue $queue
       $self Process_send_queue
     }
     destroy $chunk
