@@ -55,7 +55,12 @@ namespace eval ::p2pv1 {
 
     method toString { } {
 
-      set ret [binary format iiwwiiiiw $options(-session_id) $options(-blob_id) $options(-blob_offset) $options(-blob_size) $options(-chunk_size) $options(-flags) $options(-dw1) $options(-dw2) $options(-qw1)]
+      #set ret [binary format iiwwiiiiw $options(-session_id) $options(-blob_id) $options(-blob_offset) $options(-blob_size) $options(-chunk_size) $options(-flags) $options(-dw1) $options(-dw2) $options(-qw1)]
+      set ret [binary format ii $options(-session_id) $options(-blob_id)]
+      append ret [binword $options(-blob_offset)]
+      append ret [binword $options(-blob_size)]
+      append ret [binary format iiii $options(-chunk_size) $options(-flags) $options(-dw1) $options(-dw2)]
+      append ret [binword $options(-qw1)]
       return $ret
 
     }
@@ -209,7 +214,7 @@ namespace eval ::p2pv1 {
       }
 
       set blob_id [ ::p2p::generate_id ]
-      set header [TLPHeader %AUTO% -session_id [$self get_field session_id] -blob_id [$self get_field blob_id] -flags $flags -dw1 [$self get_field blob_id] -dw2 [$self get_field dw1] -qw1 [$self get_field size]]
+      set header [TLPHeader %AUTO% -session_id [$self get_field session_id] -blob_id $blob_id -flags $flags -dw1 [$self get_field blob_id] -dw2 [$self get_field dw1] -qw1 [$self get_field blob_size]]
       return [MessageChunk %AUTO% -header $header]
 
     }
@@ -263,6 +268,7 @@ namespace eval ::p2pv1 {
       $header configure -blob_id $blob_id
       $header configure -blob_offset $offset
       $header configure -blob_size $blob_size
+      puts "Blob size $blob_size, offset $offset, max size $max_size, size [$header cget -size]"
       $header configure -chunk_size [expr min($blob_size - $offset, $max_size - [$header cget -size])]
       return [MessageChunk %AUTO% -header $header -application_id $app_id]
 

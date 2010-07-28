@@ -16,18 +16,18 @@ option -incoming -default 0
 constructor {args} {
 
   $self configurelist $args
-  puts "Options array: [array get options]"
 
 }
 
 method conf2 { } {
 
   if { $options(-message) != "" } {
+    set message $options(-message)
     set options(-id) [[$message body] cget -session_id]
     set options(-call_id) [$message cget -call_id]
     set options(-cseq) [$message cget -cseq]
     set options(-branch) [$message cget -branch]
-    set options(-incoming) 0
+    set options(-incoming) 1
   } else {
     set options(-id) [::p2p::generate_id]
     set options(-call_id) [::p2p::generate_uuid]
@@ -47,7 +47,7 @@ method transport_manager { } {
 
 method set_receive_data_buffer { buffer total_size} {
 
-  set blob [MessageBlob %AUTO% -application_id [$self cget -application_id] -data $buffer -total_size $total_size -sid [$self cget -id]]
+  set blob [MessageBlob %AUTO% -application_id [$self cget -application_id] -data $buffer -blob_size $total_size -sid [$self cget -id]]
   [$self transport_manager] register_writable_blob $blob
 
 }
@@ -78,7 +78,7 @@ method Respond { status_code} {
   set body [SLPSessionRequestBody %AUTO% -session_id $options(-id)]
   $body conf2
   incr options(-cseq)
-  SLPResponseMessage resp -status $status_code -peer $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id $options(-call_id)
+  set resp [SLPResponseMessage %AUTO% -status $status_code -to $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id $options(-call_id)]
   $resp setBody $body
   $self Send_p2p_data $resp
 
@@ -87,7 +87,7 @@ method Respond { status_code} {
 method Respond_transreq { transreq status body} {
 
   incr options(-cseq)
-  SLPResponseMessage resp -status $status -peer $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id
+  set resp [SLPResponseMessage %AUTO% -status $status -to $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id]
 $options(-call_id)
   $resp setBody $body
   $self Send_p2p_data $resp
@@ -104,7 +104,7 @@ method Accept_transreq { transreq bridge listening nonce local_ip local_port ext
 
 method Decline_transreq { transreq} {
 
-  SLPTransferResponseBody $body -session_id $options(-id)
+  SLPTransferResponseBody $body -session_id $options(-id) -peer $options(-peer)
   $self Respond_transreq 603 $body
 
 }
@@ -190,7 +190,7 @@ method Send_p2p_data { data_or_file {is_file 0} } {
     set total_size [string length $data]
   }
 
-  set blob [MessageBlob %AUTO% -application_id $options(-application_id) -data $data -total_size $total_size -session_id $session_id -is_file $is_file]
+  set blob [MessageBlob %AUTO% -application_id $options(-application_id) -data $data -blob_size $total_size -session_id $session_id -is_file $is_file]
   [$self transport_manager] send $options(-peer) "" $blob
 
 }
@@ -202,7 +202,7 @@ method On_blob_sent { blob } {
   }
 
   set data [$blob read_data]
-  if { [$blob cget -total_size] == 4 && $data == "\x00\x00\x00\x00" } {
+  if { [$blob cget -blob_size] == 4 && $data == "\x00\x00\x00\x00" } {
     $self On_data_preparation_blob_sent $blob
   } else {
     $self On_data_blob_sent $blob
@@ -214,27 +214,39 @@ method On_blob_received { blob } {
 
   set data [$blob read_data]
 
+  puts "Received a new blob: $blob"
   if { [ $blob cget -session_id] == 0 } {
     set msg [SLPMessage build $data]
-    if { [$msg info type] == SLPRequestMessage } {
-      if { [[$msg body] info type] == SLPSessionRequestBody } {
+    $msg configure -application_id [$blob cget -application_id]
+    puts "Type: [$msg info type] and body: [[$msg body] info type]"
+    if { [$msg info type] == "::p2p::SLPRequestMessage" } {
+      puts "It is SLPRequestMessage"
+      if { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
+        puts "Received an invite"
         $self On_invite_received $msg
-      } elseif { [[$msg body] info type] == SLPTransferRequestBody } {
+      } elseif { [[$msg body] info type] == "::p2p::SLPTransferRequestBody" } {
+        puts "Received a transfer request"
         $self Switch_bridge $msg
-      } elseif { [[$msg body] info type] == SLPSessionCloseBody } {
+      } elseif { [[$msg body] info type] == "::p2p::SLPSessionCloseBody" } {
+        puts "Received a BYE"
         $self On_bye_received $msg
       } else {
         status_log "$msg : unknown signaling blob"
       }
-    } elseif { [$msg info type] == SLPResponseMessage] } {
-      if { [[$msg body] info type] == SLPSessionRequestBody } {
+    } elseif { [$msg info type] == "::p2p::SLPResponseMessage" } {
+      puts "Received a response"
+      if { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
+        puts "Session request"
         if { [$msg cget -status] == 200 } {
+          puts "Our session got accepted"
           $self On_session_accepted
           ::Event::fireEvent p2pAccepted p2p {}
         } elseif { [$msg cget -status] == 603 } {
+          puts "Our session got rejected :("
           $self On_session_rejected $msg
         }
-      } elseif { [[$msg body] info type] == SLPTransferResponseBody } {
+      } elseif { [[$msg body] info type] == "::p2p::SLPTransferResponseBody" } {
+        puts "Our transfer request got accepted"
         $self Transreq_accepted [$msg body]
       } else {
         status_log "$msg : unknown response blob"
@@ -243,9 +255,11 @@ method On_blob_received { blob } {
     return
   }
 
-  if { [$blob cget -total_size] == 4 && $data == "\x00\x00\x00\x00" } {
+  if { [$blob cget -blob_size] == 4 && $data == "\x00\x00\x00\x00" } {
+    puts "Received a data preparation blob"
     $self On_data_preparation_blob_received $blob
   } else {
+    puts "Received a data blob"
     $self On_data_blob_received $blob
   }
 
@@ -274,7 +288,7 @@ method Switch_bridge { transreq } {
 
 }
 
-method Request_bridhe { } {
+method Request_bridge { } {
 
   set bridge [[$self transport_manager] find_transport [$self cget -peer]]
   if { [info exists $bridge] && $bridge != "" && [$bridge rating] > 0 } {
@@ -287,17 +301,19 @@ method Request_bridhe { } {
 
 method On_data_blob_sent { blob } { 
 
-  $self close
-  ::Event::fireEvent p2pCompleted p2p [$blob data]
+  ::Event::fireEvent p2pIncomingCompleted p2p [$blob cget -data]
+  destroy $self ;#Suicide????
 
 }
 
 method On_data_blob_received { blob } {
 
-  $self close
-  ::Event::fireEvent p2pCompleted p2p [$blob data]
+  ::Event::fireEvent p2pOutgoingSessionTransferCompleted p2p $self [$blob cget -data]
+  destroy $self
 
 }
+
+method On_data_preparation_blob_received { blob } { }
 
 method Transreq_accepted { transresp } {
 

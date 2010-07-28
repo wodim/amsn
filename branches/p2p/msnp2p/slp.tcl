@@ -10,6 +10,7 @@ option -branch ""
 option -cseq 0
 option -call_id ""
 option -max_forwards 0
+option -application_id \x00\x00\x00\x00
 
 variable headers -array {}
 variable headernames {}
@@ -23,7 +24,6 @@ constructor { args } {
 
 method conf2 { } {
 
-  puts "From $options(-frm) to $options(-to)"
   $self add_header To [join [list "<msnmsgr:" $options(-to) ">"] ""]
   $self add_header From [join [list "<msnmsgr:" $options(-frm) ">"] ""]
   if { $options(-branch) != "" } {
@@ -59,6 +59,10 @@ method headers { } {
   return [array get headers]
 }
 
+method get_header { key } {
+  return $headers($key)
+}
+
 method setHeader { key val } {
 
   $self add_header $key $val
@@ -73,20 +77,28 @@ method body { } {
   return $body
 }
 
-method parse { chunk } {
-  variable found 0
+method parse { chunk {type ""} } {
+  variable found 
+  if { ![info exists found] } { set found 0 }
 
+  set raw_body ""
   set lines [split $chunk "\n"]
   foreach line $lines {
-    set line [trim $line]
+    set line [string trim $line]
     if { $found == 1 } {
-      set raw_body [join [list $body $line] "\r\n"]
+      if { $raw_body == "" } {
+        set raw_body $line
+      } else {
+        set raw_body [join [list $raw_body $line] "\r\n"]
+      }
     } else {
       if { $line == "" } {
          set found 1
       } else {
-        set name_value [split $line ":"]
-        $self add_header [lindex $name_value 0] [lindex $name_value 1]
+        set colon [string first : $line]
+        set key [string range $line 0 [expr {$colon -1}]]
+        set value [string range $line [expr {$colon +1}] end]
+        $self add_header [string trim $key] [string trim $value]
       }
     }
   }
@@ -96,7 +108,40 @@ method parse { chunk } {
   } else {
     set content_type ""
   }
-  setBody [SLPMessageBody build $content_type $raw_body]
+
+  set to [$self get_header To]
+  set colon [string first : $to]
+  set gt [string first > $to]
+  set options(-to) [string range $to [expr {$colon+1}] [expr {$gt-1}]]
+
+  set from [$self get_header From]
+  set colon [string first : $from]
+  set gt [string first > $from]
+  set options(-frm) [string range $from [expr {$colon+1}] [expr {$gt-1}]]
+
+  set via [$self get_header Via]
+  set left [string first "{" $via]
+  set right [string first "}" $via]
+  set options(-branch) [string range $via [expr {$left+1}] [expr {$right-1}]]
+
+  set options(-cseq) [$self get_header CSeq]
+
+  set call_id [$self get_header Call-ID]
+  set left [string first "{" $call_id]
+  set right [string first "}" $call_id]
+  set options(-branch) [string range $call_id [expr {$left+1}] [expr {$right-1}]]
+
+  set options(-content_type) [$self get_header Content-Type]
+
+  if { $type == "" } {
+    puts "Building null body!""
+  } elseif { $type == "request" } {
+    puts "Building request"
+  } elseif { $type == "response" } {
+    puts "Building response"
+  }
+  $self setBody [SLPMessageBody build $content_type $raw_body]
+  
 }
 
 method toString { } {
@@ -105,7 +150,6 @@ method toString { } {
   set newl \r\n
   #content-length
   foreach key $headernames {
-    puts "Processing header $key"
     set value $headers($key)
     set str [join [list $str $key ": " $value $newl] ""] ;#concat strips newlines
   }
@@ -131,18 +175,24 @@ typemethod build {raw_message} {
     lreplace $content $i $i $line
     incr i
   }
+  set content [join $content "\n"]
 
   if { [string trim [lindex $start_line 0]] == "MSNSLP/1.0" } {
     set status [string trim [lindex $start_line 1]]
     set reason [string trim [lindex $start_line 2]]
+    puts "We have a response message"
     set slp_message [SLPResponseMessage %AUTO% -status $status -reason $reason]
+    set type request
   } else {
     set method [string trim [lindex $start_line 0]]
     set resource [string trim [lindex $start_line 1]]
+    puts "We have a request message"
     set slp_message [SLPRequestMessage %AUTO% -method $method -resource $resource]
+    set type response
     $slp_message conf2
   }
-  $slp_message parse $content
+  $slp_message parse $content $type
+  return $slp_message
 }
 }
 
@@ -162,7 +212,7 @@ constructor { args } {
 method conf2 { } {
   $SLPMessage conf2
   set colon [string first ":" $options(-resource)]
-  if {  [SLPMessage cget -to] == "" } {
+  if {  [$SLPMessage cget -to] == "" } {
     $SLPMessage configure -to [string range $options(-resource) 0 [expr {$colon - 1}]]
   }
 }
@@ -202,7 +252,7 @@ method toString { } {
     set reason $options(-reason)
   }
 
-  set start_line [concat MSNSLP/1.0 $options(-status) $reason
+  set start_line [concat MSNSLP/1.0 $options(-status) $options(-reason)]
   return [join [list $start_line \r\n $msg] ""]
 
 }
@@ -212,7 +262,7 @@ method toString { } {
 ::snit::type SLPMessageBody {
 
 option -content_type ""
-variable content_classes ""
+typevariable content_classes -array {}
 variable headers -array {}
 variable headernames {}
 variable body ""
@@ -220,6 +270,7 @@ option -euf_guid ""
 option -session_id ""
 option -s_channel_state ""
 option -capabilities_flags ""
+option -context ""
 
 constructor { args } {
   $self configurelist $args
@@ -256,13 +307,15 @@ method setHeaders { headers } {
   $self configure -headers $headers
 }
 
+method get_header { key } {
+  return $headers($key)
+}
+
 method setHeader { key val } {
   set headers($key) $val
-  puts "Processing header $key"
   if { [lsearch $headernames $key] < 0 } {
     set headernames [lappend headernames $key]
   }
-  puts "New headers: $headernames"
 
 }
 
@@ -281,35 +334,55 @@ method toString { } {
 }
 
 method parse { data } {
-  variable found 0
+  variable found 
+  if { ![info exists found] } { set found 0 }
 
-  set headers [$self cget -headers]
   if { [string length $data] == 0 } {
+    puts "Parsing null data!!!!!!!"
     return
   }
-  set data [string strip $data "\x00"]
+  set data [string trim $data \x00]
   set lines [split $data "\n"]
   foreach line $lines {
-    set line [trim $line]
+    set line [string trim $line]
     if { $found == 0 } {
       if { $line == "" } {
          set found 1
       } else {
-        set name_value [split $line ":"]
-        $self addHeader [lindex $name_value 0] [lindex $name_value 1]
+        set colon [string first : $line]
+        set key [string range $line 0 [expr {$colon -1}]]
+        set value [string range $line [expr {$colon +1}] end]
+        $self setHeader [string trim $key] [string trim $value]
       }
     }
+  }
+  # TODO: info exists
+  catch {set options(-session_id) [$self get_header SessionID]}
+  catch {set options(-s_channel_state) [$self get_header SChannelState]}
+  catch {set options(-capabilities_flags) [$self get_header Capabilities-Flags]}
+  catch { set options(-context) [$self get_header Context] } 
+
+  if { [info exists headers(EUF-GUID) ] } {
+    set euf_guid [$self get_header EUF-GUID]
+    set left [string first "{" $euf_guid]
+    set right [string first "}" $euf_guid]
+    set options(-euf_guid) [string range $euf_guid [expr {$left+1}] [expr {$right-1}]]
   }
 }
 
 typemethod build {content_type content} {
+  set content_type [string trim $content_type]
   if { [array names content_classes -exact $content_type] == "" } {
     set returnme [SLPMessageBody %AUTO% -content_type $content_type]
     $returnme conf2
+    $returnme parse $content
     return $returnme
   } else {
     set cls $content_classes($content_type)
-    return [$cls %AUTO%]
+    set returnme [$cls %AUTO%]
+    $returnme conf2
+    $returnme parse $content
+    return $returnme
   }
 }
 
@@ -465,7 +538,7 @@ constructor { args } {
   $self configurelist $args
   $SLPMessageBody conf2
 
-  if { $context != "" } {
+  if { $options(-context) != "" } {
     set headers(Context) [base64::encode $context]
   }
 

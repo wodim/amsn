@@ -15,7 +15,7 @@ constructor {args} {
 
 method Can_handle_message { message} {
 
-  puts "Can I handle $message?"
+  puts "Can I handle $message with body [$message body]?"
   set euf_guid [[$message body] cget -euf_guid]
   if { $euf_guid == $::p2p::EufGuid::MSN_OBJECT } {
     return 1
@@ -27,19 +27,22 @@ method Can_handle_message { message} {
 
 method Handle_message { peer guid message} {
 
-  puts "Received message!!!"
-  set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [[$message body] cget -application_id] -message $message]
+  puts "Received message of type [$message info type]!!!"
+  set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [$message cget -application_id] -message $message]
 
-  ::Event::registerEvent p2pCompleted all [list $self Incoming_session_transfer_completed]
-  set incoming_sessions($session) {p2pCompleted Incoming_session_transfer_completed}
-  set msnobj [MSNObject parse [$self cget -client] [$session cget -context]]
+  ::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
+  set incoming_sessions($session) {p2pIncomingCompleted Incoming_session_transfer_completed}
+  set msnobj [MSNObject parse [$session cget -context]]
   foreach obj $published_objects {
     if {[$obj cget -shad] == [$msnobj cget -shad]} {
       $session accept [$obj cget -data]
+      puts "Returning session $session!!!!!!"
       return $session
     }
   }
   $session reject
+  puts "No such object, rejecting"
+  return $session
 
 }
 
@@ -71,12 +74,12 @@ method request { msnobj callback {errback ""} {peer ""}} {
   puts "Peer: $peer"
   set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid "" -application_id $application_id -context $context]
   puts "Session $session created with peer [$session cget -peer]"
-  set handles [list {p2pOnSessionAnswered On_session_answered} {p2pOnSessionRejected On_session_rejected} {p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed}]
+  set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]
   puts $handles
-  foreach {event callback} $handles {
-    ::Event::registerEvent $event all [list $self $callback]
+  foreach {event callb} $handles {
+    ::Event::registerEvent $event all [list $self $callb]
   }
-  set outgoing_sessions($session) [list $handles $callback $errback $msnobj]
+  set outgoing_sessions([$session p2p_session]) [list $handles $callback $errback $msnobj]
   $session invite $context
 
 }
@@ -89,21 +92,25 @@ method publish { msnobj } {
 
 }
 
-method Outgoing_session_transfer_completed { session data} {
+method Outgoing_session_transfer_completed { event session data} {
 
+  puts "Outgoing session transfer completed!!!!!!!"
   set lst $outgoing_sessions($session)
   set handles [lindex $lst 0]
   set callback [lindex $lst 1]
   set errback [lindex $lst 2]
   set msnobj [lindex $lst 3]
+  puts "Callback is $callback"
 
-  foreach {event callback} $handles {
-    ::Events::unregisterEvent $event all [list $self $callback]
+  foreach {event callb} $handles {
+    ::Event::unregisterEvent $event all [list $self $callb]
   }
 
   $msnobj configure -data $data
 
-  eval [lindex $callback 0] $msnobj [lindex $callback 1]
+  set method_name [lindex $callback 0]
+  set args [lreplace $callback 0 0]
+  eval $method_name $msnobj $args
 
   array unset outgoing_sessions $session
 
@@ -129,7 +136,7 @@ method On_session_answered { answered_session } {
     set errback [lindex $lst 2]
     set msnobj [lindex $lst 3]
     foreach {event callback} $handles {
-      ::Events::unregisterEvent $event all [list $self $callback]
+      ::Event::unregisterEvent $event all [list $self $callback]
     }
     $session cancel
     array unset outgoing_sessions $session
@@ -148,7 +155,7 @@ method On_session_rejected { session } {
   set errback [lindex $lst 2]
   set msnobj [lindex $lst 3]
   foreach {event callback} $handles {
-    ::Events::unregisterEvent $event all [list $self $callback]
+    ::Event::unregisterEvent $event all [list $self $callback]
   }
   if { [info exists [lindex $errback 0]] } {
     eval [lindex $errback 0] $msnobj [lindex $errback 1]

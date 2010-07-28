@@ -65,7 +65,7 @@ namespace eval ::p2p {
         } else {
           set data [string range $data $options(-current_size) end]
         }
-	puts "Chunk is of type [$chunk info type]"
+	puts "Chunk is of type [$chunk info type] and size [$chunk size] until $newsize"
         $chunk set_data $data
         $self configure -current_size $newsize
         return $chunk

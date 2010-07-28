@@ -1300,6 +1300,13 @@ namespace eval ::MSNP2P {
 	}
 
 	proc RequestObjectEx { chatid dest msnobject type} {
+
+                #@@@@@@@@@@TODO: callback!!!
+		$::obj_stor request [::p2p::MSNObject parse $msnobject] [list ::amsn::WriteNewData]
+
+	}
+
+	proc RequestObjectExOld  { chatid dest msnobject type} {
 		# Let's create a new session
 		set sid [expr {int([expr rand() * 1000000000])%125000000 + 4 } ]
 		# Generate BranchID and CallID

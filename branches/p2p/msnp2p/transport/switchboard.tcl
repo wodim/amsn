@@ -8,7 +8,6 @@ namespace eval ::p2p {
     option -name "switchboard"
     option -protocol "SBBridge"
     option -rating 0
-    option -peer ""
     option -peer_guid ""
     option -switchboard ""
     option -contacts ""
@@ -67,7 +66,6 @@ namespace eval ::p2p {
 
     method On_message_received { message} {
 
-      puts "Incoming message: $message"
       set version 1
       set headers [$message headers]
       foreach {key value} $headers {
@@ -77,7 +75,7 @@ namespace eval ::p2p {
           set dest_guid [string range $value [expr {$semic+1}] end]
           if { $dest_guid != [::config::getGlobalKey machineguid] } {
             #this chunk is for our other self
-            puts "Ignoring our other self"
+            status_log "Ignoring our other self"
             return
           }
         }
@@ -85,8 +83,7 @@ namespace eval ::p2p {
       set chunk [MessageChunk parse $version [string range [$message get_body] 0 end-4]]
       binary scan [string range [$message get_body] end-4 end] iu appid
       $message configure -application_id $appid
-      puts "Going to On_chunk_received for chunk $chunk"
-      $self On_chunk_received $options(-peer) $options(-peer_guid) $chunk
+      $self On_chunk_received [$self cget -peer] [$self cget -peer_guid] $chunk
 
     }
 
@@ -127,7 +124,7 @@ namespace eval ::p2p {
     method peer_guid {} {}
 
     method can_send { peer peer_guid blob {bootstrap}} {
-      return [expr { $options(-peer)==$peer && $options(-peer_guid)==peer_guid } ]
+      return [expr { [$self cget -peer]==$peer && [$self cget -peer_guid]==peer_guid } ]
     }
 
   }

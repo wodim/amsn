@@ -936,6 +936,7 @@ namespace eval ::MSN {
 		#Setup the conection
 		setup_connection ns
 
+                #@@@@@@@@@@@
                 if { ![info exists ::ses_mgr] } {
                 	set ::ses_mgr [::p2p::P2PSessionManager %AUTO%]
                 	set ::obj_stor [::p2p::MSNObjectStore %AUTO% -client $::ses_mgr]
@@ -5420,13 +5421,9 @@ namespace eval ::MSNOIM {
                                 puts "Received $message"
                                 set msg [::p2p::Message create %AUTO%]
                                 $msg parse [$message getPayload]
-                                if { [::abook::getVolatileData $typer p2p_sb] == "" } {
 					#@@@@@@@@@@p2pv2
-					::abook::setVolatileData $typer p2p_sb [::p2p::SwitchboardP2PTransport handle_peer $::trsp_mgr $typer ""]
-				}
-				set handler [::abook::getVolatileData $typer p2p_sb]
-				puts [$handler cget -transport_manager]
-				$handler On_message_received $msg
+				set transport [$::trsp_mgr Get_transport $typer "" ""]
+				$transport On_message_received $msg
 				#set dest [$message getHeader "P2P-Dest"]
 				#set semic [string first ";" $dest]
 				#set destid ""

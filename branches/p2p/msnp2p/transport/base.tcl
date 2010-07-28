@@ -7,6 +7,8 @@ snit::type BaseP2PTransport {
   option -local_chunk_id ""
   option -remote_chunk_id ""
   option -transport ""
+  option -connected 1
+  option -peer ""
 
   variable data_blob_queue
   variable pending_blob -array {}
@@ -23,7 +25,7 @@ snit::type BaseP2PTransport {
 
   method conf2 { } {
 
-    $options(-transport_manager) Register_transport $self
+    $options(-transport_manager) Register_transport $options(-transport)
 
     $self Reset
 
@@ -41,14 +43,13 @@ snit::type BaseP2PTransport {
 
   method send {peer peer_guid blob} {
 
-    puts "Going to send blob $blob"
     lappend data_blob_queue [list $peer $peer_guid $blob]
     $self Process_send_queue
   }
 
   method close { } {
     set trsp [$self cget -transport_manager]
-    list $trsp unregister_transport $self
+    list $trsp unregister_transport $options(-transport)
   }
 
   method Reset { } {
@@ -72,7 +73,7 @@ snit::type BaseP2PTransport {
     if { [$self version] == 1 } {
       set pending_blob($ack_id) $blob
     } else {
-      ::Event::fireEvent p2pBlobSent p2p $blob
+      ::Event::fireEvent p2pBlobSent p2pBaseTransport $blob
     }
 
   }
@@ -86,7 +87,7 @@ snit::type BaseP2PTransport {
     set pos [lsearch $ack_id $blob]
     set blob [lreplace $blob $pos $pos]
     set pending_blob($ack_id) $blob
-    ::Event::fireEvent p2pBlobSent p2p #blob
+    ::Event::fireEvent p2pBlobSent p2pBaseTransport $blob
 
   }
 
@@ -99,7 +100,7 @@ snit::type BaseP2PTransport {
     set pos [lsearch $chunk_id $blob]
     set blob [lreplace $blob $pos $pos]
 
-    if { llength $blob <= 0 } {
+    if { [info exists pending_ack($blob_id)] } {
       array unset pending_ack $blob_id
     } else {
       set pending_ack($blob_id) $blob
@@ -121,10 +122,13 @@ snit::type BaseP2PTransport {
     }
 
     if { [$chunk is_control_chunk] == 0 } {
+      puts "It is not a control chunk"
       if { [$chunk is_signaling_chunk] == 1 } {
+        puts "It is a signaling chunk"
         $self On_signaling_chunk_received $chunk
       } else {
-        ::Event::fireEvent p2pChunkReceived $chunk
+        puts "It is not a signaling chunk either"
+        ::Event::fireEvent p2pChunkReceived p2pBaseTransport $chunk
       }
     }
 
@@ -133,8 +137,6 @@ snit::type BaseP2PTransport {
   }
 
   method On_signaling_chunk_received { chunk } {
-
-    puts "Received chunk"
 
     set blob_id [$chunk blob_id]
 
@@ -146,7 +148,6 @@ snit::type BaseP2PTransport {
     }
 
     $blob append_chunk $chunk
-    puts "Is it complete?"
     if { [$blob is_complete] } {
       puts "The blob $blob is complete"
       ::Event::fireEvent p2pBlobReceived p2pBaseTransport $blob
@@ -172,19 +173,23 @@ snit::type BaseP2PTransport {
       return 0
     }
 
-    puts "Queue now: $data_blob_queue"
     set first 0
 
     set blob [lindex [lindex $queue 0] 2]
     set peer_guid [lindex [lindex $queue 0] 1]
     set peer [lindex [lindex $queue 0] 0]
+    puts "Blob $blob for $peer"
 
     set chunk [$blob get_chunk [$self version] [$self max_chunk_size] $first] 
+    puts "Sending $chunk"
     $self __Send_chunk $peer $peer_guid $chunk
 
     if { [$blob is_complete] } {
+      puts "Queue says blob is complete"
       lreplace $queue 0 0
-      Add_pending_blob [$chunk ack_id] $blob
+      $self Add_pending_blob [$chunk ack_id] $blob
+    } else {
+      puts "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
     }
     return 1
 
@@ -192,7 +197,7 @@ snit::type BaseP2PTransport {
 
 method max_chunk_size { } {
 
-  return ""
+  return 1200
 
 }
 
@@ -203,14 +208,15 @@ method __Send_chunk {peer peer_guid chunk} {
   if { ![info exists local_chunk_id] } {
     set local_chunk_id [expr {int(1000 + rand() * (1+65540-1000))}]
   }
-  $chunk set_id $local_chunk_id
+  if { [$chunk is_ack_chunk] == 0 } {
+    $chunk set_id $local_chunk_id
+  }
   set local_chunk_id [$chunk next_id]
 
   if { [$chunk require_ack] == 1 } {
     $self Add_pending_ack [$chunk ack_id]
   }
 
-  puts "I am $self of class [$self info type] and belong to $options(-transport)"
   $options(-transport) Send_chunk $peer $peer_guid $chunk
 
 }

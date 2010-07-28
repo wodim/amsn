@@ -149,7 +149,7 @@ snit::type MSNObjectSession {
     $P2PSession conf2
     set msg [$P2PSession cget -message]
     if { $msg != "" } {
-      set options(-application_id) [[$msg body] cget -application_id]
+      set options(-application_id) [$msg cget -application_id]
       set options(-context) [string trim [[$msg body] cget -context] \x00 ]
     }
 
@@ -164,6 +164,12 @@ snit::type MSNObjectSession {
   method setData { newData } {
 
     set data $newData
+
+  }
+
+  method p2p_session { } {
+
+    return $P2PSession
 
   }
 

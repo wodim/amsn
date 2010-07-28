@@ -45,21 +45,22 @@ method clear { } {
 
 method parse { chunk } {
 
-  set lines [split $chunk "\n"]
-  foreach line $lines {
-    set line [string trim $line]
-    if { $found == 1 } {
-      if { $body == "" } { 
-        set body $line 
-      } else {
-        set body [join [list $body $line] "\r\n"]
-      }
-    } else {
+  if { $found == 1 } {
+    set body $chunk
+  } else {
+    set idx [string first "\r\n\r\n" $chunk]
+    set head [string range $chunk 0 [expr {$idx -1}]]
+    set body [string range $chunk [expr {$idx+4}] end]
+    set head [string map {"\r\n" "\n"} $head]
+    set lines [split $head "\n"]
+    foreach line $lines {
       if { $line == "" } {
          set found 1
       } else {
-        set name_value [split $line ":"]
-        $self add_header [lindex $name_value 0] [lindex $name_value 1]
+        set colon [string first ": " $line]
+        set key [string range $line 0 [expr {$colon - 1}]]
+        set value [string range $line [expr {$colon + 2}] end]
+        $self add_header $key $value
       }
     }
   }
