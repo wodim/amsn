@@ -61,6 +61,7 @@ method invite { context } {
   set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource [concat MSNMSGR:$options(-peer)] -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
   $msg conf2
   $msg setBody $body
+  puts [[$msg body] toString]
   $self Send_p2p_data $msg
 
 }
@@ -294,7 +295,17 @@ method Switch_bridge { transreq } {
 method Request_bridge { } {
 
   set bridge [[$self transport_manager] find_transport [$self cget -peer]]
-  if { [info exists $bridge] && $bridge != "" && [$bridge rating] > 0 } {
+  if { $options(-context) != "" } { ;#MSNObj exists
+    set msnobj [::p2p::MSNObject parse [string trim [base64::decode $options(-context)]]]
+    set type [$msnobj cget -type]
+    if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE || $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } { ;#We MUST request a direct connection for files but not for DPs
+      if { [info exists bridge] && $bridge != "" } { ;#Just get an existing bridge
+        $self On_bridge_selected
+	return
+      }
+    }
+  }
+  if { [info exists bridge] && $bridge != "" && [$bridge rating] > 0 } {
     $self On_bridge_selected
   } else {
     $self Transreq
@@ -350,7 +361,11 @@ method On_session_accepted { } { }
 
 method On_session_rejected { msg } { }
 
-method On_bridge_selected { } { }
+method On_bridge_selected { } {
+
+  ::Event::fireEvent p2pBridgeSelected p2pSession 
+
+}
 
 }
 

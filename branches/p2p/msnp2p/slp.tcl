@@ -251,7 +251,6 @@ method toString { } {
     foreach stat $STATUS_MESSAGE { 
       if { [lindex $stat 0] == $options(-status) } { 
         set reason [lindex $stat 1] 
-        puts "Found $reason"
       } 
     }
   } else {
@@ -296,6 +295,9 @@ method conf2 { } {
   if { $options(-capabilities_flags) != "" } {
     $self setHeader Capabilities-Flags $options(-capabilities_flags)
   }
+  if { $options(-context) != "" } {
+    $self setHeader Context $options(-context)
+  }
 }
 
 method headers { } {
@@ -334,6 +336,12 @@ method toString { } {
   foreach key $headernames {
     set value $headers($key)
     set str [join [list $str $key ": " $value $newl] ""] ;#concat strips newlines
+  }
+  # Ugly hack
+  if { [lsearch $headernames "Context"] < 0 && $options(-context) != "" } {
+    set key "Context"
+    set value [base64::encode $options(-context)]
+    set str [join [list $str $key ": " $value $newl] ""]
   }
   set str [join [list $str $newl $body \x00] ""]
   return $str

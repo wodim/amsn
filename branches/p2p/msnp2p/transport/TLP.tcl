@@ -17,7 +17,7 @@ namespace eval ::p2p {
       set data $options(-data)
       if { $data != "" } {
         if { [string length $data] > 0 } {
-          set blob_size [expr {[string length $data] - 2}]
+          set blob_size [string length $data]
 	  if { $options(-blob_size) == "" } {
             set options(-blob_size) $blob_size
           }
@@ -43,7 +43,7 @@ namespace eval ::p2p {
 
     method is_complete {} {
 
-      status_log "Size is $options(-blob_size) and we have [$self transferred]"
+      status_log "Size is $options(-blob_size) and we have $options(-current_size)"
       return [expr {$options(-blob_size) == [$self transferred]}]
 
     }
@@ -56,23 +56,21 @@ namespace eval ::p2p {
 
     method get_chunk { version max_size {sync 0} } {
       set module ::p2pv$version
-      set chunk [${module}::MessageChunk createMsg $options(-application_id) $options(-session_id) $options(-id) [$self transferred] $options(-blob_size) $max_size $sync]
+      set offset [$self transferred]
       set data $options(-data)
-      status_log "Data of $self !!!!!!!!!! $data"
+      set sendme ""
       if { $data != "" } {
-        set newsize [expr {$options(-current_size) + [$chunk size]}]
-        if { $newsize > $options(-blob_size) } {
-          set data [string range $data $options(-current_size) $newsize]
-        } else {
-          set data [string range $data $options(-current_size) end]
-        }
-	status_log "Chunk of $self is of size [$chunk size] from $options(-current_size) to $newsize"
-	status_log "Chunk: $data"
-        $chunk set_data $data
-        $self configure -current_size $newsize
-        return $chunk
-        
+        set newsize [expr {$options(-current_size) + $max_size - [${module}::TLPHeader size]}]
+        if { $newsize >= [string length $data] } { set newsize [string length $data] }
+        set sendme [string range $data $options(-current_size) [expr {$newsize - 1}]]
       }
+      set chunk [${module}::MessageChunk createMsg $options(-application_id) $options(-session_id) $options(-id) $offset $options(-blob_size) $max_size $sync]
+      status_log "Chunk of $self is of size [$chunk size] from $options(-current_size) to $newsize"
+      status_log "Chunk: $sendme"
+      $chunk set_data $sendme
+      set options(-current_size) $newsize
+      return $chunk
+        
     }
 
     method append_chunk { chunk} {

@@ -157,6 +157,7 @@ snit::type MSNObjectSession {
       set options(-context) [string trim [[$msg body] cget -context] \x00 ]
     }
     $P2PSession configure -context $options(-context)
+    ::Event::registerEvent p2pBridgeSelected all [list $self On_bridge_selected]
 
   }
 
@@ -194,11 +195,11 @@ snit::type MSNObjectSession {
   #}
 
   method send { } {
-    $self Send_p2p_data "\x00\x00\x00\x00"
+    $self Send_p2p_data "\x00\x00\x00\x01"
     $self Send_p2p_data $data
   }
 
-  method On_bridge_selected { } {
+  method On_bridge_selected { event } {
     if { $data != "" } {
       $self send
     }

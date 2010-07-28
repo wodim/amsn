@@ -38,6 +38,12 @@ namespace eval ::p2pv1 {
 
     }
 
+    typemethod size { } {
+
+      return 48
+
+    }
+
     typemethod parse { data} {
 
      set ret [binary scan $data iiiiiiiiiiii session_id blob_id cOffset1 cOffset2 cTotalDataSize1 cTotalDataSize2 chunk_size flags dw1 dw2 cAckSize1 cAckSize2]
@@ -182,10 +188,11 @@ namespace eval ::p2pv1 {
       $self set_field chunk_size [string length $data]
 
       if { [$self get_field session_id] != 0 && [$self get_field blob_size] != 4 && $data != "\x00\x00\x00\x00" } {
-        [$self get_field flags $::p2pv1::TLPFlag::EACH
+	set flags [$self get_field flags]
+        $self set_field flags [expr { $flags | $::p2pv1::TLPFlag::EACH } ]
         if { $options(-application_id) == $::p2p::ApplicationID::FILE_TRANSFER } {
           set flags [$self get_field flags]
-          $self get_field flags ( $flags | $::TLPFlag::FILE )
+          $self get_field flags [expr { $flags | $::TLPFlag::FILE } ]
         }
       }
 

@@ -114,11 +114,6 @@ snit::type BaseP2PTransport {
       $self __Send_chunk $peer $peer_guid $ack_chunk
     }
 
-    if { [$chunk is_ack_chunk] || [$chunk is_nak_chunk]} {
-      $self Del_pending_ack [$chunk acked_id]
-      $self Del_pending_blob [$chunk acked_id]
-    }
-
     if { [$chunk is_control_chunk] == 0 } {
       status_log "It is not a control chunk"
       if { [$chunk is_signaling_chunk] == 1 } {
@@ -129,6 +124,12 @@ snit::type BaseP2PTransport {
         ::Event::fireEvent p2pChunkReceived p2pBaseTransport $chunk
       }
     }
+
+    if { [$chunk is_ack_chunk] || [$chunk is_nak_chunk]} {
+      $self Del_pending_ack [$chunk acked_id]
+      $self Del_pending_blob [$chunk acked_id]
+    }
+
 
     $self Process_send_queue
 
@@ -159,7 +160,7 @@ snit::type BaseP2PTransport {
   method On_chunk_sent { chunk } {
 
     ::Event::fireEvent p2pChunkSent p2pBaseTransport $chunk
-    $self Process_send_queue
+    #$self Process_send_queue
 
   }
 
@@ -177,7 +178,6 @@ snit::type BaseP2PTransport {
     set peer_guid [lindex [lindex $queue 0] 1]
     set peer [lindex [lindex $queue 0] 0]
     status_log "Blob $blob for $peer"
-    status_log "Data of $blob is [$blob cget -data]"
 
     set chunk [$blob get_chunk [$self version] [$self max_chunk_size] $first] 
     status_log "Sending $chunk"
@@ -190,6 +190,9 @@ snit::type BaseP2PTransport {
       $self Add_pending_blob [$chunk ack_id] $blob
     } else {
       status_log "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
+      set queue [lreplace $queue 0 0]
+      set data_blob_queue $queue
+      $self Process_send_queue
     }
     destroy $chunk
     return 1
