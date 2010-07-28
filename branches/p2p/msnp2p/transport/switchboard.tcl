@@ -82,7 +82,7 @@ namespace eval ::p2p {
       }
       set chunk [MessageChunk parse $version [string range [$message get_body] 0 end-4]]
       binary scan [string range [$message get_body] end-4 end] iu appid
-      $message configure -application_id $appid
+      destroy $message
       $self On_chunk_received [$self cget -peer] [$self cget -peer_guid] $chunk
 
     }

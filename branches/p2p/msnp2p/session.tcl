@@ -173,7 +173,7 @@ method Close { context reason } {
   $msg conf2
   $msg setBody $body
   $self Send_p2p_data $msg
-  #destroy $self
+  destroy $self
 
 }
 
@@ -302,14 +302,16 @@ method Request_bridge { } {
 method On_data_blob_sent { blob } { 
 
   ::Event::fireEvent p2pIncomingCompleted p2p [$blob cget -data]
-  #destroy $self ;#Suicide????
+  destroy $blob
+  destroy $self ;#Suicide????
 
 }
 
 method On_data_blob_received { blob } {
 
   ::Event::fireEvent p2pOutgoingSessionTransferCompleted p2p $self [$blob cget -data]
-  #destroy $self
+  destroy $blob
+  destroy $self
 
 }
 

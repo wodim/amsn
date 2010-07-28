@@ -172,7 +172,6 @@ snit::type BaseP2PTransport {
     }
 
     set first 0
-    puts $data_blob_queue
 
     set blob [lindex [lindex $queue 0] 2]
     set peer_guid [lindex [lindex $queue 0] 1]
@@ -185,13 +184,14 @@ snit::type BaseP2PTransport {
     $self __Send_chunk $peer $peer_guid $chunk
 
     if { [$blob is_complete] } {
-      puts "Queue says blob $blob is complete"
+      status_log "Queue says blob $blob is complete"
       set queue [lreplace $queue 0 0]
       set data_blob_queue $queue
       $self Add_pending_blob [$chunk ack_id] $blob
     } else {
-      puts "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
+      status_log "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
     }
+    destroy $chunk
     return 1
 
   }

@@ -5418,9 +5418,10 @@ namespace eval ::MSNOIM {
 				}
 			}
 			application/x-msnmsgrp2p {
-                                puts "Received $message"
+                                status_log "Received $message"
                                 set msg [::p2p::Message create %AUTO%]
                                 $msg parse [$message getPayload]
+				destroy $message
 					#@@@@@@@@@@p2pv2
 				set transport [$::trsp_mgr Get_transport $typer "" ""]
 				$transport On_message_received $msg
