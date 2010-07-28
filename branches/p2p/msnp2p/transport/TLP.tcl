@@ -60,7 +60,7 @@ namespace eval ::p2p {
       set data $options(-data)
       set sendme ""
       if { $data != "" } {
-        set newsize [expr {$options(-current_size) + $max_size - [${module}::TLPHeader size]}]
+        set newsize [expr {$options(-current_size) + $max_size - 1 - [${module}::TLPHeader size]}]
         if { $newsize >= [string length $data] } { set newsize [string length $data] }
         set sendme [string range $data $options(-current_size) [expr {$newsize - 1}]]
       }
