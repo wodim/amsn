@@ -1302,6 +1302,7 @@ namespace eval ::MSNP2P {
 	proc RequestObjectEx { chatid dest msnobject type} {
 
                 #@@@@@@@@@@TODO: callback!!!
+		puts "Requesting $msnobject"
 		$::obj_stor request [::p2p::MSNObject parse $msnobject] [list ::amsn::WriteNewData]
 
 	}

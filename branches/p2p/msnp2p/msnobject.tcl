@@ -180,7 +180,7 @@ snit::type MSNObjectSession {
   }
 
   method reject { } {
-    $self Respond "603"
+    #$self Respond "603"
   }
 
   #method invite { context } {

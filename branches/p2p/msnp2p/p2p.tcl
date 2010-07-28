@@ -75,7 +75,6 @@ method request { msnobj callback {errback ""} {peer ""}} {
   set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid "" -application_id $application_id -context $context]
   puts "Session $session created with peer [$session cget -peer]"
   set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]
-  puts $handles
   foreach {event callb} $handles {
     ::Event::registerEvent $event all [list $self $callb]
   }

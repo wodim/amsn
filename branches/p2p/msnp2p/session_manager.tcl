@@ -149,7 +149,7 @@ method On_blob_received { event blob } {
 
 }
 
-method On_blob_sent { blob} {
+method On_blob_sent {event blob} {
 
   set session [$self Blob_to_session $blob]
   if { $session == "" } {

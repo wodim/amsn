@@ -84,9 +84,7 @@ snit::type BaseP2PTransport {
       return
     }
     set blob $pending_blob($ack_id)
-    set pos [lsearch $ack_id $blob]
-    set blob [lreplace $blob $pos $pos]
-    set pending_blob($ack_id) $blob
+    array unset pending_blob $ack_id
     ::Event::fireEvent p2pBlobSent p2pBaseTransport $blob
 
   }
@@ -179,6 +177,7 @@ snit::type BaseP2PTransport {
     set peer_guid [lindex [lindex $queue 0] 1]
     set peer [lindex [lindex $queue 0] 0]
     puts "Blob $blob for $peer"
+    puts "Data of $blob is [$blob cget -data]"
 
     set chunk [$blob get_chunk [$self version] [$self max_chunk_size] $first] 
     puts "Sending $chunk"

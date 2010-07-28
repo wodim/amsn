@@ -1011,10 +1011,10 @@ namespace eval ::amsn {
 			set user_login [$msnobj cget -creator]
 			set type [$msnobj cget -type]
 			set data [$msnobj cget -data]
-			set filename2 [$msnobj cget -location]
-			status_log "Got data from $user_login in $filename2"
-                        set filename [::abook::getContactData $user_login displaypicfile ""]
-			if { $filename != $filename2 } {
+			set filename [$msnobj cget -location]
+			status_log "Got data from $user_login in $filename"
+			if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE } {
+				set filename [::abook::getContactData $user_login displaypicfile ""]
 				create_dir [file join $HOME displaypic cache]
 				create_dir [file join $HOME displaypic cache $user_login]
 				set fd [open "[file join $HOME displaypic cache $user_login ${filename}.png]" w]
@@ -1030,13 +1030,25 @@ namespace eval ::amsn {
 				puts $fd "[clock seconds]\n$user_login"
 				close $fd
 				::Event::fireEvent contactDPChange protocol $user_login
-			} else {
+			} elseif { $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } {
+				set dot [string first ".tmp" $filename]
+				set filename [string range $filename 0 [expr { $dot - 1} ] ]
+				status_log "Incoming emoticon"
 				create_dir [file join $HOME smileys cache]
 				set fd [open "[file join $HOME smileys cache ${filename}.png]" w]
 				fconfigure $fd -translation {binary binary}
 				puts -nonewline $fd $data
 				close $fd
-				image create photo emoticonCustom_std_$filename -file "[file join $HOME smileys cache ${filename}].png" -format cximage
+				set tw [::ChatWindow::GetOutText [::ChatWindow::For $user_login]]
+				set scrolling [::ChatWindow::getScrolling $tw]
+				catch {image create photo emoticonCustom_std_${filename} -file "[file join $HOME smileys cache ${filename}.png]" -format cximage}
+				if {[::config::getKey big_incoming_smileys 0] == 0} {
+					::smiley::resizeCustomSmiley emoticonCustom_std_${filename}
+				}
+				if {[::config::getKey big_incoming_smileys 0] == 0} {
+					::smiley::resizeCustomSmiley emoticonCustom_std_${filename}
+				}
+				if { $scrolling } { ::ChatWindow::Scroll $tw }
 			}
 
 		}
