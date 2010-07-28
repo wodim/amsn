@@ -1489,12 +1489,23 @@ namespace eval ::MSN {
 		}
 		set chg_last_dp [::config::getKey displaypic]
 
+		set filen [::skin::GetSkinFile displaypic [PathRelToAbs [::config::getKey displaypic]]]
+		set fd [open $filen r]
+		fconfigure $fd -translation {binary binary}
+		set data [read $fd]
+		close $fd
+		set msnobj [create_msnobj [::config::getKey login] 3 $filen]
+		set p2pmsnobj [::p2p::MSNObject parse $msnobj]
+		$p2pmsnobj configure -data $data
+		$::obj_stor publish $p2pmsnobj
+		
+
 		if {[::MSN::myStatusIs] == "FLN" || [::MSN::myStatusIs] == "HDN" || [::config::getKey protocol]  >= 18 } {
 			::MSN::sendUUXData $new_status
 		}
 
 		if { [::config::getKey displaypic] != "nopic.gif" } {
-			::MSN::WriteSB ns "CHG" "$new_status [::config::getKey clientid] [urlencode [create_msnobj [::config::getKey login] 3 [::skin::GetSkinFile displaypic [PathRelToAbs [::config::getKey displaypic]]]]]"
+			::MSN::WriteSB ns "CHG" "$new_status [::config::getKey clientid] [urlencode $msnobj]"
 		} else {
 			::MSN::WriteSB ns "CHG" "$new_status [::config::getKey clientid]"
 		}
