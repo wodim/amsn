@@ -13,6 +13,7 @@ option -cseq -default 0
 option -branch -default ""
 option -incoming -default 0
 option -context -default ""
+option -partof -default ""
 
 constructor {args} {
 
@@ -53,7 +54,14 @@ method set_receive_data_buffer { buffer total_size} {
 
 }
 
-method invite { context } {
+method invite { context {size ""} } {
+
+  if { $options(-partof) != "" } {
+
+    set context [$options(-partof) invite $context $size] ;#context is filename
+
+  }
+
   status_log "Inviting for $context"
 
   set body [SLPSessionRequestBody %AUTO% -euf_guid $options(-euf_guid) -app_id $options(-application_id) -context $context -session_id $options(-id)]

@@ -13,7 +13,7 @@ option -data ""
 
 constructor { args } {
 
-  install p2pSession using P2PSession %AUTO% -euf_guid $::p2p::EufGuid::FILE_TRANSFER
+  install p2pSession using P2PSession %AUTO% -euf_guid $::p2p::EufGuid::FILE_TRANSFER -partof $self
   $p2pSession conf2
   $self configurelist $args
   
@@ -31,7 +31,7 @@ method invite { filename size } {
   set options(-filename) $filename
   set options(-size) $size
   set options(-context) [$self build_context]
-  $self Invite $context
+  $self invite $context
 
 }
 
@@ -49,7 +49,7 @@ method reject { } {
 
 method cancel { } {
 
-  $self Close
+  $self Close $options(-context) ""
 
 }
 
@@ -66,14 +66,15 @@ method build_context { } {
 
   set ext [string tolower [string range [fileext $filename] 1 end]
   if { $ext == "jpg" || $ext == "gif" || $ext == "png" || $ext == "bmp" || $ext == "jpeg" || $ext == "tga" } {
-    set nopreview 0
+    set haspreview 1
   } else {
-    set nopreview 1
+    set haspreview 0
   }
 
   #if {[::config::getKey noftpreview]} {
-    set nopreview 1
+    set haspreview 0
   #}
+  $self configure -haspreview $haspreview
 
   set context "[binary format i 574][binary format i 2][binary format i $options(-size)][binary format i 0][binary format i $nopreview]"
 
@@ -114,6 +115,8 @@ method parse_context { context } {
     set file [file join $dir ${sid}.png]
     if { $file != "" && ![catch {set img [image create photo [TmpImgName] -file $file]} res]} {
       ::skin::setPixmap FT_preview_${sid} "[file join $dir ${sid}.png]"
+      #set options(-haspreview) 1
+      #TODO: read file
     }
     catch {image delete $img}
   }
