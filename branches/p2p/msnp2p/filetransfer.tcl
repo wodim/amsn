@@ -10,6 +10,8 @@ option -size 0
 option -has_preview 0
 option -preview ""
 option -data ""
+option -localpath ""
+#TODO: subscribe to chunk received and 1) update FTProgress 2) write intermediate files
 
 variable handlers {}
 
@@ -18,6 +20,7 @@ constructor { args } {
   install p2pSession using P2PSession %AUTO% {*}$args -euf_guid $::p2p::EufGuid::FILE_TRANSFER -partof $self
   $p2pSession conf2
   $self configurelist $args
+  set options(-localpath) [::config::getKey receiveddir]
   
   set message [$p2pSession cget -message]
   if { $message != "" } {
@@ -43,8 +46,16 @@ method invite { filename size } {
 
 }
 
+method saveAs { } {
+
+  $self configure -localpath [tk_getSaveFile -initialfile $options(-localpath) -initialdir $options(-filename)]
+  $self Respond "200"
+
+}
+
 method accept { } {
 
+  $self configure -localpath [file join $options(-localpath) $options(-filename)]
   $self Respond "200"
 
 }
@@ -178,7 +189,7 @@ method On_transfer_completed { event session data } {
 
   $self configure -data $data
 
-  set filename [file join [::config::getKey receiveddir] [$self cget -filename]]
+  set filename [$self cget -localpath]
 
   set fd [open $filename w]
   fconfigure $fd -translation {binary binary}

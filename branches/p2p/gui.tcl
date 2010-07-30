@@ -1311,7 +1311,7 @@ namespace eval ::amsn {
 			WinWriteClickable $chatid "[trans accept]" [list $session accept]
 			WinWrite $chatid " / " green
 			#WinWriteClickable $chatid "[trans saveas]" [list ::amsn::SaveAsFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftsaveas$sid
-			WinWriteClickable $chatid "[trans saveas]" [list $session accept]
+			WinWriteClickable $chatid "[trans saveas]" [list $session saveAs]
 			WinWrite $chatid " / " green
 			WinWriteClickable $chatid "[trans reject]" [list $session reject]
 			#WinWriteClickable $chatid "[trans reject]" [list ::amsn::RejectFT $chatid -1 [list $sid $branchuid $uid]] ftno$sid
