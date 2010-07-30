@@ -92,8 +92,7 @@ method Respond { status_code} {
 method Respond_transreq { transreq status body} {
 
   incr options(-cseq)
-  set resp [SLPResponseMessage %AUTO% -status $status -to $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id]
-$options(-call_id)
+  set resp [SLPResponseMessage %AUTO% -status $status -to $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id $options(-call_id)]
   $resp setBody $body
   $self Send_p2p_data $resp
 
@@ -102,15 +101,15 @@ $options(-call_id)
 method Accept_transreq { transreq bridge listening nonce local_ip local_port extern_ip extern_port} {
 
   set conn_type [::abook::getDemographicField conntype]
-  SLPTransferResponseBody body -bridge $bridge -listening $listening -nonce $nonce -local_ip $local_ip -local_port $local_port -extern_ip $extern_ip -extern_port $extern_port -conn_type $conn_type -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1
-  $self Respond_transreq 200 $body
+  set body [SLPTransferResponseBody %AUTO% -bridge $bridge -listening $listening -nonce $nonce -internal_ips $local_ip -internal_port $local_port -external_ips $extern_ip -external_port $extern_port -conn_type $conn_type -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
+  $self Respond_transreq $transreq 200 $body
 
 }
 
 method Decline_transreq { transreq} {
 
-  SLPTransferResponseBody $body -session_id $options(-id) -peer $options(-peer)
-  $self Respond_transreq 603 $body
+  set body [SLPTransferResponseBody %AUTO% -session_id $options(-id) -peer $options(-peer)]
+  $self Respond_transreq $transreq 603 $body
 
 }
 
@@ -231,7 +230,8 @@ method On_blob_received { blob } {
         $self On_invite_received $msg
       } elseif { [[$msg body] info type] == "::p2p::SLPTransferRequestBody" } {
         status_log "Received a transfer request"
-        $self Switch_bridge $msg
+        #$self Switch_bridge $msg
+	$self Accept_transreq $msg "SBBridge" 0 [[$msg body] get_header Nonce] [::abook::getDemographicField localip] [config::getKey initialftport] [::abook::getDemographicField clientip] [config::getKey initialftport]
       } elseif { [[$msg body] info type] == "::p2p::SLPSessionCloseBody" } {
         status_log "Received a BYE"
         $self On_bye_received $msg
@@ -364,7 +364,7 @@ method On_session_rejected { msg } { }
 
 method On_bridge_selected { } {
 
-  ::Event::fireEvent p2pBridgeSelected p2pSession 
+  ::Event::fireEvent p2pBridgeSelected p2pSession $self
 
 }
 

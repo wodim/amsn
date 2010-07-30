@@ -129,7 +129,7 @@ method parse { chunk {type ""} } {
   set right [string first "}" $call_id]
   set options(-call_id) [string range $call_id [expr {$left+1}] [expr {$right-1}]]
 
-  set options(-content_type) [$self get_header Content-Type]
+  set options(-content_type) $content_type
 
   if { $type == "" } {
     status_log "Building null body!""
@@ -280,6 +280,12 @@ option -context ""
 
 constructor { args } {
   $self configurelist $args
+  SLPMessageBody register_content $::p2p::SLPContentType::NULL SLPNullBody
+  SLPMessageBody register_content $::p2p::SLPContentType::SESSION_REQUEST SLPSessionRequestBody
+  SLPMessageBody register_content $::p2p::SLPContentType::TRANSFER_REQUEST SLPTransferRequestBody
+  SLPMessageBody register_content $::p2p::SLPContentType::TRANSFER_RESPONSE SLPTransferResponseBody
+  SLPMessageBody register_content $::p2p::SLPContentType::SESSION_CLOSE SLPSessionCloseBody
+
 }
 
 method conf2 { } {
@@ -387,6 +393,7 @@ method parse { data } {
 
 typemethod build {content_type content} {
   set content_type [string trim $content_type]
+  status_log "Building content type $content_type"
   if { [array names content_classes -exact $content_type] == "" } {
     set returnme [SLPMessageBody %AUTO% -content_type $content_type]
     $returnme conf2
@@ -414,8 +421,6 @@ delegate method * to SLPMessageBody
 constructor { args } {
   install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::NULL
   $SLPMessageBody conf2
-  
-  SLPMessageBody register_content $::p2p::SLPContentType::NULL SLPNullBody
 }
 }
 
@@ -453,9 +458,6 @@ method conf2 { } {
 
 }
 
-typeconstructor {
-  SLPMessageBody register_content $::p2p::SLPContentType::SESSION_REQUEST SLPSessionRequestBody
-}
 }
 
 snit::type SLPTransferRequestBody {
@@ -513,28 +515,28 @@ constructor { args } {
 
   $SLPMessageBody conf2
 
-  if { $options($bridge) != "" } {
-    $SLPMessageBody setHeader Bridge $options($bridge)
+  if { $options(-bridge) != "" } {
+    $SLPMessageBody setHeader Bridge $options(-bridge)
   }
-  if { $options($listening) == 1 } {
+  if { $options(-listening) == 1 } {
     $SLPMessageBody setHeader Listening "true"
-  } elseif { $options($listening) == 0} {
+  } elseif { $options(-listening) == 0} {
     $SLPMessageBody setHeader Listening "false"
   }
-  if { $options($nonce) != "" } {
-    $SLPMessageBody setHeader Nonce [string toupper $options($nonce)]
+  if { $options(-nonce) != "" } {
+    $SLPMessageBody setHeader Nonce [string toupper $options(-nonce)]
   }
-  if { $options($internal_ips) != "" } {
-    $SLPMessageBody setHeader IPv4Internal-Addrs $options($internal_ips)
+  if { $options(-internal_ips) != "" } {
+    $SLPMessageBody setHeader IPv4Internal-Addrs $options(-internal_ips)
   }
-  if { $options($internal_port) != "" } {
-    $SLPMessageBody setHeader IPv4Internal-Port $options($internal_port)
+  if { $options(-internal_port) != "" } {
+    $SLPMessageBody setHeader IPv4Internal-Port $options(-internal_port)
   }
-  if { $options($external_ips) != "" } {
-    $SLPMessageBody setHeader IPv4External-Addrs $options($external_ips)
+  if { $options(-external_ips) != "" } {
+    $SLPMessageBody setHeader IPv4External-Addrs $options(-external_ips)
   }
-  if { $options($external_port) != "" } {
-    $SLPMessageBody setHeader IPv4External-Port $options($external_port)
+  if { $options(-external_port) != "" } {
+    $SLPMessageBody setHeader IPv4External-Port $options(-external_port)
   }
 
   $SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
@@ -564,9 +566,6 @@ constructor { args } {
 
 }
 
-typeconstructor {
-  SLPMessageBody register_content $::p2p::SLPContentType::SESSION_CLOSE SLPSessionCloseBody
-}
 
 }
 

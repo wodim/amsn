@@ -42,7 +42,6 @@ method Handle_message { peer guid message} {
     }
   }
   $session reject
-  puts $published_objects
   status_log "No such object, rejecting"
   return $session
 

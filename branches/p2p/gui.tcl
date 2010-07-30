@@ -1276,7 +1276,8 @@ namespace eval ::amsn {
 		#////////////////////////////////////////////////////////////////////////////////
 		#  GotFileTransferRequest ( chatid dest branchuid cseq uid sid filename filesize)
 		#  This procedure is called when we receive an MSN6 File Transfer Request
-		proc GotFileTransferRequest { chatid dest branchuid cseq uid sid filename filesize} {
+		proc GotFileTransferRequest { chatid dest session} {
+			
 			set win_name [::ChatWindow::For $chatid]
 
 			if { [::ChatWindow::For $chatid] == 0} {
@@ -1289,11 +1290,14 @@ namespace eval ::amsn {
 			}
 
 			set fromname [::abook::getDisplayNick $dest]
-			set txt [trans ftgotinvitation $fromname '$filename' [::amsn::sizeconvert $filesize] [::config::getKey receiveddir]]
+			set filen [$session cget -filename]
+			set filesize [$session cget -size]
+			set txt [trans ftgotinvitation $fromname '$filen' [::amsn::sizeconvert $filesize] [::config::getKey receiveddir]]
 			set win_name [::ChatWindow::MakeFor $chatid $txt $dest]
 			WinWrite $chatid "\n" green
 			WinWriteIcon $chatid greyline 3
 			WinWrite $chatid " \n" green
+                        set sid [$session cget -id]
 
 			if { [::skin::loadPixmap "FT_preview_${sid}"] != "" } {
 				WinWriteIcon $chatid FT_preview_${sid} 5 5
@@ -1303,11 +1307,14 @@ namespace eval ::amsn {
 			WinWriteIcon $chatid fticon 3 2
 			WinWrite $chatid $txt green
 			WinWrite $chatid " - (" green
-			WinWriteClickable $chatid "[trans accept]" [list ::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftyes$sid
+			#WinWriteClickable $chatid "[trans accept]" [list ::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftyes$sid
+			WinWriteClickable $chatid "[trans accept]" [list $session accept]
 			WinWrite $chatid " / " green
-			WinWriteClickable $chatid "[trans saveas]" [list ::amsn::SaveAsFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftsaveas$sid
+			#WinWriteClickable $chatid "[trans saveas]" [list ::amsn::SaveAsFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftsaveas$sid
+			WinWriteClickable $chatid "[trans saveas]" [list $session accept]
 			WinWrite $chatid " / " green
-			WinWriteClickable $chatid "[trans reject]" [list ::amsn::RejectFT $chatid -1 [list $sid $branchuid $uid]] ftno$sid
+			WinWriteClickable $chatid "[trans reject]" [list $session reject]
+			#WinWriteClickable $chatid "[trans reject]" [list ::amsn::RejectFT $chatid -1 [list $sid $branchuid $uid]] ftno$sid
 			WinWrite $chatid ")\n" green
 			WinWriteIcon $chatid greyline 3
 
@@ -1320,7 +1327,8 @@ namespace eval ::amsn {
 
 			if { [::config::getKey ftautoaccept] == 1  || [::abook::getContactData $dest autoacceptft] == 1 } {
 				WinWrite $chatid "\n[trans autoaccepted]" green
-				::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]
+				#::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]
+				$session accept
 			}
 		}
 

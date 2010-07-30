@@ -4,7 +4,7 @@ source msnp2p/slp.tcl
 source msnp2p/transport/constants.tcl
 source msnp2p/transport/base.tcl
 source msnp2p/transport/switchboard.tcl
-source msnp2p/transport/direct.tcl
+#source msnp2p/transport/direct.tcl
 source msnp2p/transport/TLP.tcl
 source msnp2p/transport/TLPv1.tcl
 #source msnp2p/transport/TLPv2.tcl
@@ -14,3 +14,4 @@ source msnp2p/session_manager.tcl
 #source msnp2p/webcam.tcl
 source msnp2p/msnobject.tcl
 source msnp2p/p2p.tcl
+source msnp2p/filetransfer.tcl

@@ -33,8 +33,8 @@ method register_handler { handler_class} {
 method Register_session { session} {
 
   set sid [$session cget -id]
-  if { ![info exists sessions($sid)] } { set sessions($sid) "" }
-  set sessions($sid) [lappend $sessions($sid) $session]
+  set sessions($sid) $session
+  status_log "Registering $session on $sid"
 
 }
 
@@ -74,9 +74,10 @@ method Get_session { sid } {
 
 method Search_session_by_call { cid } {
 
-  foreach session [array names sessions] {
+  foreach sid [array names sessions] {
+    set session $sessions($sid)
     if { [$session cget -call_id] == $cid } {
-      return session
+      return $session
     } 
   }
   return ""
@@ -119,11 +120,14 @@ method On_blob_received { event blob } {
     }
   
     status_log "Message is [$msg info type] and the body is [[$msg body] info type]"
-    if { [$msg info type] == "::p2p::SLPRequestMessage" } {
+    set tempses [$self Search_session_by_call [$msg cget -call_id]]
+    if { $tempses != "" } {
+      set session $tempses
+    } elseif { [$msg info type] == "::p2p::SLPRequestMessage" } {
       set peer [$msg cget -frm]
       status_log "Received session request from $peer"
       foreach handler $options(-handlers) {
-        status_log "Trying $handler"
+        status_log "Trying $handler for [[$msg body] cget -euf_guid]"
         if {[$handler Can_handle_message $msg] } {
           #@@@@@@ p2pv2: $guid!!!
           set session [$handler Handle_message $peer "" $msg]
@@ -153,6 +157,8 @@ method On_blob_sent {event blob} {
 
   set session [$self Blob_to_session $blob]
   if { $session == "" } {
+    status_log "No session?!?!?!?! Something went VERY wrong" white
+    return ""
   }
   $session On_blob_sent $blob
 
@@ -170,7 +176,7 @@ method Blob_to_session { blob} {
     set sid [[$message body] cget -session_id]
   }
 
-  if { $sid == 0 } {
+  if { $sid == 0 || $sid == "" } {
     return [$self Search_session_by_call [$message cget -call_id]]
   }
   return [$self Get_session $sid]

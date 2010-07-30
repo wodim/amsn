@@ -942,6 +942,8 @@ namespace eval ::MSN {
                 	set ::obj_stor [::p2p::MSNObjectStore %AUTO% -client $::ses_mgr]
                         $::ses_mgr register_handler $::obj_stor
 	  		set ::trsp_mgr [$::ses_mgr transport_manager]
+			set ::ft_handler [::p2p::FileTransferHandler %AUTO% -client $::ses_mgr]
+			$::ses_mgr register_handler $::ft_handler
                 }
 
 		::plugins::PostEvent OnConnecting evPar

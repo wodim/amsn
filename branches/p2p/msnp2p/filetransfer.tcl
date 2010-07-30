@@ -11,18 +11,26 @@ option -has_preview 0
 option -preview ""
 option -data ""
 
+variable handlers {}
+
 constructor { args } {
 
-  install p2pSession using P2PSession %AUTO% -euf_guid $::p2p::EufGuid::FILE_TRANSFER -partof $self
+  install p2pSession using P2PSession %AUTO% {*}$args -euf_guid $::p2p::EufGuid::FILE_TRANSFER -partof $self
   $p2pSession conf2
   $self configurelist $args
   
-  if { [$p2pSession cget -message] != "" } {
+  set message [$p2pSession cget -message]
+  if { $message != "" } {
 
-    $self parse_context [[$message body] cget -context]
+    $self parse_context [base64::decode [[$message body] cget -context]]
 
   }
-  ::Event::registerEvent p2pBridgeSelected all [$self On_bridge_selected]
+  
+  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed }
+
+  foreach { event callback } $handlers {
+    ::Event::registerEvent $event all [list $self $callback]
+  }
 
 }
 
@@ -74,7 +82,7 @@ method build_context { } {
   #if {[::config::getKey noftpreview]} {
     set haspreview 0
   #}
-  $self configure -haspreview $haspreview
+  $self configure -has_preview $haspreview
 
   set context "[binary format i 574][binary format i 2][binary format i $options(-size)][binary format i 0][binary format i $nopreview]"
 
@@ -88,43 +96,70 @@ method build_context { } {
 
 }
 
+method getFilenameFromContext { context } {
+
+  set fname [FromUnicode [string range $context 20 569]]
+
+  set idx [string first "\x00" $fname]
+  if {$idx != -1 } {
+    set fname [string range $fname 0 [expr {$idx - 1}]]
+  }
+
+  return $fname
+
+}
+
+method getPreviewFromContext { context } {
+
+  global HOME
+  binary scan [string range $context 16 19] i noprev
+
+  if { $noprev == 1 } { return 0 }
+
+  binary scan [string range $context 0 3] i size
+  set previewdata [string range $context $size end]
+  set dir [file join $HOME FT cache]
+  create_dir $dir
+  set sid [$self cget -id]
+  set fd [open "[file join $dir ${sid}.png ]" "w"]
+  fconfigure $fd -translation binary
+  puts -nonewline $fd "$previewdata"
+  close $fd
+  set file [file join $dir ${sid}.png]
+  if { $file != "" && ![catch {set img [image create photo [TmpImgName] -file $file]} res]} {
+    ::skin::setPixmap FT_preview_${sid} "[file join $dir ${sid}.png]"
+      #set options(-haspreview) 1
+      #TODO: read file
+  }
+  catch {image delete $img}
+  return 1
+
+}
+
 method parse_context { context } {
 
   global HOME
 
-  binary scan [string range $context 0 3] i size
   binary scan [string range $context 8 11] i filesize
   binary scan [string range $context 16 19] i nopreview
 
-  set filename [FromUnicode [string range $context 20 569]]
+  set filename [$self getFilenameFromContext $context]
+  $self configure -filename $filename
+  $self configure -has_preview [$self getPreviewFromContext $context]
+  $self configure -size $filesize
 
   set idx [string first "\x00" $filename]
   if {$idx != -1 } {
     set filename [string range $filename 0 [expr {$idx - 1}]]
   }  
 
-  if { $nopreview == 0 } {
-    set previewdata [string range $context $size end]
-    set dir [file join $HOME FT cache]
-    create_dir $dir
-    set sid $options(-id)
-    set fd [open "[file join $dir ${sid}.png ]" "w"]
-    fconfigure $fd -translation binary
-    puts -nonewline $fd "$previewdata"
-    close $fd
-    set file [file join $dir ${sid}.png]
-    if { $file != "" && ![catch {set img [image create photo [TmpImgName] -file $file]} res]} {
-      ::skin::setPixmap FT_preview_${sid} "[file join $dir ${sid}.png]"
-      #set options(-haspreview) 1
-      #TODO: read file
-    }
-    catch {image delete $img}
-  }
-
-
 }
 
-method On_bridge_selected { } {
+method On_bridge_selected { event session } {
+
+  if { $session != $p2pSession } { return }
+
+  ::Event::unregisterEvent p2pBridgeSelected all [list $self On_bridge_selected]
 
   if { options(-data) != "" } {
 
@@ -135,13 +170,36 @@ method On_bridge_selected { } {
 
 }
 
+method On_transfer_completed { event session data } {
+
+  if { $session != $p2pSession } { return }
+
+  ::Event::unregisterEvent p2pOutgoingSessionTransferCompleted all [list $self On_transfer_completed]
+
+  $self configure -data $data
+
+  set filename [file join [::config::getKey receiveddir] [$self cget -filename]]
+
+  set fd [open $filename w]
+  fconfigure $fd -translation {binary binary}
+  puts -nonewline $fd $data
+  close $fd
+
 }
 
-snit::type FileTransferHandler { } {
+}
+
+snit::type FileTransferHandler {
 
 option -client ""
 
 variable incoming_sessions -array {}
+
+constructor { args } {
+
+  $self configurelist $args
+
+}
 
 method Can_handle_message { message } {
 
@@ -157,19 +215,21 @@ method Can_handle_message { message } {
 
 method Handle_message { peer guid message } {
 
-  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [$message cget -application_id] -message $message -context [[$message body] cget -context]]
+  set context [[$message body] cget -context]]
+  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -euf_guid $::p2p::EufGuid::FILE_TRANSFER -application_id [$message cget -application_id] -message $message -context $context]
   $session conf2
 
   ::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
   set incoming_sessions($session) {p2pIncomingCompleted Incoming_session_transfer_completed}
   #@@@@ TODO: print data on aMSN CW, wait until they are accepted
+  ::amsn::GotFileTransferRequest $peer ${peer}\;$guid $session
   return $session
 
 }
 
 method request { peer filename size callback {errback ""} } {
 
-  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id $::p2p::ApplicationID::FILE_TRANSFER -message $message 
+  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -application_id $::p2p::ApplicationID::FILE_TRANSFER -message $message 
   $session conf2
 
   set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]

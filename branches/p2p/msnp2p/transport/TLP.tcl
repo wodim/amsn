@@ -66,7 +66,6 @@ namespace eval ::p2p {
       }
       set chunk [${module}::MessageChunk createMsg $options(-application_id) $options(-session_id) $options(-id) $offset $options(-blob_size) $max_size $sync]
       status_log "Chunk of $self is of size [$chunk size] from $options(-current_size) to $newsize"
-      status_log "Chunk: $sendme"
       $chunk set_data $sendme
       set options(-current_size) $newsize
       return $chunk
@@ -77,7 +76,7 @@ namespace eval ::p2p {
 
       if { ($options(-session_id) != [$chunk session_id]) || ($options(-id) != [$chunk blob_id]) } { return }
       set body [$chunk cget -body]
-      set options(-data) [concat $options(-data)$body]
+      set options(-data) [join [list $options(-data) $body] ""]
       set options(-current_size) [string length $options(-data)]
 
     }
