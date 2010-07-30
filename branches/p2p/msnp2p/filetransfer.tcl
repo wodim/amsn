@@ -137,4 +137,83 @@ method On_bridge_selected { } {
 
 }
 
+snit::type FileTransferHandler { } {
+
+option -client ""
+
+variable incoming_sessions -array {}
+
+method Can_handle_message { message } {
+
+  status_log "Can I handle $message with body [$message body]?"
+  set euf_guid [[$message body] cget -euf_guid]
+  if { $euf_guid == $::p2p::EufGuid::FILE_TRANSFER } {
+    return 1
+  } else {
+    return 0
+  }
+
+}
+
+method Handle_message { peer guid message } {
+
+  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [$message cget -application_id] -message $message -context [[$message body] cget -context]]
+  $session conf2
+
+  ::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
+  set incoming_sessions($session) {p2pIncomingCompleted Incoming_session_transfer_completed}
+  #@@@@ TODO: print data on aMSN CW, wait until they are accepted
+  return $session
+
+}
+
+method request { peer filename size callback {errback ""} } {
+
+  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id $::p2p::ApplicationID::FILE_TRANSFER -message $message 
+  $session conf2
+
+  set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]
+  foreach {event callb} $handles {
+    ::Event::registerEvent $event all [list $self $callb]
+  }
+  set outgoing_sessions([$session p2p_session]) [list $handles $callback $errback]
+  $session invite $filename $size
+
+}
+
+method Outgoing_session_transfer_completed { event session data } {
+
+  status_log "Outgoing session transfer completed!!!!!!!"
+  set lst $outgoing_sessions($session)
+  set handles [lindex $lst 0]
+  set callback [lindex $lst 1]
+  set errback [lindex $lst 2]
+  status_log "Callback is $callback"
+
+  foreach {event callb} $handles {
+    ::Event::unregisterEvent $event all [list $self $callb]
+  }
+
+  set method_name [lindex $callback 0]
+  set args [lreplace $callback 0 0]
+  eval $method_name $data $args
+
+  array unset outgoing_sessions $session
+
+}
+
+method Incoming_session_transfer_completed { session data } {
+
+  set {event callback} $incoming_sessions($session)
+  ::Event::unregisterEvent $event all [list $self $callback]
+  array unset incoming_sessions $session
+
+}
+
+method On_session_answered { answered_session } { }
+
+method On_session_rejected { session } { }
+
+}
+
 }

@@ -54,13 +54,7 @@ method set_receive_data_buffer { buffer total_size} {
 
 }
 
-method invite { context {size ""} } {
-
-  if { $options(-partof) != "" } {
-
-    set context [$options(-partof) invite $context $size] ;#context is filename
-
-  }
+method invite { context {size ""} {peer ""} } {
 
   status_log "Inviting for $context"
 
