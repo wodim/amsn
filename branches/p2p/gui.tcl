@@ -3,1739 +3,1753 @@
 
 if { $initialize_amsn == 1 } {
 
-	if {![::picture::Loaded]} {
-		if { [OnDarwin] } {	
-			tk_messageBox -default ok -message "There's a problem loading a module of aMSN (TkCxImage) on this \
-			computer. You need to update your system to Mac OS 10.3.9" -icon warning	
-		} else {
-			tk_messageBox -default ok -message "Loading TkCximage failed. This module is needed to run \
-			aMSN. Please compile aMSN first, instructions on how to compile are located in the file INSTALL" \
-			    -icon warning
-		}
-		exit
-	}
-
-	package require BWidget
-	source BWidget_mods.tcl
-	
-	if {[catch {package require -exact tkdnd 2.0}] } {
-		proc dnd { args } {}
-		proc shape { args } {}
-	}
-
-	if { [version_vcompare [info patchlevel] 8.4.13] >= 0} {
-		package require snit
+if {![::picture::Loaded]} {
+	if { [OnDarwin] } {	
+		tk_messageBox -default ok -message "There's a problem loading a module of aMSN (TkCxImage) on this \
+		computer. You need to update your system to Mac OS 10.3.9" -icon warning	
 	} else {
-		source utils/snit/snit.tcl
+		tk_messageBox -default ok -message "Loading TkCximage failed. This module is needed to run \
+		aMSN. Please compile aMSN first, instructions on how to compile are located in the file INSTALL" \
+		    -icon warning
 	}
-	
-	#package require pixmapbutton
-	if { [OnMac] } {
-		# Use brushed metal style windows on Mac OS X.
-		catch {package require tkUnsupported}
-		# tclCarbon has tclCarbonHICommand, and tclCarbonNotification...
-		catch {package require tclCarbon}
-		catch {package require QuickTimeTcl}
-		catch {load utils/macosx/Quicktimetcl3.1/quicktimetcl3.1.dylib}
-	} else {
-		package require pixmapscroll
+	exit
+}
+
+package require BWidget
+source BWidget_mods.tcl
+
+if {[catch {package require -exact tkdnd 2.0}] } {
+	proc dnd { args } {}
+	proc shape { args } {}
+}
+
+if { [version_vcompare [info patchlevel] 8.4.13] >= 0} {
+	package require snit
+} else {
+	source utils/snit/snit.tcl
+}
+
+#package require pixmapbutton
+if { [OnMac] } {
+	# Use brushed metal style windows on Mac OS X.
+	catch {package require tkUnsupported}
+	# tclCarbon has tclCarbonHICommand, and tclCarbonNotification...
+	catch {package require tclCarbon}
+	catch {package require QuickTimeTcl}
+	catch {load utils/macosx/Quicktimetcl3.1/quicktimetcl3.1.dylib}
+} else {
+	package require pixmapscroll
+}
+
+::skin::setKey mainwindowbg #7979f2
+::skin::setKey contactlistbg #ffffff
+::skin::setKey contactlistborderbg #ffffff
+::skin::setKey contactlistbd 0
+::skin::setKey topcontactlistbg #ffffff
+::skin::setKey bannerbg #ffffff
+::skin::setKey contact_mobile #404040
+::skin::setKey chatwindowbg #EAEAEA
+
+::skin::setKey loginbg #ffffff
+::skin::setKey loginwidgetbg #ffffff
+::skin::setKey loginfg #000000
+::skin::setKey loginurlfg #0000ff
+::skin::setKey logincheckfg #ffffff
+::skin::setKey loginbuttonbg #c3c2d2
+::skin::setKey loginbuttonfg black
+::skin::setKey loginbuttonfghover black
+
+::skin::setKey tabbarbg "[::skin::getKey chatwindowbg]"
+::skin::setKey tabfg #000000
+::skin::setKey tab_text_x 5
+::skin::setKey tab_text_y 5
+::skin::setKey tab_text_width 80
+::skin::setKey tab_close_x 100
+::skin::setKey tab_close_y 10
+::skin::setKey chat_tabbar_padx 0
+::skin::setKey chat_tabbar_pady 0
+::skin::setKey buttonbarbg #eeeeff
+::skin::setKey sendbuttonbg #c3c2d2
+::skin::setKey sendbuttonfg black
+::skin::setKey sendbuttonfghover black
+::skin::setKey topbarbg #5050e5
+::skin::setKey topbarbg_sel #d3d0ce
+::skin::setKey topbartext #ffffff
+::skin::setKey topbarborder #000000
+::skin::setKey topbarawaybg #00AB00
+::skin::setKey topbarawaybg_sel #d3d0ce
+::skin::setKey topbarawaytext #000000
+::skin::setKey topbarawayborder #000000
+::skin::setKey topbarbusybg #CF0000
+::skin::setKey topbarbusybg_sel #d3d0ce
+::skin::setKey topbarbusytext #000000
+::skin::setKey topbarbusyborder #000000
+::skin::setKey topbarofflinebg #404040
+::skin::setKey topbarofflinebg_sel #d3d0ce
+::skin::setKey topbarofflinetext #ffffff
+::skin::setKey topbarofflineborder #000000
+::skin::setKey topbaridlebg #dfe7f0
+::skin::setKey topbaridletext #000000
+::skin::setKey topbaridleborder #7da0af
+::skin::setKey topbarbrbbg #dfe7f0
+::skin::setKey topbarbrbtext #000000
+::skin::setKey topbarbrbborder #7da0af
+::skin::setKey topbarphonebg #dfe7f0
+::skin::setKey topbarphonetext #000000
+::skin::setKey topbarphoneborder #7da0af
+::skin::setKey topbarlunchbg #dfe7f0
+::skin::setKey topbarlunchtext #000000
+::skin::setKey topbarlunchborder #7da0af
+
+::skin::setKey topbarpadx 6
+::skin::setKey topbarpady 6
+::skin::setKey loginbuttonx 6
+::skin::setKey loginbuttony 6
+::skin::setKey sendbuttonx 6
+::skin::setKey sendbuttony 6
+::skin::setKey chat_top_pixmap 0
+
+::skin::setKey statusbarbg #eeeeee
+::skin::setKey statusbarbg_sel #d3d0ce
+::skin::setKey statusbartext #000000
+::skin::setKey groupcolorextend #000080
+::skin::setKey groupcolorcontract #000080
+
+::skin::setKey chat_top_padx 0
+::skin::setKey chat_top_pady 0
+::skin::setKey chat_paned_padx 0
+::skin::setKey chat_paned_pady 0
+::skin::setKey chat_output_padx 0
+::skin::setKey chat_output_pady 0
+::skin::setKey chat_buttons_padx 0
+::skin::setKey chat_buttons_pady 0
+::skin::setKey chat_input_padx 0
+::skin::setKey chat_input_pady 0
+::skin::setKey chat_dp_padx 0
+::skin::setKey chat_dp_pady 0
+::skin::setKey chat_leftframe_padx 0
+::skin::setKey chat_leftframe_pady 0
+::skin::setKey chat_sendbutton_padx 0
+::skin::setKey chat_sendbutton_pady 0
+::skin::setKey chat_status_padx 0
+::skin::setKey chat_status_pady 0
+::skin::setKey chat_sash_width 2
+::skin::setKey chat_sash_relief raised
+::skin::setKey chat_sash_showhandle 0
+::skin::setKey chat_sash_pady 0
+
+::skin::setKey chat_status_border_color #000000
+::skin::setKey chat_output_border_color #000000
+::skin::setKey chat_output_back_color #ffffff
+::skin::setKey chat_input_border_color #000000
+::skin::setKey chat_input_back_color #ffffff
+::skin::setKey chat_buttons_border_color #000000
+::skin::setKey chat_dp_border_color #000000
+
+::skin::setKey chat_top_border 0
+::skin::setKey chat_output_border 0
+::skin::setKey chat_buttons_border 0
+::skin::setKey chat_input_border 0
+::skin::setKey chat_status_border 0
+::skin::setKey chat_dp_border 1
+
+::skin::setKey chat_show_sendbuttonframe 1
+::skin::setKey chat_show_statusbarframe 1
+::skin::setKey chat_show_topframe 1
+
+::skin::setKey menuforeground #000000
+::skin::setKey menuactivebackground #565672
+::skin::setKey menuactiveforeground #ffffff
+::skin::setKey mystatus grey
+::skin::setKey buddylistpad 4
+::skin::setKey showdisplaycontactlist 0
+::skin::setKey emailabovecolorbar 0
+::skin::setKey underline_contact 0
+::skin::setKey underline_group 0
+::skin::setKey changecursor_contact 1
+::skin::setKey changecursor_group 1
+::skin::setKey bigstate_xpad 0
+::skin::setKey bigstate_ypad 0
+::skin::setKey mystatus_xpad 3
+::skin::setKey mystatus_ypad 0
+::skin::setKey mailbox_xpad 2
+::skin::setKey mailbox_ypad 2
+::skin::setKey contract_xpad 8
+::skin::setKey contract_ypad 6
+::skin::setKey expand_xpad 8
+::skin::setKey expand_ypad 6
+::skin::setKey x_dp_top 4
+::skin::setKey y_dp_top 4
+::skin::setKey balloonbackground #daeefe
+::skin::setKey balloonborderwidth 1
+::skin::setKey balloonborder #2e8afe
+::skin::setKey balloontext #0000dd
+::skin::setKey buddy_xpad 15
+::skin::setKey buddy_ypad 3
+
+::skin::setKey notifwidth 150
+::skin::setKey notifheight 100
+::skin::setKey notifyfg black
+::skin::setKey x_notifyclose 140
+::skin::setKey y_notifyclose 2
+::skin::setKey x_notifydp 1
+::skin::setKey y_notifydp 22
+::skin::setKey x_notifytext 55
+::skin::setKey y_notifytext 22
+::skin::setKey width_notifytext 93
+::skin::setKey notify_font sboldf
+::skin::setKey notify_dp_border 0
+
+if { [OnMac] } {
+	::skin::setKey balloonbackground #ffffca
+	::skin::setKey menubackground #ECECEC
+} else {
+	::skin::setKey balloonbackground #ffffaa
+	::skin::setKey menubackground #eae7e4
+}
+::skin::setKey balloonfont sboldf
+::skin::setKey balloonborder #000000
+::skin::setKey balloonalpha 0.9
+
+::skin::setKey assistanttitleheight 50
+::skin::setKey assistanttitlefg #FFFFFF
+::skin::setKey assistanttitlebg #565672
+
+
+::skin::setKey extrastdwindowcolor #efefef
+::skin::setKey extrastdbgcolor #ffffff
+::skin::setKey extrastdtxtcolor #333333
+::skin::setKey extraselectedtxtcolor #222222
+::skin::setKey extraselectedbgcolor #dddddd
+::skin::setKey extradisabledtxtcolor #666666
+::skin::setKey extradisabledbgcolor #efefef
+::skin::setKey extrastderrcolor #FF0000
+::skin::setKey extrastdokcolor #559c2a
+::skin::setKey extralistboxselected #0000FF
+::skin::setKey extralistboxselectedbg #ffffff
+::skin::setKey extralistboxtitlebg #ffffff
+::skin::setKey extralistboxtitlefg #000000
+::skin::setKey extrabuttonbgcolor #efefef
+::skin::setKey extrabuttontxtcolor #333333
+::skin::setKey extrabuttonbgcoloractive #dddddd
+::skin::setKey extrabuttontxtcoloractive #222222
+::skin::setKey extralinkcolor #0000FF
+::skin::setKey extralinkcoloractive #6931CA
+::skin::setKey extralinkbgcoloractive #ffffff
+::skin::setKey extracheckbuttonselectedcolor #ff0000
+
+::skin::setKey extraprivacy_old_bg #000000
+::skin::setKey extraprivacy_old_fg #FF8F8F
+::skin::setKey extraprivacy_notrl_bg #FF6060
+::skin::setKey extraprivacy_notrl_fg #A00000
+::skin::setKey extraprivacy_notfl_bg #FFFF80
+::skin::setKey extraprivacy_notfl_fg #A00000
+::skin::setKey extraprivacy_intoal_fg #008000
+::skin::setKey extraprivacy_intobl_fg #A00000
+
+::skin::setKey loginurlfghover #6931CA
+::skin::setKey emailfg #000000
+::skin::setKey emailhover #000000
+::skin::setKey emailhoverbg #ffffff
+
+::skin::setKey tabfg_hover #333333
+
+::skin::setKey statusbartext_sel #000000
+
+
+::skin::setKey trayblink_delay 500
+::skin::setKey trayblink_by_status 1
+
+
+#Virtual events used by Button-click
+#On Mac OS X, Control emulate the "right click button"
+#On Mac OS X, there's a mistake between button2 and button3
+if { [OnMac] } {
+	event add <<Button1>> <Button1-ButtonRelease>
+	event add <<Button1-Press>> <ButtonPress-1>
+	event add <<Button1-Motion>> <B1-Motion>
+	event add <<Button2>> <Button3-ButtonRelease>
+	event add <<Button2-Press>> <ButtonPress-3>
+	event add <<Button2-Motion>> <B3-Motion>
+	event add <<Button3>> <Control-ButtonRelease>
+	event add <<Button3>> <Button2-ButtonRelease>
+	event add <<Button3-Press>> <ButtonPress-2>
+	event add <<Button3-Motion>> <B2-Motion>
+	event add <<Escape>> <Command-w> <Command-W>
+	event add <<Paste>> <Command-v> <Command-V>
+	event add <<Copy>> <Command-c> <Command-C>
+	event add <<Cut>> <Command-x> <Command-X>
+} elseif { [OnMaemo] } {
+	event add <<Button1>> <Button1-ButtonRelease>
+	event add <<Button1-Press>> <ButtonPress-1>
+	event add <<Button1-Motion>> <B1-Motion>
+	event add <<Button2>> <Button2-ButtonRelease>
+	event add <<Button2-Press>> <ButtonPress-2>
+	event add <<Button2-Motion>> <B2-Motion>
+	event add <<Button3>> <Control-ButtonRelease>
+	event add <<Button3-Press>> <Control-ButtonPress>
+	event add <<Button3-Motion>> <B3-Motion>
+	event add <<Escape>> <Escape>
+	event add <<Paste>> <Control-v> <Control-V>
+	event add <<Copy>> <Control-c> <Control-C>
+	event add <<Cut>> <Control-x> <Control-X>
+} else {
+	event add <<Button1>> <Button1-ButtonRelease>
+	event add <<Button1-Press>> <ButtonPress-1>
+	event add <<Button1-Motion>> <B1-Motion>
+	event add <<Button2>> <Button2-ButtonRelease>
+	event add <<Button2-Press>> <ButtonPress-2>
+	event add <<Button2-Motion>> <B2-Motion>
+	event add <<Button3>> <Button3-ButtonRelease>
+	event add <<Button3-Press>> <ButtonPress-3>
+	event add <<Button3-Motion>> <B3-Motion>
+	event add <<Escape>> <Escape>
+	event add <<Paste>> <Control-v> <Control-V>
+	event add <<Copy>> <Control-c> <Control-C>
+	event add <<Cut>> <Control-x> <Control-X>
+}
+
+if { [OnLinux] } {
+	#Mappings for Shift-BackSpace
+	bind Entry <Terminate_Server> [bind Entry <BackSpace>]
+	bind Text <Terminate_Server> [bind Text <BackSpace>]
+}
+
+#This proc bugs anyway
+rename ::tk::FirstMenu ::tk::Original_FirstMenu
+proc ::tk::FirstMenu { args } { }
+
+#To avoid a bug inside panedwindow, by Youness
+rename ::tk::panedwindow::Cursor ::tk::panedwindow::Original_Cursor
+proc ::tk::panedwindow::Cursor { args } {
+	catch { eval ::tk::panedwindow::Original_Cursor $args }
+}
+
+#For proc WinWrite
+namespace eval ::amsn {
+	variable urlcount 0
+	variable urlregexps
+	# MAKE SURE that none of the regexps have a capturing group!
+	# use (?:regexp) if you need to use the parenthesis..
+	# like for (?:org|com|net)...
+
+	#this regexp is a bit complex, but it reaches all URLs as specified in the RFC 1738 on http://www.ietf.org/rfc/rfc1738.txt
+	set urlregexps {
+		{\w+://[\%\/\$\*\~\|\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
+		{\mwww\.[\%\/\$\*\~\,\|\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
+		{(?:[\%\/\$\*\~\,\!\'\|\#\@\+\-\=\?\;\:\^\&\_[:alnum:]]+\.)+(?:org|com|net)(?:/[\%\/\$\*\~\,\!\'\|\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]*)*(?=\y)}
+		{spotify:(?:track|album|artist|search|playlist|user|radio):[^<>\s]+}
 	}
-	
-	::skin::setKey mainwindowbg #7979f2
-	::skin::setKey contactlistbg #ffffff
-	::skin::setKey contactlistborderbg #ffffff
-	::skin::setKey contactlistbd 0
-	::skin::setKey topcontactlistbg #ffffff
-	::skin::setKey bannerbg #ffffff
-	::skin::setKey contact_mobile #404040
-	::skin::setKey chatwindowbg #EAEAEA
+}
 
-	::skin::setKey loginbg #ffffff
-	::skin::setKey loginwidgetbg #ffffff
-	::skin::setKey loginfg #000000
-	::skin::setKey loginurlfg #0000ff
-	::skin::setKey logincheckfg #ffffff
-	::skin::setKey loginbuttonbg #c3c2d2
-	::skin::setKey loginbuttonfg black
-	::skin::setKey loginbuttonfghover black
-
-	::skin::setKey tabbarbg "[::skin::getKey chatwindowbg]"
-	::skin::setKey tabfg #000000
-	::skin::setKey tab_text_x 5
-	::skin::setKey tab_text_y 5
-	::skin::setKey tab_text_width 80
-	::skin::setKey tab_close_x 100
-	::skin::setKey tab_close_y 10
-	::skin::setKey chat_tabbar_padx 0
-	::skin::setKey chat_tabbar_pady 0
-	::skin::setKey buttonbarbg #eeeeff
-	::skin::setKey sendbuttonbg #c3c2d2
-	::skin::setKey sendbuttonfg black
-	::skin::setKey sendbuttonfghover black
-	::skin::setKey topbarbg #5050e5
-	::skin::setKey topbarbg_sel #d3d0ce
-	::skin::setKey topbartext #ffffff
-	::skin::setKey topbarborder #000000
-	::skin::setKey topbarawaybg #00AB00
-	::skin::setKey topbarawaybg_sel #d3d0ce
-	::skin::setKey topbarawaytext #000000
-	::skin::setKey topbarawayborder #000000
-	::skin::setKey topbarbusybg #CF0000
-	::skin::setKey topbarbusybg_sel #d3d0ce
-	::skin::setKey topbarbusytext #000000
-	::skin::setKey topbarbusyborder #000000
-	::skin::setKey topbarofflinebg #404040
-	::skin::setKey topbarofflinebg_sel #d3d0ce
-	::skin::setKey topbarofflinetext #ffffff
-	::skin::setKey topbarofflineborder #000000
-	::skin::setKey topbaridlebg #dfe7f0
-	::skin::setKey topbaridletext #000000
-	::skin::setKey topbaridleborder #7da0af
-	::skin::setKey topbarbrbbg #dfe7f0
-	::skin::setKey topbarbrbtext #000000
-	::skin::setKey topbarbrbborder #7da0af
-	::skin::setKey topbarphonebg #dfe7f0
-	::skin::setKey topbarphonetext #000000
-	::skin::setKey topbarphoneborder #7da0af
-	::skin::setKey topbarlunchbg #dfe7f0
-	::skin::setKey topbarlunchtext #000000
-	::skin::setKey topbarlunchborder #7da0af
-
-	::skin::setKey topbarpadx 6
-	::skin::setKey topbarpady 6
-	::skin::setKey loginbuttonx 6
-	::skin::setKey loginbuttony 6
-	::skin::setKey sendbuttonx 6
-	::skin::setKey sendbuttony 6
-	::skin::setKey chat_top_pixmap 0
-	
-	::skin::setKey statusbarbg #eeeeee
-	::skin::setKey statusbarbg_sel #d3d0ce
-	::skin::setKey statusbartext #000000
-	::skin::setKey groupcolorextend #000080
-	::skin::setKey groupcolorcontract #000080
-
-	::skin::setKey chat_top_padx 0
-	::skin::setKey chat_top_pady 0
-	::skin::setKey chat_paned_padx 0
-	::skin::setKey chat_paned_pady 0
-	::skin::setKey chat_output_padx 0
-	::skin::setKey chat_output_pady 0
-	::skin::setKey chat_buttons_padx 0
-	::skin::setKey chat_buttons_pady 0
-	::skin::setKey chat_input_padx 0
-	::skin::setKey chat_input_pady 0
-	::skin::setKey chat_dp_padx 0
-	::skin::setKey chat_dp_pady 0
-	::skin::setKey chat_leftframe_padx 0
-	::skin::setKey chat_leftframe_pady 0
-	::skin::setKey chat_sendbutton_padx 0
-	::skin::setKey chat_sendbutton_pady 0
-	::skin::setKey chat_status_padx 0
-	::skin::setKey chat_status_pady 0
-	::skin::setKey chat_sash_width 2
-	::skin::setKey chat_sash_relief raised
-	::skin::setKey chat_sash_showhandle 0
-	::skin::setKey chat_sash_pady 0
-
-	::skin::setKey chat_status_border_color #000000
-	::skin::setKey chat_output_border_color #000000
-	::skin::setKey chat_output_back_color #ffffff
-	::skin::setKey chat_input_border_color #000000
-	::skin::setKey chat_input_back_color #ffffff
-	::skin::setKey chat_buttons_border_color #000000
-	::skin::setKey chat_dp_border_color #000000
-
-	::skin::setKey chat_top_border 0
-	::skin::setKey chat_output_border 0
-	::skin::setKey chat_buttons_border 0
-	::skin::setKey chat_input_border 0
-	::skin::setKey chat_status_border 0
-	::skin::setKey chat_dp_border 1
-	
-	::skin::setKey chat_show_sendbuttonframe 1
-	::skin::setKey chat_show_statusbarframe 1
-	::skin::setKey chat_show_topframe 1
-
-	::skin::setKey menuforeground #000000
-	::skin::setKey menuactivebackground #565672
-	::skin::setKey menuactiveforeground #ffffff
-	::skin::setKey mystatus grey
-	::skin::setKey buddylistpad 4
-	::skin::setKey showdisplaycontactlist 0
-	::skin::setKey emailabovecolorbar 0
-	::skin::setKey underline_contact 0
-	::skin::setKey underline_group 0
-	::skin::setKey changecursor_contact 1
-	::skin::setKey changecursor_group 1
-	::skin::setKey bigstate_xpad 0
-	::skin::setKey bigstate_ypad 0
-	::skin::setKey mystatus_xpad 3
-	::skin::setKey mystatus_ypad 0
-	::skin::setKey mailbox_xpad 2
-	::skin::setKey mailbox_ypad 2
-	::skin::setKey contract_xpad 8
-	::skin::setKey contract_ypad 6
-	::skin::setKey expand_xpad 8
-	::skin::setKey expand_ypad 6
-	::skin::setKey x_dp_top 4
-	::skin::setKey y_dp_top 4
-	::skin::setKey balloonbackground #daeefe
-	::skin::setKey balloonborderwidth 1
-	::skin::setKey balloonborder #2e8afe
-	::skin::setKey balloontext #0000dd
-	::skin::setKey buddy_xpad 15
-	::skin::setKey buddy_ypad 3
-
-	::skin::setKey notifwidth 150
-	::skin::setKey notifheight 100
-	::skin::setKey notifyfg black
-	::skin::setKey x_notifyclose 140
-	::skin::setKey y_notifyclose 2
-	::skin::setKey x_notifydp 1
-	::skin::setKey y_notifydp 22
-	::skin::setKey x_notifytext 55
-	::skin::setKey y_notifytext 22
-	::skin::setKey width_notifytext 93
-	::skin::setKey notify_font sboldf
-	::skin::setKey notify_dp_border 0
-
-	if { [OnMac] } {
-		::skin::setKey balloonbackground #ffffca
-		::skin::setKey menubackground #ECECEC
-	} else {
-		::skin::setKey balloonbackground #ffffaa
-		::skin::setKey menubackground #eae7e4
-	}
-	::skin::setKey balloonfont sboldf
-	::skin::setKey balloonborder #000000
-	::skin::setKey balloonalpha 0.9
-
-	::skin::setKey assistanttitleheight 50
-	::skin::setKey assistanttitlefg #FFFFFF
-	::skin::setKey assistanttitlebg #565672
-
-	
-	::skin::setKey extrastdwindowcolor #efefef
-	::skin::setKey extrastdbgcolor #ffffff
-	::skin::setKey extrastdtxtcolor #333333
-	::skin::setKey extraselectedtxtcolor #222222
-	::skin::setKey extraselectedbgcolor #dddddd
-	::skin::setKey extradisabledtxtcolor #666666
-	::skin::setKey extradisabledbgcolor #efefef
-	::skin::setKey extrastderrcolor #FF0000
-	::skin::setKey extrastdokcolor #559c2a
-	::skin::setKey extralistboxselected #0000FF
-	::skin::setKey extralistboxselectedbg #ffffff
-	::skin::setKey extralistboxtitlebg #ffffff
-	::skin::setKey extralistboxtitlefg #000000
-	::skin::setKey extrabuttonbgcolor #efefef
-	::skin::setKey extrabuttontxtcolor #333333
-	::skin::setKey extrabuttonbgcoloractive #dddddd
-	::skin::setKey extrabuttontxtcoloractive #222222
-	::skin::setKey extralinkcolor #0000FF
-	::skin::setKey extralinkcoloractive #6931CA
-	::skin::setKey extralinkbgcoloractive #ffffff
-	::skin::setKey extracheckbuttonselectedcolor #ff0000
-
-	::skin::setKey extraprivacy_old_bg #000000
-	::skin::setKey extraprivacy_old_fg #FF8F8F
-	::skin::setKey extraprivacy_notrl_bg #FF6060
-	::skin::setKey extraprivacy_notrl_fg #A00000
-	::skin::setKey extraprivacy_notfl_bg #FFFF80
-	::skin::setKey extraprivacy_notfl_fg #A00000
-	::skin::setKey extraprivacy_intoal_fg #008000
-	::skin::setKey extraprivacy_intobl_fg #A00000
-
-	::skin::setKey loginurlfghover #6931CA
-	::skin::setKey emailfg #000000
-	::skin::setKey emailhover #000000
-	::skin::setKey emailhoverbg #ffffff
-
-	::skin::setKey tabfg_hover #333333
-	
-	::skin::setKey statusbartext_sel #000000
-
-
-	::skin::setKey trayblink_delay 500
-	::skin::setKey trayblink_by_status 1
-
-	
-	#Virtual events used by Button-click
-	#On Mac OS X, Control emulate the "right click button"
-	#On Mac OS X, there's a mistake between button2 and button3
-	if { [OnMac] } {
-		event add <<Button1>> <Button1-ButtonRelease>
-		event add <<Button1-Press>> <ButtonPress-1>
-		event add <<Button1-Motion>> <B1-Motion>
-		event add <<Button2>> <Button3-ButtonRelease>
-		event add <<Button2-Press>> <ButtonPress-3>
-		event add <<Button2-Motion>> <B3-Motion>
-		event add <<Button3>> <Control-ButtonRelease>
-		event add <<Button3>> <Button2-ButtonRelease>
-		event add <<Button3-Press>> <ButtonPress-2>
-		event add <<Button3-Motion>> <B2-Motion>
-		event add <<Escape>> <Command-w> <Command-W>
-		event add <<Paste>> <Command-v> <Command-V>
-		event add <<Copy>> <Command-c> <Command-C>
-		event add <<Cut>> <Command-x> <Command-X>
-	} elseif { [OnMaemo] } {
-                event add <<Button1>> <Button1-ButtonRelease>
-                event add <<Button1-Press>> <ButtonPress-1>
-                event add <<Button1-Motion>> <B1-Motion>
-                event add <<Button2>> <Button2-ButtonRelease>
-                event add <<Button2-Press>> <ButtonPress-2>
-                event add <<Button2-Motion>> <B2-Motion>
-		event add <<Button3>> <Control-ButtonRelease>
-		event add <<Button3-Press>> <Control-ButtonPress>
-		event add <<Button3-Motion>> <B3-Motion>
-                event add <<Escape>> <Escape>
-                event add <<Paste>> <Control-v> <Control-V>
-                event add <<Copy>> <Control-c> <Control-C>
-                event add <<Cut>> <Control-x> <Control-X>
-	} else {
-		event add <<Button1>> <Button1-ButtonRelease>
-		event add <<Button1-Press>> <ButtonPress-1>
-		event add <<Button1-Motion>> <B1-Motion>
-		event add <<Button2>> <Button2-ButtonRelease>
-		event add <<Button2-Press>> <ButtonPress-2>
-		event add <<Button2-Motion>> <B2-Motion>
-		event add <<Button3>> <Button3-ButtonRelease>
-		event add <<Button3-Press>> <ButtonPress-3>
-		event add <<Button3-Motion>> <B3-Motion>
-		event add <<Escape>> <Escape>
-		event add <<Paste>> <Control-v> <Control-V>
-		event add <<Copy>> <Control-c> <Control-C>
-		event add <<Cut>> <Control-x> <Control-X>
-	}
-
-	if { [OnLinux] } {
-		#Mappings for Shift-BackSpace
-		bind Entry <Terminate_Server> [bind Entry <BackSpace>]
-		bind Text <Terminate_Server> [bind Text <BackSpace>]
-	}
-
-	#This proc bugs anyway
-	rename ::tk::FirstMenu ::tk::Original_FirstMenu
-	proc ::tk::FirstMenu { args } { }
-
-	#To avoid a bug inside panedwindow, by Youness
-	rename ::tk::panedwindow::Cursor ::tk::panedwindow::Original_Cursor
-	proc ::tk::panedwindow::Cursor { args } {
-		catch { eval ::tk::panedwindow::Original_Cursor $args }
-	}
-
-	#For proc WinWrite
-	namespace eval ::amsn {
-		variable urlcount 0
-		variable urlregexps
-		# MAKE SURE that none of the regexps have a capturing group!
-		# use (?:regexp) if you need to use the parenthesis..
-		# like for (?:org|com|net)...
-
-		#this regexp is a bit complex, but it reaches all URLs as specified in the RFC 1738 on http://www.ietf.org/rfc/rfc1738.txt
-		set urlregexps {
-			{\w+://[\%\/\$\*\~\|\,\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
-			{\mwww\.[\%\/\$\*\~\,\|\!\'\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]+}
-			{(?:[\%\/\$\*\~\,\!\'\|\#\@\+\-\=\?\;\:\^\&\_[:alnum:]]+\.)+(?:org|com|net)(?:/[\%\/\$\*\~\,\!\'\|\#\.\@\+\-\=\?\;\:\^\&\_[:alnum:]]*)*(?=\y)}
-			{spotify:(?:track|album|artist|search|playlist|user|radio):[^<>\s]+}
-		}
-	}
-
-	#For idle checking
-	global idletime oldmousepos autostatuschange
-	set idletime 0
-	set oldmousepos [list]
-	set autostatuschange 0
+#For idle checking
+global idletime oldmousepos autostatuschange
+set idletime 0
+set oldmousepos [list]
+set autostatuschange 0
 }
 
 namespace eval ::amsn {
 
-	namespace export initLook aboutWindow showHelpFile errorMsg infoMsg \
-		blockUnblockUser blockUser unblockUser deleteUser removeUserFromGroup \
-		fileTransferRecv fileTransferProgress \
-		errorMsg notifyAdd initLook messageFrom userJoins userLeaves \
-		updateTypers ackMessage nackMessage chatUser
+namespace export initLook aboutWindow showHelpFile errorMsg infoMsg \
+	blockUnblockUser blockUser unblockUser deleteUser removeUserFromGroup \
+	fileTransferRecv fileTransferProgress \
+	errorMsg notifyAdd initLook messageFrom userJoins userLeaves \
+	updateTypers ackMessage nackMessage chatUser
 
 
-	##PUBLIC
+##PUBLIC
 
-	proc initLook { family size bgcolor} {
-		font create menufont -family $family -size $size -weight normal
-		font create sboldf -family $family -size $size -weight bold
-		font create splainf -family $family -size $size -weight normal
-		font create sunderf -family $family -size $size -weight normal -underline yes
-		font create sboldunderf -family $family -size $size -weight bold -underline yes
-		font create sbolditalf -family $family -size $size -weight bold -slant italic
-		font create sitalf -family $family -size $size -slant italic
-		font create macfont -family [list {Lucida Grande}] -size 13 -weight normal
+proc initLook { family size bgcolor} {
+	font create menufont -family $family -size $size -weight normal
+	font create sboldf -family $family -size $size -weight bold
+	font create splainf -family $family -size $size -weight normal
+	font create sunderf -family $family -size $size -weight normal -underline yes
+	font create sboldunderf -family $family -size $size -weight bold -underline yes
+	font create sbolditalf -family $family -size $size -weight bold -slant italic
+	font create sitalf -family $family -size $size -slant italic
+	font create macfont -family [list {Lucida Grande}] -size 13 -weight normal
 
-		if { [::config::getKey strictfonts] } {
-			font create bboldf -family $family -size $size -weight bold
-			font create bboldunderf -family $family -size $size -weight bold -underline true
-			font create bplainf -family $family -size $size -weight normal
-			font create bsunderf -family $family -size $size -weight normal -underline yes
-			font create bigfont -family $family -size $size -weight bold
-			font create examplef -family $family -size $size -weight normal
-		} else {
-			font create bboldf -family $family -size [expr {$size+1}] -weight bold
-			font create bboldunderf -family $family -size [expr {$size+1}] -weight bold -underline true
-			font create bplainf -family $family -size [expr {$size+1}] -weight normal
-			font create bsunderf -family $family -size [expr {$size+1}] -weight normal -underline true
-			font create bigfont -family $family -size [expr {$size+2}] -weight bold
-			font create examplef -family $family -size [expr {$size-1}] -weight normal
-		}
-
-		catch {tk_setPalette [::skin::getKey menubackground]}
-		option add *Menu.font menufont
-
-		option add *Canvas.highlightThickness 0
-		option add *Photo.format cximage widgetDefault
-
-		option add *Font splainf userDefault
-		option add *background [::skin::getKey extrastdwindowcolor]
-		option add *foreground [::skin::getKey extrastdtxtcolor]
-		option add *activeBackground [::skin::getKey extrabuttonbgcoloractive]
-		option add *activeForeground [::skin::getKey extrabuttontxtcoloractive]
-		option add *selectColor [::skin::getKey extracheckbuttonselectedcolor]
-
-		option add *Combobox.buttonBackground [::skin::getKey extrastdbgcolor]
-		option add *Combobox.background [::skin::getKey extrastdbgcolor]
-
-		if { ![OnMac] } {
-			option add *borderWidth 1 widgetDefault
-			option add *activeBorderWidth 1 widgetDefault
-			option add *selectBorderWidth 1 widgetDefault
-			option add *highlightThickness 0 widgetDefault
-			option add *troughColor #c3c3c3 widgetDefault
-
-			option add *Frame.borderWidth 2 widgetDefault
-			option add *Frame.background [::skin::getKey extrastdwindowcolor]
-			option add *Frame.foreground [::skin::getKey extrastdtxtcolor]
-
-			option add *Labelframe.borderWidth 2 widgetDefault
-			option add *Labelframe.padY 8 widgetDefault
-			option add *Labelframe.padX 12 widgetDefault
-			option add *Labelframe.background [::skin::getKey extrastdwindowcolor]
-			option add *Labelframe.foreground [::skin::getKey extrastdtxtcolor]
-
-			option add *Label.foreground [::skin::getKey extrastdtxtcolor]
-
-			option add *Entry.borderWidth 1 widgetDefault
-			option add *Entry.selectBorderWidth 0 widgetDefault
-			option add *Entry.padX 2 widgetDefault
-			option add *Entry.padY 4 widgetDefault
-			option add *Entry.background [::skin::getKey extrastdbgcolor]
-			option add *Entry.foreground [::skin::getKey extrastdtxtcolor]
-			option add *Entry.disabledBackground [::skin::getKey extradisabledbgcolor] 
-			option add *Entry.disabledForeground [::skin::getKey extradisabledtxtcolor]
-			option add *Entry.selectBackground [::skin::getKey extraselectedbgcolor]
-			option add *Entry.selectForeground [::skin::getKey extraselectedtxtcolor]
-
-			option add *Text.selectBorderWidth 0 widgetDefault
-			option add *Text.padX 2 widgetDefault
-			option add *Text.padY 4 widgetDefault
-
-
-			option add *Text.background [::skin::getKey extrastdbgcolor]
-			option add *Text.foreground [::skin::getKey extrastdtxtcolor]
-			option add *Text.disabledBackground [::skin::getKey extradisabledbgcolor] 
-			option add *Text.disabledForeground [::skin::getKey extradisabledtxtcolor]
-			option add *Text.selectBackground [::skin::getKey extraselectedbgcolor]
-			option add *Text.selectForeground [::skin::getKey extraselectedtxtcolor]
- 
-			option add *Button.background [::skin::getKey extrabuttonbgcolor]
-			option add *Button.foreground [::skin::getKey extrabuttontxtcolor]
-			option add *Button.activeBackground [::skin::getKey extrabuttonbgcoloractive]
-			option add *Button.activeForeground [::skin::getKey extrabuttontxtcoloractive]
-
-			option add *Checkbutton.background [::skin::getKey extrastdwindowcolor]
-			option add *Checkbutton.foreground [::skin::getKey extrabuttontxtcolor]
-			option add *Checkbutton.activeBackground [::skin::getKey extrabuttonbgcoloractive]
-			option add *Checkbutton.activeForeground [::skin::getKey extrabuttontxtcoloractive]
-			option add *Checkbutton.selectColor [::skin::getKey extracheckbuttonselectedcolor]
-
-			option add *Radiobutton.background [::skin::getKey extrastdwindowcolor]
-			option add *Radiobutton.foreground [::skin::getKey extrabuttontxtcolor]
-			option add *Radiobutton.activeBackground [::skin::getKey extrabuttonbgcoloractive] 
-			option add *Radiobutton.activeForeground [::skin::getKey extrabuttontxtcoloractive]
-			option add *Radiobutton.selectColor [::skin::getKey extracheckbuttonselectedcolor]
-
-			option add *Listbox.selectBorderWidth 0 widgetDefault
-			option add *Listbox.relief sunken
-			option add *Listbox.background [::skin::getKey extrastdbgcolor]
-			option add *Listbox.foreground [::skin::getKey extrastdtxtcolor]
-			option add *Listbox.selectBackground [::skin::getKey extraselectedbgcolor] 
-			option add *Listbox.selectForeground [::skin::getKey extraselectedtxtcolor]
-
-			option add *Menu.activeBorderWidth 0 widgetDefault
-			option add *Menu.highlightThickness 0 widgetDefault
-			option add *Menu.borderWidth 1 widgetDefault
-			option add *Menu.background [::skin::getKey menubackground]
-			option add *Menu.foreground [::skin::getKey menuforeground]
-			option add *Menu.activeBackground [::skin::getKey menuactivebackground]
-			option add *Menu.activeForeground [::skin::getKey menuactiveforeground]
-
-			option add *Menubutton.background [::skin::getKey extrabuttonbgcolor]
-			option add *Menubutton.foreground [::skin::getKey extrabuttontxtcolor]
-			option add *Menubutton.activeBackground [::skin::getKey extrabuttonbgcoloractive]
-			option add *Menubutton.activeForeground [::skin::getKey extrabuttontxtcoloractive]
-			option add *Menubutton.relief raised
-
-			option add *Menubutton.padX 2 widgetDefault
-			option add *Menubutton.padY 4 widgetDefault
-
-			#option add *NoteBook.background [::skin::getKey extrastdwindowcolor]
-			#option add *NoteBook.Canvas.background [::skin::getKey extrastdwindowcolor]
-			#option add *NoteBook.Canvas.ArrowButton.background [::skin::getKey extrastdwindowcolor]
-				# -activebackground [::skin::getKey extrabuttonbgcoloractive] -activeforeground [::skin::getKey extrabuttontxtcoloractive]
-
-			option add *Scrollbar.width		10
-			option add *Scrollbar.borderWidth		1
-			option add *Scrollbar.highlightThickness	0 widgetDefault
-
-		}
-		#Use different width for scrollbar on Mac OS X
-		#http://wiki.tcl.tk/12987
-		if { [OnMac] } {
-			option add *background #ECECEC
-			option add *highlightbackground #ECECEC
-			option add *Scrollbar.width 16 userDefault
-			option add *Button.Font macfont userDefault
-			option add *Button.highlightBackground #ECECEC userDefault
-		} elseif { [OnWin] } {
-			#option add *background [::skin::getKey extrastdwindowcolor]
-			option add *Scrollbar.width 14 userDefault
-			option add *Button.Font sboldf userDefault
-		}
-
-		#option add *Scrollbar.borderWidth 1 userDefault
-
-		#set Entry {-bg #FFFFFF -foreground #000000}
-		#set Label {-bg #FFFFFF -foreground #000000}
-		#::themes::AddClass Amsn Entry $Entry 90
-		#::themes::AddClass Amsn Label $Label 90
-		::abookGui::Init
-
-
-		#Register events
-		::Event::registerEvent loggedIn all loggedInGuiConf
-		::Event::registerEvent loggedOut all loggedOutGuiConf
-
+	if { [::config::getKey strictfonts] } {
+		font create bboldf -family $family -size $size -weight bold
+		font create bboldunderf -family $family -size $size -weight bold -underline true
+		font create bplainf -family $family -size $size -weight normal
+		font create bsunderf -family $family -size $size -weight normal -underline yes
+		font create bigfont -family $family -size $size -weight bold
+		font create examplef -family $family -size $size -weight normal
+	} else {
+		font create bboldf -family $family -size [expr {$size+1}] -weight bold
+		font create bboldunderf -family $family -size [expr {$size+1}] -weight bold -underline true
+		font create bplainf -family $family -size [expr {$size+1}] -weight normal
+		font create bsunderf -family $family -size [expr {$size+1}] -weight normal -underline true
+		font create bigfont -family $family -size [expr {$size+2}] -weight bold
+		font create examplef -family $family -size [expr {$size-1}] -weight normal
 	}
 
-	#///////////////////////////////////////////////////////////////////////////////
-	# Draws the about window
-	proc aboutWindow {} {
-		global langenc date weburl
-		
-		set filename "[file join docs README[::config::getGlobalKey language]]"
-		
-		set current_enc $langenc
+	catch {tk_setPalette [::skin::getKey menubackground]}
+	option add *Menu.font menufont
+
+	option add *Canvas.highlightThickness 0
+	option add *Photo.format cximage widgetDefault
+
+	option add *Font splainf userDefault
+	option add *background [::skin::getKey extrastdwindowcolor]
+	option add *foreground [::skin::getKey extrastdtxtcolor]
+	option add *activeBackground [::skin::getKey extrabuttonbgcoloractive]
+	option add *activeForeground [::skin::getKey extrabuttontxtcoloractive]
+	option add *selectColor [::skin::getKey extracheckbuttonselectedcolor]
+
+	option add *Combobox.buttonBackground [::skin::getKey extrastdbgcolor]
+	option add *Combobox.background [::skin::getKey extrastdbgcolor]
+
+	if { ![OnMac] } {
+		option add *borderWidth 1 widgetDefault
+		option add *activeBorderWidth 1 widgetDefault
+		option add *selectBorderWidth 1 widgetDefault
+		option add *highlightThickness 0 widgetDefault
+		option add *troughColor #c3c3c3 widgetDefault
+
+		option add *Frame.borderWidth 2 widgetDefault
+		option add *Frame.background [::skin::getKey extrastdwindowcolor]
+		option add *Frame.foreground [::skin::getKey extrastdtxtcolor]
+
+		option add *Labelframe.borderWidth 2 widgetDefault
+		option add *Labelframe.padY 8 widgetDefault
+		option add *Labelframe.padX 12 widgetDefault
+		option add *Labelframe.background [::skin::getKey extrastdwindowcolor]
+		option add *Labelframe.foreground [::skin::getKey extrastdtxtcolor]
+
+		option add *Label.foreground [::skin::getKey extrastdtxtcolor]
+
+		option add *Entry.borderWidth 1 widgetDefault
+		option add *Entry.selectBorderWidth 0 widgetDefault
+		option add *Entry.padX 2 widgetDefault
+		option add *Entry.padY 4 widgetDefault
+		option add *Entry.background [::skin::getKey extrastdbgcolor]
+		option add *Entry.foreground [::skin::getKey extrastdtxtcolor]
+		option add *Entry.disabledBackground [::skin::getKey extradisabledbgcolor] 
+		option add *Entry.disabledForeground [::skin::getKey extradisabledtxtcolor]
+		option add *Entry.selectBackground [::skin::getKey extraselectedbgcolor]
+		option add *Entry.selectForeground [::skin::getKey extraselectedtxtcolor]
+
+		option add *Text.selectBorderWidth 0 widgetDefault
+		option add *Text.padX 2 widgetDefault
+		option add *Text.padY 4 widgetDefault
 
 
-		if {![file exists $filename]} {
-			status_log "File $filename NOT exists!!\n\tUsing english one instead." red
-			set filename README
-			set current_enc "iso8859-1"
+		option add *Text.background [::skin::getKey extrastdbgcolor]
+		option add *Text.foreground [::skin::getKey extrastdtxtcolor]
+		option add *Text.disabledBackground [::skin::getKey extradisabledbgcolor] 
+		option add *Text.disabledForeground [::skin::getKey extradisabledtxtcolor]
+		option add *Text.selectBackground [::skin::getKey extraselectedbgcolor]
+		option add *Text.selectForeground [::skin::getKey extraselectedtxtcolor]
 
-			if {![file exists $filename]} {
-				status_log "no english README either .. Houston, we have a problem, you ***'ed up your aMSN install!"
-				msg_box "[trans transnotexists]"
-				return
-			}
-		}
-				
-		if { [winfo exists .about] } {
-			raise .about
-			return
-		}
+		option add *Button.background [::skin::getKey extrabuttonbgcolor]
+		option add *Button.foreground [::skin::getKey extrabuttontxtcolor]
+		option add *Button.activeBackground [::skin::getKey extrabuttonbgcoloractive]
+		option add *Button.activeForeground [::skin::getKey extrabuttontxtcoloractive]
 
-		toplevel .about
-		wm title .about "[trans aboutamsn]"
+		option add *Checkbutton.background [::skin::getKey extrastdwindowcolor]
+		option add *Checkbutton.foreground [::skin::getKey extrabuttontxtcolor]
+		option add *Checkbutton.activeBackground [::skin::getKey extrabuttonbgcoloractive]
+		option add *Checkbutton.activeForeground [::skin::getKey extrabuttontxtcoloractive]
+		option add *Checkbutton.selectColor [::skin::getKey extracheckbuttonselectedcolor]
 
-		ShowTransient .about
+		option add *Radiobutton.background [::skin::getKey extrastdwindowcolor]
+		option add *Radiobutton.foreground [::skin::getKey extrabuttontxtcolor]
+		option add *Radiobutton.activeBackground [::skin::getKey extrabuttonbgcoloractive] 
+		option add *Radiobutton.activeForeground [::skin::getKey extrabuttontxtcoloractive]
+		option add *Radiobutton.selectColor [::skin::getKey extracheckbuttonselectedcolor]
 
-		wm state .about withdrawn
+		option add *Listbox.selectBorderWidth 0 widgetDefault
+		option add *Listbox.relief sunken
+		option add *Listbox.background [::skin::getKey extrastdbgcolor]
+		option add *Listbox.foreground [::skin::getKey extrastdtxtcolor]
+		option add *Listbox.selectBackground [::skin::getKey extraselectedbgcolor] 
+		option add *Listbox.selectForeground [::skin::getKey extraselectedtxtcolor]
 
-		#Top frame (Picture and name of developers)
-		set developers " Youness Alaoui\n Boris Faure"
+		option add *Menu.activeBorderWidth 0 widgetDefault
+		option add *Menu.highlightThickness 0 widgetDefault
+		option add *Menu.borderWidth 1 widgetDefault
+		option add *Menu.background [::skin::getKey menubackground]
+		option add *Menu.foreground [::skin::getKey menuforeground]
+		option add *Menu.activeBackground [::skin::getKey menuactivebackground]
+		option add *Menu.activeForeground [::skin::getKey menuactiveforeground]
 
-		set version "aMSN $::version ([::abook::dateconvert $date])"
-		if {[string index $::version end] == "b" && $::Version::amsn_revision > 0} {
-			append version "\n[trans svnversion] : $::Version::amsn_revision"
-		}
-		label .about.image -image [::skin::loadPixmap msndroid]
-		label .about.title -text $version -font bboldf
-		label .about.what -text "[trans whatisamsn]\n"
-		pack .about.image .about.title .about.what -side top
+		option add *Menubutton.background [::skin::getKey extrabuttonbgcolor]
+		option add *Menubutton.foreground [::skin::getKey extrabuttontxtcolor]
+		option add *Menubutton.activeBackground [::skin::getKey extrabuttonbgcoloractive]
+		option add *Menubutton.activeForeground [::skin::getKey extrabuttontxtcoloractive]
+		option add *Menubutton.relief raised
 
-		#names-frame
-		frame .about.names
-		label .about.names.t -font splainf -text "[trans broughtby]:\n$developers"
-		pack .about.names.t -side top
-		pack .about.names -side top
+		option add *Menubutton.padX 2 widgetDefault
+		option add *Menubutton.padY 4 widgetDefault
 
+		#option add *NoteBook.background [::skin::getKey extrastdwindowcolor]
+		#option add *NoteBook.Canvas.background [::skin::getKey extrastdwindowcolor]
+		#option add *NoteBook.Canvas.ArrowButton.background [::skin::getKey extrastdwindowcolor]
+			# -activebackground [::skin::getKey extrabuttonbgcoloractive] -activeforeground [::skin::getKey extrabuttontxtcoloractive]
 
-		#Middle frame (About text)
-		frame .about.middle
-		frame .about.middle.list -borderwidth 0
-		text .about.middle.list.text -width 80 -height 10 -wrap word \
-			-yscrollcommand ".about.middle.list.ys set" -font splainf
-		scrollbar .about.middle.list.ys -command ".about.middle.list.text yview"
-		pack .about.middle.list.ys -side right -fill y
-		pack .about.middle.list.text -side left -expand true -fill both
-		pack .about.middle.list -side top -expand true -fill both -padx 1 -pady 1
+		option add *Scrollbar.width		10
+		option add *Scrollbar.borderWidth		1
+		option add *Scrollbar.highlightThickness	0 widgetDefault
 
-		label .about.middle.url -text $weburl -font bplainf \
-			-background [::skin::getKey extrastdwindowcolor] -foreground [::skin::getKey extralinkcolor]
-
-		pack .about.middle.url -side top -pady 3
-		bind .about.middle.url <Enter> ".about.middle.url configure \
-			-font bsunderf -cursor hand2 \
-			-background [::skin::getKey extralinkbgcoloractive] -foreground [::skin::getKey extralinkcoloractive]"
- 
-		bind .about.middle.url <Leave> ".about.middle.url configure  \
-			-font bplainf -cursor left_ptr \
-			-background [::skin::getKey extrastdwindowcolor] -foreground [::skin::getKey extralinkcolor]"
-
-		
-
-		bind .about.middle.url <<Button1>> "launch_browser $weburl"
-
-
-		#Bottom frame (Close button)
-		frame .about.bottom
-		button .about.bottom.close -text "[trans close]" -command "destroy .about"
-		button .about.bottom.credits -text "[trans credits]..." -command [list ::amsn::showHelpFileWindow CREDITS [trans credits]]
-		bind .about <<Escape>> "destroy .about"
-
-		pack .about.bottom.close -side right
-		pack .about.bottom.credits -side left
-
-		pack .about.bottom -side bottom -fill x -pady 3 -padx 5
-		pack .about.middle -expand true -fill both -side top
-
-		#Insert the text in .about.middle.list.text
-		set id [open $filename r]
-		fconfigure $id -encoding $current_enc
-
-		.about.middle.list.text insert 1.0 [read $id]
-		close $id
-
-		.about.middle.list.text configure -state disabled
-
-		update idletasks
-
-		wm state .about normal
-		set x [expr {([winfo vrootwidth .about] - [winfo width .about]) / 2}]
-		set y [expr {([winfo vrootheight .about] - [winfo height .about]) / 2}]
-		wm geometry .about +${x}+${y}
-		moveinscreen .about 30
-
-		#Should we disable resizable? Since when we make the windows smaller (in y), we lost the "Close button"
-		#wm resizable .about 0 0
 	}
-	#///////////////////////////////////////////////////////////////////////////////
-
-	proc checkcert {args} {
-		if { [lindex $args 0] == "verify" } {
-			set status [lindex $args 4]
-			set errormsg [lindex $args 5]
-			if {!$status} {
-				#set answer [::amsn::messageBox "Bad certificate: $errormsg, continue anyway?" yesno question "Certificate problem"]
-				#TODO:
-				# translation
-				# save the answer for this certificate (using sha1)
-				set answer "yes"
-				if { $answer == yes } {
-					set status 1
-				}
-				puts [info level 0]
-				puts $status
-				puts $errormsg
-			}
-			return $status
-		}
+	#Use different width for scrollbar on Mac OS X
+	#http://wiki.tcl.tk/12987
+	if { [OnMac] } {
+		option add *background #ECECEC
+		option add *highlightbackground #ECECEC
+		option add *Scrollbar.width 16 userDefault
+		option add *Button.Font macfont userDefault
+		option add *Button.highlightBackground #ECECEC userDefault
+	} elseif { [OnWin] } {
+		#option add *background [::skin::getKey extrastdwindowcolor]
+		option add *Scrollbar.width 14 userDefault
+		option add *Button.Font sboldf userDefault
 	}
 
+	#option add *Scrollbar.borderWidth 1 userDefault
 
-	#///////////////////////////////////////////////////////////////////////////////
-	# showHelpFileWindow(file, windowtitle, ?english?)
-	proc showHelpFileWindow {file title {english 0}} {
-		global langenc
-
-		set langcode [::config::getGlobalKey language]
-		set encoding $langenc
-			
-
-		if {$english == 1} {
-			set langcode "en"
-			set encoding "iso8859-1"
-		}
-
-		set filename [file join "docs" "${file}$langcode"]
-		if {$langcode == "en"} {
-			set filename $file
-		}
+	#set Entry {-bg #FFFFFF -foreground #000000}
+	#set Label {-bg #FFFFFF -foreground #000000}
+	#::themes::AddClass Amsn Entry $Entry 90
+	#::themes::AddClass Amsn Label $Label 90
+	::abookGui::Init
 
 
-		if {![file exists $filename]} {
-			status_log "File $filename NOT exists!!\n\tOpening English one instead." red
-			set filename "${file}"
-			set langcode "en"
-			set encoding "iso8859-1"
-			if {![file exists $filename]} {			
-				status_log "Couldn't open $filename!" red
-				msg_box "[trans transnotexists]"
-				return
-			}
-		}
+	#Register events
+	::Event::registerEvent loggedIn all loggedInGuiConf
+	::Event::registerEvent loggedOut all loggedOutGuiConf
 
-		if {$file == "CREDITS"} {
-			set encoding "utf-8"
-		}
-			
-		if {$langcode == "en"} {
-			set w help${filename}en
-		} else {
-			set w help${filename}
-		}
+}
 
-		status_log "filename: $filename"
-
-		# Used to avoid a bug for dbusviewer where the $filename points to /home/user/.amsn the dot makes 
-		# tk think it's a window's path separator and it says that the window .help/home/user/ doesn't exit (for .amsn to be its child)
-		set w ".[string map {. "_" " " "__"} $w]"
-
-
-		if { [winfo exists $w] } {
-			raise $w
-			return
-		}
-
-		toplevel $w
-		wm title $w "$title"
-
-		ShowTransient $w
-
-
-		#Top frame (Help text area)
-		frame $w.info
-		frame $w.info.list -borderwidth 0
-		text $w.info.list.text -width 80 -height 30 -wrap word \
-			-yscrollcommand "$w.info.list.ys set" -font splainf
-
-		scrollbar $w.info.list.ys -command "$w.info.list.text yview"
-		pack $w.info.list.ys 	-side right -fill y
-		pack $w.info.list.text -expand true -fill both -padx 1 -pady 1
-		pack $w.info.list 		-side top -expand true -fill both -padx 1 -pady 1
-		pack $w.info 			-expand true -fill both -side top
-
-		#Bottom frame (Close button)
-		button $w.close -text "[trans close]" -command "destroy $w"
-		button $w.eng -text "English version" -command [list ::amsn::showHelpFileWindow $file "$title - English version" 1]
-		bind $w <<Escape>> "destroy $w"
-		pack $w.close
-
-		if {$langcode != "en" && $english != 1} {
-			pack $w.eng  -side right -anchor e -padx 5 -pady 3
-		}
-		pack $w.close  -side right -anchor e -padx 5 -pady 3
-
-		#Insert FAQ text
-		set id [open $filename r]
-		fconfigure $id -encoding $encoding
-		$w.info.list.text insert 1.0 [read $id]
-		close $id
-
-		$w.info.list.text configure -state disabled
-
-		update idletasks
-
-		set x [expr {([winfo vrootwidth $w] - [winfo width $w]) / 2}]
-		set y [expr {([winfo vrootheight $w] - [winfo height $w]) / 2}]
-		wm geometry $w +${x}+${y}
-
-		#Should we disable resizable? Since when we make the windows smaller (in y), we lost the "Close button"
-		#wm resizable .about 0 0
-		return $w
-	}
-
-	#///////////////////////////////////////////////////////////////////////////////
-
-	proc messageBox { message type icon {title ""} {parent ""}} {
-		#If we are on MacOS X, don't put the box in the parent because there are some problems
-		if { [OnMac] } {
-			set answer [tk_messageBox -message "$message" -type $type -icon $icon]
-		} else {
-			if { $parent == ""} {
-				set parent [focus]
-				if { $parent == "" } { set parent "." }
-			}
-				set answer [tk_messageBox -message "$message" -type $type -icon $icon -title $title -parent $parent]
-		}
-		return $answer
-	}
-
-	#///////////////////////////////////////////////////////////////////////////////
+#///////////////////////////////////////////////////////////////////////////////
+# Draws the about window
+proc aboutWindow {} {
+	global langenc date weburl
 	
-	#///////////////////////////////////////////////////////////////////////////////
-	proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememberAnswer 0} {modal 0} {uniqueId ""}} {
-		# This tracker is so we can TkWait. It needs to be global so that the buttons can modify it.
-		global customMessageBoxAnswerTracker
-		# This is the tracker for the checkbox.
-		# It needs to be an array because we may have more than one message box open (hence the unique index). 
-		global customMessageBoxRememberTracker
+	set filename "[file join docs README[::config::getGlobalKey language]]"
+	
+	set current_enc $langenc
 
-		if {$uniqueId == ""} {
-			set uniqueId [clock seconds]
-		} else {
-			if {[winfo exists ".messagebox_$uniqueId"]} {
-				return "duplicate"
-			}
-		}
-		set w ".messagebox_$uniqueId"
 
-		if { [winfo exists $w] } {
-			raise $w
+	if {![file exists $filename]} {
+		status_log "File $filename NOT exists!!\n\tUsing english one instead." red
+		set filename README
+		set current_enc "iso8859-1"
+
+		if {![file exists $filename]} {
+			status_log "no english README either .. Houston, we have a problem, you ***'ed up your aMSN install!"
+			msg_box "[trans transnotexists]"
 			return
 		}
+	}
+			
+	if { [winfo exists .about] } {
+		raise .about
+		return
+	}
 
-		set w [toplevel $w]
+	toplevel .about
+	wm title .about "[trans aboutamsn]"
 
-		if {$title == ""} {
-			set title [trans title]
+	ShowTransient .about
+
+	wm state .about withdrawn
+
+	#Top frame (Picture and name of developers)
+	set developers " Youness Alaoui\n Boris Faure"
+
+	set version "aMSN $::version ([::abook::dateconvert $date])"
+	if {[string index $::version end] == "b" && $::Version::amsn_revision > 0} {
+		append version "\n[trans svnversion] : $::Version::amsn_revision"
+	}
+	label .about.image -image [::skin::loadPixmap msndroid]
+	label .about.title -text $version -font bboldf
+	label .about.what -text "[trans whatisamsn]\n"
+	pack .about.image .about.title .about.what -side top
+
+	#names-frame
+	frame .about.names
+	label .about.names.t -font splainf -text "[trans broughtby]:\n$developers"
+	pack .about.names.t -side top
+	pack .about.names -side top
+
+
+	#Middle frame (About text)
+	frame .about.middle
+	frame .about.middle.list -borderwidth 0
+	text .about.middle.list.text -width 80 -height 10 -wrap word \
+		-yscrollcommand ".about.middle.list.ys set" -font splainf
+	scrollbar .about.middle.list.ys -command ".about.middle.list.text yview"
+	pack .about.middle.list.ys -side right -fill y
+	pack .about.middle.list.text -side left -expand true -fill both
+	pack .about.middle.list -side top -expand true -fill both -padx 1 -pady 1
+
+	label .about.middle.url -text $weburl -font bplainf \
+		-background [::skin::getKey extrastdwindowcolor] -foreground [::skin::getKey extralinkcolor]
+
+	pack .about.middle.url -side top -pady 3
+	bind .about.middle.url <Enter> ".about.middle.url configure \
+		-font bsunderf -cursor hand2 \
+		-background [::skin::getKey extralinkbgcoloractive] -foreground [::skin::getKey extralinkcoloractive]"
+
+	bind .about.middle.url <Leave> ".about.middle.url configure  \
+		-font bplainf -cursor left_ptr \
+		-background [::skin::getKey extrastdwindowcolor] -foreground [::skin::getKey extralinkcolor]"
+
+	
+
+	bind .about.middle.url <<Button1>> "launch_browser $weburl"
+
+
+	#Bottom frame (Close button)
+	frame .about.bottom
+	button .about.bottom.close -text "[trans close]" -command "destroy .about"
+	button .about.bottom.credits -text "[trans credits]..." -command [list ::amsn::showHelpFileWindow CREDITS [trans credits]]
+	bind .about <<Escape>> "destroy .about"
+
+	pack .about.bottom.close -side right
+	pack .about.bottom.credits -side left
+
+	pack .about.bottom -side bottom -fill x -pady 3 -padx 5
+	pack .about.middle -expand true -fill both -side top
+
+	#Insert the text in .about.middle.list.text
+	set id [open $filename r]
+	fconfigure $id -encoding $current_enc
+
+	.about.middle.list.text insert 1.0 [read $id]
+	close $id
+
+	.about.middle.list.text configure -state disabled
+
+	update idletasks
+
+	wm state .about normal
+	set x [expr {([winfo vrootwidth .about] - [winfo width .about]) / 2}]
+	set y [expr {([winfo vrootheight .about] - [winfo height .about]) / 2}]
+	wm geometry .about +${x}+${y}
+	moveinscreen .about 30
+
+	#Should we disable resizable? Since when we make the windows smaller (in y), we lost the "Close button"
+	#wm resizable .about 0 0
+}
+#///////////////////////////////////////////////////////////////////////////////
+
+proc checkcert {args} {
+	if { [lindex $args 0] == "verify" } {
+		set status [lindex $args 4]
+		set errormsg [lindex $args 5]
+		if {!$status} {
+			#set answer [::amsn::messageBox "Bad certificate: $errormsg, continue anyway?" yesno question "Certificate problem"]
+			#TODO:
+			# translation
+			# save the answer for this certificate (using sha1)
+			set answer "yes"
+			if { $answer == yes } {
+				set status 1
+			}
+			puts [info level 0]
+			puts $status
+			puts $errormsg
 		}
-		wm title $w $title
-		wm group $w .
-		wm resizable $w 0 0
+		return $status
+	}
+}
 
-		#Create the 2 frames
-		frame $w.top
-		frame $w.buttons
 
-		if {$icon == ""} {
-			label $w.top.bitmap -image [::skin::loadPixmap warning]
+#///////////////////////////////////////////////////////////////////////////////
+# showHelpFileWindow(file, windowtitle, ?english?)
+proc showHelpFileWindow {file title {english 0}} {
+	global langenc
+
+	set langcode [::config::getGlobalKey language]
+	set encoding $langenc
+		
+
+	if {$english == 1} {
+		set langcode "en"
+		set encoding "iso8859-1"
+	}
+
+	set filename [file join "docs" "${file}$langcode"]
+	if {$langcode == "en"} {
+		set filename $file
+	}
+
+
+	if {![file exists $filename]} {
+		status_log "File $filename NOT exists!!\n\tOpening English one instead." red
+		set filename "${file}"
+		set langcode "en"
+		set encoding "iso8859-1"
+		if {![file exists $filename]} {			
+			status_log "Couldn't open $filename!" red
+			msg_box "[trans transnotexists]"
+			return
+		}
+	}
+
+	if {$file == "CREDITS"} {
+		set encoding "utf-8"
+	}
+		
+	if {$langcode == "en"} {
+		set w help${filename}en
+	} else {
+		set w help${filename}
+	}
+
+	status_log "filename: $filename"
+
+	# Used to avoid a bug for dbusviewer where the $filename points to /home/user/.amsn the dot makes 
+	# tk think it's a window's path separator and it says that the window .help/home/user/ doesn't exit (for .amsn to be its child)
+	set w ".[string map {. "_" " " "__"} $w]"
+
+
+	if { [winfo exists $w] } {
+		raise $w
+		return
+	}
+
+	toplevel $w
+	wm title $w "$title"
+
+	ShowTransient $w
+
+
+	#Top frame (Help text area)
+	frame $w.info
+	frame $w.info.list -borderwidth 0
+	text $w.info.list.text -width 80 -height 30 -wrap word \
+		-yscrollcommand "$w.info.list.ys set" -font splainf
+
+	scrollbar $w.info.list.ys -command "$w.info.list.text yview"
+	pack $w.info.list.ys 	-side right -fill y
+	pack $w.info.list.text -expand true -fill both -padx 1 -pady 1
+	pack $w.info.list 		-side top -expand true -fill both -padx 1 -pady 1
+	pack $w.info 			-expand true -fill both -side top
+
+	#Bottom frame (Close button)
+	button $w.close -text "[trans close]" -command "destroy $w"
+	button $w.eng -text "English version" -command [list ::amsn::showHelpFileWindow $file "$title - English version" 1]
+	bind $w <<Escape>> "destroy $w"
+	pack $w.close
+
+	if {$langcode != "en" && $english != 1} {
+		pack $w.eng  -side right -anchor e -padx 5 -pady 3
+	}
+	pack $w.close  -side right -anchor e -padx 5 -pady 3
+
+	#Insert FAQ text
+	set id [open $filename r]
+	fconfigure $id -encoding $encoding
+	$w.info.list.text insert 1.0 [read $id]
+	close $id
+
+	$w.info.list.text configure -state disabled
+
+	update idletasks
+
+	set x [expr {([winfo vrootwidth $w] - [winfo width $w]) / 2}]
+	set y [expr {([winfo vrootheight $w] - [winfo height $w]) / 2}]
+	wm geometry $w +${x}+${y}
+
+	#Should we disable resizable? Since when we make the windows smaller (in y), we lost the "Close button"
+	#wm resizable .about 0 0
+	return $w
+}
+
+#///////////////////////////////////////////////////////////////////////////////
+
+proc messageBox { message type icon {title ""} {parent ""}} {
+	#If we are on MacOS X, don't put the box in the parent because there are some problems
+	if { [OnMac] } {
+		set answer [tk_messageBox -message "$message" -type $type -icon $icon]
+	} else {
+		if { $parent == ""} {
+			set parent [focus]
+			if { $parent == "" } { set parent "." }
+		}
+			set answer [tk_messageBox -message "$message" -type $type -icon $icon -title $title -parent $parent]
+	}
+	return $answer
+}
+
+#///////////////////////////////////////////////////////////////////////////////
+
+#///////////////////////////////////////////////////////////////////////////////
+proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememberAnswer 0} {modal 0} {uniqueId ""}} {
+	# This tracker is so we can TkWait. It needs to be global so that the buttons can modify it.
+	global customMessageBoxAnswerTracker
+	# This is the tracker for the checkbox.
+	# It needs to be an array because we may have more than one message box open (hence the unique index). 
+	global customMessageBoxRememberTracker
+
+	if {$uniqueId == ""} {
+		set uniqueId [clock seconds]
+	} else {
+		if {[winfo exists ".messagebox_$uniqueId"]} {
+			return "duplicate"
+		}
+	}
+	set w ".messagebox_$uniqueId"
+
+	if { [winfo exists $w] } {
+		raise $w
+		return
+	}
+
+	set w [toplevel $w]
+
+	if {$title == ""} {
+		set title [trans title]
+	}
+	wm title $w $title
+	wm group $w .
+	wm resizable $w 0 0
+
+	#Create the 2 frames
+	frame $w.top
+	frame $w.buttons
+
+	if {$icon == ""} {
+		label $w.top.bitmap -image [::skin::loadPixmap warning]
+	} else {
+		label $w.top.bitmap -image [::skin::loadPixmap $icon]
+	}
+	pack $w.top.bitmap -side left -pady 0 -padx [list 0 12 ]
+
+	label $w.top.message -text $message -wraplength 400 -justify left
+	pack $w.top.message -pady 0 -padx 0 -side top
+	if {$askRememberAnswer != 0} {
+		if {$askRememberAnswer == 1} {
+			set rememberText [trans remembersetting]
 		} else {
-			label $w.top.bitmap -image [::skin::loadPixmap $icon]
+			set rememberText [trans $askRememberAnswer]
 		}
-		pack $w.top.bitmap -side left -pady 0 -padx [list 0 12 ]
+		checkbutton $w.top.remember -variable customMessageBoxRememberTracker($uniqueId) \
+			-text $rememberText -anchor w -state normal
 
-		label $w.top.message -text $message -wraplength 400 -justify left
-		pack $w.top.message -pady 0 -padx 0 -side top
-		if {$askRememberAnswer != 0} {
-			if {$askRememberAnswer == 1} {
-				set rememberText [trans remembersetting]
-			} else {
-				set rememberText [trans $askRememberAnswer]
-			}
-			checkbutton $w.top.remember -variable customMessageBoxRememberTracker($uniqueId) \
-				-text $rememberText -anchor w -state normal
+		pack $w.top.remember -pady 5 -padx 10 -side bottom -fill x
+	}
 
-			pack $w.top.remember -pady 5 -padx 10 -side bottom -fill x
+	switch $type {
+		abortretryignore {
+			set buttons [list [list "abort" [trans abort]] [list "retry" [trans retry]] [list "ignore" [trans ignore]]]
 		}
-
-		switch $type {
-			abortretryignore {
-				set buttons [list [list "abort" [trans abort]] [list "retry" [trans retry]] [list "ignore" [trans ignore]]]
+		ok {
+			set buttons [list [list "ok" [trans ok]]]
+		}
+		okcancel {
+				set buttons [list [list "ok" [trans ok]] [list "cancel" [trans cancel]]]
 			}
-			ok {
+			retrycancel {
+				set buttons [list [list "retry" [trans retry]] [list "cancel" [trans cancel]]]
+			}
+			yesno {
+				set buttons [list [list "yes" [trans yes]] [list "no" [trans no]]]
+			}
+			yesnocancel {
+				set buttons [list [list "yes" [trans yes]] [list "no" [trans no]] [list "cancel" [trans cancel]]]
+			}
+			deletecancel {
+				set buttons [list [list "delete" [trans delete]] [list "cancel" [trans cancel]]]
+			}
+			deleteblockcancel {
+				set buttons [list [list "delete" [trans delete]] [list "deleteblock" [trans deleteblock]] [list "cancel" [trans cancel]]]
+			}
+			default {
 				set buttons [list [list "ok" [trans ok]]]
 			}
-			okcancel {
-					set buttons [list [list "ok" [trans ok]] [list "cancel" [trans cancel]]]
-				}
-				retrycancel {
-					set buttons [list [list "retry" [trans retry]] [list "cancel" [trans cancel]]]
-				}
-				yesno {
-					set buttons [list [list "yes" [trans yes]] [list "no" [trans no]]]
-				}
-				yesnocancel {
-					set buttons [list [list "yes" [trans yes]] [list "no" [trans no]] [list "cancel" [trans cancel]]]
-				}
-				deletecancel {
-					set buttons [list [list "delete" [trans delete]] [list "cancel" [trans cancel]]]
-				}
-				deleteblockcancel {
-					set buttons [list [list "delete" [trans delete]] [list "deleteblock" [trans deleteblock]] [list "cancel" [trans cancel]]]
-				}
-				default {
-					set buttons [list [list "ok" [trans ok]]]
-				}
-			}
-
-			set customMessageBoxAnswerTracker($uniqueId) ""
-
-			#Create the buttons
-			foreach button $buttons {
-				set buttonName [lindex $button 0]
-				set buttonLabel [lindex $button 1]
-				button $w.buttons.$buttonName -text $buttonLabel -command [list set customMessageBoxAnswerTracker($uniqueId) $buttonName]
-				pack $w.buttons.$buttonName -pady 0 -padx 0 -side right
-			}
-
-			#Pack frames
-			pack $w.top -pady 12 -padx 12 -side top
-			pack $w.buttons -pady 12 -padx 12 -fill x
-
-			moveinscreen $w 30
-			bind $w <<Escape>> "destroy $w"
-			wm protocol $w WM_DELETE_WINDOW [list set customMessageBoxAnswerTracker($uniqueId) ""]
-
-			set oldgrab ""
-			if { $modal } {
-				set oldgrab [grab current]
-				grab set $w
-			}
-
-			tkwait variable customMessageBoxAnswerTracker($uniqueId)
-
-			if { $oldgrab != "" } {
-				grab set $oldgrab
-			}
-
-			catch { destroy $w }
-			if {$askRememberAnswer != 0} {
-				set answer [list $customMessageBoxAnswerTracker($uniqueId) $customMessageBoxRememberTracker($uniqueId)]
-				unset customMessageBoxAnswerTracker($uniqueId)
-				unset customMessageBoxRememberTracker($uniqueId)
-			} else {
-				set answer $customMessageBoxAnswerTracker($uniqueId)
-				unset customMessageBoxAnswerTracker($uniqueId)
-			}
-
-			return $answer
 		}
-		#///////////////////////////////////////////////////////////////////////////////
 
-		#///////////////////////////////////////////////////////////////////////////////
-		# Shows the error message specified by "msg"
-		proc errorMsg { msg } {
-			::amsn::messageBox $msg ok error "[trans title] Error"
+		set customMessageBoxAnswerTracker($uniqueId) ""
+
+		#Create the buttons
+		foreach button $buttons {
+			set buttonName [lindex $button 0]
+			set buttonLabel [lindex $button 1]
+			button $w.buttons.$buttonName -text $buttonLabel -command [list set customMessageBoxAnswerTracker($uniqueId) $buttonName]
+			pack $w.buttons.$buttonName -pady 0 -padx 0 -side right
 		}
-		#///////////////////////////////////////////////////////////////////////////////
 
-		#///////////////////////////////////////////////////////////////////////////////
-		# Shows the error message specified by "msg"
-		proc infoMsg { msg {icon "info"} } {
-			::amsn::messageBox $msg ok $icon [trans title]
+		#Pack frames
+		pack $w.top -pady 12 -padx 12 -side top
+		pack $w.buttons -pady 12 -padx 12 -fill x
+
+		moveinscreen $w 30
+		bind $w <<Escape>> "destroy $w"
+		wm protocol $w WM_DELETE_WINDOW [list set customMessageBoxAnswerTracker($uniqueId) ""]
+
+		set oldgrab ""
+		if { $modal } {
+			set oldgrab [grab current]
+			grab set $w
 		}
-		#///////////////////////////////////////////////////////////////////////////////
 
-		#///////////////////////////////////////////////////////////////////////////////
-		proc blockUnblockUser { user_login } {
-			if { [::MSN::userIsBlocked $user_login] } {
-				unblockUser $user_login
-			} else {
-				blockUser $user_login
-			}
+		tkwait variable customMessageBoxAnswerTracker($uniqueId)
+
+		if { $oldgrab != "" } {
+			grab set $oldgrab
 		}
-		#///////////////////////////////////////////////////////////////////////////////
 
-
-
-		#///////////////////////////////////////////////////////////////////////////////
-		proc blockUser {user_login} {
-			set answer [::amsn::messageBox "[trans confirmbl] ($user_login)" yesno question [trans block]]
-			if { $answer == "yes"} {
-				set name [::abook::getNick ${user_login}]
-				::MSN::blockUser ${user_login}
-			}
+		catch { destroy $w }
+		if {$askRememberAnswer != 0} {
+			set answer [list $customMessageBoxAnswerTracker($uniqueId) $customMessageBoxRememberTracker($uniqueId)]
+			unset customMessageBoxAnswerTracker($uniqueId)
+			unset customMessageBoxRememberTracker($uniqueId)
+		} else {
+			set answer $customMessageBoxAnswerTracker($uniqueId)
+			unset customMessageBoxAnswerTracker($uniqueId)
 		}
-		#///////////////////////////////////////////////////////////////////////////////
+
+		return $answer
+	}
+	#///////////////////////////////////////////////////////////////////////////////
+
+	#///////////////////////////////////////////////////////////////////////////////
+	# Shows the error message specified by "msg"
+	proc errorMsg { msg } {
+		::amsn::messageBox $msg ok error "[trans title] Error"
+	}
+	#///////////////////////////////////////////////////////////////////////////////
+
+	#///////////////////////////////////////////////////////////////////////////////
+	# Shows the error message specified by "msg"
+	proc infoMsg { msg {icon "info"} } {
+		::amsn::messageBox $msg ok $icon [trans title]
+	}
+	#///////////////////////////////////////////////////////////////////////////////
+
+	#///////////////////////////////////////////////////////////////////////////////
+	proc blockUnblockUser { user_login } {
+		if { [::MSN::userIsBlocked $user_login] } {
+			unblockUser $user_login
+		} else {
+			blockUser $user_login
+		}
+	}
+	#///////////////////////////////////////////////////////////////////////////////
 
 
-		#///////////////////////////////////////////////////////////////////////////////
-		proc unblockUser {user_login} {
+
+	#///////////////////////////////////////////////////////////////////////////////
+	proc blockUser {user_login} {
+		set answer [::amsn::messageBox "[trans confirmbl] ($user_login)" yesno question [trans block]]
+		if { $answer == "yes"} {
 			set name [::abook::getNick ${user_login}]
-			::MSN::unblockUser ${user_login}
+			::MSN::blockUser ${user_login}
 		}
-		#///////////////////////////////////////////////////////////////////////////////
+	}
+	#///////////////////////////////////////////////////////////////////////////////
 
-		
-		#///////////////////////////////////////////////////////////////////////////////
-		proc removeUserFromGroup {user_login grId} {
-			::MSN::removeUserFromGroup $user_login $grId
+
+	#///////////////////////////////////////////////////////////////////////////////
+	proc unblockUser {user_login} {
+		set name [::abook::getNick ${user_login}]
+		::MSN::unblockUser ${user_login}
+	}
+	#///////////////////////////////////////////////////////////////////////////////
+
+	
+	#///////////////////////////////////////////////////////////////////////////////
+	proc removeUserFromGroup {user_login grId} {
+		::MSN::removeUserFromGroup $user_login $grId
+	}
+	#///////////////////////////////////////////////////////////////////////////////
+
+
+	#///////////////////////////////////////////////////////////////////////////////
+	#Delete user window, user can choose to delete user, cancel the action or block and delete the user
+	proc deleteUser { user_login } {
+		if {[lsearch [::abook::getLists $user_login] BL] == -1} {
+			# User is not blocked.
+			set type deleteblockcancel
+		} else {
+			# User is already blocked.
+			set type deletecancel
 		}
-		#///////////////////////////////////////////////////////////////////////////////
-
-
-		#///////////////////////////////////////////////////////////////////////////////
-		#Delete user window, user can choose to delete user, cancel the action or block and delete the user
-		proc deleteUser { user_login } {
-			if {[lsearch [::abook::getLists $user_login] BL] == -1} {
-				# User is not blocked.
-				set type deleteblockcancel
-			} else {
-				# User is already blocked.
-				set type deletecancel
-			}
-			if {[::MSN::userIsNotIM $user_login] } {
-				set answer [customMessageBox [trans confirmdu] $type "" "[trans delete] - $user_login" "." 0]
-				set fulldelete 1
-			} else {
-				set answer [customMessageBox [trans confirmdu] $type "" "[trans delete] - $user_login" "." confirmfulldelete]
-				foreach {answer fulldelete} $answer break
-			}
-			if {$answer == "deleteblock"} {
-				# Delete the user and block.
-				::amsn::deleteUserAction $user_login 1 $fulldelete
-			} elseif {$answer == "delete"} {
-				# Only delete the user.
-				::amsn::deleteUserAction $user_login 0 $fulldelete
-			}
+		if {[::MSN::userIsNotIM $user_login] } {
+			set answer [customMessageBox [trans confirmdu] $type "" "[trans delete] - $user_login" "." 0]
+			set fulldelete 1
+		} else {
+			set answer [customMessageBox [trans confirmdu] $type "" "[trans delete] - $user_login" "." confirmfulldelete]
+			foreach {answer fulldelete} $answer break
 		}
-
-		#///////////////////////////////////////////////////////////////////////////////
-		# deleteUserAction {user_login answer grId block}
-		# Action to do when someone click delete a user
-		proc deleteUserAction {user_login {block 0} {full 0}} {
-			#If the user wants to delete AND block a user
-			if { $block == 1 } {
-				set name [::abook::getNick ${user_login}]
-				::MSN::blockUser ${user_login}
-			}
-
-			::MSN::deleteUser ${user_login} $full
-			::abook::setContactData $user_login alarms ""
-
-			return
+		if {$answer == "deleteblock"} {
+			# Delete the user and block.
+			::amsn::deleteUserAction $user_login 1 $fulldelete
+		} elseif {$answer == "delete"} {
+			# Only delete the user.
+			::amsn::deleteUserAction $user_login 0 $fulldelete
 		}
-		
-		proc WriteNewData { msnobj } {
+	}
 
-			#@@@@@@@@@@@@@
-			global HOME
-			set user_login [$msnobj cget -creator]
-			set type [$msnobj cget -type]
-			set data [$msnobj cget -data]
-			set filename [$msnobj cget -location]
-			status_log "Got data from $user_login in $filename"
-			if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE } {
-				set filename [::abook::getContactData $user_login displaypicfile ""]
-				create_dir [file join $HOME displaypic cache]
-				create_dir [file join $HOME displaypic cache $user_login]
-				set fd [open "[file join $HOME displaypic cache $user_login ${filename}.png]" w]
-				fconfigure $fd -translation {binary binary}
-				puts -nonewline $fd $data
-				close $fd
-				::skin::getDisplayPicture $user_login 1
-				::amsn::UpdateAllPictures
-				set desc_file "[file join $HOME displaypic cache $user_login ${filename}.dat]"
-				create_dir [file join $HOME displaypic]
-				set fd [open [file join $HOME displaypic $desc_file] w]
-				status_log "Writing description to $desc_file\n"
-				puts $fd "[clock seconds]\n$user_login"
-				close $fd
-				::Event::fireEvent contactDPChange protocol $user_login
-			} elseif { $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } {
-				set dot [string first ".tmp" $filename]
-				set filename [string range $filename 0 [expr { $dot - 1} ] ]
-				status_log "Incoming emoticon"
-				create_dir [file join $HOME smileys cache]
-				set fd [open "[file join $HOME smileys cache ${filename}.png]" w]
-				fconfigure $fd -translation {binary binary}
-				puts -nonewline $fd $data
-				close $fd
-				set tw [::ChatWindow::GetOutText [::ChatWindow::For $user_login]]
-				set scrolling [::ChatWindow::getScrolling $tw]
-				catch {image create photo emoticonCustom_std_${filename} -file "[file join $HOME smileys cache ${filename}.png]" -format cximage}
-				if {[::config::getKey big_incoming_smileys 0] == 0} {
-					::smiley::resizeCustomSmiley emoticonCustom_std_${filename}
-				}
-				if {[::config::getKey big_incoming_smileys 0] == 0} {
-					::smiley::resizeCustomSmiley emoticonCustom_std_${filename}
-				}
-				if { $scrolling } { ::ChatWindow::Scroll $tw }
-			}
-
+	#///////////////////////////////////////////////////////////////////////////////
+	# deleteUserAction {user_login answer grId block}
+	# Action to do when someone click delete a user
+	proc deleteUserAction {user_login {block 0} {full 0}} {
+		#If the user wants to delete AND block a user
+		if { $block == 1 } {
+			set name [::abook::getNick ${user_login}]
+			::MSN::blockUser ${user_login}
 		}
 
-		proc InkSend { win_name filename {friendlyname ""}} {
-			set chatid [::ChatWindow::Name $win_name]
+		::MSN::deleteUser ${user_login} $full
+		::abook::setContactData $user_login alarms ""
 
-			if { $chatid == 0 } {
-				status_log "VERY BAD ERROR in ::amsn::InkSend!!!\n" red
-				return 0
+		return
+	}
+	
+	proc WriteNewData { msnobj } {
+
+		#@@@@@@@@@@@@@
+		global HOME
+		set user_login [$msnobj cget -creator]
+		set type [$msnobj cget -type]
+		set data [$msnobj cget -data]
+		set filename [$msnobj cget -location]
+		status_log "Got data from $user_login in $filename"
+		if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE } {
+			set filename [::abook::getContactData $user_login displaypicfile ""]
+			create_dir [file join $HOME displaypic cache]
+			create_dir [file join $HOME displaypic cache $user_login]
+			set fd [open "[file join $HOME displaypic cache $user_login ${filename}.png]" w]
+			fconfigure $fd -translation {binary binary}
+			puts -nonewline $fd $data
+			close $fd
+			::skin::getDisplayPicture $user_login 1
+			::amsn::UpdateAllPictures
+			set desc_file "[file join $HOME displaypic cache $user_login ${filename}.dat]"
+			create_dir [file join $HOME displaypic]
+			set fd [open [file join $HOME displaypic $desc_file] w]
+			status_log "Writing description to $desc_file\n"
+			puts $fd "[clock seconds]\n$user_login"
+			close $fd
+			::Event::fireEvent contactDPChange protocol $user_login
+		} elseif { $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } {
+			set dot [string first ".tmp" $filename]
+			set filename [string range $filename 0 [expr { $dot - 1} ] ]
+			status_log "Incoming emoticon"
+			create_dir [file join $HOME smileys cache]
+			set fd [open "[file join $HOME smileys cache ${filename}.png]" w]
+			fconfigure $fd -translation {binary binary}
+			puts -nonewline $fd $data
+			close $fd
+			set tw [::ChatWindow::GetOutText [::ChatWindow::For $user_login]]
+			set scrolling [::ChatWindow::getScrolling $tw]
+			catch {image create photo emoticonCustom_std_${filename} -file "[file join $HOME smileys cache ${filename}.png]" -format cximage}
+			if {[::config::getKey big_incoming_smileys 0] == 0} {
+				::smiley::resizeCustomSmiley emoticonCustom_std_${filename}
 			}
-
-			#Blank ink
-			if {$filename == ""} { return 0 }
-
-			if { $friendlyname != "" } {
-				set nick $friendlyname
-				set p4c 1
-			} elseif { [::abook::getContactData [::ChatWindow::Name $win_name] cust_p4c_name] != ""} {
-				set friendlyname [::abook::parseCustomNick [::abook::getContactData [::ChatWindow::Name $win_name] cust_p4c_name] [::abook::getPersonal MFN] [::abook::getPersonal login] "" [::abook::getpsmmedia] ]
-				set nick $friendlyname
-				set p4c 1
-			} elseif { [::config::getKey p4c_name] != ""} {
-				set nick [::config::getKey p4c_name]
-				set p4c 1
-			} else {
-				set nick [::abook::getPersonal MFN]
-				set p4c 0
+			if {[::config::getKey big_incoming_smileys 0] == 0} {
+				::smiley::resizeCustomSmiley emoticonCustom_std_${filename}
 			}
-			#Postevent when we send a message
-			set evPar(nick) nick
-			set evPar(ink) filename
-			set evPar(chatid) chatid
-			set evPar(win_name) win_name
-			::plugins::PostEvent chat_ink_send evPar
-
-			#Draw our own message
-			#Does this image ever gets destroyed ? When destroying the chatwindow it's embeddeed in it should I guess ? This is not the leak I'm searching for though as I'm not sending inks...
-			# don't try to display it if the image is considered as invalid
-			if {[catch {set img [image create photo [TmpImgName] -file $filename]}]} {
-				status_log "(::amsn::InkSend) trying to display an invalid image, but keep sending it." red
-			} else {
-				SendMessageFIFO [list ::amsn::ShowInk $chatid [::abook::getPersonal login] $nick $img ink $p4c] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
-			}
-			::MSN::ChatQueue $chatid [list ::MSN::SendInk $chatid $filename]
-
-			::plugins::PostEvent chat_ink_sent evPar
+			if { $scrolling } { ::ChatWindow::Scroll $tw }
 		}
 
-		proc InviteCallFromCW {win_name video} {
-			if {![winfo exists $win_name] } {
-				set win_name [::amsn::chatUser $win_name]
-			}
-			set chatid [::ChatWindow::Name $win_name]
-			status_log "chatid:=$chatid" red
+	}
 
-			set users [::MSN::usersInChat $chatid]
+	proc InkSend { win_name filename {friendlyname ""}} {
+		set chatid [::ChatWindow::Name $win_name]
 
-			if {[llength $users] > 1} {
-				#TODO: add a new key?
-				::amsn::errorMsg [trans sipcallyouarebusy2]
-			} elseif {[llength $users] == 1} {
-				::amsn::SIPCallInviteUser $video [lindex $users 0]
-			} else {
-				::amsn::SIPCallInviteUser $video $chatid
-			}
-		}
-
-		proc FileTransferSend { win_name {filename ""} } {
-			if {![winfo exists $win_name] } {
-				set win_name [::amsn::chatUser $win_name]
-			}
-				
-			global starting_dir
-
-	#		set filename [ $w.top.fields.file get ]
-			if { $filename == "" } {
-				set filename [chooseFileDialog "" [trans sendfile] $win_name]
-				status_log $filename
-			}
-
-			if { $filename == "" } { return }
-
-			#Remember last directory
-			set starting_dir [file dirname $filename]
-
-			if {![file readable $filename]} {
-				msg_box "[trans invalidfile [trans filename] $filename]"
-				return
-			}
-
-			if { [::config::getKey autoftip] } {
-				set ipaddr [::config::getKey myip]
-			} else {
-				set ipaddr [::config::getKey manualip]
-			}
-
-			if { [catch {set filesize [file size $filename]} res]} {
-				::amsn::errorMsg "[trans filedoesnotexist]"
-				#::amsn::fileTransferProgress c $cookie -1 -1
-				return 1
-			}
-
-			set chatid [::ChatWindow::Name $win_name]
-			status_log "chatid:=$chatid" red
-
-			set users [::MSN::usersInChat $chatid]
-
-
-			foreach chatid $users {
-				chatUser $chatid
-
-				#Calculate a random cookie
-				set cookie [expr {([clock clicks]) % (65536 * 8)}]
-				set txt "[trans ftsendinvitation [::abook::getDisplayNick $chatid] $filename [::amsn::sizeconvert $filesize]]"
-				
-
-				status_log "Random generated cookie: $cookie\n"
-				SendMessageFIFO [list ::amsn::WinWriteFTSend $chatid $txt $cookie] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
-
-				::MSN::ChatQueue $chatid [list ::MSNFT::sendFTInvitation $chatid $filename $filesize $ipaddr $cookie]
-				#::MSNFT::sendFTInvitation $chatid $filename $filesize $ipaddr $cookie
-
-				::log::ftlog $chatid $txt
-
-				# Postevent when we send a file transfer invitation
-				set evPar(chatid) $chatid
-				set evPar(filename) $filename
-				::plugins::PostEvent sent_ft_invite evPar
-			}
+		if { $chatid == 0 } {
+			status_log "VERY BAD ERROR in ::amsn::InkSend!!!\n" red
 			return 0
 		}
 
-		proc WinWriteFTSend { chatid txt cookie } {
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid greyline 3
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid fticon 3 2
-			WinWrite $chatid "$txt " green
-			WinWriteClickable $chatid "[trans cancel]" \
-				"::amsn::CancelFTInvitation $chatid $cookie" ftno$cookie
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid greyline 3
+		#Blank ink
+		if {$filename == ""} { return 0 }
+
+		if { $friendlyname != "" } {
+			set nick $friendlyname
+			set p4c 1
+		} elseif { [::abook::getContactData [::ChatWindow::Name $win_name] cust_p4c_name] != ""} {
+			set friendlyname [::abook::parseCustomNick [::abook::getContactData [::ChatWindow::Name $win_name] cust_p4c_name] [::abook::getPersonal MFN] [::abook::getPersonal login] "" [::abook::getpsmmedia] ]
+			set nick $friendlyname
+			set p4c 1
+		} elseif { [::config::getKey p4c_name] != ""} {
+			set nick [::config::getKey p4c_name]
+			set p4c 1
+		} else {
+			set nick [::abook::getPersonal MFN]
+			set p4c 0
 		}
+		#Postevent when we send a message
+		set evPar(nick) nick
+		set evPar(ink) filename
+		set evPar(chatid) chatid
+		set evPar(win_name) win_name
+		::plugins::PostEvent chat_ink_send evPar
 
-		proc DisableCancelText { cookie chatid } {
-
-			set win_name [::ChatWindow::For $chatid]
-			if { [winfo exists $win_name] } {
-				[::ChatWindow::GetOutText ${win_name}] tag configure ftno$cookie \
-					-foreground #808080 -font bplainf -underline false
-				[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Enter> ""
-				[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Leave> ""
-				[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <<Button1>> ""
-
-				[::ChatWindow::GetOutText ${win_name}] conf -cursor xterm
-			}
-
+		#Draw our own message
+		#Does this image ever gets destroyed ? When destroying the chatwindow it's embeddeed in it should I guess ? This is not the leak I'm searching for though as I'm not sending inks...
+		# don't try to display it if the image is considered as invalid
+		if {[catch {set img [image create photo [TmpImgName] -file $filename]}]} {
+			status_log "(::amsn::InkSend) trying to display an invalid image, but keep sending it." red
+		} else {
+			SendMessageFIFO [list ::amsn::ShowInk $chatid [::abook::getPersonal login] $nick $img ink $p4c] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
 		}
+		::MSN::ChatQueue $chatid [list ::MSN::SendInk $chatid $filename]
 
-		proc CancelFTInvitation { chatid cookie } {
-			#::MSNFT::acceptFT $chatid $cookie
+		::plugins::PostEvent chat_ink_sent evPar
+	}
 
-			set win_name [::ChatWindow::For $chatid]
-			if { [::ChatWindow::For $chatid] == 0} {
-				return 0
-			}
-
-			::MSNFT::cancelFTInvitation $chatid $cookie
-			DisableCancelText $cookie $chatid
-
-			set txt [trans invitationcancelled]
-
-			SendMessageFIFO [list ::amsn::WinWriteCancelFT $chatid $txt] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
-
-			set email [::MSN::usersInChat $chatid]
-			::log::ftlog $email $txt
+	proc InviteCallFromCW {win_name video} {
+		if {![winfo exists $win_name] } {
+			set win_name [::amsn::chatUser $win_name]
 		}
+		set chatid [::ChatWindow::Name $win_name]
+		status_log "chatid:=$chatid" red
 
-		proc WinWriteCancelFT {chatid txt} {
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid greyline 3
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid ftreject 3 2
-			WinWrite $chatid " $txt\n" green
-			WinWriteIcon $chatid greyline 3
+		set users [::MSN::usersInChat $chatid]
+
+		if {[llength $users] > 1} {
+			#TODO: add a new key?
+			::amsn::errorMsg [trans sipcallyouarebusy2]
+		} elseif {[llength $users] == 1} {
+			::amsn::SIPCallInviteUser $video [lindex $users 0]
+		} else {
+			::amsn::SIPCallInviteUser $video $chatid
 		}
+	}
 
-		proc acceptedFT { chatid who filename } {
-			set win_name [::ChatWindow::For $chatid]
-			if { [::ChatWindow::For $chatid] == 0} {
-				return 0
-			}
-			set txt [trans ftacceptedby [::abook::getDisplayNick $chatid] $filename]
-
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid greyline 3
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid fticon 3 2
-			WinWrite $chatid " $txt\n" green
-			WinWriteIcon $chatid greyline 3
-
-			set email [::MSN::usersInChat $chatid]
-			::log::ftlog $email $txt
+	proc FileTransferSend { win_name {filename ""} } {
+		if {![winfo exists $win_name] } {
+			set win_name [::amsn::chatUser $win_name]
 		}
-
-		proc rejectedFT { chatid who filename } {
-			set win_name [::ChatWindow::For $chatid]
-			if { [::ChatWindow::For $chatid] == 0} {
-				return 0
-			}
-			set txt [trans ftrejectedby [::abook::getDisplayNick $chatid] $filename]
-
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid greyline 3
-			WinWrite $chatid " \n" green
-			WinWriteIcon $chatid ftreject 3 2
-			WinWrite $chatid " $txt\n" green
-			WinWriteIcon $chatid greyline 3
-
-			set email [::MSN::usersInChat $chatid]
-			::log::ftlog $email $txt
-		}
-
-		#////////////////////////////////////////////////////////////////////////////////
-		#  GotFileTransferRequest ( chatid dest branchuid cseq uid sid filename filesize)
-		#  This procedure is called when we receive an MSN6 File Transfer Request
-		proc GotFileTransferRequest { chatid dest session} {
 			
-			set win_name [::ChatWindow::For $chatid]
+		global starting_dir
 
-			if { [::ChatWindow::For $chatid] == 0} {
-				return 0
-			}
-
-			set semic [string first ";" $dest]
-			if { $semic > 0 } {
-				set dest [string range $dest 0 [expr {$semic - 1}]]
-			}
-
-			set fromname [::abook::getDisplayNick $dest]
-			set filen [$session cget -filename]
-			set filesize [$session cget -size]
-			set txt [trans ftgotinvitation $fromname '$filen' [::amsn::sizeconvert $filesize] [::config::getKey receiveddir]]
-			set win_name [::ChatWindow::MakeFor $chatid $txt $dest]
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid greyline 3
-			WinWrite $chatid " \n" green
-                        set sid [$session cget -id]
-
-			if { [::skin::loadPixmap "FT_preview_${sid}"] != "" } {
-				WinWriteIcon $chatid FT_preview_${sid} 5 5
-				WinWrite $chatid "\n" green
-			}
-
-			WinWriteIcon $chatid fticon 3 2
-			WinWrite $chatid $txt green
-			WinWrite $chatid " - (" green
-			#WinWriteClickable $chatid "[trans accept]" [list ::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftyes$sid
-			WinWriteClickable $chatid "[trans accept]" [list $session accept]
-			WinWrite $chatid " / " green
-			#WinWriteClickable $chatid "[trans saveas]" [list ::amsn::SaveAsFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftsaveas$sid
-			WinWriteClickable $chatid "[trans saveas]" [list $session saveAs]
-			WinWrite $chatid " / " green
-			WinWriteClickable $chatid "[trans reject]" [list $session reject]
-			#WinWriteClickable $chatid "[trans reject]" [list ::amsn::RejectFT $chatid -1 [list $sid $branchuid $uid]] ftno$sid
-			WinWrite $chatid ")\n" green
-			WinWriteIcon $chatid greyline 3
-
-			::log::ftlog $dest $txt
-
-			if { ![file writable [::config::getKey receiveddir]]} {
-				WinWrite $chatid "\n[trans readonlywarn [::config::getKey receiveddir]]\n" red
-				WinWriteIcon $chatid greyline 3
-				}
-
-			if { [::config::getKey ftautoaccept] == 1  || [::abook::getContactData $dest autoacceptft] == 1 } {
-				WinWrite $chatid "\n[trans autoaccepted]" green
-				#::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]
-				$session accept
-			}
+#		set filename [ $w.top.fields.file get ]
+		if { $filename == "" } {
+			set filename [chooseFileDialog "" [trans sendfile] $win_name]
+			status_log $filename
 		}
 
-		#Message shown when receiving a file
-		proc fileTransferRecv {filename filesize cookie chatid fromlogin} {
-			set win_name [::ChatWindow::For $chatid]
-			if { [::ChatWindow::For $chatid] == 0} {
-				return 0
-			}
+		if { $filename == "" } { return }
 
-			set semic [string first ";" $fromlogin]
-			if { $semic > 0 } {
-				set fromlogin [string range $fromlogin 0 [expr {$semic - 1}]]
-			}
+		#Remember last directory
+		set starting_dir [file dirname $filename]
 
-			set fromname [::abook::getDisplayNick $fromlogin]
-			set txt [trans ftgotinvitation $fromname '$filename' [::amsn::sizeconvert $filesize] [::config::getKey receiveddir]]
-
-			set win_name [::ChatWindow::MakeFor $chatid $txt $fromlogin]
-
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid greyline 3
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid fticon 3 2
-			WinWrite $chatid $txt green
-			WinWrite $chatid " - (" green
-			WinWriteClickable $chatid "[trans accept]" \
-				"::amsn::AcceptFT $chatid $cookie" ftyes$cookie
-			WinWrite $chatid " / " green
-			WinWriteClickable $chatid "[trans saveas]" \
-				"::amsn::SaveAsFT $chatid $cookie" ftsaveas$cookie
-			WinWrite $chatid " / " green
-			WinWriteClickable $chatid "[trans reject]" \
-				"::amsn::RejectFT $chatid $cookie" ftno$cookie
-			WinWrite $chatid ")\n" green
-			WinWriteIcon $chatid greyline 3
-
-			::log::ftlog $fromlogin $txt
-
-			if { ![file writable [::config::getKey receiveddir]]} {
-				WinWrite $chatid "\n[trans readonlywarn [::config::getKey receiveddir]]\n" red
-				WinWriteIcon $chatid greyline 3
-			}
-
-			if { [::config::getKey ftautoaccept] == 1 || [::abook::getContactData $fromlogin autoacceptft] == 1 } {
-				WinWrite $chatid "\n[trans autoaccepted]" green
-				::amsn::AcceptFT $chatid $cookie
-			}
+		if {![file readable $filename]} {
+			msg_box "[trans invalidfile [trans filename] $filename]"
+			return
 		}
 
-		proc AcceptFTOpenSB { chatid cookie {varlist ""} } {
-			#::amsn::RecvWin $cookie
-			if { $cookie != -1 } {
-				::MSNFT::acceptFT $chatid $cookie
-			} else {
-				::MSN6FT::AcceptFT $chatid [lindex $varlist 0] [lindex $varlist 1] [lindex $varlist 2] [lindex $varlist 3] [lindex $varlist 4] [lindex $varlist 5]
-				set cookie [lindex $varlist 4]
-			}
+		if { [::config::getKey autoftip] } {
+			set ipaddr [::config::getKey myip]
+		} else {
+			set ipaddr [::config::getKey manualip]
 		}
 
-		proc AcceptFT { chatid cookie {varlist ""} } {
-			foreach var $varlist {
-				status_log "Var: $var\n" red
-			}
+		if { [catch {set filesize [file size $filename]} res]} {
+			::amsn::errorMsg "[trans filedoesnotexist]"
+			#::amsn::fileTransferProgress c $cookie -1 -1
+			return 1
+		}
 
-			set chatid [::MSN::chatTo $chatid]
+		set chatid [::ChatWindow::Name $win_name]
+		status_log "chatid:=$chatid" red
 
-			::MSN::ChatQueue $chatid [list ::amsn::AcceptFTOpenSB $chatid $cookie $varlist]
+		set users [::MSN::usersInChat $chatid]
 
-			set win_name [::ChatWindow::For $chatid]
-			if { [::ChatWindow::For $chatid] == 0} {
-				return 0
-			}
 
-			if { $cookie == -1 } {
-				set cookie [lindex $varlist 4]
-			}
+		foreach chatid $users {
+			chatUser $chatid
 
-			[::ChatWindow::GetOutText ${win_name}] tag configure ftyes$cookie \
+			#Calculate a random cookie
+			set cookie [expr {([clock clicks]) % (65536 * 8)}]
+			set txt "[trans ftsendinvitation [::abook::getDisplayNick $chatid] $filename [::amsn::sizeconvert $filesize]]"
+			
+
+			status_log "Random generated cookie: $cookie\n"
+			SendMessageFIFO [list ::amsn::WinWriteFTSend $chatid $txt $cookie] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
+
+			::MSN::ChatQueue $chatid [list ::MSNFT::sendFTInvitation $chatid $filename $filesize $ipaddr $cookie]
+			#::MSNFT::sendFTInvitation $chatid $filename $filesize $ipaddr $cookie
+
+			::log::ftlog $chatid $txt
+
+			# Postevent when we send a file transfer invitation
+			set evPar(chatid) $chatid
+			set evPar(filename) $filename
+			::plugins::PostEvent sent_ft_invite evPar
+		}
+		return 0
+	}
+
+	proc WinWriteFTSend { chatid txt cookie } {
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid fticon 3 2
+		WinWrite $chatid "$txt " green
+		WinWriteClickable $chatid "[trans cancel]" \
+			"::amsn::CancelFTInvitation $chatid $cookie" ftno$cookie
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+	}
+
+	proc DisableCancelText { cookie chatid } {
+
+		set win_name [::ChatWindow::For $chatid]
+		if { [winfo exists $win_name] } {
+			[::ChatWindow::GetOutText ${win_name}] tag configure ftno$cookie \
 				-foreground #808080 -font bplainf -underline false
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <Enter> ""
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <Leave> ""
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <<Button1>> ""
-
-			[::ChatWindow::GetOutText ${win_name}] tag configure ftsaveas$cookie \
-				-foreground #808080 -font bplainf -underline false
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <Enter> ""
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <Leave> ""
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <<Button1>> ""
-
-			DisableCancelText $cookie $chatid
-			
-			set txt [trans ftaccepted]
-
-			SendMessageFIFO [list ::amsn::WinWriteAcceptFT $chatid $txt] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
-
-			set email [::MSN::usersInChat $chatid]
-			::log::ftlog $email $txt
-		}
-
-		proc WinWriteAcceptFT {chatid txt} {
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid greyline 3
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid fticon 3 2
-			WinWrite $chatid " $txt\n" green
-			WinWriteIcon $chatid greyline 3
-		}
-
-
-		proc SaveAsFT {chatid cookie {varlist ""} } {
-			global HOME
-			if {$cookie != -1} {
-				set initialfile [::MSNFT::getFilename $cookie]
-			} {
-				set initialfile [lindex $varlist 5]
-			}
-			if {[catch {set filename [tk_getSaveFile -initialfile $initialfile -initialdir [::config::getKey receiveddir]]} res]} {
-				status_log "Error in SaveAsFT: $res \n"
-				set filename [tk_getSaveFile -initialfile $initialfile -initialdir [set HOME]]
-			
-			}
-			if {$filename != ""} {
-				AcceptFT $chatid $cookie [list [lindex $varlist 0] [lindex $varlist 1] [lindex $varlist 2] [lindex $varlist 3] [lindex $varlist 4] "$filename"]
-			} {return}
-		}
-
-
-		proc RejectFT {chatid cookie {varlist ""} } {
-			if { $cookie != -1 && $cookie != -2 } {
-				::MSNFT::rejectFT $chatid $cookie
-			} elseif { $cookie == - 1 } {
-				::MSN6FT::RejectFT $chatid [lindex $varlist 0] [lindex $varlist 1] [lindex $varlist 2]
-				set cookie [lindex $varlist 0]
-			} elseif { $cookie == -2 } {
-				set cookie [lindex $varlist 0]
-				set txt [trans filetransfercancelled]
-			}
-
-			set win_name [::ChatWindow::For $chatid]
-			if { [::ChatWindow::For $chatid] == 0} {
-				return 0
-			}
-
-			[::ChatWindow::GetOutText ${win_name}] tag configure ftyes$cookie \
-			-foreground #808080 -font bplainf -underline false
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <Enter> ""
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <Leave> ""
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <<Button1>> ""
-
-			[::ChatWindow::GetOutText ${win_name}] tag configure ftsaveas$cookie \
-			-foreground #808080 -font bplainf -underline false
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <Enter> ""
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <Leave> ""
-			[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <<Button1>> ""
-
-			DisableCancelText $cookie $chatid		
+			[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Enter> ""
+			[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <Leave> ""
+			[::ChatWindow::GetOutText ${win_name}] tag bind ftno$cookie <<Button1>> ""
 
 			[::ChatWindow::GetOutText ${win_name}] conf -cursor xterm
-
-			if { [info exists txt] == 0 } {
-				set txt [trans ftrejected]
-			}
-
-			SendMessageFIFO [list ::amsn::WinWriteRejectFT $chatid $txt] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
-
-			set email [::MSN::usersInChat $chatid]
-			::log::ftlog $email $txt
 		}
 
-		proc WinWriteRejectFT {chatid txt} {
+	}
+
+	proc CancelFTInvitation { chatid cookie } {
+		#::MSNFT::acceptFT $chatid $cookie
+
+		set win_name [::ChatWindow::For $chatid]
+		if { [::ChatWindow::For $chatid] == 0} {
+			return 0
+		}
+
+		::MSNFT::cancelFTInvitation $chatid $cookie
+		DisableCancelText $cookie $chatid
+
+		set txt [trans invitationcancelled]
+
+		SendMessageFIFO [list ::amsn::WinWriteCancelFT $chatid $txt] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
+
+		set email [::MSN::usersInChat $chatid]
+		::log::ftlog $email $txt
+	}
+
+	proc WinWriteCancelFT {chatid txt} {
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid ftreject 3 2
+		WinWrite $chatid " $txt\n" green
+		WinWriteIcon $chatid greyline 3
+	}
+
+	proc acceptedFT { chatid who filename } {
+		set win_name [::ChatWindow::For $chatid]
+		if { [::ChatWindow::For $chatid] == 0} {
+			return 0
+		}
+		set txt [trans ftacceptedby [::abook::getDisplayNick $chatid] $filename]
+
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid fticon 3 2
+		WinWrite $chatid " $txt\n" green
+		WinWriteIcon $chatid greyline 3
+
+		set email [::MSN::usersInChat $chatid]
+		::log::ftlog $email $txt
+	}
+
+	proc rejectedFT { chatid who filename } {
+		set win_name [::ChatWindow::For $chatid]
+		if { [::ChatWindow::For $chatid] == 0} {
+			return 0
+		}
+		set txt [trans ftrejectedby [::abook::getDisplayNick $chatid] $filename]
+
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+		WinWrite $chatid " \n" green
+		WinWriteIcon $chatid ftreject 3 2
+		WinWrite $chatid " $txt\n" green
+		WinWriteIcon $chatid greyline 3
+
+		set email [::MSN::usersInChat $chatid]
+		::log::ftlog $email $txt
+	}
+
+	#////////////////////////////////////////////////////////////////////////////////
+	#  GotFileTransferRequest ( chatid dest branchuid cseq uid sid filename filesize)
+	#  This procedure is called when we receive an MSN6 File Transfer Request
+	proc GotFileTransferRequest { chatid dest session} {
+		
+		set win_name [::ChatWindow::For $chatid]
+
+		if { [::ChatWindow::For $chatid] == 0} {
+			return 0
+		}
+
+		set semic [string first ";" $dest]
+		if { $semic > 0 } {
+			set dest [string range $dest 0 [expr {$semic - 1}]]
+		}
+
+		set fromname [::abook::getDisplayNick $dest]
+		set filen [$session cget -filename]
+		set filesize [$session cget -size]
+		set txt [trans ftgotinvitation $fromname '$filen' [::amsn::sizeconvert $filesize] [::config::getKey receiveddir]]
+		set win_name [::ChatWindow::MakeFor $chatid $txt $dest]
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+		WinWrite $chatid " \n" green
+		set sid [$session cget -id]
+
+		if { [::skin::loadPixmap "FT_preview_${sid}"] != "" } {
+			WinWriteIcon $chatid FT_preview_${sid} 5 5
 			WinWrite $chatid "\n" green
+		}
+
+		WinWriteIcon $chatid fticon 3 2
+		WinWrite $chatid $txt green
+		WinWrite $chatid " - (" green
+		#WinWriteClickable $chatid "[trans accept]" [list ::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftyes$sid
+		WinWriteClickable $chatid "[trans accept]" [list $session accept]
+		WinWrite $chatid " / " green
+		#WinWriteClickable $chatid "[trans saveas]" [list ::amsn::SaveAsFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftsaveas$sid
+		WinWriteClickable $chatid "[trans saveas]" [list $session saveAs]
+		WinWrite $chatid " / " green
+		WinWriteClickable $chatid "[trans reject]" [list $session reject]
+		#WinWriteClickable $chatid "[trans reject]" [list ::amsn::RejectFT $chatid -1 [list $sid $branchuid $uid]] ftno$sid
+		WinWrite $chatid ")\n" green
+		WinWriteIcon $chatid greyline 3
+
+		::log::ftlog $dest $txt
+
+		if { ![file writable [::config::getKey receiveddir]]} {
+			WinWrite $chatid "\n[trans readonlywarn [::config::getKey receiveddir]]\n" red
 			WinWriteIcon $chatid greyline 3
-			WinWrite $chatid "\n" green
-			WinWriteIcon $chatid ftreject 3 2
-			WinWrite $chatid "$txt\n" green
+			}
+
+		if { [::config::getKey ftautoaccept] == 1  || [::abook::getContactData $dest autoacceptft] == 1 } {
+			WinWrite $chatid "\n[trans autoaccepted]" green
+			#::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]
+			$session accept
+		}
+	}
+
+	#Message shown when receiving a file
+	proc fileTransferRecv {filename filesize cookie chatid fromlogin} {
+		set win_name [::ChatWindow::For $chatid]
+		if { [::ChatWindow::For $chatid] == 0} {
+			return 0
+		}
+
+		set semic [string first ";" $fromlogin]
+		if { $semic > 0 } {
+			set fromlogin [string range $fromlogin 0 [expr {$semic - 1}]]
+		}
+
+		set fromname [::abook::getDisplayNick $fromlogin]
+		set txt [trans ftgotinvitation $fromname '$filename' [::amsn::sizeconvert $filesize] [::config::getKey receiveddir]]
+
+		set win_name [::ChatWindow::MakeFor $chatid $txt $fromlogin]
+
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid fticon 3 2
+		WinWrite $chatid $txt green
+		WinWrite $chatid " - (" green
+		WinWriteClickable $chatid "[trans accept]" \
+			"::amsn::AcceptFT $chatid $cookie" ftyes$cookie
+		WinWrite $chatid " / " green
+		WinWriteClickable $chatid "[trans saveas]" \
+			"::amsn::SaveAsFT $chatid $cookie" ftsaveas$cookie
+		WinWrite $chatid " / " green
+		WinWriteClickable $chatid "[trans reject]" \
+			"::amsn::RejectFT $chatid $cookie" ftno$cookie
+		WinWrite $chatid ")\n" green
+		WinWriteIcon $chatid greyline 3
+
+		::log::ftlog $fromlogin $txt
+
+		if { ![file writable [::config::getKey receiveddir]]} {
+			WinWrite $chatid "\n[trans readonlywarn [::config::getKey receiveddir]]\n" red
 			WinWriteIcon $chatid greyline 3
 		}
 
-		# TODO it would be best to make it "[$extratitle] - $file - [trans filetranser]" 
-		proc setFTWinTitle { w cookie filename {extratitle ""} } {
-			variable ftwin_filename 
-			
-			if { ![info exists ftwin_filename($w,$cookie)] } {
-				set file ""
-				if { $filename != ""} {
-					set file [getfilename $filename]
-					set ftwin_filename($w,$cookie) $file
-				}
-			} else {
-				set file [set ftwin_filename($w,$cookie)]
-			}
+		if { [::config::getKey ftautoaccept] == 1 || [::abook::getContactData $fromlogin autoacceptft] == 1 } {
+			WinWrite $chatid "\n[trans autoaccepted]" green
+			::amsn::AcceptFT $chatid $cookie
+		}
+	}
 
-			set title "$extratitle"
-			
-			if {$title != "" } {
-				append title " - "
-			}
-					
-			append title "$file - [trans filetransfer]"
+	proc AcceptFTOpenSB { chatid cookie {varlist ""} } {
+		#::amsn::RecvWin $cookie
+		if { $cookie != -1 } {
+			::MSNFT::acceptFT $chatid $cookie
+		} else {
+			::MSN6FT::AcceptFT $chatid [lindex $varlist 0] [lindex $varlist 1] [lindex $varlist 2] [lindex $varlist 3] [lindex $varlist 4] [lindex $varlist 5]
+			set cookie [lindex $varlist 4]
+		}
+	}
 
-			if { [string compare [wm title $w] "$title" ] } {
-				wm title $w "$title"
-			}
-
-	#		 if { [::MSNFT::getTransferType $cookie] == "received" } {
-	# 			wm title $w "$filename - [trans receivefile]"
-	# 		} else {
-	# 			wm title $w "$filename - [trans sendfile]"
-	# 		}
-
+	proc AcceptFT { chatid cookie {varlist ""} } {
+		foreach var $varlist {
+			status_log "Var: $var\n" red
 		}
 
-		#PRIVATE: Opens Receiving Window
-		proc FTWin {cookie filename user {chatid 0}} {
-			status_log "Creating receive progress window\n"
+		set chatid [::MSN::chatTo $chatid]
 
-			if { [string range $filename [expr {[string length $filename] - 11}] [string length $filename]] == ".incomplete" } {
-				set filename [filenoext $filename]
-			}
+		::MSN::ChatQueue $chatid [list ::amsn::AcceptFTOpenSB $chatid $cookie $varlist]
 
-			# Set appropriate Cancel command
-			if { [::MSNP2P::SessionList get $cookie] == 0 } {
-				set cancelcmd "::MSNFT::cancelFT $cookie"
-			} else {
-				set cancelcmd "::MSN6FT::CancelFT $chatid $cookie"
-			}
-
-			set w .ft$cookie
-
-			set lastfocus [focus]
-			toplevel $w
-			wm group $w .
-			#wm geometry $w 360x170
-
-			#frame $w.f -class amsnChatFrame -background [::skin::getKey chatwindowbg] -borderwidth 0 -relief flat
-			#set w $ww.f
-
-			label $w.user -text "[trans user]: $user" -font splainf
-			pack $w.user -side top -anchor w
-			label $w.file -text "[trans filename]: $filename" -font splainf
-			pack $w.file -side top -anchor w
-
-			pack [::dkfprogress::Progress $w.prbar] -fill x -expand 0 -padx 5 -pady 5 -side top
-
-			label $w.progress -text "" -font splainf
-			label $w.time -text "" -font splainf
-			pack $w.progress $w.time -side top
-
-			checkbutton $w.ftautoclose -text "[trans ftautoclose]" -onvalue 1 -offvalue 0 -variable [::config::getVar ftautoclose]
-			pack $w.ftautoclose -side top
-			#Specify the path to the file
-			set filepath [file join [::config::getKey receiveddir] $filename]
-			set filedir [file dirname $filepath]
-
-			#Open directory and Open picture button
-			button $w.close -text "[trans cancel]" -command $cancelcmd
-			button $w.open -text "[trans opendir]" -state normal -command [list launch_filemanager $filedir]
-			button $w.openfile -text "[trans openfile]" -state disable -command [list open_file $filepath]
-			pack $w.close $w.open $w.openfile -side right -pady 5 -padx 10
-
-			setFTWinTitle $w $cookie $filename
-
-			bind $w <<Escape>> $cancelcmd
-			wm protocol $w WM_DELETE_WINDOW $cancelcmd
-			moveinscreen $w 30
-
-			::dkfprogress::SetProgress $w.prbar 0
-			update idletasks
-			catch {focus $lastfocus}
+		set win_name [::ChatWindow::For $chatid]
+		if { [::ChatWindow::For $chatid] == 0} {
+			return 0
 		}
 
+		if { $cookie == -1 } {
+			set cookie [lindex $varlist 4]
+		}
 
-		#Updates filetransfer progress window/Bar
-		#fileTransferProgress mode cookie filename bytes filesize
-		# mode: a=Accepting invitation
-		#       c=Connecting
-		#       w=Waiting for connection
-		#       e=Connect error
-		#       i=Identifying/negotiating
-		#       l=Connection lost
-		#       ca=Cancel
-		#       s=Sending
-		#       r=Receiving
-		#       fr=finish receiving
-		#       fs=finish sending
-		# cookie: ID for the filetransfer
-		# bytes: bytes sent/received ( > filesize if finished / -1 if cancelling )
-		# filesize: total bytes in the file
-		# chatid: used for through server transfers
-		#####
-		proc FTProgress {mode cookie filename {bytes 0} {filesize 1000} {chatid 0}} {
+		[::ChatWindow::GetOutText ${win_name}] tag configure ftyes$cookie \
+			-foreground #808080 -font bplainf -underline false
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <Enter> ""
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <Leave> ""
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <<Button1>> ""
 
-			variable firsttimes    ;# Array. Times in ms when the FT started.
-			variable ratetimer
+		[::ChatWindow::GetOutText ${win_name}] tag configure ftsaveas$cookie \
+			-foreground #808080 -font bplainf -underline false
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <Enter> ""
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <Leave> ""
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <<Button1>> ""
 
-			if { [info exists ratetimer($cookie)] } {
-				after cancel $ratetimer($cookie)
+		DisableCancelText $cookie $chatid
+		
+		set txt [trans ftaccepted]
+
+		SendMessageFIFO [list ::amsn::WinWriteAcceptFT $chatid $txt] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
+
+		set email [::MSN::usersInChat $chatid]
+		::log::ftlog $email $txt
+	}
+
+	proc WinWriteAcceptFT {chatid txt} {
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid fticon 3 2
+		WinWrite $chatid " $txt\n" green
+		WinWriteIcon $chatid greyline 3
+	}
+
+
+	proc SaveAsFT {chatid cookie {varlist ""} } {
+		global HOME
+		if {$cookie != -1} {
+			set initialfile [::MSNFT::getFilename $cookie]
+		} {
+			set initialfile [lindex $varlist 5]
+		}
+		if {[catch {set filename [tk_getSaveFile -initialfile $initialfile -initialdir [::config::getKey receiveddir]]} res]} {
+			status_log "Error in SaveAsFT: $res \n"
+			set filename [tk_getSaveFile -initialfile $initialfile -initialdir [set HOME]]
+		
+		}
+		if {$filename != ""} {
+			AcceptFT $chatid $cookie [list [lindex $varlist 0] [lindex $varlist 1] [lindex $varlist 2] [lindex $varlist 3] [lindex $varlist 4] "$filename"]
+		} {return}
+	}
+
+
+	proc RejectFT {chatid cookie {varlist ""} } {
+		if { $cookie != -1 && $cookie != -2 } {
+			::MSNFT::rejectFT $chatid $cookie
+		} elseif { $cookie == - 1 } {
+			::MSN6FT::RejectFT $chatid [lindex $varlist 0] [lindex $varlist 1] [lindex $varlist 2]
+			set cookie [lindex $varlist 0]
+		} elseif { $cookie == -2 } {
+			set cookie [lindex $varlist 0]
+			set txt [trans filetransfercancelled]
+		}
+
+		set win_name [::ChatWindow::For $chatid]
+		if { [::ChatWindow::For $chatid] == 0} {
+			return 0
+		}
+
+		[::ChatWindow::GetOutText ${win_name}] tag configure ftyes$cookie \
+		-foreground #808080 -font bplainf -underline false
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <Enter> ""
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <Leave> ""
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftyes$cookie <<Button1>> ""
+
+		[::ChatWindow::GetOutText ${win_name}] tag configure ftsaveas$cookie \
+		-foreground #808080 -font bplainf -underline false
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <Enter> ""
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <Leave> ""
+		[::ChatWindow::GetOutText ${win_name}] tag bind ftsaveas$cookie <<Button1>> ""
+
+		DisableCancelText $cookie $chatid		
+
+		[::ChatWindow::GetOutText ${win_name}] conf -cursor xterm
+
+		if { [info exists txt] == 0 } {
+			set txt [trans ftrejected]
+		}
+
+		SendMessageFIFO [list ::amsn::WinWriteRejectFT $chatid $txt] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
+
+		set email [::MSN::usersInChat $chatid]
+		::log::ftlog $email $txt
+	}
+
+	proc WinWriteRejectFT {chatid txt} {
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid greyline 3
+		WinWrite $chatid "\n" green
+		WinWriteIcon $chatid ftreject 3 2
+		WinWrite $chatid "$txt\n" green
+		WinWriteIcon $chatid greyline 3
+	}
+
+	# TODO it would be best to make it "[$extratitle] - $file - [trans filetranser]" 
+	proc setFTWinTitle { w cookie filename {extratitle ""} } {
+		variable ftwin_filename 
+		
+		if { ![info exists ftwin_filename($w,$cookie)] } {
+			set file ""
+			if { $filename != ""} {
+				set file [getfilename $filename]
+				set ftwin_filename($w,$cookie) $file
 			}
+		} else {
+			set file [set ftwin_filename($w,$cookie)]
+		}
 
-			set w .ft$cookie
+		set title "$extratitle"
+		
+		if {$title != "" } {
+			append title " - "
+		}
+				
+		append title "$file - [trans filetransfer]"
 
-			if { ([winfo exists $w] == 0) && ($mode != "ca")} {
-				#set filename2 [::MSNFT::getFilename $cookie]
-				if { $filename == "" } {
-					FTWin $cookie [::MSNFT::getFilename $cookie] [::MSNFT::getUsername $cookie] $chatid
+		if { [string compare [wm title $w] "$title" ] } {
+			wm title $w "$title"
+		}
+
+#		 if { [::MSNFT::getTransferType $cookie] == "received" } {
+# 			wm title $w "$filename - [trans receivefile]"
+# 		} else {
+# 			wm title $w "$filename - [trans sendfile]"
+# 		}
+
+	}
+
+	#PRIVATE: Opens Receiving Window
+	proc FTWin {cookie filename user session {chatid 0}} {
+		status_log "Creating receive progress window\n"
+
+		if { $chatid == 0 } { set chatid $user }
+
+		if { [string range $filename [expr {[string length $filename] - 11}] [string length $filename]] == ".incomplete" } {
+			set filename [filenoext $filename]
+		}
+
+		# Set appropriate Cancel command
+		#if { [::MSNP2P::SessionList get $cookie] == 0 } {
+		#	set cancelcmd "::MSNFT::cancelFT $cookie"
+		#} else {
+		#	set cancelcmd "::MSN6FT::CancelFT $chatid $cookie"
+		#}
+
+		if { [string first "FileTransferSession" "$session"] >= 0 } {
+			set cancelcmd [list $session cancel]
+		} else {
+			set cancelcmd "::MSNFT::cancelFT $cookie"
+		}
+
+		set w .ft$cookie
+
+		set lastfocus [focus]
+		toplevel $w
+		wm group $w .
+		#wm geometry $w 360x170
+
+		#frame $w.f -class amsnChatFrame -background [::skin::getKey chatwindowbg] -borderwidth 0 -relief flat
+		#set w $ww.f
+
+		label $w.user -text "[trans user]: $user" -font splainf
+		pack $w.user -side top -anchor w
+		label $w.file -text "[trans filename]: $filename" -font splainf
+		pack $w.file -side top -anchor w
+
+		pack [::dkfprogress::Progress $w.prbar] -fill x -expand 0 -padx 5 -pady 5 -side top
+
+		label $w.progress -text "" -font splainf
+		label $w.time -text "" -font splainf
+		pack $w.progress $w.time -side top
+
+		checkbutton $w.ftautoclose -text "[trans ftautoclose]" -onvalue 1 -offvalue 0 -variable [::config::getVar ftautoclose]
+		pack $w.ftautoclose -side top
+		#Specify the path to the file
+		set filepath [file join [::config::getKey receiveddir] $filename]
+		set filedir [file dirname $filepath]
+
+		#Open directory and Open picture button
+		button $w.close -text "[trans cancel]" -command $cancelcmd
+		button $w.open -text "[trans opendir]" -state normal -command [list launch_filemanager $filedir]
+		button $w.openfile -text "[trans openfile]" -state disable -command [list open_file $filepath]
+		pack $w.close $w.open $w.openfile -side right -pady 5 -padx 10
+
+		setFTWinTitle $w $cookie $filename
+
+		bind $w <<Escape>> $cancelcmd
+		wm protocol $w WM_DELETE_WINDOW $cancelcmd
+		moveinscreen $w 30
+
+		::dkfprogress::SetProgress $w.prbar 0
+		update idletasks
+		catch {focus $lastfocus}
+	}
+
+
+	#Updates filetransfer progress window/Bar
+	#fileTransferProgress mode cookie filename bytes filesize
+	# mode: a=Accepting invitation
+	#       c=Connecting
+	#       w=Waiting for connection
+	#       e=Connect error
+	#       i=Identifying/negotiating
+	#       l=Connection lost
+	#       ca=Cancel
+	#       s=Sending
+	#       r=Receiving
+	#       fr=finish receiving
+	#       fs=finish sending
+	# cookie: ID for the filetransfer
+	# bytes: bytes sent/received ( > filesize if finished / -1 if cancelling )
+	# filesize: total bytes in the file
+	# chatid: used for through server transfers
+	#####
+	proc FTProgress {mode session filename {bytes 0} {filesize 1000} {chatid 0}} {
+
+		variable firsttimes    ;# Array. Times in ms when the FT started.
+		variable ratetimer
+
+		set filename [$session cget -localpath]
+		set username [$session cget -peer]
+		if { $chatid == 0 } { set chatid $username }
+		set cookie [$session cget -id]
+
+		if { [info exists ratetimer($cookie)] } {
+			after cancel $ratetimer($cookie)
+		}
+
+		set w .ft$cookie
+
+		if { ([winfo exists $w] == 0) && ($mode != "ca")} {
+			#set filename2 [::MSNFT::getFilename $cookie]
+			#if { $filename == "" } {
+				#FTWin $cookie [::MSNFT::getFilename $cookie] [::MSNFT::getUsername $cookie] $chatid
+			#	FTWin $cookie $filename $username $session $chatid
+			#} else {
+				FTWin $cookie $filename $username $session $chatid
+			#}
+		}
+
+		if {[winfo exists $w] == 0} {
+			return -1
+		}
+
+		switch $mode {
+			a {
+				$w.progress configure -text "[trans ftaccepting]..."
+				setFTWinTitle $w $cookie $filename
+				::dkfprogress::SetProgress $w.prbar 0 1000
+			}
+			c {
+				$w.progress configure -text "[trans ftconnecting $bytes $filesize]..."
+				setFTWinTitle $w $cookie $filename
+				::dkfprogress::SetProgress $w.prbar 0 1000
+			}
+			w {
+				$w.progress configure -text "[trans listeningon $bytes]..."
+				setFTWinTitle $w $cookie $filename
+				::dkfprogress::SetProgress $w.prbar 0 1000
+			}
+			e {
+				$w.progress configure -text "[trans ftconnecterror]"
+				$w.close configure -text "[trans close]" -command "destroy $w"
+				wm protocol $w WM_DELETE_WINDOW "destroy $w"
+				setFTWinTitle $w $cookie $filename "[trans error]"
+			}
+			i {
+				# This means it's connected and it tries to authenticate the user...
+				#$w.progress configure -text "[trans ftconnecting]"
+				setFTWinTitle $w $cookie $filename
+			}
+			l {
+				$w.progress configure -text "[trans ftconnectionlost]"
+				$w.close configure -text "[trans close]" -command "destroy $w"
+				wm protocol $w WM_DELETE_WINDOW "destroy $w"
+				bind $w <<Escape>> "destroy $w"
+				setFTWinTitle $w $cookie $filename "[trans error]"
+			}
+			r -
+			s {
+				#Calculate how many seconds has transmission lasted
+				if {![info exists firsttimes] || ![info exists firsttimes($cookie)]} {
+					set firsttimes($cookie) [clock seconds]
+					set difftime 0
 				} else {
-					FTWin $cookie $filename $bytes $chatid
+					set difftime  [expr {[clock seconds] - $firsttimes($cookie)}]
+				}
+
+				if { $difftime == 0 || $bytes == 0} {
+					set rate "???"
+					set timeleft "-"
+				} else {
+					#Calculate rate and time
+					set rate [format "%.1f" [expr {(1.0*$bytes / $difftime) / 1024.0 } ]]
+					set secleft [expr {int(((1.0*($filesize - $bytes)) / $bytes) * $difftime)} ]
+					set t1 [expr {$secleft % 60 }] ;#Seconds
+					set secleft [expr {int($secleft / 60)}]
+					set t2 [expr {$secleft % 60 }] ;#Minutes
+					set secleft [expr {int($secleft / 60)}]
+					set t3 $secleft ;#Hours
+					set timeleft [format "%02i:%02i:%02i" $t3 $t2 $t1]
+				}
+
+				if {$mode == "r"} {
+					$w.progress configure -text \
+						"[trans receivedbytes [::amsn::sizeconvert $bytes] [::amsn::sizeconvert $filesize]] ($rate KB/s)"
+				} elseif {$mode == "s"} {
+					$w.progress configure -text \
+						"[trans sentbytes [::amsn::sizeconvert $bytes] [::amsn::sizeconvert $filesize]] ($rate KB/s)"
+				}
+				$w.time configure -text "[trans timeremaining] :  $timeleft"
+				set percent [expr {int(double($bytes)/ (double($filesize)/100.0))}]
+
+				set ratetimer($cookie) [after 1000 [list ::amsn::FTProgress $mode $cookie $filename $bytes $filesize $chatid]]
+
+				setFTWinTitle $w $cookie $filename "${percent}%"
+				if { $filesize != 0 } {
+					::dkfprogress::SetProgress $w.prbar $bytes $filesize
 				}
 			}
-
-			if {[winfo exists $w] == 0} {
-				return -1
+			ca {
+				$w.progress configure -text "[trans filetransfercancelled]"
+				$w.close configure -text "[trans close]" -command "destroy $w"
+				wm protocol $w WM_DELETE_WINDOW "destroy $w"
+				bind $w <<Escape>> "destroy $w"
+				setFTWinTitle $w $cookie $filename "[trans cancelled]"
 			}
-
-			switch $mode {
-				a {
-					$w.progress configure -text "[trans ftaccepting]..."
-					setFTWinTitle $w $cookie $filename
-					::dkfprogress::SetProgress $w.prbar 0 1000
-				}
-				c {
-					$w.progress configure -text "[trans ftconnecting $bytes $filesize]..."
-					setFTWinTitle $w $cookie $filename
-					::dkfprogress::SetProgress $w.prbar 0 1000
-				}
-				w {
-					$w.progress configure -text "[trans listeningon $bytes]..."
-					setFTWinTitle $w $cookie $filename
-					::dkfprogress::SetProgress $w.prbar 0 1000
-				}
-				e {
-					$w.progress configure -text "[trans ftconnecterror]"
-					$w.close configure -text "[trans close]" -command "destroy $w"
-					wm protocol $w WM_DELETE_WINDOW "destroy $w"
-					setFTWinTitle $w $cookie $filename "[trans error]"
-				}
-				i {
-					# This means it's connected and it tries to authenticate the user...
-					#$w.progress configure -text "[trans ftconnecting]"
-					setFTWinTitle $w $cookie $filename
-				}
-				l {
-					$w.progress configure -text "[trans ftconnectionlost]"
-					$w.close configure -text "[trans close]" -command "destroy $w"
-					wm protocol $w WM_DELETE_WINDOW "destroy $w"
-					bind $w <<Escape>> "destroy $w"
-					setFTWinTitle $w $cookie $filename "[trans error]"
-				}
-				r -
-				s {
-					#Calculate how many seconds has transmission lasted
-					if {![info exists firsttimes] || ![info exists firsttimes($cookie)]} {
-						set firsttimes($cookie) [clock seconds]
-						set difftime 0
-					} else {
-						set difftime  [expr {[clock seconds] - $firsttimes($cookie)}]
-					}
-
-					if { $difftime == 0 || $bytes == 0} {
-						set rate "???"
-						set timeleft "-"
-					} else {
-						#Calculate rate and time
-						set rate [format "%.1f" [expr {(1.0*$bytes / $difftime) / 1024.0 } ]]
-						set secleft [expr {int(((1.0*($filesize - $bytes)) / $bytes) * $difftime)} ]
-						set t1 [expr {$secleft % 60 }] ;#Seconds
-						set secleft [expr {int($secleft / 60)}]
-						set t2 [expr {$secleft % 60 }] ;#Minutes
-						set secleft [expr {int($secleft / 60)}]
-						set t3 $secleft ;#Hours
-						set timeleft [format "%02i:%02i:%02i" $t3 $t2 $t1]
-					}
-
-					if {$mode == "r"} {
-						$w.progress configure -text \
-							"[trans receivedbytes [::amsn::sizeconvert $bytes] [::amsn::sizeconvert $filesize]] ($rate KB/s)"
-					} elseif {$mode == "s"} {
-						$w.progress configure -text \
-							"[trans sentbytes [::amsn::sizeconvert $bytes] [::amsn::sizeconvert $filesize]] ($rate KB/s)"
-					}
-					$w.time configure -text "[trans timeremaining] :  $timeleft"
-					set percent [expr {int(double($bytes)/ (double($filesize)/100.0))}]
-
-					set ratetimer($cookie) [after 1000 [list ::amsn::FTProgress $mode $cookie $filename $bytes $filesize $chatid]]
-
-					setFTWinTitle $w $cookie $filename "${percent}%"
-					if { $filesize != 0 } {
-						::dkfprogress::SetProgress $w.prbar $bytes $filesize
-					}
-				}
-				ca {
-					$w.progress configure -text "[trans filetransfercancelled]"
-					$w.close configure -text "[trans close]" -command "destroy $w"
-					wm protocol $w WM_DELETE_WINDOW "destroy $w"
-					bind $w <<Escape>> "destroy $w"
-					setFTWinTitle $w $cookie $filename "[trans cancelled]"
-				}
-				fs -
-				fr {
-					::dkfprogress::SetProgress $w.prbar 100
-					$w.progress configure -text "[trans filetransfercomplete]"
-					$w.close configure -text "[trans close]" -command "destroy $w"
-					$w.openfile configure -state normal
-					wm protocol $w WM_DELETE_WINDOW "destroy $w"
-					bind $w <<Escape>> "destroy $w"
-					setFTWinTitle $w $cookie $filename "[trans done]"
+			fs -
+			fr {
+				::dkfprogress::SetProgress $w.prbar 100
+				$w.progress configure -text "[trans filetransfercomplete]"
+				$w.close configure -text "[trans close]" -command "destroy $w"
+				$w.openfile configure -state normal
+				wm protocol $w WM_DELETE_WINDOW "destroy $w"
+				bind $w <<Escape>> "destroy $w"
+				setFTWinTitle $w $cookie $filename "[trans done]"
 					::dkfprogress::SetProgress $w.prbar 1000 1000
 				}
 			}
