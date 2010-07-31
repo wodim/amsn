@@ -561,7 +561,7 @@ constructor { args } {
   $SLPMessageBody conf2
 
   if { $options(-context) != "" } {
-    set headers(Context) [base64::encode $context]
+    set headers(Context) [base64::encode $options(-context)]
   }
 
 }

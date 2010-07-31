@@ -173,7 +173,7 @@ method Close { context reason } {
   $body conf2
   set options(-cseq) 0
   set options(-branch) [::p2p::generate_uuid]
-  set msg [SLPRequestMessage %AUTO% -method ::p2p::SLPRequestMethod::BYE -resource [concat "MSNMSGR:"$options(-peer) -frm [::abook::gerPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]]
+  set msg [SLPRequestMessage %AUTO% -method ::p2p::SLPRequestMethod::BYE -resource [join [list "MSNMSGR:" $options(-peer)] ""] -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
   $msg conf2
   $msg setBody $body
   $self Send_p2p_data $msg

@@ -12,6 +12,7 @@ constructor {args} {
   ::Event::registerEvent p2pBlobReceived2 all [list $self On_blob_received]
   ::Event::registerEvent p2pBlobSent2 all [list $self On_blob_sent]
   ::Event::registerEvent p2pChunkTransferred2 all [list $self On_chunk_transferred]
+  ::Event::registerEvent p2pChunkTransferred all [list $self On_chunk_received]
 
 }
 
@@ -60,6 +61,14 @@ method On_chunk_transferred { chunk} {
     return
   }
   $session On_data_chunk_transferred $chunk
+
+}
+
+method On_chunk_received { event chunk blob } {
+
+  set sid [$chunk get_field session_id]
+  set session [$self Get_session $sid]
+  ::Event::fireEvent p2pChunkReceived2 p2pSessionManager $session $chunk $blob
 
 }
 

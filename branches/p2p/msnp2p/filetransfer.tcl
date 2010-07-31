@@ -11,7 +11,7 @@ option -has_preview 0
 option -preview ""
 option -data ""
 option -localpath ""
-#TODO: subscribe to chunk received and 1) update FTProgress 2) write intermediate files
+#TODO: write intermediate files
 
 variable handlers {}
 
@@ -29,7 +29,7 @@ constructor { args } {
 
   }
   
-  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed }
+  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received }
 
   foreach { event callback } $handlers {
     ::Event::registerEvent $event all [list $self $callback]
@@ -48,7 +48,19 @@ method invite { filename size } {
 
 method saveAs { } {
 
-  $self configure -localpath [tk_getSaveFile -initialfile $options(-localpath) -initialdir $options(-filename)]
+  set filename [tk_getSaveFile -initialfile $options(-localpath) -initialdir $options(-filename)]
+
+  set origfile $filename
+  set incompl "incomplete"
+
+  set num 1
+  while { [file exists $filename] || [file exists $filename.$incompl] } {
+    set filename "[filenoext $origfile] $num[fileext $origfile]"
+    #set filename "$origfile.$num"
+    incr num
+  }
+  set options(-localpath) $filename
+
   $self Respond "200"
 
 }
@@ -56,19 +68,39 @@ method saveAs { } {
 method accept { } {
 
   $self configure -localpath [file join $options(-localpath) $options(-filename)]
+  set filename $options(-localpath)
+  set origfile $filename
+  set incompl "incomplete"
+
+  set num 1
+  while { [file exists $filename] || [file exists $filename.$incompl] } {
+    set filename "[filenoext $origfile] $num[fileext $origfile]"
+    #set filename "$origfile.$num"
+    incr num
+  }
+  set options(-localpath) $filename
+
+  ::amsn::FTProgress a $self $options(-localpath) ;#TODO: direct connection
   $self Respond "200"
 
 }
 
 method reject { } {
 
+  foreach {event callback} $handlers {
+    ::Event::unregisterEvent $event all [list $self $callback]
+  }
   $self Respond "603"
 
 }
 
 method cancel { } {
 
-  $self Close $options(-context) ""
+  foreach {event callback} $handlers {
+    ::Event::unregisterEvent $event all [list $self $callback]
+  }
+  $self Close [$self cget -context] ""
+  ::amsn::FTProgress ca $self $options(-localpath)
 
 }
 
@@ -181,11 +213,25 @@ method On_bridge_selected { event session } {
 
 }
 
+method On_chunk_received { event session chunk blob } {
+
+  if { $session != $p2pSession && $session != $self } { return }
+
+  if { [$blob cget -current_size] < [$blob cget -blob_size] } {
+    ::amsn::FTProgress r $self $options(-localpath) [$blob cget -current_size] [$blob cget -blob_size]
+  }
+
+}
+
 method On_transfer_completed { event session data } {
 
   if { $session != $p2pSession } { return }
 
-  ::Event::unregisterEvent p2pOutgoingSessionTransferCompleted all [list $self On_transfer_completed]
+  foreach {event callback} $handlers {
+    ::Event::unregisterEvent $event all [list $self $callback]
+  }
+
+  ::amsn::FTProgress fr $self $options(-localpath)
 
   $self configure -data $data
 

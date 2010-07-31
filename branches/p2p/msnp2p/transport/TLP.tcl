@@ -77,7 +77,7 @@ namespace eval ::p2p {
       if { ($options(-session_id) != [$chunk session_id]) || ($options(-id) != [$chunk blob_id]) } { return }
       set body [$chunk cget -body]
       set options(-data) [join [list $options(-data) $body] ""]
-      set options(-current_size) [string length $options(-data)]
+      set options(-current_size) [expr { $options(-current_size) + [string length $body] } ]
 
     }
 

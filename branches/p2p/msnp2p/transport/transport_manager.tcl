@@ -140,7 +140,6 @@ namespace eval ::p2p {
     method On_chunk_received { transport chunk } {
 
       status_log "Transport manager received $chunk"
-      ::Event::fireEvent p2pChunkTransferred p2pTransportManager $chunk
       set session_id [$chunk session_id]
       set blob_id [$chunk blob_id]
 
@@ -155,6 +154,7 @@ namespace eval ::p2p {
       }
 
       $blob append_chunk $chunk
+      ::Event::fireEvent p2pChunkTransferred p2pTransportManager $chunk $blob
       if { [$blob is_complete] == 1 } {
         status_log "Blob $blob is complete"
         ::Event::fireEvent p2pBlobReceived p2pTransportManager $blob
