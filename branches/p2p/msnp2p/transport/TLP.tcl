@@ -62,7 +62,7 @@ namespace eval ::p2p {
       if { $data != "" } {
         set newsize [expr {$options(-current_size) + $max_size - 1 - [${module}::TLPHeader size]}]
         if { $newsize >= [string length $data] } { set newsize [string length $data] }
-        set sendme [string range $data $options(-current_size) [expr {$newsize - 1}]]
+        set sendme [string range $data $options(-current_size) [expr {$newsize - 0}]]
       }
       set chunk [${module}::MessageChunk createMsg $options(-application_id) $options(-session_id) $options(-id) $offset $options(-blob_size) $max_size $sync]
       status_log "Chunk of $self is of size [$chunk size] from $options(-current_size) to $newsize"

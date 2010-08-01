@@ -245,7 +245,8 @@ method On_blob_received { blob } {
         if { [$msg cget -status] == 200 } {
           status_log "Our session got accepted"
           $self On_session_accepted
-          ::Event::fireEvent p2pAccepted p2p {}
+          #puts "We are $self"
+          ::Event::fireEvent p2pAccepted p2p $self
         } elseif { [$msg cget -status] == 603 } {
           status_log "Our session got rejected :("
           $self On_session_rejected $msg
@@ -296,7 +297,7 @@ method Switch_bridge { transreq } {
 method Request_bridge { } {
 
   set bridge [[$self transport_manager] find_transport [$self cget -peer]]
-  if { $options(-context) != "" } { ;#MSNObj exists
+  if { $options(-partof) == "" || [$options(-partof) info type] != "::p2p::FileTransferSession" } { ;#MSNObj exists
     set msnobj [::p2p::MSNObject parse [string trim [base64::decode $options(-context)]]]
     set type [$msnobj cget -type]
     if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE || $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } { ;#We MUST request a direct connection for files but not for DPs

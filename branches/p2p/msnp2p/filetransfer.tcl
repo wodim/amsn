@@ -29,7 +29,7 @@ constructor { args } {
 
   }
   
-  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received }
+  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted }
 
   foreach { event callback } $handlers {
     ::Event::registerEvent $event all [list $self $callback]
@@ -42,7 +42,13 @@ method invite { filename size } {
   set options(-filename) $filename
   set options(-size) $size
   set options(-context) [$self build_context]
-  $self invite $context
+
+  set fd [open $filename r]
+  fconfigure $fd -translation {binary binary}
+  set data [read $fd]
+  close $fd
+  set options(-data) $data
+  $p2pSession invite $options(-context)
 
 }
 
@@ -104,9 +110,8 @@ method cancel { } {
 
 }
 
-method send { data } {
+method send { } {
 
-  set options(-data) $data
   $self Request_bridge
 
 }
@@ -115,7 +120,7 @@ method build_context { } {
 
   global HOME
 
-  set ext [string tolower [string range [fileext $filename] 1 end]
+  set ext [string tolower [string range [fileext $options(-filename)] 1 end]]
   if { $ext == "jpg" || $ext == "gif" || $ext == "png" || $ext == "bmp" || $ext == "jpeg" || $ext == "tga" } {
     set haspreview 1
   } else {
@@ -127,7 +132,7 @@ method build_context { } {
   #}
   $self configure -has_preview $haspreview
 
-  set context "[binary format i 574][binary format i 2][binary format i $options(-size)][binary format i 0][binary format i $nopreview]"
+  set context "[binary format i 574][binary format i 2][binary format i $options(-size)][binary format i 0][binary format i [expr {!$haspreview}]]"
 
   set file [ToUnicode [getfilename $options(-filename)]]
   set file [binary format a550 $file]
@@ -198,15 +203,26 @@ method parse_context { context } {
 
 }
 
+method On_session_accepted { event session } {
+
+  #puts "$event $session"
+  #puts "Accepted session $session and we are $p2pSession"
+  if { $session != $p2pSession } { return }
+
+  ::Event::unregisterEvent p2pAccepted all [list $self On_session_accepted]
+  $self send
+
+}
+
 method On_bridge_selected { event session } {
 
   if { $session != $p2pSession } { return }
 
   ::Event::unregisterEvent p2pBridgeSelected all [list $self On_bridge_selected]
 
-  if { options(-data) != "" } {
+  if { $options(-data) != "" } {
 
-    $self Send_p2p_data \x00\x00\x00\x00
+    #$self Send_p2p_data \x00\x00\x00\x00
     $self Send_p2p_data $options(-data) 1
 
   }
@@ -273,7 +289,7 @@ method Can_handle_message { message } {
 method Handle_message { peer guid message } {
 
   set context [[$message body] cget -context]]
-  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -euf_guid $::p2p::EufGuid::FILE_TRANSFER -application_id [$message cget -application_id] -message $message -context $context]
+  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -euf_guid $::p2p::EufGuid::FILE_TRANSFER -application_id [$message cget -application_id] -message $message -context $context ]
   $session conf2
 
   ::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
@@ -284,16 +300,18 @@ method Handle_message { peer guid message } {
 
 }
 
-method request { peer filename size callback {errback ""} } {
+method request { peer filename size {callback ""} {errback ""} } {
 
-  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -application_id $::p2p::ApplicationID::FILE_TRANSFER -message $message 
+  set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -application_id $::p2p::ApplicationID::FILE_TRANSFER ]
   $session conf2
 
   set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]
   foreach {event callb} $handles {
     ::Event::registerEvent $event all [list $self $callb]
   }
-  set outgoing_sessions([$session p2p_session]) [list $handles $callback $errback]
+  if { $callback != "" } {
+    set outgoing_sessions([$session p2p_session]) [list $handles $callback $errback]
+  }
   $session invite $filename $size
 
 }

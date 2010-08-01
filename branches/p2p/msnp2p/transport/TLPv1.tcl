@@ -192,7 +192,7 @@ namespace eval ::p2pv1 {
         $self set_field flags [expr { $flags | $::p2pv1::TLPFlag::EACH } ]
         if { $options(-application_id) == $::p2p::ApplicationID::FILE_TRANSFER } {
           set flags [$self get_field flags]
-          $self get_field flags [expr { $flags | $::TLPFlag::FILE } ]
+          $self set_field flags [expr { $flags | $::p2pv1::TLPFlag::FILE } ]
         }
       }
 
