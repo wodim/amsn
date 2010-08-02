@@ -268,15 +268,15 @@ namespace eval ::p2pv1 {
 
     }
 
-    typemethod createMsg { app_id session_id blob_id offset blob_size max_size sync } {
+    typemethod createMsg { app_id session_id blob_id offset blob_size max_size sync csize} {
 
       set header [TLPHeader %AUTO%]
       $header configure -session_id $session_id
       $header configure -blob_id $blob_id
       $header configure -blob_offset $offset
       $header configure -blob_size $blob_size
-      status_log "Blob size $blob_size, offset $offset, max size $max_size, size [$header cget -size]"
-      $header configure -chunk_size [expr min($blob_size - $offset, $max_size - [$header cget -size])]
+      status_log "Blob size $blob_size, offset $offset, max size $max_size, size $csize"
+      $header configure -chunk_size $csize
       return [MessageChunk %AUTO% -header $header -application_id $app_id]
 
     }

@@ -18,9 +18,9 @@ namespace eval ::p2p {
       if { $data != "" } {
         if { [string length $data] > 0 } {
           set blob_size [string length $data]
-	  if { $options(-blob_size) == "" } {
+	  #if { $options(-blob_size) == "" } {
             set options(-blob_size) $blob_size
-          }
+          #}
         }
       }
 
@@ -44,7 +44,7 @@ namespace eval ::p2p {
     method is_complete {} {
 
       status_log "Size is $options(-blob_size) and we have $options(-current_size)"
-      return [expr {$options(-blob_size) == [$self transferred]}]
+      return [expr {$options(-blob_size) <= [$self transferred]}]
 
     }
 
@@ -59,12 +59,14 @@ namespace eval ::p2p {
       set offset [$self transferred]
       set data $options(-data)
       set sendme ""
+      set csize 0
       if { $data != "" } {
-        set newsize [expr {$options(-current_size) + $max_size - 1 - [${module}::TLPHeader size]}]
+        set newsize [expr {$options(-current_size) + $max_size - [${module}::TLPHeader size]}]
         if { $newsize >= [string length $data] } { set newsize [string length $data] }
-        set sendme [string range $data $options(-current_size) [expr {$newsize - 0}]]
+        set sendme [string range $data $options(-current_size) [expr { $newsize - 1 }] ]
+        set csize [expr { $newsize - $options(-current_size) } ]
       }
-      set chunk [${module}::MessageChunk createMsg $options(-application_id) $options(-session_id) $options(-id) $offset $options(-blob_size) $max_size $sync]
+      set chunk [${module}::MessageChunk createMsg $options(-application_id) $options(-session_id) $options(-id) $offset $options(-blob_size) $max_size $sync $csize]
       status_log "Chunk of $self is of size [$chunk size] from $options(-current_size) to $newsize"
       $chunk set_data $sendme
       set options(-current_size) $newsize

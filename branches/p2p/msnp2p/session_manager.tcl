@@ -27,7 +27,7 @@ method transport_manager { } {
 
 method register_handler { handler_class} {
 
-  set options(-handlers) [lappend $options(-handlers) $handler_class]
+  set options(-handlers) [lappend options(-handlers) $handler_class]
 
 }
 

@@ -19,11 +19,11 @@ constructor {args} {
     if { $options(-data) == "" } {
       return ""
     }
-    $self configure -shad [Compute_data_hash $options(-data)]
+    $self configure -shad [$self Compute_data_hash $options(-data)]
   }
 
   if { $options(-shac) == "" } {
-    $self configure -shac [Compute_checksum $options(-data)]
+    $self configure -shac [$self Compute_checksum $options(-data)]
   }
 
 }
@@ -32,8 +32,8 @@ method Set_data {data} {
 
   $self configure -size [string length $data]
   $self configure -data $data
-  $self configure -shad [Compute_data_hash $data]
-  $self configure -shac [Compute_checksum $data]
+  $self configure -shad [$self Compute_data_hash $data]
+  $self configure -shac [$self Compute_checksum $data]
 
 }
 
@@ -90,7 +90,7 @@ typemethod Decode_shad { shad } {
 
 method Compute_data_hash { data} {
 
-  return [::base64::encode [binary format H* [::sha1::sha1 $data]]]
+  return [string map {"\n" ""} [::base64::encode [binary format H* [::sha1::sha1 $data]]]]
 
 }
 
@@ -106,7 +106,7 @@ method Compute_checksum {} {
   set sha1d [base64::encode $sha1d]
   set friendly [base64::encode $friendly]
 
-  return [::base64::encode [binary format H* [::sha1::sha1 "Creator${creator}Size${size}Type${type}Location${file}Friendly${friendly}SHA1D${sha1d}"]]]
+  return [string map {"\n" ""} [::base64::encode [binary format H* [::sha1::sha1 "Creator${creator}Size${size}Type${type}Location${file}Friendly${friendly}SHA1D${sha1d}"]]]]
 
 }
 
@@ -195,11 +195,11 @@ snit::type MSNObjectSession {
   #}
 
   method send { } {
-    $self Send_p2p_data "\x00\x00\x00\x01"
+    $self Send_p2p_data "\x00\x00\x00\x00"
     $self Send_p2p_data $data
   }
 
-  method On_bridge_selected { event } {
+  method On_bridge_selected { event session } {
     if { $data != "" } {
       $self send
     }

@@ -25,7 +25,7 @@ constructor { args } {
   set message [$p2pSession cget -message]
   if { $message != "" } {
 
-    $self parse_context [base64::decode [[$message body] cget -context]]
+    $self parse_context [[$message body] cget -context]
 
   }
   
@@ -119,18 +119,18 @@ method send { } {
 method build_context { } {
 
   global HOME
-
-  set ext [string tolower [string range [fileext $options(-filename)] 1 end]]
+  
+  set filename $options(-filename)
+  set ext [string tolower [string range [fileext $filename] 1 end]]
   if { $ext == "jpg" || $ext == "gif" || $ext == "png" || $ext == "bmp" || $ext == "jpeg" || $ext == "tga" } {
     set haspreview 1
   } else {
     set haspreview 0
   }
 
-  #if {[::config::getKey noftpreview]} {
+  if {[::config::getKey noftpreview]} {
     set haspreview 0
-  #}
-  $self configure -has_preview $haspreview
+  }
 
   set context "[binary format i 574][binary format i 2][binary format i $options(-size)][binary format i 0][binary format i [expr {!$haspreview}]]"
 
@@ -138,9 +138,41 @@ method build_context { } {
   set file [binary format a550 $file]
   set context "${context}${file}\xFF\xFF\xFF\xFF"
 
-  return $context
+  if { $haspreview == 1 } {
+    create_dir [file join $HOME FT cache]
+    if {[catch {set image [image create photo [TmpImgName] -file $filename]}]} {
+      set image [::skin::getNoDisplayPicture]
+    }
+    if {[catch {::picture::ResizeWithRatio $image 96 96} res]} {
+      status_log $res
+    }
+    set callid [$self cget -call_id]
+    set file  "[file join $HOME FT cache ${callid}.png]"
+    if {[catch {::picture::Save $image $file cxpng} res] } {
+      status_log $res
+    }
+    if {$image != [::skin::getNoDisplayPicture]} {
+      image delete $image
+    }
+    ::skin::setPixmap ${callid}.png $file
 
-  #@@@@@@@ TODO: preview
+    if { [catch { open $file} fd] == 0 } {
+      fconfigure $fd -translation {binary binary }
+      set context "$context[read $fd]"
+      close $fd
+    }
+    #Show the preview picture in the window
+    set chatid [$self cget -peer]
+    if { [::skin::loadPixmap "${callid}.png"] != "" } {
+      ::amsn::WinWrite $chatid "\n" green
+      ::amsn::WinWriteIcon $chatid ${callid}.png 5 5
+      ::amsn::WinWrite $chatid "\n" green
+    }
+  }
+
+  $self configure -has_preview $haspreview
+
+  return $context
 
 }
 

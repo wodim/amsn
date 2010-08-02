@@ -33,7 +33,7 @@ method Handle_message { peer guid message} {
 
   ::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
   set incoming_sessions($session) {p2pIncomingCompleted Incoming_session_transfer_completed}
-  set msnobj [MSNObject parse [base64::decode [$session cget -context]]]
+  set msnobj [MSNObject parse [$session cget -context]]
   foreach obj $published_objects {
     if {[$obj cget -shad] == [$msnobj cget -shad]} {
       $session accept [$obj cget -data]

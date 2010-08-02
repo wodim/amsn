@@ -347,6 +347,7 @@ method toString { } {
   if { [lsearch $headernames "Context"] < 0 && $options(-context) != "" } {
     set key "Context"
     set value [base64::encode $options(-context)]
+    set value [string map {"\n" ""} $value]
     set str [join [list $str $key ": " $value $newl] ""]
   }
   set str [join [list $str $newl $body \x00] ""]
@@ -381,7 +382,7 @@ method parse { data } {
   catch {set options(-session_id) [$self get_header SessionID]}
   catch {set options(-s_channel_state) [$self get_header SChannelState]}
   catch {set options(-capabilities_flags) [$self get_header Capabilities-Flags]}
-  catch {set options(-context) [$self get_header Context] } 
+  catch {set options(-context) [base64::decode [$self get_header Context]] } 
 
   if { [info exists headers(EUF-GUID) ] } {
     set euf_guid [$self get_header EUF-GUID]
@@ -453,7 +454,7 @@ method conf2 { } {
     $SLPMessageBody setHeader AppID $app_id
   }
   if { $context != "" } {
-    $SLPMessageBody setHeader Context [base64::encode $context]
+    $SLPMessageBody setHeader Context [string map {"\n" ""} [base64::encode $context]]
   }
 
 }
@@ -561,7 +562,7 @@ constructor { args } {
   $SLPMessageBody conf2
 
   if { $options(-context) != "" } {
-    set headers(Context) [base64::encode $options(-context)]
+    set headers(Context) [string map {"\n" ""} [base64::encode $options(-context)]]
   }
 
 }
