@@ -170,10 +170,11 @@ method Bridge_failed { new_bridge } {
 method Close { context reason } {
 
   set body [SLPSessionCloseBody %AUTO% -context $context -session_id $options(-id) -s_channel_state 0]
+  ::Event::fireEvent p2pSessionClosed p2pSession $options(-id)
   $body conf2
   set options(-cseq) 0
   set options(-branch) [::p2p::generate_uuid]
-  set msg [SLPRequestMessage %AUTO% -method ::p2p::SLPRequestMethod::BYE -resource [join [list "MSNMSGR:" $options(-peer)] ""] -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
+  set msg [SLPRequestMessage %AUTO% -method ::p2p::SLPRequestMethod::BYE -resource [join [list "MSNMSGR:" $options(-peer)] ""] -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
   $msg conf2
   $msg setBody $body
   $self Send_p2p_data $msg
@@ -271,11 +272,9 @@ method On_blob_received { blob } {
 
 }
 
-method On_data_chunk_transferred { chunk } {
+method On_data_chunk_transferred { chunk blob } {
 
-  if { [$chunk has_progressed ] } {
-    ::Event::fireEvent p2pProgressed p2p [string length [$chunk body]]
-  }
+  ::Event::fireEvent p2pChunkSent2 p2p $self $chunk $blob
 
 }
 

@@ -11,7 +11,7 @@ constructor {args} {
   $self configurelist $args
   ::Event::registerEvent p2pBlobReceived2 all [list $self On_blob_received]
   ::Event::registerEvent p2pBlobSent2 all [list $self On_blob_sent]
-  ::Event::registerEvent p2pChunkTransferred2 all [list $self On_chunk_transferred]
+  ::Event::registerEvent p2pChunkSent all [list $self On_chunk_sent]
   ::Event::registerEvent p2pChunkTransferred all [list $self On_chunk_received]
 
 }
@@ -49,10 +49,10 @@ method Unregister_session { session} {
 
 }
 
-method On_chunk_transferred { chunk} {
+method On_chunk_sent { event chunk blob } {
 
   set sid [$chunk get_field session_id]
-  $self configure -session_id $sid
+  #$self configure -session_id $sid
   if { $sid == 0 } {
     return
   }
@@ -60,7 +60,7 @@ method On_chunk_transferred { chunk} {
   if { $session == "" } {
     return
   }
-  $session On_data_chunk_transferred $chunk
+  $session On_data_chunk_transferred $chunk $blob
 
 }
 

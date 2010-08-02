@@ -20,6 +20,7 @@ snit::type BaseP2PTransport {
   constructor { args } {
 
     $self configurelist $args
+    ::Event::registerEvent p2pSessionClosed all [list $self On_session_closed]
 
   }
 
@@ -157,10 +158,27 @@ snit::type BaseP2PTransport {
 
   }
 
-  method On_chunk_sent { chunk } {
+  method On_chunk_sent { chunk blob } {
 
-    ::Event::fireEvent p2pChunkSent p2pBaseTransport $chunk
+    ::Event::fireEvent p2pChunkSent p2pBaseTransport $chunk $blob
     #$self Process_send_queue
+
+  }
+
+  method On_session_closed { event sid } {
+
+    set queue $data_blob_queue
+    set i 0
+    foreach item $queue {
+      set blob [lindex $item 2]
+      if { [$blob cget -session_id] == $sid } {
+        set queue [lreplace $queue $i $i]
+        set data_blob_queue $queue
+        $blob destroy
+      } else {
+        incr i
+      }
+    }
 
   }
 
@@ -192,6 +210,7 @@ snit::type BaseP2PTransport {
       status_log "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
       after 10 [list $self Process_send_queue]
     }
+    $self On_chunk_sent $chunk $blob
     destroy $chunk
     return 1
 

@@ -29,7 +29,7 @@ constructor { args } {
 
   }
   
-  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted }
+  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pChunkSent2 On_chunk_sent }
 
   foreach { event callback } $handlers {
     ::Event::registerEvent $event all [list $self $callback]
@@ -205,11 +205,10 @@ method parse_context { context } {
 
 method On_session_accepted { event session } {
 
-  #puts "$event $session"
-  #puts "Accepted session $session and we are $p2pSession"
   if { $session != $p2pSession } { return }
 
   ::Event::unregisterEvent p2pAccepted all [list $self On_session_accepted]
+  ::amsn::FTProgress a $self $options(-localpath)
   $self send
 
 }
@@ -235,6 +234,18 @@ method On_chunk_received { event session chunk blob } {
 
   if { [$blob cget -current_size] < [$blob cget -blob_size] } {
     ::amsn::FTProgress r $self $options(-localpath) [$blob cget -current_size] [$blob cget -blob_size]
+  }
+
+}
+
+method On_chunk_sent { event session chunk blob } {
+
+  if { $session != $p2pSession && $session != $self } { return }
+
+  if { [$blob cget -current_size] < [$blob cget -blob_size] } {
+    ::amsn::FTProgress s $self $options(-localpath) [$blob cget -current_size] [$blob cget -blob_size]
+  } else {
+    ::amsn::FTProgress fs $self $options(-localpath)
   }
 
 }

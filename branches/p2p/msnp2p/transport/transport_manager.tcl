@@ -50,7 +50,6 @@ namespace eval ::p2p {
         set trsign {}
       }
       set trsign [lappend trsign p2pChunkReceived On_chunk_received]
-      set trsign [lappend trsign p2pChunkSent On_chunk_sent]
       set trsign [lappend trsign p2pBlobSent On_blob_sent]
       set trsign [lappend trsign p2pBlobReceived On_blob_received]
       foreach {event callback} $trsign {
@@ -165,11 +164,7 @@ namespace eval ::p2p {
 
     }
 
-    method On_chunk_sent { transport chunk} {
-      ::Event::fireEvent p2pChunkTransferred2 p2pTransportManager $chunk
-    }
-
-    method On_blob_sent { transport blob} {
+   method On_blob_sent { transport blob} {
       ::Event::fireEvent p2pBlobSent2 p2pTransportManager $blob
     }
 
