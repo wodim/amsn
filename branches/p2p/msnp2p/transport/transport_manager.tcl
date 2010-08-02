@@ -149,6 +149,7 @@ namespace eval ::p2p {
         }
       } else {
         set blob [MessageBlob %AUTO% -application_id [$chunk cget -application_id] -blob_size [$chunk blob_size] -session_id $session_id -blob_id $blob_id]
+	::Event::fireEvent p2pNewBlob p2pTransportManager $blob
         set data_blobs($session_id) $blob
       }
 
@@ -185,7 +186,7 @@ namespace eval ::p2p {
     }
 
     method send_data { peer peer_guid application_id session_id data} {
-      MessageBlob blob -application_id $application_id -data $data -session_id $session_id
+      set blob [MessageBlob %AUTO% -application_id $application_id -data $data -session_id $session_id]
       set transport [$self Get_transport $peer $peer_guid $blob]
       $transport send $peer $peer_guid $blob
     }
@@ -195,7 +196,7 @@ namespace eval ::p2p {
         #status_log
         return
       }
-      MessageBlob blob -application_id 0 -string $buffer -total_size $size -session_id $session_id2
+      set blob [MessageBlob %AUTO% -application_id 0 -string $buffer -total_size $size -session_id $session_id2]
       set data_blobs($session_id2) $blob
   }
 
