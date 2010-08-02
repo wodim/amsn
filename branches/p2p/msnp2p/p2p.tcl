@@ -118,7 +118,7 @@ method Outgoing_session_transfer_completed { event session data} {
 
 }
 
-method Incoming_session_transfer_completed { session data } {
+method Incoming_session_transfer_completed { event session data } {
 
   set {event callback} $incoming_sessions($session)
   ::Event::unregisterEvent $event all [list $self $callback]

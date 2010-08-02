@@ -1589,8 +1589,8 @@ proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememb
 		checkbutton $w.ftautoclose -text "[trans ftautoclose]" -onvalue 1 -offvalue 0 -variable [::config::getVar ftautoclose]
 		pack $w.ftautoclose -side top
 		#Specify the path to the file
-		set filepath [file join [::config::getKey receiveddir] $filename]
-		set filedir [file dirname $filepath]
+		set filepath $filename
+		set filedir [file dirname $filename]
 
 		#Open directory and Open picture button
 		button $w.close -text "[trans cancel]" -command $cancelcmd
@@ -1633,7 +1633,7 @@ proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememb
 		variable firsttimes    ;# Array. Times in ms when the FT started.
 		variable ratetimer
 
-		set filename [$session cget -localpath]
+		#set filename [$session cget -localpath]
 		set username [$session cget -peer]
 		if { $chatid == 0 } { set chatid $username }
 		set cookie [$session cget -id]
@@ -1727,7 +1727,7 @@ proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememb
 				$w.time configure -text "[trans timeremaining] :  $timeleft"
 				set percent [expr {int(double($bytes)/ (double($filesize)/100.0))}]
 
-				set ratetimer($cookie) [after 1000 [list ::amsn::FTProgress $mode $cookie $filename $bytes $filesize $chatid]]
+				set ratetimer($cookie) [after 1000 [list ::amsn::FTProgress $mode $session $filename $bytes $filesize $chatid]]
 
 				setFTWinTitle $w $cookie $filename "${percent}%"
 				if { $filesize != 0 } {

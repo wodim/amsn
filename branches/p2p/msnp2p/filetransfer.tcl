@@ -11,6 +11,7 @@ option -has_preview 0
 option -preview ""
 option -data ""
 option -localpath ""
+variable outgoing_sessions -array {}
 #TODO: write intermediate files
 
 variable handlers {}
@@ -40,6 +41,7 @@ constructor { args } {
 method invite { filename size } {
 
   set options(-filename) $filename
+  set options(-localpath) $filename
   set options(-size) $size
   set options(-context) [$self build_context]
 
@@ -203,7 +205,7 @@ method getPreviewFromContext { context } {
   set sid [$self cget -id]
   set fd [open "[file join $dir ${sid}.png ]" "w"]
   fconfigure $fd -translation binary
-  puts -nonewline $fd "$previewdata"
+  puts -nonewline $fd $previewdata
   close $fd
   set file [file join $dir ${sid}.png]
   if { $file != "" && ![catch {set img [image create photo [TmpImgName] -file $file]} res]} {
@@ -265,7 +267,7 @@ method On_chunk_received { event session chunk blob } {
   if { $session != $p2pSession && $session != $self } { return }
 
   if { [$blob cget -current_size] < [$blob cget -blob_size] } {
-    ::amsn::FTProgress r $self $options(-localpath) [$blob cget -current_size] [$blob cget -blob_size]
+    ::amsn::FTProgress r $self [$self cget -localpath] [$blob cget -current_size] [$blob cget -blob_size]
   }
 
 }
@@ -290,7 +292,7 @@ method On_transfer_completed { event session data } {
     ::Event::unregisterEvent $event all [list $self $callback]
   }
 
-  ::amsn::FTProgress fr $self $options(-localpath)
+  ::amsn::FTProgress fr $self [$self cget -localpath]
 
   $self configure -data $data
 
@@ -380,7 +382,7 @@ method Outgoing_session_transfer_completed { event session data } {
 
 }
 
-method Incoming_session_transfer_completed { session data } {
+method Incoming_session_transfer_completed { event session data } {
 
   set {event callback} $incoming_sessions($session)
   ::Event::unregisterEvent $event all [list $self $callback]
