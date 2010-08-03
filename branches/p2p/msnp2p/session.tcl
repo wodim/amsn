@@ -14,6 +14,7 @@ option -branch -default ""
 option -incoming -default 0
 option -context -default ""
 option -partof -default ""
+option -fd ""
 
 constructor {args} {
 
@@ -38,6 +39,7 @@ method conf2 { } {
 
   status_log "Session manager: [$self cget -session_manager]"
   [$self cget -session_manager] Register_session $self
+  ::Event::registerEvent p2pNewBlob all [list $self On_blob_created]
 
 }
 
@@ -182,21 +184,32 @@ method Close { context reason } {
 
 }
 
-method Send_p2p_data { data_or_file {is_file 0} } {
+method Send_p2p_data { data_or_filesize {is_file 0} } {
   status_log "Sending p2p data"
 
-  if { [catch {$data_or_file is_SLP}] } {
+  if { $is_file == 1 } {
     set session_id $options(-id)
-    set data $data_or_file
+    set data ""
+    set total_size $data_or_filesize
+  } elseif { [catch {$data_or_filesize is_SLP}] } {
+    set session_id $options(-id)
+    set data $data_or_filesize
     set total_size ""
   } else {
     set session_id 0
-    set data [$data_or_file toString]
+    set data [$data_or_filesize toString]
     set total_size [string length $data]
   }
 
-  set blob [MessageBlob %AUTO% -application_id $options(-application_id) -data $data -blob_size $total_size -session_id $session_id -is_file $is_file]
+  set blob [MessageBlob %AUTO% -application_id $options(-application_id) -data $data -blob_size $total_size -session_id $session_id -fd $options(-fd)]
   [$self transport_manager] send $options(-peer) "" $blob
+
+}
+
+method On_blob_created { event blob } {
+
+  ::Event::unregisterEvent p2pNewBlob all [list $self On_blob_created]
+  $blob configure -fd $options(-fd)
 
 }
 
@@ -231,8 +244,7 @@ method On_blob_received { blob } {
         $self On_invite_received $msg
       } elseif { [[$msg body] info type] == "::p2p::SLPTransferRequestBody" } {
         status_log "Received a transfer request"
-        #$self Switch_bridge $msg
-	$self Accept_transreq $msg "SBBridge" 0 [[$msg body] get_header Nonce] [::abook::getDemographicField localip] [config::getKey initialftport] [::abook::getDemographicField clientip] [config::getKey initialftport]
+        ::Event::fireEvent p2pTransreqReceived p2p $msg
       } elseif { [[$msg body] info type] == "::p2p::SLPSessionCloseBody" } {
         status_log "Received a BYE"
         $self On_bye_received $msg
@@ -246,7 +258,6 @@ method On_blob_received { blob } {
         if { [$msg cget -status] == 200 } {
           status_log "Our session got accepted"
           $self On_session_accepted
-          #puts "We are $self"
           ::Event::fireEvent p2pAccepted p2p $self
         } elseif { [$msg cget -status] == 603 } {
           status_log "Our session got rejected :("
@@ -353,6 +364,8 @@ method Transreq_accepted { transresp } {
   }
 
 }
+
+method Bridge_selected { } { }
 
 method On_invite_received { msg } { }
 

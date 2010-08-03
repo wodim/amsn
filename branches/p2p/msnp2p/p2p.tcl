@@ -168,15 +168,58 @@ method On_session_rejected { session } {
 
 }
 snit::type WebcamHandler {
-constructor {args} {}
 
-method Can_handle_message { message} {}
+option -session_manager ""
+variable sessions {}
 
-#method Handle_message { peer message} {}
+constructor {args} {
 
-method Invite { peer producer} {}
+  $self configurelist $args
 
-option -gsignals session-created
+}
+
+method Can_handle_message { message } {
+
+  set euf_guid [[$message body] cget -euf_guid]
+  if { $euf_guid == $::p2p::EufGuid::MEDIA_SESSION || $euf_guid == $::p2p::EufGuid::MEDIA_RECEIVE_ONLY } {
+    return 1
+  }
+  return 0
+
+}
+
+method Handle_message { peer message } {
+
+  set euf_guid [[$message body] cget -euf_guid]
+  if { $euf_guid == $::p2p::EufGuid::MEDIA_SESSION } {
+    set producer 0
+  } elseif { $euf_guid == $::p2p::EufGuid::MEDIA_RECEIVE_ONLY } {
+    set producer 1
+  }
+
+  set session [WebcamSession %AUTO% -producer $producer -session_manager $options(-session_manager) -peer $peer -euf_guid [[$message body] cget -euf_guid] -message $message]
+  set sessions [lappend sessions $session]
+  ::Event::fireEvent p2pSessionCreated p2pWebcamHandler $session $producer
+  #@@@@@@@@ Register this event and WinWrite
+  return $session
+
+}
+
+method Invite { peer producer } {
+
+  status_log "Creating new webcam session"
+  if { $producer == 1 } {
+    set euf_guid $::p2p::EufGuid::MEDIA_SESSION
+  } else {
+    set euf_guid $::p2p::EufGuid::MEDIA_RECEIVE_ONLY
+  }
+  set session [WebcamSession %AUTO% -producer $producer -session_manager $options(-session_manager) -peer $peer -euf_guid [[$message body] cget -euf_guid]]
+  set sessions [lappend sessions $session]
+  $session invite
+  return $session
+
+}
+
 }
 
 }

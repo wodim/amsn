@@ -30,7 +30,7 @@ constructor { args } {
 
   }
   
-  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pChunkSent2 On_chunk_sent }
+  set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pChunkSent2 On_chunk_sent p2pTransreqReceived On_transreq_received }
 
   foreach { event callback } $handlers {
     ::Event::registerEvent $event all [list $self $callback]
@@ -47,9 +47,7 @@ method invite { filename size } {
 
   set fd [open $filename r]
   fconfigure $fd -translation {binary binary}
-  set data [read $fd]
-  close $fd
-  set options(-data) $data
+  $p2pSession configure -fd $fd
   $p2pSession invite $options(-context)
 
 }
@@ -64,10 +62,12 @@ method saveAs { } {
   set num 1
   while { [file exists $filename] || [file exists $filename.$incompl] } {
     set filename "[filenoext $origfile] $num[fileext $origfile]"
-    #set filename "$origfile.$num"
     incr num
   }
   set options(-localpath) $filename
+  set fd [open $filename.$incompl a]
+  fconfigure $fd -translation {binary binary}
+  $p2pSession configure -fd $fd
 
   $self Respond "200"
 
@@ -87,6 +87,9 @@ method accept { } {
     incr num
   }
   set options(-localpath) $filename
+  set fd [open $filename.$incompl a]
+  fconfigure $fd -translation {binary binary}
+  $p2pSession configure -fd $fd
 
   ::amsn::FTProgress a $self $options(-localpath) ;#TODO: direct connection
   $self Respond "200"
@@ -247,18 +250,22 @@ method On_session_accepted { event session } {
 
 }
 
+method On_transreq_received { event msg } {
+
+  if { [[$msg body] cget -session_id] != $options(-id) } { return }
+
+  #$self Switch_bridge $msg
+  $p2pSession Accept_transreq $msg "SBBridge" 0 [[$msg body] get_header Nonce] [::abook::getDemographicField localip] [config::getKey initialftport] [::abook::getDemographicField clientip] [config::getKey initialftport]
+
+}
+
 method On_bridge_selected { event session } {
 
   if { $session != $p2pSession } { return }
 
   ::Event::unregisterEvent p2pBridgeSelected all [list $self On_bridge_selected]
 
-  if { $options(-data) != "" } {
-
-    #$self Send_p2p_data \x00\x00\x00\x00
-    $self Send_p2p_data $options(-data) 1
-
-  }
+  $self Send_p2p_data [file size $options(-localpath)] 1
 
 }
 
@@ -280,6 +287,7 @@ method On_chunk_sent { event session chunk blob } {
     ::amsn::FTProgress s $self $options(-localpath) [$blob cget -current_size] [$blob cget -blob_size]
   } else {
     ::amsn::FTProgress fs $self $options(-localpath)
+    close [$p2pSession cget -fd]
   }
 
 }
@@ -296,12 +304,9 @@ method On_transfer_completed { event session data } {
 
   $self configure -data $data
 
+  close [$p2pSession cget -fd]
   set filename [$self cget -localpath]
-
-  set fd [open $filename w]
-  fconfigure $fd -translation {binary binary}
-  puts -nonewline $fd $data
-  close $fd
+  file rename $filename.incomplete $filename
 
 }
 
