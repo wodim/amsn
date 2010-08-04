@@ -1,17 +1,31 @@
 namespace eval ::p2p::webcam {
 
+################################################################################
+#
+# setObjOption vars: needed here?
+#
+# YES: canceled, producer, state, my_rid, rid, chatid, inviter, xml, session
+# NO: grabber, window, socket, fd, connected_ips, server, listening, ips,
+#     listening_socket, listening_port, reflector
+# 1: send_syn, webcam
+# 0: conference, authenticated
+#
+################################################################################
+
 snit::type WebcamSessionMessage {
 
 option -id ""
 option -producer ""
 option -session ""
 option -body ""
+option -partof ""
 
 option -localip ""
 option -localport ""
 option -remoteip ""
 option -remoteport ""
 option -rid ""
+option -my_rid ""
 
 
 constructor { args } {
@@ -19,6 +33,10 @@ constructor { args } {
   $self configurelist $args
   if { $options(-body) != "" } {
      $self Parse $options(-body)
+  } else {
+    set rid [myRand 100 199]
+    set options(-my_rid) $rid
+    $options(-partof) configure -my_rid $rid
   }
 
 }
@@ -37,17 +55,19 @@ method Parse { body } {
   set rid [GetXmlEntry $list "$type:rid"]
   set options(-session) $session
   set options(-rid) $rid
-  #@@@ Ready to call modified ConnectSockets with ourselves as an arg!
+  $options(-partof) configure -session $session
+  $options(-partof) configure -rid $rid
+  ::MSNCAM::ConnectSockets $options(-partof)
 
 }
 
 method toString { } {
 
-  set rid $options(-rid)
-  if { $rid == "" } {
-    set rid [myRand 100 199]
+  set session $options(-session)
+  if { $session == "" } {
+    set session [myRand 9000 9999]
   }
-  set options(-rid) $rid
+  set options(-session) $session
   set sid $options(-id)
 
   set udprid [expr {$rid + 1}]
@@ -55,7 +75,7 @@ method toString { } {
   set listening [abook::getDemographicField listening]
   set producer $options(-producer)
 
-  set port [OpenCamPort [config::getKey initialftport] $sid]
+  set port [OpenCamPort [config::getKey initialftport] $session]
   if { [info exists ::cam_mask_ip] } {
     set clientip $::cam_mask_ip
     set localip $::cam_mask_ip
@@ -70,6 +90,12 @@ method toString { } {
   } else {
     set begin_type "<viewer>"
     set end_type "</viewer>"
+  }
+
+  if { $options(-my_rid) != "" } {
+    set rid $options(-my_rid)
+  } else {
+    set rid $options(-rid)
   }
 
   set header "<version>2.0</version><rid>$rid</rid><session>$session</session><ctypes>0</ctypes><cpu>730</cpu>"
@@ -97,28 +123,69 @@ delegate method * to p2pSession
 option -producer 0
 
 variable answered 0
-variable sent_syn 0
-option -session_id ""
+variable send_syn 0
+
+# Options that both we and msncam.tcl use
+option -sid ""
 option -session ""
+option -xml ""
+option -canceled ""
+option -my_rid ""
+option -rid ""
+option -chatid ""
+option -inviter 0
+option -blob_id ""
+
+# Options for msncam.tcl only (lots of them :()
+option -grabber ""
+option -window ""
+option -socket ""
+option -fd ""
+option -connected_ips ""
+option -server ""
+option -listening ""
+option -ips ""
+option -listening_socket ""
+option -listening_port ""
+option -reflector ""
+option -codec ""
+option -image ""
+option -source ""
+option -grabber ""
+option -grab_proc ""
+option -encoder ""
+
+option -webcam 1
+option -conference 0
+option -authenticated 0
+
 variable xml_needed 1
-variable message ""
 
 constructor {args} {
 
   install p2pSession using P2PSession %AUTO% -application_id $::p2p::ApplicationID::WEBCAM
   $self configurelist $args
   $p2pSession conf2
-  set options(-session_id) [$p2pSession cget -id]
+  set options(-chatid) [$p2pSession cget -peer]
+  set options(-sid) [$p2pSession cget -id]
   ::Event::registerEvent p2pTransreqReceived all [list $self On_transreq_received]
 
 }
 
-method invite { } {
+method invite { producer } {
 
   set answered 1
   set context "{B8BE70DE-E2CA-4400-AE03-88FF85B9F4E8}"
   set context [encoding convertto unicode $context]
-  #@@@@@ TODO: WinWrite
+  if { $producer == 1 } {
+    set euf_guid $::p2p::EufGuid::MEDIA_SESSION
+    ::CAMGUI::InvitationToSendSent $options(-chatid) $options(-sid)
+  } else {
+    set euf_guid $::p2p::EufGuid::MEDIA_RECEIVE_ONLY
+    ::CAMGUI::InvitationToReceiveSent $options(-chatid) $options(-sid)
+  }
+  $self configure -inviter 1 -producer $producer
+  $p2pSession configure -euf_guid $euf_guid
   $p2pSession invite $context
 
 }
@@ -138,6 +205,7 @@ method reject { } {
 
   set answered 1
   $p2pSession Respond 603
+  $self configure -canceled 1
 
 }
 
@@ -148,7 +216,9 @@ method end { } {
   } else {
     set context "\x74\x03\x00\x81"
     $self Close $context
+    ::MSNCAM::CamCanceled $options(-chatid) $self
   }
+  $self configure -canceled 1
   destroy $self
 
 }
@@ -169,13 +239,18 @@ method on_media_session_prepared { session } {
 
 method On_invite_received { message } {
 
-  #@@@@TODO: WinWrite
+  if { [[$message body] cget -euf_guid] == $::p2p::EufGuid::MEDIA_SESSION } {
+    $self configure -producer 1
+  } else {
+    $self configure -producer 0
+  }
+  ::CAMGUI::AcceptOrRefuse $options(-chatid) $self $options(-producer)
 
 }
 
 method On_transreq_received { event msg } {
 
-  if { [[$msg body] cget -session_id] != $options(-session_id) } { return }
+  if { [[$msg body] cget -session_id] != $options(-sid) } { return }
 
   #$self Switch_bridge $msg
   $p2pSession Decline_transreq $msg
@@ -185,6 +260,7 @@ method On_transreq_received { event msg } {
 
 method On_bye_received { message } {
 
+  $self configure -canceled 1
   destroy $self
 
 }
@@ -198,6 +274,7 @@ method On_session_accepted {} {
 method On_session_rejected { message } {
 
   ::Event::fireEvent p2pCallRejected p2pWebcamSession {}
+  $self configure -canceled 1
 
 }
 
@@ -208,20 +285,21 @@ method On_data_blob_received { blob } {
   set data [encoding convertfrom unicode $data]
   set data [string trim $data "\x00"]
 
-  if { $sent_syn == 0 } {
+  if { $send_syn == 0 } {
     #@@@@@@ TODO: really needed?
     $self send_binary_syn
   }
   if { $data == "syn" } {
     $self send_binary_ack
-  } elseif { $data == "ack" && $producer == 1 } {
+  } elseif { $data == "ack" && $options(-producer) == 1 } {
     $self Send_xml
   } elseif { [string first "<producer>" $data] >= 0 || [string first "<viewer>" $data] >= 0 } {
     $self Handle_xml $data
   } elseif { [string first "ReflData" $data] == 0 } {
-    #@@@@@@@ send to aMSN
+    #@@@@@@@@@@@ MSNCAM where?
   } elseif { $data == "receivedViewerData" } {
-    #@@@@@@@@ send to aMSN
+    $self configure -blob_id [$blob cget -blob_id]
+    ::MSNCAM::ConnectSockets $self
   }
 
 }
@@ -232,14 +310,14 @@ method send_data { data } {
   set h3 [ToUnicode "${data}\x00"]
   set h2 [binary format i [string length $syn]]
   set msg "${h1}${h2}${h3}"
-  $session Send_p2p_data $msg
+  $p2pSession Send_p2p_data $msg
 
 }
 
 method send_binary_syn {} {
 
   $self send_data "syn"
-  set sent_syn 1
+  $self configure -send_syn 1
 
 }
 
@@ -258,16 +336,17 @@ method send_binary_viewer_data {} {
 method Send_xml {} {
 
   set xml_needed 0
-  status_log "Sent XML for session $options(-session_id)"
-  set message [WebcamSessionMessage -session $self -id $options(-session_id) -producer $producer]
+  status_log "Sent XML for session $options(-sid)"
+  set message [WebcamSessionMessage -partof $self -id $options(-sid) -producer $options(-producer)]
   $self send_data [$message toString]
 
 }
 
 method Handle_xml { data } {}
 
-  set message [WebcamSessionMessage -body $data -producer $producer]
-  status_log "Received XML for session $options(-session_id)"
+  $self configure -xml $data
+  set message [WebcamSessionMessage -partof $self -body $data -producer $options(-producer)]
+  status_log "Received XML for session $options(-sid)"
   if { $producer == 1 } {
     $self send_binary_viewer_data
   } else {
