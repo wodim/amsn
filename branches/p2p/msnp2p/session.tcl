@@ -368,7 +368,11 @@ method Transreq_accepted { transresp } {
   set port [lindex $ipport 1]
   status_log "Trying $ip $port"
 
-  set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp bridge] -ip $ip -port $port -nonce [$transresp nonce] ]
+  set new_bridge [[$self transport_manager] Get_transport $options(-peer) "" ""] ;# peer_guid and blob not used
+  if { [$new_bridge cget -rating] <= 0 } {
+    puts "Bad rating, making a new one"
+    set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp bridge] -ip $ip -port $port -nonce [$transresp nonce] ]
+  }
   if { $new_bridge == "" || [$new_bridge cget -connected] == 1 } {
     $self Bridge_selected
   } else {

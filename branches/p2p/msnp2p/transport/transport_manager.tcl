@@ -112,8 +112,7 @@ namespace eval ::p2p {
       status_log "$self actually trying to find a transport!"
       set best ""
       foreach transport [$self cget -transports] {
-        status_log "Trying $transport first for peer [$transport cget -peer] vs $peer and [$transport cget -connected]"
-        if { [$transport cget -peer] == $peer && [$transport cget -connected] == 1 } {
+        if { [$transport cget -peer] == $peer } {
           if { $best == "" } {
             set best $transport
           } elseif { [$transport cget -rating] >= [$best cget -rating] } {

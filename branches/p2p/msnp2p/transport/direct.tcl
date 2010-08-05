@@ -32,6 +32,7 @@ snit::type DirectP2PTransport {
   variable data_queue {}
   variable buffer ""
   variable bsize 0
+  variable connecting 0
 
   constructor { args } {
 
@@ -55,8 +56,9 @@ snit::type DirectP2PTransport {
 
   }
 
-  method open { } {
+  method open { {data ""} {callback ""} } {
 
+    set connecting 1
     set ip [$self cget -ip]
     set port [$self cget -port]
     status_log "Trying to connect to $ip $port"
@@ -70,9 +72,9 @@ snit::type DirectP2PTransport {
     }
     status_log "Connected: using $sock"
     fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
-    catch {fileevent $sock writable "$self handshake"}
+    catch {fileevent $sock writable "$self handshake $data $callback"}
     catch {fileevent $sock readable "$self On_data_received $sock"}
-    $self configure -sock $sock
+    $self configure -sock $sock -connected 1
 
   }  
 
@@ -160,6 +162,12 @@ snit::type DirectP2PTransport {
   method Send_data { data callback } {
 
     set sock $options(-sock)
+    if { $sock == "" } {
+      if { $connecting == 0 } {
+        $self open $data $callback
+        return
+      }
+    }
     if { [eof $sock] } { 
       fileevent $sock readable ""
       fileevent $sock writable ""
@@ -167,7 +175,7 @@ snit::type DirectP2PTransport {
     }
     set data_queue [lappend data_queue $data]
     fileevent $sock writable [list $self Write_raw_data $sock ]
-    if { $callback != "" } { eval $callback }
+    if { [string trim $callback] != "" } { eval $callback }
 
   }
 
@@ -205,12 +213,15 @@ snit::type DirectP2PTransport {
 
   }
 
-  method handshake { } {
+  method handshake { {data ""} {callback ""} } {
 
     set sock $options(-sock)
     fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
     $self Send_foo
     $self Send_nonce
+    if { $data != "" } {
+      $self Send_data $data $callback
+    }
 
   }
 
@@ -262,12 +273,43 @@ snit::type DirectP2PTransport {
 
   }
 
+  method On_message_received { message} {
+
+    set version 1
+    set headers [$message headers]
+    foreach {key value} $headers {
+      if { $key == "P2P-Dest" && [string first ";" $key] >= 0 } {
+        set version 2
+        set semic [string first ";" $value]
+        set dest_guid [string range $value [expr {$semic+1}] end]
+        if { $dest_guid != [::config::getGlobalKey machineguid] } {
+          #this chunk is for our other self
+          status_log "Ignoring our other self"
+          return
+        }
+      }
+    }
+    set chunk [MessageChunk parse $version [string range [$message get_body] 0 end-4]]
+    binary scan [string range [$message get_body] end-4 end] iu appid
+    destroy $message
+    $self On_chunk_received [$self cget -peer] [$self cget -peer_guid] $chunk
+
+  }
+
+
   method On_data_received { sock } {
 
     if { [eof $sock] } {
       fileevent $sock readable ""
       $self On_failed
       #close $sock
+      return
+    }
+    set err [fconfigure $sock -error]
+    if { [string trim $err] != "" } {
+      puts "ERROR!!!!!!! $err"
+      $self On_failed
+      fileevent $sock readable ""
       return
     }
 
@@ -318,7 +360,7 @@ snit::type DirectP2PTransport {
       if { $tmpsize > $size } {
         set data [string range $data 0 [expr {$tmpsize - 1}]
         set buffer [string range $data $tmpsize end]
-        puts "Kept buffer: $buffer"
+        status_log "Kept buffer: $buffer"
       }
 
       if { $data == "" } {
@@ -330,6 +372,8 @@ snit::type DirectP2PTransport {
       #@@@@@@@@@@ p2pv2
       set module 1
       set chunk [MessageChunk parse $module $data]
+      status_log "Created chunk $chunk"
+      #puts "Chunk $chunk body: [$chunk cget -body]"
       
       if { $nonce_received == 0 } {
         $self Receive_nonce $chunk
