@@ -10,7 +10,7 @@ snit::type BaseP2PTransport {
   option -connected 1
   option -peer ""
 
-  variable data_blob_queue
+  variable data_blob_queue {}
   variable pending_blob -array {}
   variable pending_ack -array {}
   variable signaling_blobs -array {}

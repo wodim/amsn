@@ -91,7 +91,7 @@ namespace eval ::p2p {
       if { $proto == "" || ![info exists supported_transports($proto)] } {
         return ""
       }
-      status_log "Creating $supported_transports($proto)"
+      puts "Creating $supported_transports($proto)"
       set transport [$supported_transports($proto) %AUTO% -peer $peer -transport_manager $self {*}$args]
       return $transport
 

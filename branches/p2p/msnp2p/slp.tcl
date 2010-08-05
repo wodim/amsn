@@ -469,7 +469,6 @@ snit::type SLPTransferRequestBody {
   option -session_id ""
   option -s_channel_state ""
   option -capabilities_flags ""
-  option -bridges {}
   option -conn_type "Unknown-Connect"
   option -upnp 0
   option -firewall 0
@@ -489,6 +488,13 @@ constructor { args } {
   $SLPMessageBody setHeader Nonce "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
   $SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
 }
+
+method bridges { } {
+
+  return [split [$self get_header "Bridges"] " "]
+
+}
+
 }
 
 snit::type SLPTransferResponseBody {
@@ -546,6 +552,56 @@ constructor { args } {
   $SLPMessageBody setHeader IPv6-global ""
 
 }
+
+method bridge { } {
+
+  return [$self get_header "Bridge"]
+
+}
+
+method listening { } {
+
+  return [$self get_header "Listening"]
+
+}
+
+method nonce { } {
+
+  return [$self get_header "Nonce"]
+
+}
+
+method internal_ips { } {
+
+ return [split [$self get_header "IPv4Internal-Addrs"]]
+
+}
+
+method internal_port { } {
+
+  return [split [$self get_header "IPv4Internal-Port"]]
+
+}
+
+method external_ips { } {
+
+  if { [catch {set returnme [split [$self get_header "IPv4External-Addrs"]]} res] } {
+    return ""
+  }
+    return $returnme
+
+}
+
+method external_port { } {
+
+  if { [catch {set returnme [split [$self get_header "IPv4External-Port"]]} res] } {
+    return ""
+  }
+    return $returnme
+
+}
+
+
 }
 
 snit::type SLPSessionCloseBody {

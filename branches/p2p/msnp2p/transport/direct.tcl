@@ -20,6 +20,7 @@ snit::type DirectP2PTransport {
   option -connect_timeout_src ""
   option -timeout 300000
   option -rating 1
+  option -sock ""
 
   variable pending_size ""
   variable pending_chunk ""
@@ -28,7 +29,6 @@ snit::type DirectP2PTransport {
   variable nonce_sent 0
   variable nonce_received 0
   variable transport
-  variable sock
 
   constructor { args } {
 
@@ -47,24 +47,27 @@ snit::type DirectP2PTransport {
       $self configure -nonce [::p2p::generate_uuid]
     }
 
-    $self configure -peer [lindex $peers 0]
+    #$self configure -peer [lindex $peers 0]
 
   }
 
   method open { } {
 
-    set ip [$self configure -ip]
-    set port [$self configure -port]
+    set ip [$self cget -ip]
+    set port [$self cget -port]
+    puts "Trying to connect to $ip $port"
     $self configure -listening 0
     $self configure -server 0
 
-    if { [catch {set transport [socket -async $ip $port]}] } {
+    if { [catch {set sock [socket -async $ip $port]} res] } {
       $self On_error
-    } else {
-      $self On_connected
+      puts "Error!!!!!!!! $res"
+      return 0
     }
-    fileevent $sock writable "$self handshake"
-    fileevent $sock readable "$self On_data_received $sock"
+    puts "Connected: using $sock"
+    catch {fconfigure $sock -blocking 0 -translation {binary binary} -buffering none}
+    catch {fileevent $sock writable "$self handshake"}
+    catch {fileevent $sock readable "$self On_data_received $sock"}
     $self configure -sock $sock
 
   }  
@@ -134,6 +137,7 @@ snit::type DirectP2PTransport {
 
   method Send_data { data callback } {
 
+    set sock $options(-sock)
     fileevent $sock writable [list puts $sock $data]
     eval $callback
 
@@ -175,16 +179,17 @@ snit::type DirectP2PTransport {
 
   method handshake { } {
 
+    set sock $options(-sock)
     fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
-    $self send_foo
-    $self send_nonce
+    $self Send_foo
+    $self Send_nonce
 
   }
 
   method Send_foo { } {
 
     set foo_sent 1
-    $self Send_data "foo\x00"
+    $self Send_data "foo\x00" ""
 
   }
 
@@ -196,11 +201,11 @@ snit::type DirectP2PTransport {
 
   method Send_nonce { } {
 
-    $self configure -nonce_sent 1
+    set nonce_sent 1
     MessageChunk chunk
     $chunk set_field blob_id [::p2p::generate_id]
     $chunk set_nonce $options(-nonce)
-    $self Send_data [list $chunk toString]
+    $self Send_data [list $chunk toString] ""
 
   }
 
@@ -233,7 +238,11 @@ snit::type DirectP2PTransport {
       $self On_failed
     }
 
-    gets $sockid chunk
+    if { [catch {gets $sock chunk} res] } {
+      status_log "Error reading data: $res"
+      puts $res
+      return
+    }
     #TODO: For p2pv2, read first 4 bytes to get size and stack all packets on pending_chunk until we've reached the size
     if { $nonce_received == 0 } {
       $self Receive_nonce $chunk

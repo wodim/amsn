@@ -119,34 +119,44 @@ method Select_address { transresp } {
 
   set client_ip [::abook::getDemographicField clientip]
   set local_ip [::abook::getDemographicField localip]
-  set port [$transresp cget -external_port]
+  set port [$transresp external_port]
   set ips {}
+  set extern_ips ""
 
-  foreach ip [$transresp cget -external_ips] {
+  foreach ip [$transresp external_ips] {
+    status_log "External IPs are $external_ips"
     if { $ip == $client_ip} { ;#same NAT
       set ips {}
       break
     }
-    lappend $ips [list $ip $port]
+    set ips [lappend $ips [list $ip $port]]
   }
 
   if { [llength $ips] > 0 } {
+    status_log "Selected [lindex $ips 0]"
     return [lindex $ips 0]
   }
 
-  set port [$transresp cget -internal_port]
+  set port [$transresp internal_port]
   set dot [string last "." $local_ip]
   set local_subnet [string range $local_ip 0 $dot]
-  foreach ip [$transresp cget -internal_ips] {
-    set dot [string last "." $ip
+  foreach ip [$transresp internal_ips] {
+    status_log "Trying internal IP $ip"
+    set dot [string last "." $ip]
     set remote_subnet [string range $ip 0 $dot]
     if { $local_subnet == $remote_subnet} {
+      status_log "Selected $ip $port"
       return [list $ip $port]
     }
   }
 
-  #Could not find any valid IPs
-  return {"" ""}
+  #Could not find any valid IPs, so just try something!
+  status_log "No suitable IP found, picking one..."
+  if { [llength [$transresp external_ips]] > 0 } {
+    return [list [lindex [$transresp external_ips] 0] $port]
+  } else {
+    return [list [lindex [$transresp internal_ips] 0] $port]
+  }
 
 }
 
@@ -163,7 +173,7 @@ method Bridge_switched { new_bridge } {
 
 }
 
-method Bridge_failed { new_bridge } {
+method Bridge_failed { event new_bridge } {
 
   $self On_bridge_selected
 
@@ -248,6 +258,9 @@ method On_blob_received { blob } {
       } elseif { [[$msg body] info type] == "::p2p::SLPSessionCloseBody" } {
         status_log "Received a BYE"
         $self On_bye_received $msg
+      } elseif { [[$msg body] info type] == "::p2p::SLPTransferResponseBody" } {
+        status_log "Our transfer request got accepted"
+        $self Transreq_accepted [$msg body]
       } else {
         status_log "$msg : unknown signaling blob"
       }
@@ -263,9 +276,6 @@ method On_blob_received { blob } {
           status_log "Our session got rejected :("
           $self On_session_rejected $msg
         }
-      } elseif { [[$msg body] info type] == "::p2p::SLPTransferResponseBody" } {
-        status_log "Our transfer request got accepted"
-        $self Transreq_accepted [$msg body]
       } else {
         status_log "$msg : unknown response blob"
       }
@@ -291,10 +301,11 @@ method On_data_chunk_transferred { chunk blob } {
 
 method Switch_bridge { transreq } {
 
-  set choices [[$transreq body] cget -bridges]
-  set proto [[$self transport_manager] get_supported_transports $choices]
+  set choices [[$transreq body] bridges]
+  set proto [[$self transport_manager] get_supported_transport $choices]
+  status_log "We will use $proto"
   set new_bridge [[$self transport_manager] create_transport [$self cget -peer] $proto]
-  if { $new_bridge == "" || {$new_bridge connected} == 1 } {
+  if { $new_bridge == "" || [$new_bridge cget -connected] == 1 } {
     $self Bridge_selected
   } else {
     ::Event::registerEvent p2pListening all [list $self Bridge_listening $transreq]
@@ -344,17 +355,20 @@ method On_data_preparation_blob_received { blob } { }
 
 method Transreq_accepted { transresp } {
 
-  if { [$transresp cget -listening] != 1 } {
-    $self Bridge_failed ""
+  if { [$transresp listening] != "true" } {
+    puts "Bridge failed! Listening is [$transresp listening]"
+    $self Bridge_failed "" ""
     return
   }
 
   set ipport [$self Select_address $transresp]
   set ip [lindex $ipport 0]
   set port [lindex $ipport 1]
+  puts "Trying $ip $port"
 
-  set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp cget -bridge] -ip $ip -port $port -nonce [$transresp cget -nonce] ]
-  if { $new_bridge == "" || [$new_bridge connected] } {
+  set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp bridge] -ip $ip -port $port -nonce [$transresp nonce] ]
+  if { $new_bridge == "" || [$new_bridge cget -connected] == 1 } {
+    puts "Bridge $new_bridge but no"
     $self Bridge_selected
   } else {
     ::Event::registerEvent p2pConnected all [list $self Bridge_switched]

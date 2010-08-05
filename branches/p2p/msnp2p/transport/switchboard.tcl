@@ -10,6 +10,7 @@ namespace eval ::p2p {
     option -rating 0
     option -peer_guid ""
     option -switchboard ""
+    option -connected 1
     option -contacts ""
 
     constructor { args } {

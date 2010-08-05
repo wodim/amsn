@@ -252,10 +252,10 @@ method On_session_accepted { event session } {
 
 method On_transreq_received { event msg } {
 
-  if { [[$msg body] cget -session_id] != $options(-id) } { return }
+  if { [$msg cget -call_id] != [$self cget -call_id] } { return }
 
-  #$self Switch_bridge $msg
-  $p2pSession Accept_transreq $msg "SBBridge" 0 [[$msg body] get_header Nonce] [::abook::getDemographicField localip] [config::getKey initialftport] [::abook::getDemographicField clientip] [config::getKey initialftport]
+  $p2pSession Accept_transreq $msg "SBBridge TCPv1" 0 [[$msg body] get_header Nonce] [::abook::getDemographicField localip] [config::getKey initialftport] [::abook::getDemographicField clientip] [config::getKey initialftport]
+  $p2pSession Switch_bridge $msg
 
 }
 
@@ -265,7 +265,9 @@ method On_bridge_selected { event session } {
 
   ::Event::unregisterEvent p2pBridgeSelected all [list $self On_bridge_selected]
 
-  $self Send_p2p_data [file size $options(-localpath)] 1
+  if { [file exists $options(-localpath)] } {
+    $self Send_p2p_data [file size $options(-localpath)] 1
+  }
 
 }
 
