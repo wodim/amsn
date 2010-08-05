@@ -1,4 +1,4 @@
-namespace eval ::p2p::webcam {
+namespace eval ::p2p {
 
 ################################################################################
 #
@@ -45,7 +45,7 @@ method Parse { body } {
 
   set body [string map { "\r\n" "" } $body]
   set options(-body) $body
-  set list [xml2list $xml]
+  set list [xml2list $body]
   if { $options(-producer) == 1 } {
     set type "viewer"
   } else {
@@ -55,8 +55,7 @@ method Parse { body } {
   set rid [GetXmlEntry $list "$type:rid"]
   set options(-session) $session
   set options(-rid) $rid
-  $options(-partof) configure -session $session
-  $options(-partof) configure -rid $rid
+  $options(-partof) configure -session $session -rid $rid -producer $options(-producer)
   ::MSNCAM::ConnectSockets $options(-partof)
 
 }
@@ -70,12 +69,18 @@ method toString { } {
   set options(-session) $session
   set sid $options(-id)
 
+  if { $options(-my_rid) != "" } {
+    set rid $options(-my_rid)
+  } else {
+    set rid $options(-rid)
+  }
+
   set udprid [expr {$rid + 1}]
   set conntype [abook::getDemographicField conntype]
   set listening [abook::getDemographicField listening]
   set producer $options(-producer)
 
-  set port [OpenCamPort [config::getKey initialftport] $session]
+  set port [::MSNCAM::OpenCamPort [config::getKey initialftport] $options(-partof)]
   if { [info exists ::cam_mask_ip] } {
     set clientip $::cam_mask_ip
     set localip $::cam_mask_ip
@@ -92,14 +97,8 @@ method toString { } {
     set end_type "</viewer>"
   }
 
-  if { $options(-my_rid) != "" } {
-    set rid $options(-my_rid)
-  } else {
-    set rid $options(-rid)
-  }
-
   set header "<version>2.0</version><rid>$rid</rid><session>$session</session><ctypes>0</ctypes><cpu>730</cpu>"
-  set tcp "<tcp><tcpport>$port</tcpport>    <tcplocalport>$port</tcplocalport>  <tcpexternalport>$port</tcpexternalport><tcpipaddress1>$clientip</tcpipaddress1>"
+  set tcp "<tcp><tcpport>$port</tcpport><tcplocalport>$port</tcplocalport><tcpexternalport>$port</tcpexternalport><tcpipaddress1>$clientip</tcpipaddress1>"
   if { $clientip != $localip} {
     set tcp "${tcp}<tcpipaddress2>$localip</tcpipaddress2></tcp>"
   } else {
@@ -109,9 +108,11 @@ method toString { } {
   set udp "<udp><udplocalport>$port</udplocalport><udpexternalport>$port</udpexternalport><udpexternalip>$clientip</udpexternalip><a1_port>$port</a1_port><b1_port>$port</b1_port><b2_port>$port</b2_port><b3_port>$port</b3_port><symmetricallocation>0</symmetricallocation><symmetricallocationincrement>0</symmetricallocationincrement><udpinternalipaddress1>$localip</udpinternalipaddress1></udp>"
   set footer "<codec></codec><channelmode>1</channelmode>"
 
-  set xml "${begin_type}${header}${tcp}${footer}${end_type}\r\n\r\n\x00"
+  set xml "${begin_type}${header}${tcp}${footer}${end_type}\r\n\r\n"
 
   return $xml
+
+}
 
 }
 
@@ -123,7 +124,6 @@ delegate method * to p2pSession
 option -producer 0
 
 variable answered 0
-variable send_syn 0
 
 # Options that both we and msncam.tcl use
 option -sid ""
@@ -135,6 +135,7 @@ option -rid ""
 option -chatid ""
 option -inviter 0
 option -blob_id ""
+option -send_syn 0
 
 # Options for msncam.tcl only (lots of them :()
 option -grabber ""
@@ -147,13 +148,14 @@ option -listening ""
 option -ips ""
 option -listening_socket ""
 option -listening_port ""
-option -reflector ""
+option -reflector 0
 option -codec ""
 option -image ""
 option -source ""
 option -grabber ""
 option -grab_proc ""
 option -encoder ""
+option -weblog ""
 
 option -webcam 1
 option -conference 0
@@ -169,22 +171,23 @@ constructor {args} {
   set options(-chatid) [$p2pSession cget -peer]
   set options(-sid) [$p2pSession cget -id]
   ::Event::registerEvent p2pTransreqReceived all [list $self On_transreq_received]
+  ::Event::registerEvent p2pOutgoingSessionTransferCompleted all [list $self On_data_blob_received] ;#not really completed, just a blob received
 
 }
 
-method invite { producer } {
+method invite { } {
 
   set answered 1
   set context "{B8BE70DE-E2CA-4400-AE03-88FF85B9F4E8}"
   set context [encoding convertto unicode $context]
-  if { $producer == 1 } {
+  if { $options(-producer) == 1 } {
     set euf_guid $::p2p::EufGuid::MEDIA_SESSION
-    ::CAMGUI::InvitationToSendSent $options(-chatid) $options(-sid)
+    ::CAMGUI::InvitationToSendSent $options(-chatid) $self
   } else {
     set euf_guid $::p2p::EufGuid::MEDIA_RECEIVE_ONLY
-    ::CAMGUI::InvitationToReceiveSent $options(-chatid) $options(-sid)
+    ::CAMGUI::InvitationToReceiveSent $options(-chatid) $self
   }
-  $self configure -inviter 1 -producer $producer
+  $self configure -inviter 1 -producer $options(-producer)
   $p2pSession configure -euf_guid $euf_guid
   $p2pSession invite $context
 
@@ -193,10 +196,10 @@ method invite { producer } {
 method accept { } {
 
   set answered 1
-  set temp_appid $options(-application_id)
-  set options(-application_id) 0
+  set temp_appid [$self cget -application_id]
+  $self configure -application_id 0
   $p2pSession Respond 200
-  set options(-application_id) $temp_appid
+  $self configure -application_id $temp_appid
   $self send_binary_syn
 
 }
@@ -215,7 +218,7 @@ method end { } {
     $self reject
   } else {
     set context "\x74\x03\x00\x81"
-    $self Close $context
+    $self Close $context ""
     ::MSNCAM::CamCanceled $options(-chatid) $self
   }
   $self configure -canceled 1
@@ -223,7 +226,7 @@ method end { } {
 
 }
 
-destructor { } {
+destructor {
 
   ::Event::fireEvent p2pCallEnded p2pWebcamSession {}
 
@@ -240,9 +243,9 @@ method on_media_session_prepared { session } {
 method On_invite_received { message } {
 
   if { [[$message body] cget -euf_guid] == $::p2p::EufGuid::MEDIA_SESSION } {
-    $self configure -producer 1
-  } else {
     $self configure -producer 0
+  } else {
+    $self configure -producer 1
   }
   ::CAMGUI::AcceptOrRefuse $options(-chatid) $self $options(-producer)
 
@@ -250,7 +253,7 @@ method On_invite_received { message } {
 
 method On_transreq_received { event msg } {
 
-  if { [[$msg body] cget -session_id] != $options(-sid) } { return }
+  if { [$msg cget -call_id] != [$self cget -call_id] } { return }
 
   #$self Switch_bridge $msg
   $p2pSession Decline_transreq $msg
@@ -267,25 +270,30 @@ method On_bye_received { message } {
 
 method On_session_accepted {} {
 
+  #@@@@@@@@@ TODO: WinWrite
   ::Event::fireEvent p2pCallAccepted p2pWebcamSession {}
 
 }
 
 method On_session_rejected { message } {
 
+  #@@@@@@@@@ TODO: WinWrite
   ::Event::fireEvent p2pCallRejected p2pWebcamSession {}
   $self configure -canceled 1
 
 }
 
-method On_data_blob_received { blob } {
+method On_data_blob_received { event session data } {
 
-  set data [$blob cget -data]
+  if { $session != $p2pSession } { return }
+
+  #set data [$blob cget -data]
   set data [string range $data 10 end]
   set data [encoding convertfrom unicode $data]
   set data [string trim $data "\x00"]
+  status_log "Webcam received data $data"
 
-  if { $send_syn == 0 } {
+  if { $options(-send_syn) == 0 } {
     #@@@@@@ TODO: really needed?
     $self send_binary_syn
   }
@@ -298,7 +306,7 @@ method On_data_blob_received { blob } {
   } elseif { [string first "ReflData" $data] == 0 } {
     #@@@@@@@@@@@ MSNCAM where?
   } elseif { $data == "receivedViewerData" } {
-    $self configure -blob_id [$blob cget -blob_id]
+    #$self configure -blob_id [$blob cget -blob_id]
     ::MSNCAM::ConnectSockets $self
   }
 
@@ -308,7 +316,7 @@ method send_data { data } {
 
   set h1 "\x80[binary format s [myRand 0 65000]]\x01\x08\x00"
   set h3 [ToUnicode "${data}\x00"]
-  set h2 [binary format i [string length $syn]]
+  set h2 [binary format i [string length $data]]
   set msg "${h1}${h2}${h3}"
   $p2pSession Send_p2p_data $msg
 
@@ -337,17 +345,17 @@ method Send_xml {} {
 
   set xml_needed 0
   status_log "Sent XML for session $options(-sid)"
-  set message [WebcamSessionMessage -partof $self -id $options(-sid) -producer $options(-producer)]
+  set message [WebcamSessionMessage %AUTO% -partof $self -id $options(-sid) -producer $options(-producer)]
   $self send_data [$message toString]
 
 }
 
-method Handle_xml { data } {}
+method Handle_xml { data } {
 
   $self configure -xml $data
-  set message [WebcamSessionMessage -partof $self -body $data -producer $options(-producer)]
+  set message [WebcamSessionMessage %AUTO% -partof $self -body $data -producer $options(-producer)]
   status_log "Received XML for session $options(-sid)"
-  if { $producer == 1 } {
+  if { $options(-producer) == 1 } {
     $self send_binary_viewer_data
   } else {
     $self Send_xml

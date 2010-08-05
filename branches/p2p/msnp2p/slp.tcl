@@ -503,8 +503,8 @@ snit::type SLPTransferResponseBody {
   option -external_ips ""
   option -external_port ""
   option -session_id ""
-  option -s_channel_state ""
-  option -capabilities_flags ""
+  option -s_channel_state 0
+  option -capabilities_flags 1
   option -conn_type "Port-Restrict-NAT"
 
   variable headers -array {}

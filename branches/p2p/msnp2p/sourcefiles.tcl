@@ -11,7 +11,7 @@ source msnp2p/transport/TLPv1.tcl
 source msnp2p/transport/transport_manager.tcl
 source msnp2p/session.tcl
 source msnp2p/session_manager.tcl
-#source msnp2p/webcam.tcl
+source msnp2p/webcam.tcl
 source msnp2p/msnobject.tcl
 source msnp2p/p2p.tcl
 source msnp2p/filetransfer.tcl

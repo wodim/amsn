@@ -945,6 +945,8 @@ namespace eval ::MSN {
 	  		set ::trsp_mgr [$::ses_mgr transport_manager]
 			set ::ft_handler [::p2p::FileTransferHandler %AUTO% -client $::ses_mgr]
 			$::ses_mgr register_handler $::ft_handler
+			set ::cam_handler [::p2p::WebcamHandler %AUTO% -client $::ses_mgr]
+                        $::ses_mgr register_handler $::cam_handler
                 }
 
 		::plugins::PostEvent OnConnecting evPar

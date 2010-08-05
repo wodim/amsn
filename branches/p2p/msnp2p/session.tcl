@@ -110,7 +110,7 @@ method Accept_transreq { transreq bridge listening nonce local_ip local_port ext
 
 method Decline_transreq { transreq} {
 
-  set body [SLPTransferResponseBody %AUTO% -session_id $options(-id) -peer $options(-peer)]
+  set body [SLPTransferResponseBody %AUTO% -session_id $options(-id)]
   $self Respond_transreq $transreq 603 $body
 
 }
@@ -337,7 +337,6 @@ method On_data_blob_received { blob } {
 
   ::Event::fireEvent p2pOutgoingSessionTransferCompleted p2p $self [$blob cget -data]
   destroy $blob
-  destroy $self
 
 }
 
