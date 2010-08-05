@@ -12,6 +12,7 @@ option -preview ""
 option -data ""
 option -localpath ""
 variable outgoing_sessions -array {}
+variable sender 0
 #TODO: write intermediate files
 
 variable handlers {}
@@ -44,6 +45,7 @@ method invite { filename size } {
   set options(-localpath) $filename
   set options(-size) $size
   set options(-context) [$self build_context]
+  set sender 1
 
   set fd [open $filename r]
   fconfigure $fd -translation {binary binary}
@@ -265,7 +267,7 @@ method On_bridge_selected { event session } {
 
   ::Event::unregisterEvent p2pBridgeSelected all [list $self On_bridge_selected]
 
-  if { [file exists $options(-localpath)] } {
+  if { $sender == 1 && [file exists $options(-localpath)] } {
     $self Send_p2p_data [file size $options(-localpath)] 1
   }
 

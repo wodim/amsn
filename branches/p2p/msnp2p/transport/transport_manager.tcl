@@ -91,7 +91,6 @@ namespace eval ::p2p {
       if { $proto == "" || ![info exists supported_transports($proto)] } {
         return ""
       }
-      puts "Creating $supported_transports($proto)"
       set transport [$supported_transports($proto) %AUTO% -peer $peer -transport_manager $self {*}$args]
       return $transport
 
@@ -117,7 +116,7 @@ namespace eval ::p2p {
         if { [$transport cget -peer] == $peer && [$transport cget -connected] == 1 } {
           if { $best == "" } {
             set best $transport
-          } elseif { [$transport cget -rating] == [$best cget -rating] } {
+          } elseif { [$transport cget -rating] >= [$best cget -rating] } {
             set best $transport
           }
         }
@@ -145,7 +144,7 @@ namespace eval ::p2p {
       if { [lsearch $session_id [array names data_blobs]] >= 0 } {
         set blob $data_blobs($session_id)
         if { [$blob transferred] == 0 } {
-          $blob configure -id [$chunk cget -blob_id]
+          $blob configure -id [$chunk blob_id]
         }
       } else {
         set blob [MessageBlob %AUTO% -application_id [$chunk cget -application_id] -blob_size [$chunk blob_size] -session_id $session_id -blob_id $blob_id]

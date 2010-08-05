@@ -72,7 +72,7 @@ method invite { context {size ""} {peer ""} } {
 method Transreq {} {
 
   set options(-cseq) 0
-  set body [SLPTransferRequestBody %AUTO% -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -bridges [[$self transport_manager] supported_transports] -conn_type [::abook::getDemographicField conntype]]
+  set body [SLPTransferRequestBody %AUTO% -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -conn_type [::abook::getDemographicField conntype]]
   set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource [concat MSNMSGR:$options(-peer)] -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
   $msg conf2
   $msg setBody $body
@@ -167,7 +167,7 @@ method Bridge_listening { new_bridge external_ip external_port transreq } {
 
 }
 
-method Bridge_switched { new_bridge } {
+method Bridge_switched { event new_bridge } {
 
   $self On_bridge_selected
 
@@ -276,6 +276,9 @@ method On_blob_received { blob } {
           status_log "Our session got rejected :("
           $self On_session_rejected $msg
         }
+      } elseif { [[$msg body] info type] == "::p2p::SLPTransferResponseBody" } {
+        status_log "Our transfer request got accepted"
+        $self Transreq_accepted [$msg body]
       } else {
         status_log "$msg : unknown response blob"
       }
@@ -356,7 +359,6 @@ method On_data_preparation_blob_received { blob } { }
 method Transreq_accepted { transresp } {
 
   if { [$transresp listening] != "true" } {
-    puts "Bridge failed! Listening is [$transresp listening]"
     $self Bridge_failed "" ""
     return
   }
@@ -364,11 +366,10 @@ method Transreq_accepted { transresp } {
   set ipport [$self Select_address $transresp]
   set ip [lindex $ipport 0]
   set port [lindex $ipport 1]
-  puts "Trying $ip $port"
+  status_log "Trying $ip $port"
 
   set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp bridge] -ip $ip -port $port -nonce [$transresp nonce] ]
   if { $new_bridge == "" || [$new_bridge cget -connected] == 1 } {
-    puts "Bridge $new_bridge but no"
     $self Bridge_selected
   } else {
     ::Event::registerEvent p2pConnected all [list $self Bridge_switched]

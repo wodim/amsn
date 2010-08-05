@@ -84,7 +84,9 @@ namespace eval ::p2p {
 
     method append_chunk { chunk} {
 
-      if { ($options(-session_id) != [$chunk session_id]) || ($options(-id) != [$chunk blob_id]) } { return }
+      if { ($options(-session_id) != [$chunk session_id]) } { 
+        return 
+      }
       set body [$chunk cget -body]
       if { $options(-fd) == "" } { ;#Data in memory
         set options(-data) [join [list $options(-data) $body] ""]

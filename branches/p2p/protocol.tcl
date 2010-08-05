@@ -8106,11 +8106,11 @@ proc FromUnicode { text } {
 }
 
 proc int2word { int1 int2 } {
-	if { $int2>0} {
-		status_log "Warning!!!! int was a 64-bit integer!! Ignoring for tcl/tk 8.3 compatibility!!!!\n" white
-	}
-	return $int1
-	#return [expr $int2 * 4294967296 + $int1]
+	#if { $int2>0} {
+	#	status_log "Warning!!!! int was a 64-bit integer!! Ignoring for tcl/tk 8.3 compatibility!!!!\n" white
+	#}
+	#return $int1
+	return [expr $int2 * 4294967296 + $int1]
 }
 
 namespace eval ::MSN6FT {

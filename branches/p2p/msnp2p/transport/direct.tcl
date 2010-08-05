@@ -29,11 +29,15 @@ snit::type DirectP2PTransport {
   variable nonce_sent 0
   variable nonce_received 0
   variable transport
+  variable data_queue {}
+  variable buffer ""
+  variable bsize 0
 
   constructor { args } {
 
-    install BaseP2PTransport using BaseP2PTransport %AUTO%
+    install BaseP2PTransport using BaseP2PTransport %AUTO% -transport $self
     $self configurelist $args
+    $BaseP2PTransport conf2
 
     if { [$self cget -ip] == "" } {
       $self configure -ip [::abook::getDemographicField localip]
@@ -55,17 +59,17 @@ snit::type DirectP2PTransport {
 
     set ip [$self cget -ip]
     set port [$self cget -port]
-    puts "Trying to connect to $ip $port"
+    status_log "Trying to connect to $ip $port"
     $self configure -listening 0
     $self configure -server 0
 
     if { [catch {set sock [socket -async $ip $port]} res] } {
       $self On_error
-      puts "Error!!!!!!!! $res"
+      status_log "Error!!!!!!!! $res"
       return 0
     }
-    puts "Connected: using $sock"
-    catch {fconfigure $sock -blocking 0 -translation {binary binary} -buffering none}
+    status_log "Connected: using $sock"
+    fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
     catch {fileevent $sock writable "$self handshake"}
     catch {fileevent $sock readable "$self On_data_received $sock"}
     $self configure -sock $sock
@@ -78,7 +82,7 @@ snit::type DirectP2PTransport {
     $self configure -listening 0
     set sock [$self Open_listener]
     $self configure -sock $sock
-    fconfigure $sock -blocking 0
+    fconfigure $sock -blocking 0 -translation {binary binary}
 
   }
 
@@ -131,15 +135,39 @@ snit::type DirectP2PTransport {
 
   method Send_chunk { peer peer_guid chunk } {
 
-    $self Send_data [$chunk toString] [list $self On_chunk_sent $chunk] 
+    $self Send_data [$chunk toString] ""
+    #@@@@@@@@ Cannot find out how to access blob here, so not calling event thatwill help FTProgress
+
+  }
+
+  method Write_raw_data { sock } {
+
+    if { [eof $sock] } { 
+      fileevent $sock readable ""
+      fileevent $sock writable ""
+      return
+    }
+    set data [lindex $data_queue 0]
+    puts -nonewline $sock [binary format i [string length $data]]$data
+    set data_queue [lreplace $data_queue 0 0]
+    fileevent $sock writable ""
+    if { [llength $data_queue] > 0 } {
+      fileevent $sock writable [list $self Write_raw_data $sock ]
+    }
 
   }
 
   method Send_data { data callback } {
 
     set sock $options(-sock)
-    fileevent $sock writable [list puts $sock $data]
-    eval $callback
+    if { [eof $sock] } { 
+      fileevent $sock readable ""
+      fileevent $sock writable ""
+      return
+    }
+    set data_queue [lappend data_queue $data]
+    fileevent $sock writable [list $self Write_raw_data $sock ]
+    if { $callback != "" } { eval $callback }
 
   }
 
@@ -169,7 +197,7 @@ snit::type DirectP2PTransport {
     set ip $options(-ip)
     set port $options(-port)
     set peer $options(-peer)
-    puts "$peer ($hostaddr:$hostport) connected to $ip:$port"
+    status_log "$peer ($hostaddr:$hostport) connected to $ip:$port"
     fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
     fileevent $sock readable [list $self On_data_received $sock]
     catch { close $options(-sock) }
@@ -202,10 +230,12 @@ snit::type DirectP2PTransport {
   method Send_nonce { } {
 
     set nonce_sent 1
-    MessageChunk chunk
+    #@@@@@@@@@@@@@ p2pv2
+    set module 1
+    set chunk [::p2pv${module}::MessageChunk %AUTO%]
     $chunk set_field blob_id [::p2p::generate_id]
     $chunk set_nonce $options(-nonce)
-    $self Send_data [list $chunk toString] ""
+    $self Send_data [$chunk toString] ""
 
   }
 
@@ -216,9 +246,9 @@ snit::type DirectP2PTransport {
     }
 
     set nonce [string toupper [$chunk get_nonce]]
-    puts "Received nonce $nonce"
+    set nonce \{$nonce\}
+    status_log "Received nonce $nonce"
     if { [string toupper $options(-nonce)] != $nonce } {
-      puts "Received log $nonce doesn't match local $options(-nonce)!"
       $self On_failed
       return
     }
@@ -235,22 +265,81 @@ snit::type DirectP2PTransport {
   method On_data_received { sock } {
 
     if { [eof $sock] } {
+      fileevent $sock readable ""
       $self On_failed
-    }
-
-    if { [catch {gets $sock chunk} res] } {
-      status_log "Error reading data: $res"
-      puts $res
+      #close $sock
       return
     }
-    #TODO: For p2pv2, read first 4 bytes to get size and stack all packets on pending_chunk until we've reached the size
-    if { $nonce_received == 0 } {
-      $self Receive_nonce $chunk
-    } elseif { [$chunk body] == "\x00\x00\x00\x00" } {
-      #puts "Ignoring 0000 chunk"
-    } else {
-      #puts "Received chunk"
-      $self On_chunk_received $chunk
+
+    #set size $bsize
+    #set data $buffer
+    set size ""
+    set data ""
+    set tmpsize 0
+    #if { $size == "" || $size == 0 } {
+      set size ""
+      while { $tmpsize < 4 && ![eof $sock] } {
+        update idletasks
+        set tmpdata [read $sock [expr {4 - $tmpsize}]]
+        append size $tmpdata
+        set tmpsize [string length $size]
+      }
+  
+      if {$size == "" && [eof $sock] } {
+        status_log "FT Socket $sock closed\n"
+        close $sock
+        return
+      }
+  
+      if { $size == "" } {
+        update idletasks
+        return
+      }
+  
+      binary scan $size i size
+  
+      set bsize $size
+      set data ""
+  
+   #}
+
+    #We get the data
+    set tmpsize [string length $data]
+
+    while { $tmpsize < $size } {
+      set tmpdata [read $sock [expr {$size - $tmpsize}]]
+      append data $tmpdata
+      set tmpsize [string length $data]
+    }
+ 
+    if {$tmpsize >= $size } {
+      #Data is complete we remove it from the buffer
+      status_log "Received data of [string length $data] bytes"
+      if { $tmpsize > $size } {
+        set data [string range $data 0 [expr {$tmpsize - 1}]
+        set buffer [string range $data $tmpsize end]
+        puts "Kept buffer: $buffer"
+      }
+
+      if { $data == "" } {
+        update idletasks
+        return
+      }
+    
+   
+      #@@@@@@@@@@ p2pv2
+      set module 1
+      set chunk [MessageChunk parse $module $data]
+      
+      if { $nonce_received == 0 } {
+        $self Receive_nonce $chunk
+      } elseif { [$chunk cget -body] == "\x00\x00\x00\x00" } {
+        status_log "Ignoring 0000 chunk"
+      } else {
+        $self On_chunk_received $options(-peer) "" $chunk
+      }
+      set size 0
+      set buffer ""
     }
 
   }

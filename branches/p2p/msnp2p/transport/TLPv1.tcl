@@ -46,15 +46,12 @@ namespace eval ::p2pv1 {
 
     typemethod parse { data} {
 
-     set ret [binary scan $data iiiiiiiiiiii session_id blob_id cOffset1 cOffset2 cTotalDataSize1 cTotalDataSize2 chunk_size flags dw1 dw2 cAckSize1 cAckSize2]
+     if { [string length $data] == 0 } { return [TLPHeader %AUTO%]}
+     #set ret [binary scan $data iiwwiiiiw session_id blob_id blob_offset blob_size chunk_size flags dw1 dw2 qw1]
+     set ret [binary scan $data iiiiiiiiiiw session_id blob_id cOffset1 cOffset2 cTotalDataSize1 cTotalDataSize2 chunk_size flags dw1 dw2 qw1]
      set blob_offset [int2word $cOffset1 $cOffset2]
      set blob_size [int2word $cTotalDataSize1 $cTotalDataSize2]
-     set qw1 [int2word $cAckSize1 $cAckSize2]
-     if {$ret != 12} {
-       error "Not enough data to scan header"
-     }
      
-     status_log "Fields are: $session_id , $blob_id , $blob_offset , $blob_size , $chunk_size , $flags , $dw1 , $dw2 , $qw1 "
       return [TLPHeader %AUTO% -session_id $session_id -blob_id $blob_id -blob_offset $blob_offset -blob_size $blob_size -chunk_size $chunk_size -flags $flags -dw1 $dw1 -dw2 $dw2 -qw1 $qw1]
 
     }
@@ -66,7 +63,7 @@ namespace eval ::p2pv1 {
       append ret [binword $options(-blob_offset)]
       append ret [binword $options(-blob_size)]
       append ret [binary format iiii $options(-chunk_size) $options(-flags) $options(-dw1) $options(-dw2)]
-      append ret [binword $options(-qw1)]
+      append ret [binary format w $options(-qw1)]
       return $ret
 
     }
@@ -228,12 +225,17 @@ namespace eval ::p2pv1 {
 
     method get_nonce {} {
 
-      return ::msn::GetNonceFromData [$self cget -body]
+      set data [$options(-header) toString]
+      set bnonce [string range $data 32 end]
+      binary scan $bnonce H2H2H2H2H2H2H2H2H4H* n1 n2 n3 n4 n5 n6 n7 n8 n9 n10
+      set nonce [string toupper "$n4$n3$n2$n1-$n6$n5-$n8$n7-$n9-$n10"]
+      return $nonce
 
     }
 
     method set_nonce { nonce} {
 
+       set nonce [string map {"{" "" "}" ""} $nonce]
        set n1 [string range $nonce 6 7]
        set n2 [string range $nonce 4 5]
        set n3 [string range $nonce 2 3]
@@ -249,10 +251,16 @@ namespace eval ::p2pv1 {
 
        set bnonce [binary format H2H2H2H2H2H2H2H2H4H* $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10]
 
-       $self set_field dw1 [binary format H2H2H2H2 $n1 $n2 $n3 $n4]
-       $self set_field dw2 [binary format H2H2H2H2 $n5 $n6 $n7 $n8]
-       $self set_field qw1 [binary format H4H* $n9 $n10]
-       $self set_field flags [expr {$self get_field flags | $::p2pv1::TLPFlag::KEY}]
+       set bdw1 [binary format H2H2H2H2 $n1 $n2 $n3 $n4]
+       binary scan $bdw1 iu dw1
+       set bdw2 [binary format H2H2H2H2 $n5 $n6 $n7 $n8]
+       binary scan $bdw2 iu dw2
+       set bqw1 [binary format H4H* $n9 $n10]
+       binary scan $bqw1 wu qw1
+       $self set_field dw1 $dw1
+       $self set_field dw2 $dw2
+       $self set_field qw1 $qw1
+       $self set_field flags [expr {[$self get_field flags] | $::p2pv1::TLPFlag::KEY}]
 
     }
 
