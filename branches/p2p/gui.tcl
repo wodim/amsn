@@ -1011,7 +1011,7 @@ proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememb
 		set user_login [$msnobj cget -creator]
 		set type [$msnobj cget -type]
 		set data [$msnobj cget -data]
-		set filename [$msnobj cget -location]
+		set filename [::MSNP2P::GetFilenameFromMSNOBJ [$msnobj toString]]
 		status_log "Got data from $user_login in $filename"
 		if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE } {
 			set filename [::abook::getContactData $user_login displaypicfile ""]
@@ -1032,7 +1032,9 @@ proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememb
 			::Event::fireEvent contactDPChange protocol $user_login
 		} elseif { $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } {
 			set dot [string first ".tmp" $filename]
-			set filename [string range $filename 0 [expr { $dot - 1} ] ]
+			if { $dot >= 0 } {
+				set filename [string range $filename 0 [expr { $dot - 1} ] ]
+			}
 			status_log "Incoming emoticon"
 			create_dir [file join $HOME smileys cache]
 			set fd [open "[file join $HOME smileys cache ${filename}.png]" w]
@@ -1049,6 +1051,17 @@ proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememb
 				::smiley::resizeCustomSmiley emoticonCustom_std_${filename}
 			}
 			if { $scrolling } { ::ChatWindow::Scroll $tw }
+		} elseif { $type == $::p2p::MSNObjectType::WINK } {
+			status_log "Incoming wink"
+			set fd [open "[file join $HOME winks cache ${filename}.cab]" w]
+			if {$fd != "" } {
+                        	fconfigure $fd -translation {binary binary}
+				puts -nonewline $fd $data
+				close $fd
+				set evPar(chatid) $user_login
+				set evPar(filename) [file join $HOME winks cache ${filename}.cab]
+				::plugins::PostEvent WinkReceived evPar
+			}
 		}
 
 	}

@@ -61,10 +61,10 @@ method request { msnobj callback {errback ""} {peer ""}} {
     set application_id $::p2p::ApplicationID::CUSTOM_EMOTICON_TRANSFER
   } elseif { [$msnobj cget -type] == $::p2p::MSNObjectType::DISPLAY_PICTURE } {
     set application_id $::p2p::ApplicationID::DISPLAY_PICTURE_TRANSFER
-#  } elseif { [$msnobj cget -type] == $::p2p::MSNObjectType::WINK } {
-#    set application_id $::p2p::ApplicationID::WINK_TRANSFER
-#  } elseif { [$msnobj cget -type] == $::p2p::MSNObjectType::VOICE_CLIP } {
-#    set application_id $::p2p::ApplicationID::VOICE_CLIP_TRANSFER
+  } elseif { [$msnobj cget -type] == $::p2p::MSNObjectType::WINK } {
+    set application_id $::p2p::ApplicationID::WINK_TRANSFER
+  } elseif { [$msnobj cget -type] == $::p2p::MSNObjectType::VOICE_CLIP } {
+    set application_id $::p2p::ApplicationID::VOICE_CLIP_TRANSFER
   } else {
     return ""
   }

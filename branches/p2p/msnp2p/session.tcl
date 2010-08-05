@@ -308,14 +308,14 @@ method Request_bridge { } {
 
   set bridge [[$self transport_manager] find_transport [$self cget -peer]]
   if { $options(-partof) == "" || [$options(-partof) info type] != "::p2p::FileTransferSession" } { ;#MSNObj exists
-    set msnobj [::p2p::MSNObject parse [string trim $options(-context)]]
-    set type [$msnobj cget -type]
-    if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE || $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } { ;#We MUST request a direct connection for files but not for DPs
-      if { [info exists bridge] && $bridge != "" } { ;#Just get an existing bridge
+    #set msnobj [::p2p::MSNObject parse [string trim $options(-context)]]
+    #set type [$msnobj cget -type]
+    #if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE || $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } { ;#We MUST request a direct connection for files but not for DPs
+    #  if { [info exists bridge] && $bridge != "" } { ;#Just get an existing bridge
         $self On_bridge_selected
 	return
-      }
-    }
+    #  }
+    #}
   }
   if { [info exists bridge] && $bridge != "" && [$bridge rating] > 0 } {
     $self On_bridge_selected

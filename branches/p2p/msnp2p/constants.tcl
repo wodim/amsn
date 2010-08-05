@@ -89,6 +89,8 @@ namespace eval ::p2p::MSNObjectType {
 }
 
 namespace eval ::p2p::ApplicationID {
+  set WINK_TRANSFER 1
+  set VOICE_CLIP_TRANSFER 1
   set FILE_TRANSFER 2
   set CUSTOM_EMOTICON_TRANSFER 11
   set DISPLAY_PICTURE_TRANSFER 12
