@@ -1062,6 +1062,16 @@ proc customMessageBox { message type {icon ""} {title ""} {parent ""} {askRememb
 				set evPar(filename) [file join $HOME winks cache ${filename}.cab]
 				::plugins::PostEvent WinkReceived evPar
 			}
+		}  elseif { $type == $::p2p::MSNObjectType::VOICE_CLIP } {
+			status_log "Incoming voice clip"
+			create_dir [file join $HOME voiceclips]
+			create_dir [file join $HOME voiceclips cache]
+			set fd [open "[file join $HOME voiceclips cache ${filename}.wav]" w]
+			fconfigure $fd -translation {binary binary}
+puts -nonewline $fd $data
+			close $fd
+			set file [file join $HOME voiceclips cache ${filename}.wav]
+			::ChatWindow::ReceivedVoiceClip $user_login $file
 		}
 
 	}

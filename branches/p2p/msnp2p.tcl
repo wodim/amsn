@@ -362,6 +362,13 @@ namespace eval ::MSNP2P {
 	proc SendVoiceClip {chatid file } {
 		set sbn [::MSN::SBFor $chatid]
 		set msnobj [create_msnobj [::config::getKey login] 11 $file]
+		set fd [open $file r]
+		fconfigure $fd -translation {binary binary}
+		set data [read $fd]
+		close $fd
+                set p2pmsnobj [::p2p::MSNObject parse $msnobj]
+                $p2pmsnobj configure -data $data
+                $::obj_stor publish $p2pmsnobj
 		
 		set msg "MIME-Version: 1.0\r\nContent-Type: text/x-msnmsgr-datacast\r\n\r\nID: 3\r\nData: $msnobj\r\n\r\n"
 		set msg_len [string length $msg]
