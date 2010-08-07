@@ -120,13 +120,13 @@ namespace eval ::p2pv1 {
 
     method ack_id {} {
 
-      return [concat [$self get_field blob_id][$self get_field dw1]]
+      return "[$self get_field blob_id][$self get_field dw1]"
 
     }
 
     method acked_id {} {
 
-      return [concat [$self get_field dw1][$self get_field dw2]]
+      return "[$self get_field dw1][$self get_field dw2]"
 
     }
 

@@ -62,7 +62,7 @@ method invite { context {size ""} {peer ""} } {
 
   set body [SLPSessionRequestBody %AUTO% -euf_guid $options(-euf_guid) -app_id $options(-application_id) -context $context -session_id $options(-id)]
   $body conf2
-  set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource [concat MSNMSGR:$options(-peer)] -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
+  set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource "MSNMSGR:$options(-peer)" -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
   $msg conf2
   $msg setBody $body
   $self Send_p2p_data $msg
@@ -73,7 +73,7 @@ method Transreq {} {
 
   set options(-cseq) 0
   set body [SLPTransferRequestBody %AUTO% -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -conn_type [::abook::getDemographicField conntype]]
-  set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource [concat MSNMSGR:$options(-peer)] -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
+  set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource "MSNMSGR:$options(-peer)" -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
   $msg conf2
   $msg setBody $body
   $self Send_p2p_data $msg

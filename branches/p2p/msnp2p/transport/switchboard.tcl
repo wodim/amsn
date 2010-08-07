@@ -52,8 +52,8 @@ namespace eval ::p2p {
       if { [$self version] == 1 } {
         $sendme add_header P2P-Dest $peer
       } else {
-        $sendme add_header P2P-Src [concat [::abook::getPersonal login]\;[::config::getGlobalKey machineguid]]
-        $sendme add_header P2P-Dest [concat $peer\;$peer_guid]\n]
+        $sendme add_header P2P-Src "[::abook::getPersonal login]\;[::config::getGlobalKey machineguid]"
+        $sendme add_header P2P-Dest "$peer\;$peer_guid"
       }  
       #binary scan [$chunk cget -application_id] iu appid
       set body [$chunk toString]

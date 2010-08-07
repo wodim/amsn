@@ -62,7 +62,7 @@ typemethod parse { xml_data } {
 }
 typemethod retrieve { elem data } {
 
-  set idx [lsearch $elem [concat $data=*]]
+  set idx [lsearch $elem "$data=*"]
   if { $idx < 0 } { return "" }
   set ret [lindex $elem $idx]
   set ret [string range $ret [expr { [string length $data]+1}] end]
