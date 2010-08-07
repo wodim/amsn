@@ -299,7 +299,7 @@ namespace eval ::p2pv1 {
 
     method toString { } {
 
-      return [concat [$options(-header) toString]$options(-body)]
+      return "[$options(-header) toString]$options(-body)"
 
     }
 
