@@ -17,6 +17,13 @@ namespace eval ::p2p {
       set supported_transports(TCPv1) DirectP2PTransport
       #@@@@@@@@@@@@@@@@@@ register NS
       #$self configure -uun_transport [list NotificationP2PTransport [$self cget -client] $self]
+      set trsign {}
+      set trsign [lappend trsign p2pChunkReceived On_chunk_received]
+      set trsign [lappend trsign p2pBlobSent On_blob_sent]
+      set trsign [lappend trsign p2pBlobReceived On_blob_received]
+      foreach {event callback} $trsign {
+        ::Event::registerEvent $event all [list $self $callback]
+      }
 
     }
 
@@ -49,9 +56,9 @@ namespace eval ::p2p {
       } else {
         set trsign {}
       }
-      set trsign [lappend trsign p2pChunkReceived On_chunk_received]
-      set trsign [lappend trsign p2pBlobSent On_blob_sent]
-      set trsign [lappend trsign p2pBlobReceived On_blob_received]
+      #set trsign [lappend trsign p2pChunkReceived On_chunk_received]
+      #set trsign [lappend trsign p2pBlobSent On_blob_sent]
+      #set trsign [lappend trsign p2pBlobReceived On_blob_received]
       foreach {event callback} $trsign {
         ::Event::registerEvent $event all [list $self $callback]
       }
