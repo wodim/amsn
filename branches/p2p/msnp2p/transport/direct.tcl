@@ -147,7 +147,6 @@ snit::type DirectP2PTransport {
   method Send_chunk { peer peer_guid chunk } {
 
     $self Send_data [$chunk toString] ""
-    #@@@@@@@@ Cannot find out how to access blob here, so not calling event thatwill help FTProgress
 
   }
 

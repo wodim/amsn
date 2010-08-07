@@ -80,7 +80,7 @@ namespace eval ::p2p {
 
       set signals $transport_signals($transport)
       foreach {event callback} $signals {
-        ::Event::unregisterEvent $event p2pTransportManager $callback
+        ::Event::unregisterEvent $event p2pTransportManager [list $self callback]
       }
 
       array unset transport_signals $transport
