@@ -348,7 +348,6 @@ method Handle_message { peer guid message } {
 
   ::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
   set incoming_sessions($session) {p2pIncomingCompleted Incoming_session_transfer_completed}
-  #@@@@ TODO: print data on aMSN CW, wait until they are accepted
   ::amsn::GotFileTransferRequest $peer ${peer}\;$guid $session
   return $session
 
@@ -373,6 +372,7 @@ method request { peer filename size {callback ""} {errback ""} } {
 method Outgoing_session_transfer_completed { event session data } {
 
   status_log "Outgoing session transfer completed!!!!!!!"
+  if { ![info exists outgoing_sessions($session) } { return }
   set lst $outgoing_sessions($session)
   set handles [lindex $lst 0]
   set callback [lindex $lst 1]
@@ -393,6 +393,7 @@ method Outgoing_session_transfer_completed { event session data } {
 
 method Incoming_session_transfer_completed { event session data } {
 
+  if { ![info exists incoming_sessions($session) } { return }
   set {event callback} $incoming_sessions($session)
   ::Event::unregisterEvent $event all [list $self $callback]
   array unset incoming_sessions $session

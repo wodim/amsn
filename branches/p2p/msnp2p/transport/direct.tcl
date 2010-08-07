@@ -9,7 +9,7 @@ snit::type DirectP2PTransport {
   option -protocol "TCPv1"
   option -client ""
   option -peer ""
-  option -peerguid ""
+  option -peer_guid ""
   option -ip ""
   option -port ""
   option -nonce ""
@@ -57,6 +57,16 @@ snit::type DirectP2PTransport {
 
   }
 
+  method die { {message ""} } {
+
+    puts "/me is 57005"
+    catch { close $options(-sock) }
+    [$self cget -transport_manager] Unregister_transport $self
+    status_log "Error connecting to $options(-ip) $options(-port) : $message"
+    destroy $self
+
+  }
+
   method open { {data ""} {callback ""} } {
 
     set connecting 1
@@ -96,9 +106,7 @@ snit::type DirectP2PTransport {
     }
 
     $self Remove_connect_timeout
-
-    set trsp [$self cget -transport_manager]
-    list $trsp unregister_transport $self
+    $self die
 
   }
 
@@ -145,9 +153,10 @@ snit::type DirectP2PTransport {
 
   method Write_raw_data { sock } {
 
-    if { [eof $sock] } { 
-      catch {close $sock}
-      return
+    set err [string trim [fconfigure $sock -error]]
+    if { [eof $sock] || $err != "" } { 
+      $self On_failed
+      $self die
     }
     set data [lindex $data_queue 0]
     puts -nonewline $sock [binary format i [string length $data]]$data
@@ -163,14 +172,16 @@ snit::type DirectP2PTransport {
 
     set sock $options(-sock)
     if { $sock == "" } {
+      puts "No sock"
       if { $connecting == 0 } {
         $self open $data $callback
         return
       }
     }
-    if { [eof $sock] } { 
-      catch {close $sock}
-      return
+    set err [string trim [fconfigure $sock -error]]
+    if { [eof $sock] || $err != "" } {
+      $self On_failed
+      $self die
     }
     set data_queue [lappend data_queue $data]
     fileevent $sock writable [list $self Write_raw_data $sock ]
@@ -298,18 +309,10 @@ snit::type DirectP2PTransport {
 
   method On_data_received { sock } {
 
-    if { [eof $sock] } {
+    set err [string trim [fconfigure $sock -error]]
+    if { [eof $sock] || $err != "" } {
       $self On_failed
-      catch {close $sock}
-      return
-    }
-    set err [fconfigure $sock -error]
-    if { [string trim $err] != "" } {
-      puts "ERROR!!!!!!! $err"
-      $self On_failed
-      fileevent $sock readable ""
-      catch {close $sock}
-      return
+      $self die
     }
 
     #set size $bsize
@@ -328,8 +331,7 @@ snit::type DirectP2PTransport {
   
       if {$size == "" && [eof $sock] } {
         status_log "FT Socket $sock closed\n"
-        close $sock
-        return
+        $self die
       }
   
       if { $size == "" } {

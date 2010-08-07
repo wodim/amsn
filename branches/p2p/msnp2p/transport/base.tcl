@@ -33,9 +33,10 @@ snit::type BaseP2PTransport {
 
   }
 
-  destructor { } {
+  destructor {
 
-    $options(-transport_manager) Unregister_transport $self
+    puts "Destroying $self"
+    $options(-transport_manager) Unregister_transport $options(-transport)
 
   }
 
