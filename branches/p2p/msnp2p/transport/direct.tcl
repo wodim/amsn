@@ -9,6 +9,7 @@ snit::type DirectP2PTransport {
   option -protocol "TCPv1"
   option -client ""
   option -peer ""
+  option -peerguid ""
   option -ip ""
   option -port ""
   option -nonce ""
@@ -61,7 +62,7 @@ snit::type DirectP2PTransport {
     set connecting 1
     set ip [$self cget -ip]
     set port [$self cget -port]
-    status_log "Trying to connect to $ip $port"
+    puts "Trying to connect to $ip $port"
     $self configure -listening 0
     $self configure -server 0
 
@@ -70,7 +71,7 @@ snit::type DirectP2PTransport {
       status_log "Error!!!!!!!! $res"
       return 0
     }
-    status_log "Connected: using $sock"
+    puts "Connected: using $sock"
     fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
     catch {fileevent $sock writable "$self handshake $data $callback"}
     catch {fileevent $sock readable "$self On_data_received $sock"}
@@ -145,8 +146,7 @@ snit::type DirectP2PTransport {
   method Write_raw_data { sock } {
 
     if { [eof $sock] } { 
-      fileevent $sock readable ""
-      fileevent $sock writable ""
+      catch {close $sock}
       return
     }
     set data [lindex $data_queue 0]
@@ -169,8 +169,7 @@ snit::type DirectP2PTransport {
       }
     }
     if { [eof $sock] } { 
-      fileevent $sock readable ""
-      fileevent $sock writable ""
+      catch {close $sock}
       return
     }
     set data_queue [lappend data_queue $data]
@@ -205,7 +204,7 @@ snit::type DirectP2PTransport {
     set ip $options(-ip)
     set port $options(-port)
     set peer $options(-peer)
-    status_log "$peer ($hostaddr:$hostport) connected to $ip:$port"
+    puts "$peer ($hostaddr:$hostport) connected to $ip:$port"
     fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
     fileevent $sock readable [list $self On_data_received $sock]
     catch { close $options(-sock) }
@@ -300,9 +299,8 @@ snit::type DirectP2PTransport {
   method On_data_received { sock } {
 
     if { [eof $sock] } {
-      fileevent $sock readable ""
       $self On_failed
-      #close $sock
+      catch {close $sock}
       return
     }
     set err [fconfigure $sock -error]
@@ -310,6 +308,7 @@ snit::type DirectP2PTransport {
       puts "ERROR!!!!!!! $err"
       $self On_failed
       fileevent $sock readable ""
+      catch {close $sock}
       return
     }
 

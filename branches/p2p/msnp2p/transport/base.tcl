@@ -33,6 +33,12 @@ snit::type BaseP2PTransport {
 
   }
 
+  destructor { } {
+
+    $options(-transport_manager) Unregister_transport $self
+
+  }
+
   method version { } {
     #@@@@@@@@@@@@@@@@@ amsn doesn't support p2pv2 yet.
     #now, about finding whether remote peer supports p2pv2... TODO later
