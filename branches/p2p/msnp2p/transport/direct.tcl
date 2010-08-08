@@ -59,7 +59,7 @@ snit::type DirectP2PTransport {
 
   method die { {message ""} } {
 
-    puts "/me is 57005"
+    puts "/me is 57005: $message"
     catch { close $options(-sock) }
     [$self cget -transport_manager] Unregister_transport $self
     status_log "Error connecting to $options(-ip) $options(-port) : $message"
@@ -75,6 +75,7 @@ snit::type DirectP2PTransport {
     puts "Trying to connect to $ip $port"
     $self configure -listening 0
     $self configure -server 0
+    set foo_sent 1
 
     if { [catch {set sock [socket -async $ip $port]} res] } {
       $self On_error
@@ -91,8 +92,10 @@ snit::type DirectP2PTransport {
 
   method listen { } {
 
+    puts "Listening"
     $self configure -server 1
     $self configure -listening 0
+    set foo_sent 1
     set sock [$self Open_listener]
     #$self configure -sock $sock
     #fconfigure $sock -blocking 0 -translation {binary binary}
@@ -105,6 +108,7 @@ snit::type DirectP2PTransport {
       $transport close
     }
 
+    puts "Method close called"
     $self Remove_connect_timeout
     $self die
 
@@ -117,7 +121,8 @@ snit::type DirectP2PTransport {
     set found 0
     #Sanity check - we better not keep icnreasing ports to infinity
     while { $port <= $p10 } {
-      if { [catch {set sock [socket -server [list $self On_listener_connected]]}] } {
+      if { [catch {set sock [socket -server [list $self On_listener_connected] $port]} res] } {
+        puts $res
         incr port
         continue
       } else {
@@ -128,6 +133,7 @@ snit::type DirectP2PTransport {
     if { $found == 0 } {
       return -code error "Could not allocate a socket"
     }
+    puts "Listening on port $port"
     fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
     $self configure -port $port -sock $sock
     $self Set_listening
@@ -141,7 +147,7 @@ snit::type DirectP2PTransport {
     after [$self cget -timeout] "catch {close $sock};$self On_connect_timeout"
     #fileevent $sock readable [list $self On_data_received]
     $self configure -listening 1
-    ::Event::fireEvent p2pListening p2p $ip $port
+    ::Event::fireEvent p2pListening p2p $self $options(-ip) $options(-port)
 
   }
 
@@ -160,6 +166,7 @@ snit::type DirectP2PTransport {
     }
     set data [lindex $data_queue 0]
     puts -nonewline $sock [binary format i [string length $data]]$data
+    puts "Sent data $data"
     set data_queue [lreplace $data_queue 0 0]
     fileevent $sock writable ""
     if { [llength $data_queue] > 0 } {
@@ -185,6 +192,7 @@ snit::type DirectP2PTransport {
     }
     set data_queue [lappend data_queue $data]
     fileevent $sock writable [list $self Write_raw_data $sock ]
+    puts "Callback is $callback"
     if { [string trim $callback] != "" } { eval $callback }
 
   }
@@ -206,12 +214,14 @@ snit::type DirectP2PTransport {
   }
 
   method On_failed { } {
+    puts "We failed"
     ::Event::fireEvent p2pFailed p2p {}
     $self close
   }
 
   method On_listener_connected { sock hostaddr hostport } {
 
+    $self Remove_connect_timeout
     set ip $options(-ip)
     set port $options(-port)
     set peer $options(-peer)
@@ -219,8 +229,9 @@ snit::type DirectP2PTransport {
     fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
     fileevent $sock readable [list $self On_data_received $sock]
     catch { close $options(-sock) }
-    ::Event::fireEvent p2pConnected p2p {}
     $self configure -sock $sock -listening 0
+    set data_queue {}
+    ::Event::fireEvent p2pConnected p2p {}
 
   }
 
@@ -257,6 +268,7 @@ snit::type DirectP2PTransport {
     set chunk [::p2pv${module}::MessageChunk %AUTO%]
     $chunk set_field blob_id [::p2p::generate_id]
     $chunk set_nonce $options(-nonce)
+    puts "Nonce is $options(-nonce)"
     $self Send_data [$chunk toString] ""
 
   }
@@ -268,11 +280,13 @@ snit::type DirectP2PTransport {
     }
 
     set nonce [string toupper [$chunk get_nonce]]
-    set nonce \{$nonce\}
+    set nonce [string map { \} "" \{ "" } $nonce]
+    set nonce2 [string toupper $options(-nonce)]
+    set nonce2 [string map { \} "" \{ "" } $nonce2]
     status_log "Received nonce $nonce"
-    if { [string toupper $options(-nonce)] != $nonce } {
+    if { $nonce2 != $nonce } {
       $self On_failed
-      $self die "Received nonce $nonce doesn't match local $options(-nonce)"
+      $self die "Received nonce $nonce doesn't match local $nonce2"
     }
 
     set nonce_received 1
@@ -370,6 +384,11 @@ snit::type DirectP2PTransport {
         return
       }
     
+      if { $foo_received == 0 } {
+        #@@@@@@ TODO: check FOO needed?
+        set foo_received 1
+        return
+      }
    
       #@@@@@@@@@@ p2pv2
       set module 1

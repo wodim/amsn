@@ -235,7 +235,7 @@ namespace eval ::p2pv1 {
 
     method set_nonce { nonce} {
 
-       set nonce [string map {"{" "" "}" ""} $nonce]
+       set nonce [string map { \{ "" \} "" } $nonce]
        set n1 [string range $nonce 6 7]
        set n2 [string range $nonce 4 5]
        set n3 [string range $nonce 2 3]

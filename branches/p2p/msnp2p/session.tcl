@@ -69,7 +69,7 @@ method invite { context {size ""} {peer ""} } {
 
 }
 
-method Transreq { body "" } {
+method Transreq { {body ""} } {
 
   set options(-cseq) 0
   if { $body == "" } {
@@ -95,6 +95,7 @@ method Respond { status_code} {
 
 method Respond_transreq { transreq status body} {
 
+  puts "Respond_tr called"
   incr options(-cseq)
   set resp [SLPResponseMessage %AUTO% -status $status -to $options(-peer) -frm [::abook::getPersonal login] -cseq $options(-cseq) -branch $options(-branch) -call_id $options(-call_id)]
   $resp setBody $body
@@ -106,13 +107,16 @@ method Accept_transreq { transreq bridge listening nonce local_ip local_port ext
 
   set conn_type [::abook::getDemographicField conntype]
   set body [SLPTransferResponseBody %AUTO% -bridge $bridge -listening $listening -nonce $nonce -internal_ips $local_ip -internal_port $local_port -external_ips $extern_ip -external_port $extern_port -conn_type $conn_type -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
-  $self Respond_transreq $transreq 200 $body
-  if { $listening == "true" } {
-    set trsp [DirectP2PTransport %AUTO% -peer $options(-peer)]
+  puts $listening
+  if { $listening != "false" } {
+    puts "Going to listen"
+    set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager] -nonce $nonce]
     ::Event::registerEvent p2pConnected all [list $self Bridge_switched]
     ::Event::registerEvent p2pFailed all [list $self Bridge_failed]
     $trsp listen
   }
+  puts "We are Accept_transreq"
+  $self Respond_transreq $transreq 200 $body
 
 }
 
@@ -168,13 +172,14 @@ method Select_address { transresp } {
 
 }
 
-method Bridge_listening { new_bridge external_ip external_port transreq } {
+method Bridge_listening { event new_bridge external_ip external_port } {
 
   #@@@@@@ TODO: add those to SB
-  $self Accept_transreq $transreq [$new_bridge cget -protocol] 1 [$new_bridge cget -nonce] [$new_bridge cget -ip] [$new_bridge cget -port] $external_ip $external_port
+  #$self Accept_transreq $transreq [$new_bridge cget -protocol] 1 [$new_bridge cget -nonce] [$new_bridge cget -ip] [$new_bridge cget -port] $external_ip $external_port
 
 }
 
+#@@@@@@@@ TODO: make sure these events aren't for another session 
 method Bridge_switched { event new_bridge } {
 
   $self On_bridge_selected
@@ -319,7 +324,7 @@ method Switch_bridge { transreq } {
   if { $new_bridge == "" || [$new_bridge cget -connected] == 1 } {
     $self Bridge_selected
   } else {
-    ::Event::registerEvent p2pListening all [list $self Bridge_listening $transreq]
+    #::Event::registerEvent p2pListening all [list $self Bridge_listening ]
     ::Event::registerEvent p2pConnected all [list $self Bridge_switched]
     ::Event::registerEvent p2pFailed all [list $self Bridge_failed]
   }
@@ -367,12 +372,19 @@ method On_data_preparation_blob_received { blob } { }
 method Transreq_accepted { transresp } {
 
   if { [$transresp listening] != "true" } {
-    if { [::abook::getDemographicField listening] == "true" } {
-      set body [SLPTransferResponseBody %AUTO% -bridge "SBBridge TCPv1" -listening  [::abook::getDemographicField listening] -nonce [$transresp cget -nonce] -internal_ips [::abook::getDemographicField localip] -internal_port [config::getKey initialftport] -external_ips [::abook::getDemographicField clientip] -external_port $extern_port -conn_type [::abook::getDemographicField conntype]  -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
-      $self Transreq $body
-    } else {
+    #@@@@@@@ TODO: how to get nonce here?? Need it both for transresp and trsp, and aMSN sends just zeroes :(
+    #if { [::abook::getDemographicField listening] == "true" } {
+    #  puts "Going to listen"
+    #  set body [SLPTransferResponseBody %AUTO% -bridge "SBBridge TCPv1" -listening  [::abook::getDemographicField listening] -nonce [$transresp cget -nonce] -internal_ips [::abook::getDemographicField localip] -internal_port [config::getKey initialftport] -external_ips [::abook::getDemographicField clientip] -external_port [config::getKey initialftport] -conn_type [::abook::getDemographicField conntype]  -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
+    #  set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager]]
+    #  ::Event::registerEvent p2pConnected all [list $self Bridge_switched]
+    #  ::Event::registerEvent p2pFailed all [list $self Bridge_failed]
+    #  $trsp listen
+    #  $self Transreq $body
+    #} else {
+      puts "Bridge failed"
       $self Bridge_failed "" ""
-    }
+    #}
     return
   }
 

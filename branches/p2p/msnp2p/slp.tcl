@@ -527,7 +527,12 @@ constructor { args } {
   }
   $SLPMessageBody setHeader Listening $options(-listening)
   if { $options(-nonce) != "" } {
-    $SLPMessageBody setHeader Nonce [string toupper $options(-nonce)]
+    set nonce [string toupper $options(-nonce)]
+    if { [string first \{ $nonce] < 0 } {
+      set nonce \{${nonce}\}
+      set options(-nonce) $nonce
+    }
+    $SLPMessageBody setHeader Nonce $nonce
   }
   if { $options(-internal_ips) != "" } {
     $SLPMessageBody setHeader IPv4Internal-Addrs $options(-internal_ips)
