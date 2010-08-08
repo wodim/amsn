@@ -94,8 +94,8 @@ snit::type DirectP2PTransport {
     $self configure -server 1
     $self configure -listening 0
     set sock [$self Open_listener]
-    $self configure -sock $sock
-    fconfigure $sock -blocking 0 -translation {binary binary}
+    #$self configure -sock $sock
+    #fconfigure $sock -blocking 0 -translation {binary binary}
 
   }
 
@@ -128,7 +128,8 @@ snit::type DirectP2PTransport {
     if { $found == 0 } {
       return -code error "Could not allocate a socket"
     }
-    $self configure -port $port
+    fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
+    $self configure -port $port -sock $sock
     $self Set_listening
     #TODO: UPnP
 
@@ -136,7 +137,7 @@ snit::type DirectP2PTransport {
 
   method Set_listening { } {
   
-    set sock [$self configure -sock]
+    set sock [$self cget -sock]
     after [$self cget -timeout] "catch {close $sock};$self On_connect_timeout"
     #fileevent $sock readable [list $self On_data_received]
     $self configure -listening 1
@@ -218,7 +219,8 @@ snit::type DirectP2PTransport {
     fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
     fileevent $sock readable [list $self On_data_received $sock]
     catch { close $options(-sock) }
-    $self configure -sock $sock
+    ::Event::fireEvent p2pConnected p2p {}
+    $self configure -sock $sock -listening 0
 
   }
 
@@ -270,7 +272,7 @@ snit::type DirectP2PTransport {
     status_log "Received nonce $nonce"
     if { [string toupper $options(-nonce)] != $nonce } {
       $self On_failed
-      return
+      $self die "Received nonce $nonce doesn't match local $options(-nonce)"
     }
 
     set nonce_received 1

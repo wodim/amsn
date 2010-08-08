@@ -69,10 +69,12 @@ method invite { context {size ""} {peer ""} } {
 
 }
 
-method Transreq {} {
+method Transreq { body "" } {
 
   set options(-cseq) 0
-  set body [SLPTransferRequestBody %AUTO% -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -conn_type [::abook::getDemographicField conntype]]
+  if { $body == "" } {
+    set body [SLPTransferRequestBody %AUTO% -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -conn_type [::abook::getDemographicField conntype]]
+  }
   set msg [SLPRequestMessage %AUTO% -method $::p2p::SLPRequestMethod::INVITE -resource "MSNMSGR:$options(-peer)" -to $options(-peer) -frm [::abook::getPersonal login] -branch $options(-branch) -cseq $options(-cseq) -call_id $options(-call_id)]
   $msg conf2
   $msg setBody $body
@@ -105,6 +107,12 @@ method Accept_transreq { transreq bridge listening nonce local_ip local_port ext
   set conn_type [::abook::getDemographicField conntype]
   set body [SLPTransferResponseBody %AUTO% -bridge $bridge -listening $listening -nonce $nonce -internal_ips $local_ip -internal_port $local_port -external_ips $extern_ip -external_port $extern_port -conn_type $conn_type -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
   $self Respond_transreq $transreq 200 $body
+  if { $listening == "true" } {
+    set trsp [DirectP2PTransport %AUTO% -peer $options(-peer)]
+    ::Event::registerEvent p2pConnected all [list $self Bridge_switched]
+    ::Event::registerEvent p2pFailed all [list $self Bridge_failed]
+    $trsp listen
+  }
 
 }
 
@@ -359,7 +367,12 @@ method On_data_preparation_blob_received { blob } { }
 method Transreq_accepted { transresp } {
 
   if { [$transresp listening] != "true" } {
-    $self Bridge_failed "" ""
+    if { [::abook::getDemographicField listening] == "true" } {
+      set body [SLPTransferResponseBody %AUTO% -bridge "SBBridge TCPv1" -listening  [::abook::getDemographicField listening] -nonce [$transresp cget -nonce] -internal_ips [::abook::getDemographicField localip] -internal_port [config::getKey initialftport] -external_ips [::abook::getDemographicField clientip] -external_port $extern_port -conn_type [::abook::getDemographicField conntype]  -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
+      $self Transreq $body
+    } else {
+      $self Bridge_failed "" ""
+    }
     return
   }
 

@@ -124,7 +124,7 @@ namespace eval ::p2p {
       status_log "$self actually trying to find a transport!"
       set best ""
       foreach transport [$self cget -transports] {
-        if { [$transport cget -peer] == $peer } {
+        if { [$transport cget -peer] == $peer && [$transport cget -listening] == 0 } {
           if { $best == "" } {
             set best $transport
           } elseif { [$transport cget -rating] >= [$best cget -rating] } {

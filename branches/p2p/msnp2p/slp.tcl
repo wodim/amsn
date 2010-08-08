@@ -469,7 +469,7 @@ snit::type SLPTransferRequestBody {
   option -session_id ""
   option -s_channel_state ""
   option -capabilities_flags ""
-  option -conn_type "Unknown-Connect"
+  option -conn_type "Port-Restrict-NAT"
   option -upnp 0
   option -firewall 0
 
@@ -481,7 +481,7 @@ constructor { args } {
   $SLPMessageBody conf2
   $SLPMessageBody setHeader NetID -1388627126
   $SLPMessageBody setHeader Bridges "TCPv1 SBBridge"
-  $SLPMessageBody setHeader Conn-Type "Port-Restrict-NAT"
+  $SLPMessageBody setHeader Conn-Type $options(-conn_type)
   $SLPMessageBody setHeader TCP-Conn-Type "Symmetric-NAT"
   $SLPMessageBody setHeader UPnPNat "false"
   $SLPMessageBody setHeader ICF "false"
@@ -502,7 +502,7 @@ snit::type SLPTransferResponseBody {
   delegate method * to SLPMessageBody
 
   option -bridge ""
-  option -listening ""
+  option -listening "false"
   option -nonce ""
   option -internal_ips ""
   option -internal_port ""
@@ -525,11 +525,7 @@ constructor { args } {
   if { $options(-bridge) != "" } {
     $SLPMessageBody setHeader Bridge $options(-bridge)
   }
-  if { $options(-listening) == 1 } {
-    $SLPMessageBody setHeader Listening "true"
-  } elseif { $options(-listening) == 0} {
-    $SLPMessageBody setHeader Listening "false"
-  }
+  $SLPMessageBody setHeader Listening $options(-listening)
   if { $options(-nonce) != "" } {
     $SLPMessageBody setHeader Nonce [string toupper $options(-nonce)]
   }
