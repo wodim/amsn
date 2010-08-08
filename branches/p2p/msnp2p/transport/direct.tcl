@@ -60,6 +60,8 @@ snit::type DirectP2PTransport {
   method die { {message ""} } {
 
     puts "/me is 57005: $message"
+    catch { fileevent $options(-sock) readable ""}
+    catch { fileevent $options(-sock) writable ""}
     catch { close $options(-sock) }
     [$self cget -transport_manager] Unregister_transport $self
     status_log "Error connecting to $options(-ip) $options(-port) : $message"

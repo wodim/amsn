@@ -533,6 +533,7 @@ constructor { args } {
       set options(-nonce) $nonce
     }
     $SLPMessageBody setHeader Nonce $nonce
+    puts "Created transresp: Nonce is $nonce"
   }
   if { $options(-internal_ips) != "" } {
     $SLPMessageBody setHeader IPv4Internal-Addrs $options(-internal_ips)

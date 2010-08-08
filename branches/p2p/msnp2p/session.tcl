@@ -372,19 +372,18 @@ method On_data_preparation_blob_received { blob } { }
 method Transreq_accepted { transresp } {
 
   if { [$transresp listening] != "true" } {
-    #@@@@@@@ TODO: how to get nonce here?? Need it both for transresp and trsp, and aMSN sends just zeroes :(
-    #if { [::abook::getDemographicField listening] == "true" } {
-    #  puts "Going to listen"
-    #  set body [SLPTransferResponseBody %AUTO% -bridge "SBBridge TCPv1" -listening  [::abook::getDemographicField listening] -nonce [$transresp cget -nonce] -internal_ips [::abook::getDemographicField localip] -internal_port [config::getKey initialftport] -external_ips [::abook::getDemographicField clientip] -external_port [config::getKey initialftport] -conn_type [::abook::getDemographicField conntype]  -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
-    #  set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager]]
-    #  ::Event::registerEvent p2pConnected all [list $self Bridge_switched]
-    #  ::Event::registerEvent p2pFailed all [list $self Bridge_failed]
-    #  $trsp listen
-    #  $self Transreq $body
-    #} else {
+    if { [::abook::getDemographicField listening] == "true" } {
+      puts "Going to listen for [$transresp nonce]"
+      set body [SLPTransferResponseBody %AUTO% -bridge "TCPv1" -listening  [::abook::getDemographicField listening] -nonce [$transresp nonce] -internal_ips [::abook::getDemographicField localip] -internal_port [config::getKey initialftport] -external_ips [::abook::getDemographicField clientip] -external_port [config::getKey initialftport] -conn_type [::abook::getDemographicField conntype]  -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
+      set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager] -nonce [$transresp nonce]]
+      ::Event::registerEvent p2pConnected all [list $self Bridge_switched]
+      ::Event::registerEvent p2pFailed all [list $self Bridge_failed]
+      $trsp listen
+      $self Transreq $body
+    } else {
       puts "Bridge failed"
       $self Bridge_failed "" ""
-    #}
+    }
     return
   }
 
