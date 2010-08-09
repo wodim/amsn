@@ -23,7 +23,7 @@ constructor {args} {
   }
 
   if { $options(-shac) == "" } {
-    $self configure -shac [$self Compute_checksum $options(-data)]
+    $self configure -shac [$self Compute_checksum]
   }
 
 }
@@ -33,7 +33,7 @@ method Set_data {data} {
   $self configure -size [string length $data]
   $self configure -data $data
   $self configure -shad [$self Compute_data_hash $data]
-  $self configure -shac [$self Compute_checksum $data]
+  $self configure -shac [$self Compute_checksum]
 
 }
 
