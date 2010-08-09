@@ -1,47 +1,47 @@
 namespace eval ::p2pv2 {
 
-  snit::type DLPParamType {
+	snit::type DLPParamType {
 
-    constructor {}
+		constructor {}
 
-  }
-
-
-
-  snit::type DLPType {
-
-    constructor {}
-
-  }
+	}
 
 
 
-  snit::type MessageChunk {
+	snit::type DLPType {
 
-    constructor {}
+		constructor {}
 
-  }
-
-
-
-  snit::type TLPFlag {
-
-    constructor {}
-
-  }
+	}
 
 
 
-  snit::type TLPHeader {
+	snit::type MessageChunk {
 
-    constructor {}
+		constructor {}
 
-  }
+	}
 
-  snit::type TLPParamType {
 
-    constructor {}
 
-  }
+	snit::type TLPFlag {
+
+		constructor {}
+
+	}
+
+
+
+	snit::type TLPHeader {
+
+		constructor {}
+
+	}
+
+	snit::type TLPParamType {
+
+		constructor {}
+
+	}
 
 }
