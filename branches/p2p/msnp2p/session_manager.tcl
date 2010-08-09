@@ -153,7 +153,8 @@ method On_blob_received { event blob } {
         return ""
       }
     } elseif { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
-      set session $sessions($sid)
+      status_log "Unknown session"
+      return ""
     } else {
       status_log "[$msg info type] : What is this type?"
       return ""
@@ -184,11 +185,11 @@ method Blob_to_session { blob} {
     set message [SLPMessage build $slp_data]
     $message configure -application_id [$blob cget -application_id]
     set sid [[$message body] cget -session_id]
+    if { $sid == 0 || $sid == "" } {
+	    return [$self Search_session_by_call [$message cget -call_id]]
+    }
   }
 
-  if { $sid == 0 || $sid == "" } {
-    return [$self Search_session_by_call [$message cget -call_id]]
-  }
   return [$self Get_session $sid]
 
 }
