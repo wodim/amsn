@@ -44,7 +44,7 @@ namespace eval ::p2p {
 			status_log "@@@@@@@@@@@@@@@@@@ Registering $transport"
 			set transports [$self cget -transports]
 
-			if { [lsearch $transport $transports] >= 0 } {
+			if { [lsearch $transports $transport] >= 0 } {
 				return
 			}
 

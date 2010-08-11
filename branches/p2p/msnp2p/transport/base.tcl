@@ -70,7 +70,7 @@ namespace eval ::p2p {
 
 		method Add_pending_ack { blob_id {chunk_id 0} } {
 
-			if { [lsearch $blob_id [array names pending_ack]] < 0 } {
+			if { ![info exists pending_ack($blob_id)] } {
 				set pending_ack($blob_id) {}
 			}
 
@@ -89,7 +89,7 @@ namespace eval ::p2p {
 
 		method Del_pending_blob { ack_id } {
 
-			if { [lsearch $ack_id [array names pending_blob]] < 0 } {
+			if { ![info exists pending_blob($ack_id)] } {
 				return
 			}
 			set blob $pending_blob($ack_id)
@@ -100,11 +100,11 @@ namespace eval ::p2p {
 
 		method Del_pending_ack {blob_id {chunk_id 0} } {
 
-			if { [lsearch $blob_id [array names pending_ack]] < 0 } {
+			if { ![info exists pending_ack($blob_id)] } {
 				return
 			}
 			set blob $pending_ack($blob_id)
-			set pos [lsearch $chunk_id $blob]
+			set pos [lsearch $blob $chunk_id]
 			set blob [lreplace $blob $pos $pos]
 
 			if { [info exists pending_ack($blob_id)] } {
@@ -148,7 +148,7 @@ namespace eval ::p2p {
 
 			set blob_id [$chunk blob_id]
 
-			if { [lsearch [array names signaling_blobs] $blob_id] >= 0 } {
+			if { [info exists signaling_blobs($blob_id)] } {
 				set blob $signaling_blobs($blob_id)
 			} else {
 				set blob [MessageBlob %AUTO% -application_id [$chunk cget -application_id] -blob_size [$chunk blob_size] -session_id [$chunk session_id] -blob_id $blob_id]
