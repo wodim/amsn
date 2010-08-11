@@ -201,16 +201,6 @@ namespace eval ::p2p {
 			set transport [$self Get_transport $peer $peer_guid $blob]
 			$transport send $peer $peer_guid $blob
 		}
-
-		method register_data_buffer { session_id2 buffer size} {
-			if { [lsearch $session_id2 [array names data_blobs]] } {
-				#status_log
-				return
-			}
-			set blob [MessageBlob %AUTO% -application_id 0 -string $buffer -total_size $size -session_id $session_id2]
-			set data_blobs($session_id2) $blob
-		}
-
 	}
 
 }
