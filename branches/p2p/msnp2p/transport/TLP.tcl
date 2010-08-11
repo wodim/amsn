@@ -84,7 +84,8 @@ namespace eval ::p2p {
 
 		method append_chunk { chunk} {
 
-			if { ($options(-session_id) != [$chunk session_id]) } { 
+			if { ($options(-session_id) != [$chunk session_id]) } {
+				status_log "appending chunk with wrong sid : $options(-session_id) != [$chunk session_id]"
 				return 
 			}
 			set body [$chunk cget -body]

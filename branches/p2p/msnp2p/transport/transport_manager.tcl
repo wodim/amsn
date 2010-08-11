@@ -148,11 +148,12 @@ namespace eval ::p2p {
 
 		method On_chunk_received { transport chunk } {
 
-			status_log "Transport manager received $chunk"
 			set session_id [$chunk session_id]
 			set blob_id [$chunk blob_id]
 
-			if { [lsearch $session_id [array names data_blobs]] >= 0 } {
+			status_log "Transport manager received $chunk ($session_id -- $blob_id)"
+
+			if { [info exists data_blobs($session_id) } {
 				set blob $data_blobs($session_id)
 				if { [$blob transferred] == 0 } {
 					$blob configure -id [$chunk blob_id]
