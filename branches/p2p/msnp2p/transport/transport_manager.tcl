@@ -153,15 +153,21 @@ namespace eval ::p2p {
 
 			status_log "Transport manager received $chunk ($session_id -- $blob_id)"
 
-			if { [info exists data_blobs($session_id) } {
-				set blob $data_blobs($session_id)
+			if { ![info exists data_blobs($session_id)] } {
+				set data_blobs($session_id) [list]
+			}
+			array set session_blobs $data_blobs($session_id)
+
+			if {[info exists session_blobs($blob_id)] } {
+				set blob $session_blobs($blob_id)
 				if { [$blob transferred] == 0 } {
 					$blob configure -id [$chunk blob_id]
 				}
 			} else {
 				set blob [MessageBlob %AUTO% -application_id [$chunk cget -application_id] -blob_size [$chunk blob_size] -session_id $session_id -blob_id $blob_id]
 				::Event::fireEvent p2pNewBlob p2pTransportManager $blob
-				set data_blobs($session_id) $blob
+				set session_blobs($blob_id) $blob
+				set data_blobs($session_id) [array get session_blobs]
 			}
 
 			$blob append_chunk $chunk
@@ -169,7 +175,9 @@ namespace eval ::p2p {
 			if { [$blob is_complete] == 1 } {
 				status_log "Blob $blob is complete"
 				::Event::fireEvent p2pBlobReceived p2pTransportManager $blob
-				array unset data_blobs $session_id
+				array set session_blobs $data_blobs($session_id)
+				array unset session_blobs $blob_id
+				set data_blobs($session_id) [array get session_blobs]
 			} else {
 				status_log "$blob size is [$blob cget -blob_size] and we have [$blob transferred] so not complete"
 			}
