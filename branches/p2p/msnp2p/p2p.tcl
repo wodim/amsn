@@ -96,6 +96,11 @@ namespace eval ::p2p {
 
 		method Outgoing_session_transfer_completed { event session data} {
 
+			if {![info exists outgoing_sessions($session)] } {
+				status_log "$self Outgoing_session_transfer_completed : Couldn't find outgoing session" red
+				return
+			}
+
 			status_log "Outgoing session transfer completed!!!!!!!"
 			set lst $outgoing_sessions($session)
 			set handles [lindex $lst 0]
@@ -149,6 +154,10 @@ namespace eval ::p2p {
 
 		method On_session_rejected { session } {
 
+			if {![info exists outgoing_sessions($session)] } {
+				status_log "$self On_session_rejected : Couldn't find outgoing session" red
+				return
+			}
 			$self On_session_answered $session
 
 			set lst $outgoing_sessions($session)
