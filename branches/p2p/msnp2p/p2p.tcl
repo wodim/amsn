@@ -124,6 +124,10 @@ namespace eval ::p2p {
 		}
 
 		method Incoming_session_transfer_completed { event session data } {
+			if {![info exists incoming_sessions($session)] } {
+				status_log "Incoming_session_transfer_completed : unknown session" red
+				return
+			}
 
 			set {event callback} $incoming_sessions($session)
 			::Event::unregisterEvent $event all [list $self $callback]
