@@ -352,6 +352,8 @@ namespace eval ::p2p {
 
 		}
 
+		method On_data_preparation_blob_sent { blob } { }
+
 		method On_data_blob_sent { blob } { 
 
 			::Event::fireEvent p2pIncomingCompleted p2p $self [$blob cget -data]
