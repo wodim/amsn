@@ -59,7 +59,7 @@ namespace eval ::p2p {
 
 		method die { {message ""} } {
 
-			puts "/me is 57005: $message"
+			status_log "/me is 57005: $message"
 			catch { fileevent $options(-sock) readable ""}
 			catch { fileevent $options(-sock) writable ""}
 			catch { close $options(-sock) }
@@ -74,7 +74,7 @@ namespace eval ::p2p {
 			set connecting 1
 			set ip [$self cget -ip]
 			set port [$self cget -port]
-			puts "Trying to connect to $ip $port"
+			status_log "Trying to connect to $ip $port"
 			$self configure -listening 0
 			$self configure -server 0
 			set foo_sent 1
@@ -84,7 +84,7 @@ namespace eval ::p2p {
 				status_log "Error!!!!!!!! $res"
 				return 0
 			}
-			puts "Connected: using $sock"
+			status_log "Connected: using $sock"
 			fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
 			catch {fileevent $sock writable "$self handshake $data $callback"}
 			catch {fileevent $sock readable "$self On_data_received $sock"}
@@ -94,7 +94,7 @@ namespace eval ::p2p {
 
 		method listen { } {
 
-			puts "Listening"
+			status_log "Listening"
 			$self configure -server 1
 			$self configure -listening 0
 			set foo_sent 1
@@ -110,7 +110,7 @@ namespace eval ::p2p {
 				$transport close
 			}
 
-			puts "Method close called"
+			status_log "Method close called"
 			$self Remove_connect_timeout
 			$self die
 
@@ -124,7 +124,7 @@ namespace eval ::p2p {
 			#Sanity check - we better not keep icnreasing ports to infinity
 			while { $port <= $p10 } {
 				if { [catch {set sock [socket -server [list $self On_listener_connected] $port]} res] } {
-					puts $res
+					status_log $res
 					incr port
 					continue
 				} else {
@@ -135,7 +135,7 @@ namespace eval ::p2p {
 			if { $found == 0 } {
 				return -code error "Could not allocate a socket"
 			}
-			puts "Listening on port $port"
+			status_log "Listening on port $port"
 			fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
 			$self configure -port $port -sock $sock
 			$self Set_listening
@@ -168,7 +168,7 @@ namespace eval ::p2p {
 			}
 			set data [lindex $data_queue 0]
 			puts -nonewline $sock [binary format i [string length $data]]$data
-			puts "Sent data $data"
+			status_log "Sent data $data"
 			set data_queue [lreplace $data_queue 0 0]
 			fileevent $sock writable ""
 			if { [llength $data_queue] > 0 } {
@@ -181,7 +181,7 @@ namespace eval ::p2p {
 
 			set sock $options(-sock)
 			if { $sock == "" } {
-				puts "No sock"
+				status_log "No sock"
 				if { $connecting == 0 } {
 					$self open $data $callback
 					return
@@ -194,7 +194,7 @@ namespace eval ::p2p {
 			}
 			set data_queue [lappend data_queue $data]
 			fileevent $sock writable [list $self Write_raw_data $sock ]
-			puts "Callback is $callback"
+			status_log "Callback is $callback"
 			if { [string trim $callback] != "" } { eval $callback }
 
 		}
@@ -216,7 +216,7 @@ namespace eval ::p2p {
 		}
 
 		method On_failed { } {
-			puts "We failed"
+			status_log "We failed"
 			::Event::fireEvent p2pFailed p2p {}
 			$self close
 		}
@@ -227,7 +227,7 @@ namespace eval ::p2p {
 			set ip $options(-ip)
 			set port $options(-port)
 			set peer $options(-peer)
-			puts "$peer ($hostaddr:$hostport) connected to $ip:$port"
+			status_log "$peer ($hostaddr:$hostport) connected to $ip:$port"
 			fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
 			fileevent $sock readable [list $self On_data_received $sock]
 			catch { close $options(-sock) }
@@ -270,7 +270,7 @@ namespace eval ::p2p {
 			set chunk [::p2pv${module}::MessageChunk %AUTO%]
 			$chunk set_field blob_id [::p2p::generate_id]
 			$chunk set_nonce $options(-nonce)
-			puts "Nonce is $options(-nonce)"
+			status_log "Nonce is $options(-nonce)"
 			$self Send_data [$chunk toString] ""
 
 		}

@@ -35,7 +35,6 @@ namespace eval ::p2p {
 
 		destructor {
 
-			puts "Destroying $self"
 			$options(-transport_manager) Unregister_transport $options(-transport)
 
 		}

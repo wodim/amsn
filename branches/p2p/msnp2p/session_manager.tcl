@@ -41,7 +41,7 @@ namespace eval ::p2p {
 
 		method Unregister_session { session } {
 
-			puts "Unregistering session"
+			status_log "Unregistering session"
 			set sid [$session cget -id]
 			array unset sessions $sid
 			if { [$self Search_session_by_peer [$session cget -peer]] < 0 } {
