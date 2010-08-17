@@ -37,7 +37,7 @@ namespace eval ::p2p {
 
 			set body [SLPNullBody %AUTO%]
 			$self add_header Content-Type [$body cget -content_type]
-			$self add_header Content-Length [string length $body]
+			$self add_header Content-Length [string length [$body toString]]
 			
 		}
 
@@ -52,7 +52,7 @@ namespace eval ::p2p {
 		method setBody { data } {
 			set body $data
 			$self add_header Content-Type [$body cget -content_type]
-			$self add_header Content-Length [string length $body]
+			$self add_header Content-Length [string length [$body toString]]
 		}
 
 		method headers { } {
