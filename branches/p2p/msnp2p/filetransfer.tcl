@@ -372,38 +372,36 @@ namespace eval ::p2p {
 	method Outgoing_session_transfer_completed { event session data } {
 
 		status_log "Outgoing session transfer completed!!!!!!!"
-		if { ![info exists outgoing_sessions($session) } { return }
-		     set lst $outgoing_sessions($session)
-		     set handles [lindex $lst 0]
-		     set callback [lindex $lst 1]
-		     set errback [lindex $lst 2]
-		     status_log "Callback is $callback"
+		if { ![info exists outgoing_sessions($session)] } { return }
+		set lst $outgoing_sessions($session)
+		set handles [lindex $lst 0]
+		set callback [lindex $lst 1]
+		set errback [lindex $lst 2]
+		status_log "Callback is $callback"
 
-		     foreach {event callb} $handles {
-			     ::Event::unregisterEvent $event all [list $self $callb]
-		     }
-
-		     set method_name [lindex $callback 0]
-		     set args [lreplace $callback 0 0]
-		     eval $method_name $data $args
-
-		     array unset outgoing_sessions $session
-
-	     }
-
-		method Incoming_session_transfer_completed { event session data } {
-
-			if { ![info exists incoming_sessions($session) } { return }
-			     set {event callback} $incoming_sessions($session)
-			     ::Event::unregisterEvent $event all [list $self $callback]
-			     array unset incoming_sessions $session
-
-		     }
-
-			method On_session_answered { answered_session } { }
-
-			method On_session_rejected { session } { }
-
+		foreach {event callb} $handles {
+			::Event::unregisterEvent $event all [list $self $callb]
 		}
 
+		set method_name [lindex $callback 0]
+		set args [lreplace $callback 0 0]
+		eval $method_name $data $args
+		
+		array unset outgoing_sessions $session
+		
 	}
+
+	method Incoming_session_transfer_completed { event session data } {
+
+		if { ![info exists incoming_sessions($session)] } { return }
+		set {event callback} $incoming_sessions($session)
+		::Event::unregisterEvent $event all [list $self $callback]
+		array unset incoming_sessions $session
+		
+	}
+
+	method On_session_answered { answered_session } { }
+	
+	method On_session_rejected { session } { }
+	
+}
