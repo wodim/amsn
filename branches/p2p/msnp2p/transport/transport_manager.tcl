@@ -68,7 +68,7 @@ namespace eval ::p2p {
 
 		method Unregister_transport { transport } {
 			set transports [$self cget -transports]
-			puts "Unregistering $transport from $transports"
+			status_log "Unregistering $transport from $transports"
 
 			set pos [lsearch $transports $transport]
 			if { $pos < 0 } {
@@ -76,7 +76,7 @@ namespace eval ::p2p {
 			}
 			set transports [lreplace $transports $pos $pos]
 			$self configure -transports $transports
-			puts "Unregistered $transport, transports now are: $transports"
+			status_log "Unregistered $transport, transports now are: $transports"
 
 			set signals $transport_signals($transport)
 			foreach {event callback} $signals {
