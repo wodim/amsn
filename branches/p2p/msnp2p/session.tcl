@@ -136,7 +136,7 @@ namespace eval ::p2p {
 			set extern_ips ""
 
 			foreach ip [$transresp external_ips] {
-				status_log "External IPs are $external_ips"
+				status_log "External IPs are [$transresp $external_ips]"
 				if { $ip == $client_ip} { ;#same NAT
 					set ips {}
 					break
