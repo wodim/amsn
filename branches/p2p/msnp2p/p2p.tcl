@@ -50,6 +50,7 @@ namespace eval ::p2p {
 		method request { msnobj callback {errback ""} {peer ""}} {
 
 			if { [$msnobj cget -data] != "" } {
+				status_log "p2p.tcl method request going to eval [lindex $callback 0] $msnobj [lindex $callback 1]"
 				eval [lindex $callback 0] $msnobj [lindex $callback 1]
 			}
 
@@ -117,6 +118,7 @@ namespace eval ::p2p {
 
 			set method_name [lindex $callback 0]
 			set args [lreplace $callback 0 0]
+			status_log "p2p.tcl method Outgoing_session_transfer_completed going to eval $method_name $msnobj $args"
 			eval $method_name $msnobj $args
 
 			array unset outgoing_sessions $session
@@ -173,6 +175,7 @@ namespace eval ::p2p {
 				::Event::unregisterEvent $event all [list $self $callback]
 			}
 			if { [info exists [lindex $errback 0]] } {
+				status_log "p2p.tcl rejected going to eval [lindex $errback 0] $msnobj [lindex $errback 1]"
 				eval [lindex $errback 0] $msnobj [lindex $errback 1]
 			}
 			array unset outgoing_sessions $session

@@ -205,7 +205,7 @@ namespace eval ::p2p {
 			}
 			set data_queue [lappend data_queue $data]
 			fileevent $sock writable [list $self Write_raw_data $sock ]
-			status_log "Callback is $callback"
+			status_log "direct.tcl : Callback is $callback"
 			if { [string trim $callback] != "" } { eval $callback }
 
 		}

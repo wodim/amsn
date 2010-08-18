@@ -385,6 +385,7 @@ namespace eval ::p2p {
 
 			set method_name [lindex $callback 0]
 			set args [lreplace $callback 0 0]
+			status_log "Outgoing_session_transfer_completed evaluating $method_name $data $args"
 			eval $method_name $data $args
 			
 			array unset outgoing_sessions $session
