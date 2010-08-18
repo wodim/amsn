@@ -175,7 +175,7 @@ namespace eval ::p2p {
 			}
 			set data [lindex $data_queue 0]
 			puts -nonewline $sock [binary format i [string length $data]]$data
-			status_log "Sent data $data"
+			#status_log "Sent data $data"
 			set data_queue [lreplace $data_queue 0 0]
 			fileevent $sock writable ""
 			if { [llength $data_queue] > 0 } {
@@ -413,10 +413,12 @@ namespace eval ::p2p {
 				#puts "Chunk $chunk body: [$chunk cget -body]"
 				
 				if { $nonce_received == 0 } {
+					status_log "Received nonce"
 					$self Receive_nonce $chunk
 				} elseif { [$chunk cget -body] == "\x00\x00\x00\x00" } {
 					status_log "Ignoring 0000 chunk"
 				} else {
+					status_log "Received chunk"
 					$self On_chunk_received $options(-peer) "" $chunk
 				}
 				set size 0

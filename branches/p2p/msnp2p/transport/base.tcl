@@ -115,15 +115,20 @@ namespace eval ::p2p {
 
 		method On_chunk_received { peer peer_guid chunk } {
 			
+			status_log "base.tcl received $chunk"
 			if { [$chunk require_ack] == 1 } {
+				status_log "Will send ACK"
 				set ack_chunk [$chunk create_ack_chunk]
 				$self __Send_chunk $peer $peer_guid $ack_chunk
 			}
 
 			if { [$chunk is_control_chunk] == 0 } {
+				status_log "It is not a control chunk"
 				if { [$chunk is_signaling_chunk] == 1 } {
+					status_log "It is a signaling chunk"
 					$self On_signaling_chunk_received $chunk
 				} else {
+					status_log "It is not a signaling chunk either"
 					::Event::fireEvent p2pChunkReceived p2pBaseTransport $chunk
 				}
 			}

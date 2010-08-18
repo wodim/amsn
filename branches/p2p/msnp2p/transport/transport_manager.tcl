@@ -152,7 +152,7 @@ namespace eval ::p2p {
 			set session_id [$chunk session_id]
 			set blob_id [$chunk blob_id]
 
-			#status_log "Transport manager received $chunk ($session_id -- $blob_id)"
+			status_log "Transport manager received $chunk ($session_id -- $blob_id)"
 
 			if { ![info exists data_blobs($session_id)] } {
 				set data_blobs($session_id) [list]
