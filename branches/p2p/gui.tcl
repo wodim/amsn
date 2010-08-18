@@ -6291,7 +6291,7 @@ puts -nonewline $fd $data
 
 		bind $tw.$name <<Button1>> $command
 		# Drag and Drop setting DP
-		status_log "@@@@@@@@@@@@@@ DRAG AND DROP"
+		#status_log "@@@@@@@@@@@@@@ DRAG AND DROP"
 		if {[catch {tkdnd::drop_target register $tw.$name *} res]} {
 			status_log "dnd error: $res"
 		} else {
