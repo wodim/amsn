@@ -10,6 +10,7 @@ namespace eval ::p2p {
 		constructor {args} {
 
 			$self configurelist $args
+			#::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
 
 		}
 
@@ -31,7 +32,6 @@ namespace eval ::p2p {
 			set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [$message cget -application_id] -message $message -context [[$message body] cget -context]]
 			$session conf2
 
-			::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
 			set incoming_sessions($session) {p2pIncomingCompleted Incoming_session_transfer_completed}
 			set msnobj [MSNObject parse [$session cget -context]]
 			foreach obj $published_objects {
