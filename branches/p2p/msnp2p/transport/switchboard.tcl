@@ -13,6 +13,7 @@ namespace eval ::p2p {
 		option -connected 1
 		option -contacts ""
 		option -listening 0
+		option -client ""
 
 		constructor { args } {
 

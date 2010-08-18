@@ -31,7 +31,7 @@ namespace eval ::p2p {
 
 			}
 			
-			set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pChunkSent2 On_chunk_sent p2pTransreqReceived On_transreq_received }
+			set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pChunkSent2 On_chunk_sent p2pTransreqReceived On_transreq_received p2pConnecting On_connecting p2pListening On_listening p2pIdentifying On_identifying p2pTimeout On_timeout }
 
 			foreach { event callback } $handlers {
 				::Event::registerEvent $event all [list $self $callback]
@@ -239,6 +239,35 @@ namespace eval ::p2p {
 			if {$idx != -1 } {
 				set filename [string range $filename 0 [expr {$idx - 1}]]
 			}  
+
+		}
+
+		method On_timeout { event session } {
+
+			if { $session != $p2pSession } { return }
+                        ::amsn::FTProgress l $self $options(-localpath) 
+
+		}
+
+		method On_connecting { event session ip port } {
+
+			if { $session != $p2pSession } { return }
+			::amsn::FTProgress c $self $options(-localpath) $ip $port
+
+		}
+
+		method On_listening { event session ip port } {
+                
+			status_log "Listening for session $session and we are $p2pSession"
+                        if { $session != $p2pSession } { return }
+                        ::amsn::FTProgress w $self $options(-localpath) $port
+
+		}
+
+		method On_identifying { event session  } {
+
+                        if { $session != $p2pSession } { return }
+                        ::amsn::FTProgress i $self $options(-localpath)
 
 		}
 

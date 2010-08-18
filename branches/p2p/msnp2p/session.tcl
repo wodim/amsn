@@ -107,7 +107,7 @@ namespace eval ::p2p {
 			set body [SLPTransferResponseBody %AUTO% -bridge $bridge -listening $listening -nonce $nonce -internal_ips $local_ip -internal_port $local_port -external_ips $extern_ip -external_port $extern_port -conn_type $conn_type -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
 			if { $listening != "false" } {
 				status_log "Going to listen"
-				set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager] -nonce $nonce]
+				set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager] -nonce $nonce -client $self]
 				::Event::registerEvent p2pConnected all [list $self Bridge_switched]
 				::Event::registerEvent p2pFailed all [list $self Bridge_failed]
 				$trsp listen
@@ -314,7 +314,7 @@ namespace eval ::p2p {
 			set choices [[$transreq body] bridges]
 			set proto [[$self transport_manager] get_supported_transport $choices]
 			status_log "We will use $proto"
-			set new_bridge [[$self transport_manager] create_transport [$self cget -peer] $proto]
+			set new_bridge [[$self transport_manager] create_transport [$self cget -peer] $proto -client $self]
 			if { $new_bridge == "" || [$new_bridge cget -connected] == 1 } {
 				$self Bridge_selected
 			} else {
@@ -371,7 +371,7 @@ namespace eval ::p2p {
 				if { [::abook::getDemographicField listening] == "true" } {
 					status_log "Going to listen for [$transresp nonce]"
 					set body [SLPTransferResponseBody %AUTO% -bridge "TCPv1" -listening  [::abook::getDemographicField listening] -nonce [$transresp nonce] -internal_ips [::abook::getDemographicField localip] -internal_port [config::getKey initialftport] -external_ips [::abook::getDemographicField clientip] -external_port [config::getKey initialftport] -conn_type [::abook::getDemographicField conntype]  -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
-					set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager] -nonce [$transresp nonce]]
+					set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager] -nonce [$transresp nonce] -client $self]
 					::Event::registerEvent p2pConnected all [list $self Bridge_switched]
 					::Event::registerEvent p2pFailed all [list $self Bridge_failed]
 					$trsp listen
@@ -392,7 +392,7 @@ namespace eval ::p2p {
 			status_log "We got the new bridge $new_bridge"
 			if { [$new_bridge cget -rating] <= 0 } {
 				status_log "Bad rating, making a new one"
-				set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp bridge] -ip $ip -port $port -nonce [$transresp nonce] ]
+				set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp bridge] -ip $ip -port $port -nonce [$transresp nonce] -client $self]
 			}
 			if { $new_bridge == "" || [$new_bridge cget -connected] == 1 } {
 				$self Bridge_selected

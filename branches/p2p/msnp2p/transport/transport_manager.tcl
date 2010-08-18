@@ -101,7 +101,7 @@ namespace eval ::p2p {
 		method create_transport { peer proto args } {
 
 			if { $proto == "" || ![info exists supported_transports($proto)] } {
-				puts "$proto not supported"
+				status_log "Error: $proto not supported"
 				::Event::fireEvent p2pFailed p2p {}
 				return ""
 			}

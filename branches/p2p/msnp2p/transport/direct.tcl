@@ -79,6 +79,7 @@ namespace eval ::p2p {
 			set ip [$self cget -ip]
 			set port [$self cget -port]
 			status_log "Trying to connect to $ip $port"
+			::Event::fireEvent p2pConnecting p2p $options(-client) $ip $port
 			$self configure -listening 0
 			$self configure -server 0
 			set foo_sent 1
@@ -91,6 +92,7 @@ namespace eval ::p2p {
 			}
 			after cancel "$self On_connect_timeout"
 			status_log "Connected: using $sock"
+			::Event::fireEvent p2pIdentifying p2p $options(-client)
 			fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
 			catch {fileevent $sock writable "$self handshake $data $callback"}
 			catch {fileevent $sock readable "$self On_data_received $sock"}
@@ -156,7 +158,7 @@ namespace eval ::p2p {
 			after [$self cget -timeout] "catch {close $sock};$self On_connect_timeout"
 			#fileevent $sock readable [list $self On_data_received]
 			$self configure -listening 1
-			::Event::fireEvent p2pListening p2p $self $options(-ip) $options(-port)
+			::Event::fireEvent p2pListening p2p $options(-client) $options(-ip) $options(-port)
 
 		}
 
@@ -198,7 +200,11 @@ namespace eval ::p2p {
 					return
 				}
 			}
-			set err [string trim [fconfigure $sock -error]]
+			if { [catch { set err [string trim [fconfigure $sock -error]] } res] } {
+				#How on Earth can this be reproduced????"
+				$self On_failed "Error sending data, socket somehow lost: $res"
+				return
+			}
 			if { $err != "" } {
 				$self On_failed "Error sending data: $err"
 				return
@@ -223,6 +229,7 @@ namespace eval ::p2p {
 
 		method On_connect_timeout { } {
 			$self On_failed "Connection timed out"
+			::Event::fireEvent p2pTimeout p2p $options(-client)
 			return 0
 		}
 
@@ -246,9 +253,9 @@ namespace eval ::p2p {
 			status_log "$peer ($hostaddr:$hostport) connected to $ip:$port"
 			fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
 			fileevent $sock readable [list $self On_data_received $sock]
-			$self configure -sock $sock -listening 0
+			$self configure -sock $sock -listening 0 -ip $hostaddr
 			set data_queue {}
-			#::Event::fireEvent p2pConnected p2p {}
+			::Event::fireEvent p2pIdentifying p2p $options(-client)
 
 		}
 
