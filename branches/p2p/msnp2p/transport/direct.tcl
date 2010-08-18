@@ -68,6 +68,10 @@ namespace eval ::p2p {
 
 		}
 
+		method rating { } {
+			return $options(-rating)
+		}
+
 		method open { {data ""} {callback ""} } {
 
 			if { $options(-listening) == 1 } { return }
@@ -244,7 +248,7 @@ namespace eval ::p2p {
 			fileevent $sock readable [list $self On_data_received $sock]
 			$self configure -sock $sock -listening 0
 			set data_queue {}
-			::Event::fireEvent p2pConnected p2p {}
+			#::Event::fireEvent p2pConnected p2p {}
 
 		}
 
