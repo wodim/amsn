@@ -530,7 +530,7 @@ namespace eval ::MSNCAM {
 
 	proc OpenCamPort { port sess_obj} {
 		set sid [$sess_obj cget -sid]
-		while { [catch {set sock [socket -server "::MSNCAM::handleMsnCam $sid" $port] } ] } {
+		while { [catch {set sock [socket -server "::MSNCAM::handleMsnCam $sess_obj" $port] } ] } {
 			incr port
 		}
 		::abook::OpenUPnPPort $port
