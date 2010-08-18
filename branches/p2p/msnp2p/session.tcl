@@ -175,8 +175,9 @@ namespace eval ::p2p {
 		}
 
 		#@@@@@@@@ TODO: make sure these events aren't for another session 
-		method Bridge_switched { event new_bridge } {
+		method Bridge_switched { event new_bridge session } {
 
+			if { $session != $self } { return }
 			$self On_bridge_selected
 
 		}

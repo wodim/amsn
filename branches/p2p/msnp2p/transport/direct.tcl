@@ -292,7 +292,7 @@ namespace eval ::p2p {
 			set chunk [::p2pv${module}::MessageChunk %AUTO%]
 			$chunk set_field blob_id [::p2p::generate_id]
 			$chunk set_nonce $options(-nonce)
-			status_log "Nonce is $options(-nonce)"
+			status_log "Sending nonce $options(-nonce)"
 			$self Send_data [$chunk toString] ""
 
 		}
@@ -317,7 +317,7 @@ namespace eval ::p2p {
 				$self Send_nonce
 			}
 			set options(-connected) 1
-			::Event::fireEvent p2pConnected p2p {}
+			::Event::fireEvent p2pConnected p2p $self $options(-client)
 
 		}
 
