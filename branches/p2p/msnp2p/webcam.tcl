@@ -56,6 +56,7 @@ namespace eval ::p2p {
 			set options(-session) $session
 			set options(-rid) $rid
 			$options(-partof) configure -session $session -rid $rid -producer $options(-producer)
+			status_log "Configured parent $options(-partof) to have session $session"
 			::MSNCAM::ConnectSockets $options(-partof)
 
 		}
@@ -65,14 +66,15 @@ namespace eval ::p2p {
 			set session $options(-session)
 			if { $session == "" } {
 				set session [myRand 9000 9999]
+				status_log "Random session $session for $options(-partof)"
 			}
 			set options(-session) $session
 			set sid $options(-id)
 
-			if { $options(-my_rid) != "" } {
-				set rid $options(-my_rid)
-			} else {
+			if { $options(-rid) != "" } {
 				set rid $options(-rid)
+			} else {
+				set rid $options(-my_rid)
 			}
 
 			set udprid [expr {$rid + 1}]
@@ -345,7 +347,7 @@ namespace eval ::p2p {
 
 			set xml_needed 0
 			status_log "Sent XML for session $options(-sid)"
-			set message [WebcamSessionMessage %AUTO% -partof $self -id $options(-sid) -producer $options(-producer)]
+			set message [WebcamSessionMessage %AUTO% -partof $self -id $options(-sid) -producer $options(-producer) -session $options(-session)]
 			$self send_data [$message toString]
 
 		}
@@ -353,7 +355,7 @@ namespace eval ::p2p {
 		method Handle_xml { data } {
 
 			$self configure -xml $data
-			set message [WebcamSessionMessage %AUTO% -partof $self -body $data -producer $options(-producer)]
+			set message [WebcamSessionMessage %AUTO% -partof $self -body $data -producer $options(-producer) -session $options(-session)]
 			status_log "Received XML for session $options(-sid)"
 			if { $options(-producer) == 1 } {
 				$self send_binary_viewer_data

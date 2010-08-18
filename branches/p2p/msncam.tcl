@@ -724,6 +724,7 @@ namespace eval ::MSNCAM {
 						$sess_obj configure -socket $sock
 						CloseUnusedSockets $sess_obj $sock
 					} else {
+						status_log "Authentification failed: $data should be recipientid=${my_rid}&sessionid=${session}"
 						AuthFailed $sess_obj $sock
 					}
 				}
