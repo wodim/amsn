@@ -19,7 +19,7 @@ namespace eval ::p2p {
 		option -extern_port ""
 		option -mapping_timeout_src ""
 		option -connect_timeout_src ""
-		option -timeout 300000
+		option -timeout 30000
 		option -rating 1
 		option -sock ""
 
@@ -59,7 +59,6 @@ namespace eval ::p2p {
 
 		method die { {message ""} } {
 
-			status_log "/me is 57005: $message"
 			catch { fileevent $options(-sock) readable ""}
 			catch { fileevent $options(-sock) writable ""}
 			catch { close $options(-sock) }
@@ -71,6 +70,7 @@ namespace eval ::p2p {
 
 		method open { {data ""} {callback ""} } {
 
+			if { $options(-listening) == 1 } { return }
 			set connecting 1
 			set ip [$self cget -ip]
 			set port [$self cget -port]
@@ -78,12 +78,14 @@ namespace eval ::p2p {
 			$self configure -listening 0
 			$self configure -server 0
 			set foo_sent 1
+			after [$self cget -timeout] "$self On_connect_timeout"
 
 			if { [catch {set sock [socket -async $ip $port]} res] } {
 				$self On_error
 				status_log "Error!!!!!!!! $res"
 				return 0
 			}
+			after cancel "$self On_connect_timeout"
 			status_log "Connected: using $sock"
 			fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
 			catch {fileevent $sock writable "$self handshake $data $callback"}
@@ -104,15 +106,15 @@ namespace eval ::p2p {
 
 		}
 
-		method close { } {
+		method close { { message "" } } {
 
 			if { [info exists transport] && $transport != "" } {
 				$transport close
 			}
 
-			status_log "Method close called"
+			status_log "Method close called for $message"
 			$self Remove_connect_timeout
-			$self die
+			$self die $message
 
 		}
 
@@ -139,6 +141,7 @@ namespace eval ::p2p {
 			fconfigure $sock -blocking 0 -translation {binary binary} -buffering none
 			$self configure -port $port -sock $sock
 			$self Set_listening
+			return $sock
 			#TODO: UPnP
 
 		}
@@ -162,9 +165,13 @@ namespace eval ::p2p {
 		method Write_raw_data { sock } {
 
 			set err [string trim [fconfigure $sock -error]]
-			if { [eof $sock] || $err != "" } { 
-				$self On_failed
-				$self die
+			if { $err != "" } { 
+				$self On_failed "Error writing raw data: $err"
+				return
+			}
+			if { [eof $sock] } {
+				$self On_failed "EOF on $sock"
+				return
 			}
 			set data [lindex $data_queue 0]
 			puts -nonewline $sock [binary format i [string length $data]]$data
@@ -188,9 +195,13 @@ namespace eval ::p2p {
 				}
 			}
 			set err [string trim [fconfigure $sock -error]]
-			if { [eof $sock] || $err != "" } {
-				$self On_failed
-				$self die
+			if { $err != "" } {
+				$self On_failed "Error sending data: $err"
+				return
+			}
+			if { [eof $sock] } {
+				$self On_failed "EOF on $sock while sending data"
+				return
 			}
 			set data_queue [lappend data_queue $data]
 			fileevent $sock writable [list $self Write_raw_data $sock ]
@@ -207,30 +218,30 @@ namespace eval ::p2p {
 		}
 
 		method On_connect_timeout { } {
-			$self On_failed
+			$self On_failed "Connection timed out"
 			return 0
 		}
 
 		method On_error { } {
-			$self On_failed
+			$self On_failed "Some error..."
 		}
 
-		method On_failed { } {
-			status_log "We failed"
+		method On_failed { { message "" } } {
+			$self close $message
 			::Event::fireEvent p2pFailed p2p {}
-			$self close
 		}
 
 		method On_listener_connected { sock hostaddr hostport } {
 
 			$self Remove_connect_timeout
+			set closeme $options(-sock)
+			catch { close $closeme }
 			set ip $options(-ip)
 			set port $options(-port)
 			set peer $options(-peer)
 			status_log "$peer ($hostaddr:$hostport) connected to $ip:$port"
 			fconfigure $sock -blocking 0 -buffering none -translation {binary binary}
 			fileevent $sock readable [list $self On_data_received $sock]
-			catch { close $options(-sock) }
 			$self configure -sock $sock -listening 0
 			set data_queue {}
 			::Event::fireEvent p2pConnected p2p {}
@@ -287,8 +298,7 @@ namespace eval ::p2p {
 			set nonce2 [string map { \} "" \{ "" } $nonce2]
 			status_log "Received nonce $nonce"
 			if { $nonce2 != $nonce } {
-				$self On_failed
-				$self die "Received nonce $nonce doesn't match local $nonce2"
+				$self On_failed "Received nonce $nonce doesn't match local $nonce2"
 			}
 
 			set nonce_received 1
@@ -327,9 +337,13 @@ namespace eval ::p2p {
 		method On_data_received { sock } {
 
 			set err [string trim [fconfigure $sock -error]]
-			if { [eof $sock] || $err != "" } {
-				$self On_failed
-				$self die
+			if { $err != "" } {
+				$self On_failed "Error on data received: $err"
+				return
+			}
+			if { [eof $sock] } {
+				$self On_failed "EOF on $sock"
+				return
 			}
 
 			#set size $bsize
@@ -346,9 +360,9 @@ namespace eval ::p2p {
 				set tmpsize [string length $size]
 			}
 			
-			if {$size == "" && [eof $sock] } {
+			if {$size == "" && ([catch {eof $sock}] || [eof $sock]) } {
 				status_log "FT Socket $sock closed\n"
-				$self die
+				$self On_failed "FT socket closed"
 			}
 			
 			if { $size == "" } {

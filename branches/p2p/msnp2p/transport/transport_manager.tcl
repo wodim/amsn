@@ -101,6 +101,8 @@ namespace eval ::p2p {
 		method create_transport { peer proto args } {
 
 			if { $proto == "" || ![info exists supported_transports($proto)] } {
+				puts "$proto not supported"
+				::Event::fireEvent p2pFailed p2p {}
 				return ""
 			}
 			set transport [$supported_transports($proto) %AUTO% -peer $peer -transport_manager $self {*}$args]
@@ -121,7 +123,6 @@ namespace eval ::p2p {
 
 		method find_transport { peer } {
 
-			status_log "$self actually trying to find a transport!"
 			set best ""
 			foreach transport [$self cget -transports] {
 				if { [$transport cget -peer] == $peer && [$transport cget -listening] == 0 } {
@@ -151,7 +152,7 @@ namespace eval ::p2p {
 			set session_id [$chunk session_id]
 			set blob_id [$chunk blob_id]
 
-			status_log "Transport manager received $chunk ($session_id -- $blob_id)"
+			#status_log "Transport manager received $chunk ($session_id -- $blob_id)"
 
 			if { ![info exists data_blobs($session_id)] } {
 				set data_blobs($session_id) [list]

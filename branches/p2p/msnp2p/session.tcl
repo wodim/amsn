@@ -37,7 +37,6 @@ namespace eval ::p2p {
 				set options(-branch) [::p2p::generate_uuid]
 			}
 
-			status_log "Session manager: [$self cget -session_manager]"
 			[$self cget -session_manager] Register_session $self
 			::Event::registerEvent p2pNewBlob all [list $self On_blob_created]
 
@@ -106,7 +105,6 @@ namespace eval ::p2p {
 
 			set conn_type [::abook::getDemographicField conntype]
 			set body [SLPTransferResponseBody %AUTO% -bridge $bridge -listening $listening -nonce $nonce -internal_ips $local_ip -internal_port $local_port -external_ips $extern_ip -external_port $extern_port -conn_type $conn_type -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1]
-			status_log $listening
 			if { $listening != "false" } {
 				status_log "Going to listen"
 				set trsp [DirectP2PTransport %AUTO% -peer $options(-peer) -transport_manager [$self transport_manager] -nonce $nonce]
@@ -114,7 +112,6 @@ namespace eval ::p2p {
 				::Event::registerEvent p2pFailed all [list $self Bridge_failed]
 				$trsp listen
 			}
-			status_log "We are Accept_transreq"
 			$self Respond_transreq $transreq 200 $body
 
 		}
@@ -135,7 +132,6 @@ namespace eval ::p2p {
 			set extern_ips ""
 
 			foreach ip [$transresp external_ips] {
-				status_log "External IPs are [$transresp external_ips]"
 				if { $ip == $client_ip} { ;#same NAT
 					set ips {}
 					break
@@ -254,13 +250,13 @@ namespace eval ::p2p {
 
 			set data [$blob read_data]
 
-			status_log "Received a new blob: $blob"
+			#status_log "Received a new blob: $blob"
 			if { [ $blob cget -session_id] == 0 } {
 				set msg [SLPMessage build $data]
 				$msg configure -application_id [$blob cget -application_id]
-				status_log "Type: [$msg info type] and body: [[$msg body] info type]"
+				#status_log "Type: [$msg info type] and body: [[$msg body] info type]"
 				if { [$msg info type] == "::p2p::SLPRequestMessage" } {
-					status_log "It is SLPRequestMessage"
+					#status_log "It is SLPRequestMessage"
 					if { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
 						status_log "Received an invite"
 						$self On_invite_received $msg
@@ -277,9 +273,8 @@ namespace eval ::p2p {
 						status_log "$msg : unknown signaling blob"
 					}
 				} elseif { [$msg info type] == "::p2p::SLPResponseMessage" } {
-					status_log "Received a response"
+					#status_log "Received a response"
 					if { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
-						status_log "Session request"
 						if { [$msg cget -status] == 200 } {
 							status_log "Our session got accepted"
 							$self On_session_accepted
@@ -302,7 +297,7 @@ namespace eval ::p2p {
 				status_log "Received a data preparation blob"
 				$self On_data_preparation_blob_received $blob
 			} else {
-				status_log "Received a data blob"
+				#status_log "Received a data blob"
 				$self On_data_blob_received $blob
 			}
 

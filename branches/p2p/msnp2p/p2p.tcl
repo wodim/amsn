@@ -27,7 +27,7 @@ namespace eval ::p2p {
 
 		method Handle_message { peer guid message} {
 
-			status_log "Received message of type [$message info type]!!!"
+			#status_log "Received message of type [$message info type]!!!"
 			set session [MSNObjectSession %AUTO% -session_manager [$self cget -client] -peer $peer -guid $guid -application_id [$message cget -application_id] -message $message -context [[$message body] cget -context]]
 			$session conf2
 

@@ -42,6 +42,7 @@ namespace eval ::p2p {
 		method Unregister_session { session } {
 
 			status_log "Unregistering session"
+			puts "Unregistering session"
 			set sid [$session cget -id]
 			array unset sessions $sid
 			if { [$self Search_session_by_peer [$session cget -peer]] < 0 } {
@@ -107,7 +108,6 @@ namespace eval ::p2p {
 
 		method On_blob_received { event blob } {
 
-			status_log "Received blob: $blob"
 			#if { [catch {set session [$self Blob_to_session $blob]} res] } {
 			#  status_log "Error: $res"
 			#  return 0

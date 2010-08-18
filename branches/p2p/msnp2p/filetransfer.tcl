@@ -256,7 +256,7 @@ namespace eval ::p2p {
 
 			if { [$msg cget -call_id] != [$self cget -call_id] } { return }
 
-			$p2pSession Accept_transreq $msg "SBBridge TCPv1" [::abook::getDemographicField listening] [[$msg body] get_header Nonce] [::abook::getDemographicField localip] [config::getKey initialftport] [::abook::getDemographicField clientip] [config::getKey initialftport]
+			$p2pSession Accept_transreq $msg "TCPv1" [::abook::getDemographicField listening] [[$msg body] get_header Nonce] [::abook::getDemographicField localip] [config::getKey initialftport] [::abook::getDemographicField clientip] [config::getKey initialftport]
 			#$p2pSession Switch_bridge $msg
 
 		}
