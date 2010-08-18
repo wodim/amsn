@@ -200,6 +200,9 @@ namespace eval ::p2p {
 		}
 
 		method On_bridge_selected { event session } {
+
+			if { $session != $P2PSession } { return }
+
 			if { $data != "" } {
 				$self send
 			}

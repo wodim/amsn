@@ -174,6 +174,8 @@ namespace eval ::p2p {
 			set options(-sid) [$p2pSession cget -id]
 			::Event::registerEvent p2pTransreqReceived all [list $self On_transreq_received]
 			::Event::registerEvent p2pOutgoingSessionTransferCompleted all [list $self On_data_blob_received] ;#not really completed, just a blob received
+			::Event::registerEvent p2pAccepted all [list $self On_session_accepted]
+			::Event::registerEvent p2pRejected all [list $self On_session_rejected]
 
 		}
 
@@ -198,6 +200,7 @@ namespace eval ::p2p {
 		method accept { } {
 
 			set answered 1
+			::CAMGUI::InvitationAccepted [$p2pSession cget -peer] [$p2pSession cget -id]
 			set temp_appid [$self cget -application_id]
 			$self configure -application_id 0
 			$p2pSession Respond 200
@@ -209,6 +212,7 @@ namespace eval ::p2p {
 		method reject { } {
 
 			set answered 1
+			::CAMGUI::InvitationRejected [$p2pSession cget -peer] [$p2pSession cget -id]
 			$p2pSession Respond 603
 			$self configure -canceled 1
 
@@ -270,17 +274,30 @@ namespace eval ::p2p {
 
 		}
 
-		method On_session_accepted {} {
+		method On_session_accepted { event session } {
 
-			#@@@@@@@@@ TODO: WinWrite
-			::Event::fireEvent p2pCallAccepted p2pWebcamSession {}
+			if { $session != $p2pSession } { return }
 
+			set chatid [$p2pSession cget -peer]
+                	set producer [$self cget -producer]
+	                ::amsn::WinWrite $chatid "\n" green
+        	        ::amsn::WinWriteIcon $chatid winwritecam 3 2
+                	set nick [::abook::getDisplayNick $chatid]
+	                if { $producer == 1 } {
+        	                ::amsn::WinWrite $chatid "[timestamp] [trans sendwebcamaccepted $nick]" green
+                	} else {
+                        	::amsn::WinWrite $chatid "[timestamp] [trans recvwebcamaccepted $nick]" green
+	                }
+			#::Event::fireEvent p2pCallAccepted p2pWebcamSession {}
+	
 		}
 
-		method On_session_rejected { message } {
+		method On_session_rejected { event session message } {
 
-			#@@@@@@@@@ TODO: WinWrite
-			::Event::fireEvent p2pCallRejected p2pWebcamSession {}
+			if { $session != $p2pSession } { return }
+
+			::CAMGUI::InvitationDeclined [$p2pSession cget -peer] [$p2pSession cget -id]
+			#::Event::fireEvent p2pCallRejected p2pWebcamSession {}
 			$self configure -canceled 1
 
 		}

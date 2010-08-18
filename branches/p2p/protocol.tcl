@@ -481,7 +481,7 @@ namespace eval ::MSNFT {
 			#set sid [::MSN6FT::SendFT $chatid $filename $filesize]
 			#setObjOption $cookie msn6ftsid $sid
 			#setObjOption $sid theCookie $cookie
-			$::ft_handler request $chatid $filename $filesize
+			$::ft_handler request $chatid $filename $filesize "" "" $cookie
 			return 0
 		}
 

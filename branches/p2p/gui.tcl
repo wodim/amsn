@@ -1331,12 +1331,12 @@ puts -nonewline $fd $data
 		WinWrite $chatid $txt green
 		WinWrite $chatid " - (" green
 		#WinWriteClickable $chatid "[trans accept]" [list ::amsn::AcceptFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftyes$sid
-		WinWriteClickable $chatid "[trans accept]" [list $session accept]
+		WinWriteClickable $chatid "[trans accept]" [list $session accept] ftyes$sid
 		WinWrite $chatid " / " green
 		#WinWriteClickable $chatid "[trans saveas]" [list ::amsn::SaveAsFT $chatid -1 [list $dest $branchuid $cseq $uid $sid $filename]] ftsaveas$sid
-		WinWriteClickable $chatid "[trans saveas]" [list $session saveAs]
+		WinWriteClickable $chatid "[trans saveas]" [list $session saveAs] ftsaveas$sid
 		WinWrite $chatid " / " green
-		WinWriteClickable $chatid "[trans reject]" [list $session reject]
+		WinWriteClickable $chatid "[trans reject]" [list $session reject] ftno$sid
 		#WinWriteClickable $chatid "[trans reject]" [list ::amsn::RejectFT $chatid -1 [list $sid $branchuid $uid]] ftno$sid
 		WinWrite $chatid ")\n" green
 		WinWriteIcon $chatid greyline 3
@@ -1413,13 +1413,13 @@ puts -nonewline $fd $data
 	}
 
 	proc AcceptFT { chatid cookie {varlist ""} } {
-		foreach var $varlist {
-			status_log "Var: $var\n" red
-		}
+		#foreach var $varlist {
+		#	status_log "Var: $var\n" red
+		#}
 
 		set chatid [::MSN::chatTo $chatid]
 
-		::MSN::ChatQueue $chatid [list ::amsn::AcceptFTOpenSB $chatid $cookie $varlist]
+		#::MSN::ChatQueue $chatid [list ::amsn::AcceptFTOpenSB $chatid $cookie $varlist]
 
 		set win_name [::ChatWindow::For $chatid]
 		if { [::ChatWindow::For $chatid] == 0} {
@@ -1484,8 +1484,9 @@ puts -nonewline $fd $data
 		if { $cookie != -1 && $cookie != -2 } {
 			::MSNFT::rejectFT $chatid $cookie
 		} elseif { $cookie == - 1 } {
-			::MSN6FT::RejectFT $chatid [lindex $varlist 0] [lindex $varlist 1] [lindex $varlist 2]
-			set cookie [lindex $varlist 0]
+			#::MSN6FT::RejectFT $chatid [lindex $varlist 0] [lindex $varlist 1] [lindex $varlist 2]
+			#set cookie [lindex $varlist 0]
+			set cookie $varlist
 		} elseif { $cookie == -2 } {
 			set cookie [lindex $varlist 0]
 			set txt [trans filetransfercancelled]

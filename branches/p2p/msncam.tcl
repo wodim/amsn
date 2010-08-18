@@ -2550,7 +2550,7 @@ namespace eval ::CAMGUI {
 		::MSNCAM::SendInviteQueue $chatid
 	}
 	
-	proc InvitationAccepted { chatid dest branchuid cseq uid sid producer} {
+	proc InvitationAccepted { chatid sid } {
 		#Get the chatwindow name
 		set win_name [::ChatWindow::For $chatid]
 		if { [::ChatWindow::For $chatid] == 0} {
@@ -2574,9 +2574,9 @@ namespace eval ::CAMGUI {
 		[::ChatWindow::GetOutText ${win_name}] conf -cursor left_ptr
 		
 		#Execute the accept webcam protocol
-		if {[::MSN::ChatQueue $chatid [list ::MSNCAM::AcceptWebcamOpenSB $chatid $dest $branchuid $cseq $uid $sid $producer]] == 0} {
-			return 0
-		}
+		#if {[::MSN::ChatQueue $chatid [list ::MSNCAM::AcceptWebcamOpenSB $chatid $dest $branchuid $cseq $uid $sid $producer]] == 0} {
+		#	return 0
+		#}
 	}
 
 	proc InvitationRejected {chatid sid branchuid uid} {
@@ -2604,9 +2604,9 @@ namespace eval ::CAMGUI {
 		[::ChatWindow::GetOutText ${win_name}] conf -cursor left_ptr
 		
 		#Execute the reject webcam protocol
-		if {[::MSN::ChatQueue $chatid [list ::MSNCAM::RejectFTOpenSB $chatid $sid $branchuid $uid ]] == 0} {
-			return 0
-		}
+		#if {[::MSN::ChatQueue $chatid [list ::MSNCAM::RejectFTOpenSB $chatid $sid $branchuid $uid ]] == 0} {
+		#	return 0
+		#}
 	}
 	
 	#Executed when you invite someone to a webcam session and he refuses the request

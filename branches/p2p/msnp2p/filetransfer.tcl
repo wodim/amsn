@@ -5,12 +5,14 @@ namespace eval ::p2p {
 		delegate option * to p2pSession
 		delegate method * to p2pSession
 
+		option -cookie ""
 		option -filename ""
 		option -size 0
 		option -has_preview 0
 		option -preview ""
 		option -data ""
 		option -localpath ""
+	
 		variable outgoing_sessions -array {}
 		variable sender 0
 		#TODO: write intermediate files
@@ -19,9 +21,10 @@ namespace eval ::p2p {
 
 		constructor { args } {
 
-			install p2pSession using P2PSession %AUTO% {*}$args -euf_guid $::p2p::EufGuid::FILE_TRANSFER -partof $self
-			$p2pSession conf2
+			install p2pSession using P2PSession %AUTO% -euf_guid $::p2p::EufGuid::FILE_TRANSFER -partof $self
 			$self configurelist $args
+			$p2pSession conf2
+			#$self configurelist $args
 			set options(-localpath) [::config::getKey receiveddir]
 			
 			set message [$p2pSession cget -message]
@@ -67,11 +70,12 @@ namespace eval ::p2p {
 				incr num
 			}
 			set options(-localpath) $filename
-			set fd [open $filename.$incompl a]
-			fconfigure $fd -translation {binary binary}
-			$p2pSession configure -fd $fd
+			$self accept
+			#set fd [open $filename.$incompl a]
+			#fconfigure $fd -translation {binary binary}
+			#$p2pSession configure -fd $fd
 
-			$self Respond "200"
+			#$self Respond "200"
 
 		}
 
@@ -93,7 +97,8 @@ namespace eval ::p2p {
 			fconfigure $fd -translation {binary binary}
 			$p2pSession configure -fd $fd
 
-			::amsn::FTProgress a $self $options(-localpath) ;#TODO: direct connection
+			::amsn::FTProgress a $self $options(-localpath) 
+			::amsn::AcceptFT [$p2pSession cget -peer] [$p2pSession cget -id]
 			$self Respond "200"
 
 		}
@@ -103,6 +108,7 @@ namespace eval ::p2p {
 			foreach {event callback} $handlers {
 				::Event::unregisterEvent $event all [list $self $callback]
 			}
+			::amsn::RejectFT [$p2pSession cget -peer] -1 [$p2pSession cget -id]
 			$self Respond "603"
 
 		}
@@ -114,6 +120,20 @@ namespace eval ::p2p {
 			}
 			$self Close [$self cget -context] ""
 			::amsn::FTProgress ca $self $options(-localpath)
+			set chatid [$p2pSession cget -peer] 
+			$self WinWriteText $chatid [trans filetransfercancelled]
+		}
+
+		method WinWriteText { chatid txt } {
+
+			::amsn::WinWrite $chatid "\n" green
+                        ::amsn::WinWriteIcon $chatid greyline 3
+                        ::amsn::WinWrite $chatid "\n" green
+			::amsn::WinWriteIcon $chatid fticon 3 2
+                        ::amsn::WinWrite $chatid " $txt\n" green
+                        ::amsn::WinWrite $chatid "\n" green
+                        ::amsn::WinWriteIcon $chatid greyline 3
+                        ::amsn::WinWrite $chatid "\n" green
 
 		}
 
@@ -277,6 +297,7 @@ namespace eval ::p2p {
 
 			::Event::unregisterEvent p2pAccepted all [list $self On_session_accepted]
 			::amsn::FTProgress a $self $options(-localpath)
+			::amsn::DisableCancelText $options(-cookie) [$p2pSession cget -peer]
 			$self send
 
 		}
@@ -320,6 +341,7 @@ namespace eval ::p2p {
 				::amsn::FTProgress s $self $options(-localpath) [$blob cget -current_size] [$blob cget -blob_size]
 			} else {
 				::amsn::FTProgress fs $self $options(-localpath)
+				$self WinWriteText [$p2pSession cget -peer] [trans filetransfercomplete]
 				close [$p2pSession cget -fd]
 			}
 
@@ -334,6 +356,7 @@ namespace eval ::p2p {
 			}
 
 			::amsn::FTProgress fr $self [$self cget -localpath]
+			$self WinWriteText [$p2pSession cget -peer] [trans filetransfercomplete]
 
 			$self configure -data $data
 
@@ -382,9 +405,9 @@ namespace eval ::p2p {
 
 		}
 
-		method request { peer filename size {callback ""} {errback ""} } {
+		method request { peer filename size {callback ""} {errback ""} {cookie ""} } {
 
-			set session [FileTransferSession %AUTO% -session_manager [$self cget -client] -peer $peer -application_id $::p2p::ApplicationID::FILE_TRANSFER ]
+			set session [FileTransferSession %AUTO% -cookie $cookie -session_manager [$self cget -client] -peer $peer -application_id $::p2p::ApplicationID::FILE_TRANSFER ]
 			$session conf2
 
 			set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]
