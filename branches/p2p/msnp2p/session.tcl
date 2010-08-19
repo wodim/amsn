@@ -16,7 +16,7 @@ namespace eval ::p2p {
 		option -partof -default ""
 		option -fd ""
 
-		option -cookie "" ;#dummy
+		#option -cookie "" ;#dummy
 
 		constructor {args} {
 

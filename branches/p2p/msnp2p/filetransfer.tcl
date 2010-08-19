@@ -11,6 +11,7 @@ namespace eval ::p2p {
 		option -has_preview 0
 		option -preview ""
 		option -data ""
+		option -initialpath ""
 		option -localpath ""
 	
 		variable outgoing_sessions -array {}
@@ -25,7 +26,7 @@ namespace eval ::p2p {
 			$self configurelist $args
 			$p2pSession conf2
 			#$self configurelist $args
-			set options(-localpath) [::config::getKey receiveddir]
+			set options(-initialpath) [::config::getKey receiveddir]
 			
 			set message [$p2pSession cget -message]
 			if { $message != "" } {
@@ -59,7 +60,7 @@ namespace eval ::p2p {
 
 		method saveAs { } {
 
-			set filename [tk_getSaveFile -initialfile $options(-localpath) -initialdir $options(-filename)]
+			set filename [tk_getSaveFile -initialfile $options(-initialpath) -initialdir $options(-filename)]
 
 			set origfile $filename
 			set incompl "incomplete"
@@ -81,7 +82,9 @@ namespace eval ::p2p {
 
 		method accept { } {
 
-			$self configure -localpath [file join $options(-localpath) $options(-filename)]
+			if { $options(-localpath) == "" } {
+				$self configure -localpath [file join $options(-localpath) $options(-filename)]
+			}
 			set filename $options(-localpath)
 			set origfile $filename
 			set incompl "incomplete"
