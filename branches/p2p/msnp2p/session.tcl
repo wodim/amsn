@@ -412,7 +412,11 @@ namespace eval ::p2p {
 
 		method On_invite_received { msg } { }
 
-		method On_bye_received { msg } { }
+		method On_bye_received { msg } { 
+
+			::Event::fireEvent p2pByeReceived p2p $self
+
+		}
 
 		method On_session_accepted { } { }
 
