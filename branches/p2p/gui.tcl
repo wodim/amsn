@@ -6294,10 +6294,9 @@ puts -nonewline $fd $data
 		# Drag and Drop setting DP
 		#status_log "@@@@@@@@@@@@@@ DRAG AND DROP"
 		if {[catch {tkdnd::drop_target register $tw.$name *} res]} {
-			status_log "dnd error: $res"
+			#status_log "dnd error: $res"
 		} else {
-			status_log "DP DND registered"
-			
+			#status_log "DP DND registered"			
 			bind $tw.$name <<Drop>> "::fileDropHandler %D setdp"
 		}
 
