@@ -285,7 +285,7 @@ namespace eval ::p2p {
 						} elseif { [$msg cget -status] == 603 } {
 							status_log "Our session got rejected :("
 							$self On_session_rejected $msg
-							::Event::fireEvent p2pRejected p2p $self
+							::Event::fireEvent p2pRejected p2p $self ""
 						}
 					} elseif { [[$msg body] info type] == "::p2p::SLPTransferResponseBody" } {
 						status_log "Our transfer request got accepted"
