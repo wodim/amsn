@@ -132,7 +132,7 @@ namespace eval ::p2p {
 			if { $session != $p2pSession } { return }
                         ::amsn::FTProgress ca $self $options(-localpath)
                         set chatid [$p2pSession cget -peer]
-                        $self WinWriteText $chatid [trans filetransfercancelled
+                        $self WinWriteText $chatid [trans filetransfercancelled]
 
 		}
 
