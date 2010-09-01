@@ -485,7 +485,7 @@ namespace eval ::p2p {
 			$SLPMessageBody setHeader TCP-Conn-Type "Symmetric-NAT"
 			$SLPMessageBody setHeader UPnPNat "false"
 			$SLPMessageBody setHeader ICF "false"
-			$SLPMessageBody setHeader Nonce "[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]"
+			$SLPMessageBody setHeader Nonce "\{[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]\}"
 			$SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
 		}
 
@@ -551,6 +551,11 @@ namespace eval ::p2p {
 			$SLPMessageBody setHeader Conn-Type $options(-conn_type)
 			$SLPMessageBody setHeader TCP-Conn-Type "Symmetric-NAT"
 			$SLPMessageBody setHeader IPv6-global ""
+			if { $options(-session_id) != "" } {
+                                $SLPMessageBody setHeader SessionID $options(-session_id)
+			}
+			$SLPMessageBody setHeader SChannelState $options(-s_channel_state)
+			$SLPMessageBody setHeader Capabilities-Flags $options(-capabilities_flags)
 
 		}
 
