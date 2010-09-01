@@ -55,6 +55,7 @@ namespace eval ::p2p {
 			}
 
 			#$self configure -peer [lindex $peers 0]
+			::Event::fireEvent p2pCreated p2p $self $options(-client)
 
 		}
 

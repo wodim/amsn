@@ -72,6 +72,8 @@ namespace eval ::p2p {
 
 		method Transreq { {body ""} } {
 
+			after 5000 [list $self On_bridge_selected]
+			::Event::registerEvent p2pCreated all [list $self Bridge_created]
 			set options(-cseq) 0
 			if { $body == "" } {
 				set body [SLPTransferRequestBody %AUTO% -session_id $options(-id) -s_channel_state 0 -capabilities_flags 1 -conn_type [::abook::getDemographicField conntype]]
@@ -181,6 +183,13 @@ namespace eval ::p2p {
 
 			if { $session != $self } { return }
 			$self On_bridge_selected
+
+		}
+
+		method Bridge_created { event new_bridge session } {
+
+			if { $session != $self } { return }
+			after cancel [list $self On_bridge_selected]
 
 		}
 
@@ -333,14 +342,8 @@ namespace eval ::p2p {
 
 			set bridge [[$self transport_manager] find_transport [$self cget -peer]]
 			if { $options(-partof) == "" || [$options(-partof) info type] != "::p2p::FileTransferSession" } { ;#MSNObj exists
-				#set msnobj [::p2p::MSNObject parse [string trim $options(-context)]]
-				#set type [$msnobj cget -type]
-				#if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE || $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON } { ;#We MUST request a direct connection for files but not for DPs
-				#  if { [info exists bridge] && $bridge != "" } { ;#Just get an existing bridge
 				$self On_bridge_selected
 				return
-				#  }
-				#}
 			}
 			if { [info exists bridge] && $bridge != "" && [$bridge rating] > 0 } {
 				$self On_bridge_selected
@@ -392,12 +395,13 @@ namespace eval ::p2p {
 			set port [lindex $ipport 1]
 			status_log "Trying $ip $port"
 
-			set new_bridge [[$self transport_manager] Get_transport $options(-peer) "" ""] ;# peer_guid and blob not used
-			status_log "We got the new bridge $new_bridge"
-			if { [$new_bridge cget -rating] <= 0 } {
-				status_log "Bad rating, making a new one"
+			#If we received a transreq, it means that the other client won't accept our existing bridge, if any
+			#set new_bridge [[$self transport_manager] Get_transport $options(-peer) "" ""] ;# peer_guid and blob not used
+			#status_log "We got the new bridge $new_bridge"
+			#if { [$new_bridge cget -rating] <= 0 } {
+			#	status_log "Bad rating, making a new one"
 				set new_bridge [[$self transport_manager] create_transport $options(-peer) [$transresp bridge] -ip $ip -port $port -nonce [$transresp nonce] -client $self]
-			}
+			#}
 			if { $new_bridge == "" || [$new_bridge cget -connected] == 1 } {
 				$self Bridge_selected
 			} else {
