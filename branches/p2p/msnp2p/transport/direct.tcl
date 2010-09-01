@@ -19,7 +19,7 @@ namespace eval ::p2p {
 		option -extern_port ""
 		option -mapping_timeout_src ""
 		option -connect_timeout_src ""
-		option -timeout 30000
+		option -timeout 5000
 		option -rating 1
 		option -sock ""
 

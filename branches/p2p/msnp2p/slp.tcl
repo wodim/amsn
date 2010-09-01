@@ -522,40 +522,39 @@ namespace eval ::p2p {
 
 			$SLPMessageBody conf2
 
-			if { $options(-bridge) != "" } {
-				$SLPMessageBody setHeader Bridge $options(-bridge)
-			}
 			$SLPMessageBody setHeader Listening $options(-listening)
-			if { $options(-nonce) != "" } {
-				set nonce [string toupper $options(-nonce)]
-				if { [string first \{ $nonce] < 0 } {
-					set nonce \{${nonce}\}
-					set options(-nonce) $nonce
-				}
-				$SLPMessageBody setHeader Nonce $nonce
-			}
-			if { $options(-internal_ips) != "" } {
-				$SLPMessageBody setHeader IPv4Internal-Addrs $options(-internal_ips)
-			}
-			if { $options(-internal_port) != "" } {
-				$SLPMessageBody setHeader IPv4Internal-Port $options(-internal_port)
-			}
-			if { $options(-external_ips) != "" } {
-				$SLPMessageBody setHeader IPv4External-Addrs $options(-external_ips)
-			}
-			if { $options(-external_port) != "" } {
-				$SLPMessageBody setHeader IPv4External-Port $options(-external_port)
-			}
-
-			$SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
-			$SLPMessageBody setHeader Conn-Type $options(-conn_type)
-			$SLPMessageBody setHeader TCP-Conn-Type "Symmetric-NAT"
-			$SLPMessageBody setHeader IPv6-global ""
-			if { $options(-session_id) != "" } {
+                        $SLPMessageBody setHeader Conn-Type $options(-conn_type)
+                        $SLPMessageBody setHeader TCP-Conn-Type "Symmetric-NAT"
+                        $SLPMessageBody setHeader IPv6-global ""
+                        $SLPMessageBody setHeader Capabilities-Flags $options(-capabilities_flags)
+                        if { $options(-external_ips) != "" } {
+                                $SLPMessageBody setHeader IPv4External-Addrs $options(-external_ips)
+                        }
+                        if { $options(-external_port) != "" } {
+                                $SLPMessageBody setHeader IPv4External-Port $options(-external_port)
+                        }
+                        if { $options(-internal_ips) != "" } {
+                                $SLPMessageBody setHeader IPv4Internal-Addrs $options(-internal_ips)
+                        }
+                        if { $options(-internal_port) != "" } {
+                                $SLPMessageBody setHeader IPv4Internal-Port $options(-internal_port)
+                        }
+                        $SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
+                        if { $options(-bridge) != "" } {
+                                $SLPMessageBody setHeader Bridge $options(-bridge)
+                        }
+                        if { $options(-nonce) != "" } {
+                                set nonce [string toupper $options(-nonce)]
+                                if { [string first \{ $nonce] < 0 } {
+                                        set nonce \{${nonce}\}
+                                        set options(-nonce) $nonce
+                                }
+                                $SLPMessageBody setHeader Nonce $nonce
+                        }
+                        if { $options(-session_id) != "" } {
                                 $SLPMessageBody setHeader SessionID $options(-session_id)
-			}
-			$SLPMessageBody setHeader SChannelState $options(-s_channel_state)
-			$SLPMessageBody setHeader Capabilities-Flags $options(-capabilities_flags)
+                        }
+                        $SLPMessageBody setHeader SChannelState $options(-s_channel_state)
 
 		}
 
