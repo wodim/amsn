@@ -41,15 +41,16 @@ namespace eval ::p2p {
 			$self configurelist $args
 			$BaseP2PTransport conf2
 
-			if { [$self cget -ip] == "" } {
+			if { $options(-ip) == "" } {
 				$self configure -ip [::abook::getDemographicField localip]
 			}
 
-			if { [$self cget -port] == "" } {
+			if { $options(-port) == "" } {
 				$self configure -port [config::getKey initialftport]
 			}
 
-			if { [$self cget -nonce] == "" } {
+			if { $options(-nonce) == "" } {
+				#puts "No nonce"
 				$self configure -nonce [::p2p::generate_uuid]
 			}
 
@@ -82,7 +83,8 @@ namespace eval ::p2p {
 			::Event::fireEvent p2pConnecting p2p $options(-client) $ip $port
 			$self configure -listening 0
 			$self configure -server 0
-			set foo_sent 1
+			set foo_sent 0
+			set foo_received 1
 			after [$self cget -timeout] "$self On_connect_timeout"
 
 			if { [catch {set sock [socket -async $ip $port]} res] } {
