@@ -83,7 +83,7 @@ namespace eval ::p2p {
 		method accept { } {
 
 			if { $options(-localpath) == "" } {
-				$self configure -localpath [file join $options(-localpath) $options(-filename)]
+				$self configure -localpath [file join $options(-initialpath) $options(-filename)]
 			}
 			set filename $options(-localpath)
 			set origfile $filename
