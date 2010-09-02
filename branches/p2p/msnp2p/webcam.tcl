@@ -176,6 +176,7 @@ namespace eval ::p2p {
 			::Event::registerEvent p2pOutgoingSessionTransferCompleted all [list $self On_data_blob_received] ;#not really completed, just a blob received
 			::Event::registerEvent p2pAccepted all [list $self On_session_accepted]
 			::Event::registerEvent p2pRejected all [list $self On_session_rejected]
+			::Event::registerEvent p2pByeReceived all [list $self On_bye_received]
 
 		}
 
@@ -225,7 +226,7 @@ namespace eval ::p2p {
 			} else {
 				set context "\x74\x03\x00\x81"
 				$self Close $context ""
-				::MSNCAM::CamCanceled $options(-chatid) $self
+				::MSNCAM::CamCanceled $options(-chatid) $self 
 			}
 			$self configure -canceled 1
 			destroy $self
@@ -267,9 +268,11 @@ namespace eval ::p2p {
 
 		}
 
-		method On_bye_received { message } {
+		method On_bye_received { event session } {
 
+			if { $session != $p2pSession } { return }
 			$self configure -canceled 1
+			::CAMGUI::CamCanceled $options(-chatid) [$self cget -id]
 			destroy $self
 
 		}

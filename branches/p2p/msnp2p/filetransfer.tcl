@@ -35,7 +35,7 @@ namespace eval ::p2p {
 
 			}
 			
-			set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pChunkSent2 On_chunk_sent p2pTransreqReceived On_transreq_received p2pConnecting On_connecting p2pListening On_listening p2pIdentifying On_identifying p2pTimeout On_timeout p2pByeReceived On_bye_received }
+			set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pRejected On_session_rejected p2pChunkSent2 On_chunk_sent p2pTransreqReceived On_transreq_received p2pConnecting On_connecting p2pListening On_listening p2pIdentifying On_identifying p2pTimeout On_timeout p2pByeReceived On_bye_received }
 
 			foreach { event callback } $handlers {
 				::Event::registerEvent $event all [list $self $callback]
@@ -113,6 +113,7 @@ namespace eval ::p2p {
 			}
 			::amsn::RejectFT [$p2pSession cget -peer] -1 [$p2pSession cget -id]
 			$self Respond "603"
+			$::ft_handler remove_session $self
 
 		}
 
@@ -125,6 +126,7 @@ namespace eval ::p2p {
 			::amsn::FTProgress ca $self $options(-localpath)
 			set chatid [$p2pSession cget -peer] 
 			$self WinWriteText $chatid [trans filetransfercancelled]
+			$::ft_handler remove_session $self
 		}
 
 		method On_bye_received { event session } {
@@ -132,7 +134,10 @@ namespace eval ::p2p {
 			if { $session != $p2pSession } { return }
                         ::amsn::FTProgress ca $self $options(-localpath)
                         set chatid [$p2pSession cget -peer]
-                        $self WinWriteText $chatid [trans filetransfercancelled]
+			set sid [$self cget -id]
+			::amsn::RejectFT $chatid "-2" $sid
+			$::ft_handler remove_session $self
+                        #$self WinWriteText $chatid [trans filetransfercancelled]
 
 		}
 
@@ -314,6 +319,14 @@ namespace eval ::p2p {
 
 		}
 
+		 method On_session_rejected { event session message } {
+
+                        if { $session != $p2pSession } { return }
+			set chatid [$p2pSession cget -peer]
+			SendMessageFIFO [list ::amsn::rejectedFT $chatid "" $options(-filename)] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
+
+		}
+
 		method On_transreq_received { event msg } {
 
 			if { [$msg cget -call_id] != [$self cget -call_id] } { return }
@@ -353,6 +366,7 @@ namespace eval ::p2p {
 				::amsn::FTProgress s $self $options(-localpath) [$blob cget -current_size] [$blob cget -blob_size]
 			} else {
 				::amsn::FTProgress fs $self $options(-localpath)
+				$::ft_handler remove_session $self
 				$self WinWriteText [$p2pSession cget -peer] [trans filetransfercomplete]
 				close [$p2pSession cget -fd]
 			}
@@ -375,6 +389,7 @@ namespace eval ::p2p {
 			close [$p2pSession cget -fd]
 			set filename [$self cget -localpath]
 			file rename $filename.incomplete $filename
+			$::ft_handler remove_session $self
 
 		}
 
@@ -385,6 +400,8 @@ namespace eval ::p2p {
 		option -client ""
 
 		variable incoming_sessions -array {}
+		variable outgoing_sessions -array {}
+		variable out_sessions {}
 
 		constructor { args } {
 
@@ -429,7 +446,27 @@ namespace eval ::p2p {
 			if { $callback != "" } {
 				set outgoing_sessions([$session p2p_session]) [list $handles $callback $errback]
 			}
+			lappend out_sessions $session
 			$session invite $filename $size
+
+		}
+
+		method cancel_by_cookie { cookie } {
+
+			foreach session $out_sessions {
+				if { [$session cget -cookie] == $cookie } {
+					$session cancel
+					$self remove_session $session
+					return
+				}
+			}
+
+		}
+
+		method remove_session { session } {
+
+			set ind [lsearch $out_sessions $session]
+			lreplace $out_sessions $ind $ind
 
 		}
 

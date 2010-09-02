@@ -127,7 +127,7 @@ namespace eval ::MSNCAM {
 
 
 		#draw a notification in the window (gui)
-		::CAMGUI::CamCanceled $chatid $sess_obj
+		::CAMGUI::CamCanceled $chatid $sid
 
 		if { [OnDarwin] } {
 			set grabber .grabber.seq
@@ -2579,7 +2579,7 @@ namespace eval ::CAMGUI {
 		#}
 	}
 
-	proc InvitationRejected {chatid sid branchuid uid} {
+	proc InvitationRejected {chatid sid } {
 		
 		#Get the chatwindow name
 		set win_name [::ChatWindow::For $chatid]

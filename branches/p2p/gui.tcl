@@ -1241,6 +1241,7 @@ puts -nonewline $fd $data
 		}
 
 		::MSNFT::cancelFTInvitation $chatid $cookie
+		$::ft_handler cancel_by_cookie $cookie
 		DisableCancelText $cookie $chatid
 
 		set txt [trans invitationcancelled]

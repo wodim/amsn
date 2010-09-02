@@ -418,7 +418,7 @@ namespace eval ::p2p {
 
 		method On_bye_received { msg } { 
 
-			::Event::fireEvent p2pByeReceived p2p $self
+			::Event::fireEvent p2pByeReceived p2p $self 
 
 		}
 
