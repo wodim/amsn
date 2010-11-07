@@ -2589,11 +2589,6 @@ namespace eval ::MSN {
 		set oldstat [$sb cget -stat]
 		$sb configure -stat "d"
 
-		if { [$sb cget -killme] != "" } {
-			after cancel [$sb cget -killme]
-			$sb configure -killme ""
-		}
-
 		if { [string match -nocase "*ns*" $sb] } {
 			status_log "clearing sb $sb. oldstat=$oldstat"
 			catch {[$sb cget -proxy] finish $sb}
@@ -2663,6 +2658,10 @@ namespace eval ::MSN {
 		} else {
 			#Check if we can kill the SB (clear all related info
 			CheckKill $sb
+			if { [$sb cget -killme] != "" } {
+				after cancel [$sb cget -killme]
+				$sb configure -killme ""
+			}
 		}
 
 	}
