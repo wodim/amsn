@@ -3035,7 +3035,7 @@ namespace eval ::MSN {
 
 		if { [info commands $sb] == "" } { return }
 		$sb configure -killme ""
-		WriteSBRaw $sb "OUT\r\n"
+		if { [catch {WriteSBRaw $sb "OUT\r\n"} ] } { return }
 		CloseSB $sb
 
 	}
