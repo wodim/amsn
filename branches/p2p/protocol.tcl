@@ -3033,12 +3033,21 @@ namespace eval ::MSN {
 	########################################################################
 	proc CloseInactiveSB { sb } {
 
-		if { [info commands $sb] == "" } { return }
-		set user_list [::MSN::usersInChat $chatid]
-		if { [llength $user_list] > 1 } { return }
-		catch {$sb configure -killme ""}
-		if { [catch {WriteSBRaw $sb "OUT\r\n"} ] } { return }
-		catch {CloseSB $sb}
+               if { [info commands $sb] == "" } {
+                       return
+               }
+               set chatid [::MSN::ChatFor $sb]
+               if {$chatid != 0} {
+                       set user_list [::MSN::usersInChat $chatid]
+                       if { [llength $user_list] > 1 } {
+                               return
+                       }
+               }
+               catch {$sb configure -killme ""}
+               if { [catch {WriteSBRaw $sb "OUT\r\n"} ] } {
+                       return
+               }
+               catch {CloseSB $sb}
 
 	}
 
