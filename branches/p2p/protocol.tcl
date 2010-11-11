@@ -3034,9 +3034,11 @@ namespace eval ::MSN {
 	proc CloseInactiveSB { sb } {
 
 		if { [info commands $sb] == "" } { return }
-		$sb configure -killme ""
+		set user_list [::MSN::usersInChat $chatid]
+		if { [llength $user_list] > 1 } { return }
+		catch {$sb configure -killme ""}
 		if { [catch {WriteSBRaw $sb "OUT\r\n"} ] } { return }
-		CloseSB $sb
+		catch {CloseSB $sb}
 
 	}
 
