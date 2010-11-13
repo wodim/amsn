@@ -71,7 +71,7 @@ namespace eval ::p2p {
 				set chatid [::MSN::chatTo $peer]
 				set sb [::MSN::SBFor $chatid]
 				::MSN::ChatQueue $chatid [list ::MSN::WriteSBNoNL $sb "MSG" "D $data_len\r\n$data"]
-				$sendme destroy	
+				catch {destroy $sendme}
 			}
 
 			method On_message_received { message} {
@@ -92,7 +92,7 @@ namespace eval ::p2p {
 				}
 				set chunk [MessageChunk parse $version [string range [$message get_body] 0 end-4]]
 				binary scan [string range [$message get_body] end-4 end] iu appid
-				destroy $message
+				catch {destroy $message}
 				$self On_chunk_received [$self cget -peer] [$self cget -peer_guid] $chunk
 
 			}

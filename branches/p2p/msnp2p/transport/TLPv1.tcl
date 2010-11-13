@@ -85,6 +85,13 @@ namespace eval ::p2pv1 {
 
 		}
 
+		destructor { } {
+
+			catch {destroy $options(-header)}
+			catch {destroy $options(-body)}
+
+		}
+
 		method id {} {
 
 			return [$self get_field dw1]

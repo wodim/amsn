@@ -350,6 +350,7 @@ namespace eval ::p2p {
 			binary scan [string range [$message get_body] end-4 end] iu appid
 			destroy $message
 			$self On_chunk_received [$self cget -peer] "" $chunk
+			catch {destroy $chunk}
 
 		}
 
@@ -443,6 +444,7 @@ namespace eval ::p2p {
 				}
 				set size 0
 				set buffer ""
+				catch {destroy $chunk}
 			}
 
 		}
