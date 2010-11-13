@@ -159,6 +159,7 @@ namespace eval ::p2p {
 					status_log "[$msg info type] : What is this type?"
 					return ""
 				}
+				catch {destroy $msg}
 			}
 			$session On_blob_received $blob
 
@@ -188,6 +189,7 @@ namespace eval ::p2p {
 				if { $sid == 0 || $sid == "" } {
 					return [$self Search_session_by_call [$message cget -call_id]]
 				}
+				catch {destroy $message}
 			}
 
 			return [$self Get_session $sid]

@@ -210,7 +210,7 @@ namespace eval ::p2p {
 			$msg conf2
 			$msg setBody $body
 			$self Send_p2p_data $msg
-			destroy $self
+			after idle [list catch [list destroy $self]]
 
 		}
 
@@ -233,6 +233,9 @@ namespace eval ::p2p {
 
 			set blob [MessageBlob %AUTO% -application_id $options(-application_id) -data $data -blob_size $total_size -session_id $session_id -fd $options(-fd)]
 			[$self transport_manager] send $options(-peer) "" $blob
+			if { $is_file == 0 } {
+				catch {destroy $data_or_filesize}
+			}
 
 		}
 
@@ -255,6 +258,7 @@ namespace eval ::p2p {
 			} else {
 				$self On_data_blob_sent $blob
 			}
+			catch {destroy $blob}
 
 		}
 
@@ -302,6 +306,7 @@ namespace eval ::p2p {
 					} else {
 						status_log "$msg : unknown response blob"
 					}
+					catch {destroy $msg}
 				}
 				return
 			}
@@ -313,6 +318,7 @@ namespace eval ::p2p {
 				#status_log "Received a data blob"
 				$self On_data_blob_received $blob
 			}
+			catch {destroy $blob}
 
 		}
 
@@ -358,15 +364,15 @@ namespace eval ::p2p {
 		method On_data_blob_sent { blob } { 
 
 			::Event::fireEvent p2pIncomingCompleted p2p $self [$blob cget -data]
-			destroy $blob
-			destroy $self ;#Suicide????
+			catch [destroy $blob]
+			#after idle [list catch [list destroy $self]]
 
 		}
 
 		method On_data_blob_received { blob } {
 
 			::Event::fireEvent p2pOutgoingSessionTransferCompleted p2p $self [$blob cget -data]
-			destroy $blob
+			catch [destroy $blob]
 
 		}
 
@@ -419,12 +425,17 @@ namespace eval ::p2p {
 		method On_bye_received { msg } { 
 
 			::Event::fireEvent p2pByeReceived p2p $self 
+			after idle [list catch [list destroy $self]]
 
 		}
 
 		method On_session_accepted { } { }
 
-		method On_session_rejected { msg } { }
+		method On_session_rejected { msg } {
+
+			after idle [list catch [list destroy $self]]
+
+		}
 
 		method On_bridge_selected { } {
 

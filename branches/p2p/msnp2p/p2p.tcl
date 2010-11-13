@@ -6,6 +6,7 @@ namespace eval ::p2p {
 		variable outgoing_sessions -array {}
 		variable incoming_sessions -array {}
 		variable published_objects {}
+		variable incoming_DPs_by_user -array {}
 
 		constructor {args} {
 
@@ -122,6 +123,14 @@ namespace eval ::p2p {
 			eval $method_name $msnobj $args
 
 			array unset outgoing_sessions $session
+
+			set type [$msnobj cget -type]
+			if { $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON || $type == $::p2p::MSNObjectType::WINK || $type == $::p2p::MSNObjectType::VOICE_CLIP } {
+				#TODO catch {destroy $msnobj}
+			} else if { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE } {
+				#TODO catch {destroy $incoming_DPs_by_user([$msnobj cget -creator])}
+				set incoming_DPs_by_user([$msnobj cget -creator]) $msnobj
+			}
 
 		}
 

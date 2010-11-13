@@ -22,6 +22,12 @@ namespace eval ::p2p {
 
 		}
 
+		destructor { } {
+
+			catch {destroy $body}
+
+		}
+
 		method conf2 { } {
 
 			$self add_header To [join [list "<msnmsgr:" $options(-to) ">"] ""]
@@ -210,6 +216,10 @@ namespace eval ::p2p {
 			$self configurelist $args
 		}
 
+		destructor { } {
+			destroy $SLPMessage
+		}
+
 		method conf2 { } {
 			$SLPMessage conf2
 			set colon [string first ":" $options(-resource)]
@@ -241,6 +251,12 @@ namespace eval ::p2p {
 			install SLPMessage using SLPMessage %AUTO%
 			$self configurelist $args
 			$SLPMessage conf2
+
+		}
+
+		destructor { } {
+
+			destroy $SLPMessage
 
 		}
 
@@ -423,6 +439,10 @@ namespace eval ::p2p {
 			install SLPMessageBody using SLPMessageBody %AUTO% -content_type $::p2p::SLPContentType::NULL
 			$SLPMessageBody conf2
 		}
+
+		destructor { } {
+			destroy $SLPMessageBody
+		}
 	}
 
 	snit::type SLPSessionRequestBody {
@@ -437,6 +457,10 @@ namespace eval ::p2p {
 			install SLPMessageBody using SLPMessageBody %AUTO% -session_id 0 -s_channel_state 0 -capabilities_flags 1 -content_type $::p2p::SLPContentType::SESSION_REQUEST
 			$self configurelist $args
 		}
+
+                destructor { } {
+                        destroy $SLPMessageBody
+                }
 
 		method conf2 { } {
 			$SLPMessageBody conf2
@@ -488,6 +512,10 @@ namespace eval ::p2p {
 			$SLPMessageBody setHeader Nonce "\{[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]]-[format %X [myRand 4369 65450]][format %X [myRand 4369 65450]][format %X [myRand 4369 65450]]\}"
 			$SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
 		}
+
+                destructor { } {
+                        destroy $SLPMessageBody
+                }
 
 		method bridges { } {
 
@@ -557,6 +585,10 @@ namespace eval ::p2p {
                         $SLPMessageBody setHeader SChannelState $options(-s_channel_state)
 
 		}
+
+                destructor { } {
+                        destroy $SLPMessageBody
+                }
 
 		method bridge { } {
 
@@ -628,6 +660,9 @@ namespace eval ::p2p {
 
 		}
 
+                destructor { } {
+                        destroy $SLPMessageBody
+                }
 
 	}
 
@@ -640,6 +675,11 @@ namespace eval ::p2p {
 			install SLPMessageBody using SLPMessageBody %AUTO%
 			$SLPMessageBody conf2
 		}
+
+                destructor { } {
+                        destroy $SLPMessageBody
+                }
+
 	}
 	#::p2p::SLPRequestMessage msg1 -frm sender@hotmail.com -to receiver@hotmail.com
 }

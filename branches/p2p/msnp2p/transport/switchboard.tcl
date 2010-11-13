@@ -23,6 +23,12 @@ namespace eval ::p2p {
 
 		}
 
+		destructor { } {
+			
+			destroy $BaseP2PTransport
+
+		}
+
 		method close {} {
 
 			BaseP2PTransport close $self
@@ -65,6 +71,7 @@ namespace eval ::p2p {
 				set chatid [::MSN::chatTo $peer]
 				set sb [::MSN::SBFor $chatid]
 				::MSN::ChatQueue $chatid [list ::MSN::WriteSBNoNL $sb "MSG" "D $data_len\r\n$data"]
+				$sendme destroy	
 			}
 
 			method On_message_received { message} {

@@ -59,6 +59,12 @@ namespace eval ::p2p {
 
 		}
 
+		destructor { } {
+
+			destroy $BaseP2PTransport
+
+		}
+
 		method die { {message ""} } {
 
 			catch { fileevent $options(-sock) readable ""}
@@ -66,7 +72,7 @@ namespace eval ::p2p {
 			catch { close $options(-sock) }
 			[$self cget -transport_manager] Unregister_transport $self
 			status_log "Error connecting to $options(-ip) $options(-port) : $message"
-			destroy $self
+			after idle [list catch [list destroy $self]]
 
 		}
 
