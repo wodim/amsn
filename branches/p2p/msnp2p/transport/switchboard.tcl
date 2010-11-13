@@ -15,15 +15,18 @@ namespace eval ::p2p {
 		option -listening 0
 		option -client ""
 
+		variable queue {}
+
 		constructor { args } {
 
 			install BaseP2PTransport using BaseP2PTransport %AUTO% -transport $self
 			$self configurelist $args
 			$BaseP2PTransport conf2
+			::Event::registerEvent ackReceived all [list $self On_ack]
 
 		}
 
-		destructor { } {
+		destructor {
 			
 			destroy $BaseP2PTransport
 
@@ -33,6 +36,20 @@ namespace eval ::p2p {
 
 			BaseP2PTransport close $self
 			::MSN::CloseSB [::MSN::SBFor $peer]
+
+		}
+
+		method On_ack { event sb } {
+
+			if { $sb != [::MSN::SBFor [$self cget -peer]] } {
+				#status_log "Not acked for [$self cget -peer] on $sb"
+				return
+			} else {
+				status_log "Processing queue for $sb"
+				if { [llength $queue] <= 0 } { return }
+				eval [lindex $queue 0]
+				set queue [lreplace $queue 0 0]
+			}
 
 		}
 
@@ -70,7 +87,11 @@ namespace eval ::p2p {
 				set data_len [expr [string length $data]]
 				set chatid [::MSN::chatTo $peer]
 				set sb [::MSN::SBFor $chatid]
-				::MSN::ChatQueue $chatid [list ::MSN::WriteSBNoNL $sb "MSG" "D $data_len\r\n$data"]
+				if { [$sb get_unacked] < 5 } {
+					::MSN::ChatQueue $chatid [list ::MSN::WriteSBNoNL $sb "MSG" "D $data_len\r\n$data"]
+				} else {
+					set queue [lappend $queue [list ::MSN::ChatQueue $chatid [list ::MSN::WriteSBNoNL $sb "MSG" "D $data_len\r\n$data"]]]
+				}
 				catch {destroy $sendme}
 			}
 

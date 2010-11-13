@@ -43,7 +43,7 @@ namespace eval ::p2p {
 
 		}
 
-		destructor { } {
+		destructor {
 
 			destroy $p2pSession
 

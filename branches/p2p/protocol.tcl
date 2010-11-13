@@ -2409,6 +2409,9 @@ namespace eval ::MSN {
 			global list_cmdhnd
 			lappend list_cmdhnd [list $sbn $trid $handler]
 		}
+		if { [$sbn info vars unacked] != "" } {
+			$sbn add_unacked $msgid
+		}
 
 		return $msgid
 	}
@@ -5149,6 +5152,8 @@ namespace eval ::MSNOIM {
 	option -lastspoke 0
 	option -killme ""
 
+	variable unacked [list]
+
 	constructor {args} {
 		install connection using Connection %AUTO% -name $self
 		$self configurelist $args
@@ -5156,6 +5161,14 @@ namespace eval ::MSNOIM {
 
 	destructor {
 		catch { $connection destroy }
+	}
+
+	method add_unacked { id } {
+		set unacked [lappend $unacked $id]
+	}
+
+	method get_unacked { } {
+		return [llength $unacked]
 	}
 
 	method addUser { user } {
@@ -5242,6 +5255,10 @@ namespace eval ::MSNOIM {
 						::amsn::ackMessage $ackid
 						unset msgacks($ret_trid)
 					}
+					set trid_ind [lsearch $unacked $ret_trid]
+					set options(-unacked) [lreplace $unacked $trid_ind $trid_ind]
+					::Event::fireEvent ackReceived $self $self
+					
 				}
 				208 {
 					status_log "sb::handleCommand: invalid user name for chat\n" red

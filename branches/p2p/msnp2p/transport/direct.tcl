@@ -59,7 +59,7 @@ namespace eval ::p2p {
 
 		}
 
-		destructor { } {
+		destructor {
 
 			destroy $BaseP2PTransport
 

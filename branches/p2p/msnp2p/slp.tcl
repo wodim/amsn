@@ -22,7 +22,7 @@ namespace eval ::p2p {
 
 		}
 
-		destructor { } {
+		destructor {
 
 			catch {destroy $body}
 
@@ -216,7 +216,7 @@ namespace eval ::p2p {
 			$self configurelist $args
 		}
 
-		destructor { } {
+		destructor {
 			destroy $SLPMessage
 		}
 
@@ -254,7 +254,7 @@ namespace eval ::p2p {
 
 		}
 
-		destructor { } {
+		destructor {
 
 			destroy $SLPMessage
 
@@ -440,7 +440,7 @@ namespace eval ::p2p {
 			$SLPMessageBody conf2
 		}
 
-		destructor { } {
+		destructor {
 			destroy $SLPMessageBody
 		}
 	}
@@ -458,7 +458,7 @@ namespace eval ::p2p {
 			$self configurelist $args
 		}
 
-                destructor { } {
+                destructor {
                         destroy $SLPMessageBody
                 }
 
@@ -513,7 +513,7 @@ namespace eval ::p2p {
 			$SLPMessageBody setHeader Nat-Trav-Msg-Type "WLX-Nat-Trav-Msg-Direct-Connect-Req"
 		}
 
-                destructor { } {
+                destructor {
                         destroy $SLPMessageBody
                 }
 
@@ -586,7 +586,7 @@ namespace eval ::p2p {
 
 		}
 
-                destructor { } {
+                destructor {
                         destroy $SLPMessageBody
                 }
 
@@ -660,7 +660,7 @@ namespace eval ::p2p {
 
 		}
 
-                destructor { } {
+                destructor {
                         destroy $SLPMessageBody
                 }
 
@@ -676,7 +676,7 @@ namespace eval ::p2p {
 			$SLPMessageBody conf2
 		}
 
-                destructor { } {
+                destructor {
                         destroy $SLPMessageBody
                 }
 

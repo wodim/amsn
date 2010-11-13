@@ -85,7 +85,7 @@ namespace eval ::p2pv1 {
 
 		}
 
-		destructor { } {
+		destructor {
 
 			catch {destroy $options(-header)}
 			catch {destroy $options(-body)}
