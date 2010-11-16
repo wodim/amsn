@@ -35,6 +35,8 @@ namespace eval ::p2p {
 
 		destructor {
 
+			catch {::Event::unregisterEvent p2pSessionClosed all [list $self On_session_closed]}
+			catch {after cancel [list $self Process_send_queue]}
 			$options(-transport_manager) Unregister_transport $options(-transport)
 
 		}

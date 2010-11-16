@@ -16,6 +16,16 @@ namespace eval ::p2p {
 
 		}
 
+		destructor {
+
+                        $self configurelist $args
+                        catch {::Event::unregisterEvent p2pBlobReceived2 all [list $self On_blob_received]}
+                        catch {::Event::unregisterEvent p2pBlobSent2 all [list $self On_blob_sent]}
+                        catch {::Event::unregisterEvent p2pChunkSent all [list $self On_chunk_sent]}
+                        catch {::Event::unregisterEvent p2pChunkTransferred all [list $self On_chunk_received]}
+
+                }
+
 		method transport_manager { } {
 
 			if { $trsp_mgr == "" } {

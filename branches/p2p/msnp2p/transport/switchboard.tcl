@@ -28,6 +28,7 @@ namespace eval ::p2p {
 
 		destructor {
 			
+			catch {::Event::unregisterEvent ackReceived all [list $self On_ack]}
 			$BaseP2PTransport destroy
 
 		}

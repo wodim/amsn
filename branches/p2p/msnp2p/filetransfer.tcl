@@ -38,12 +38,18 @@ namespace eval ::p2p {
 			set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pRejected On_session_rejected p2pChunkSent2 On_chunk_sent p2pTransreqReceived On_transreq_received p2pConnecting On_connecting p2pListening On_listening p2pIdentifying On_identifying p2pTimeout On_timeout p2pByeReceived On_bye_received }
 
 			foreach { event callback } $handlers {
-				::Event::registerEvent $event all [list $self $callback]
+				catch {::Event::registerEvent $event all [list $self $callback]}
 			}
 
 		}
 
 		destructor {
+
+                        set handlers { p2pBridgeSelected On_bridge_selected p2pOutgoingSessionTransferCompleted On_transfer_completed p2pChunkReceived2 On_chunk_received p2pAccepted On_session_accepted p2pRejected On_session_rejected p2pChunkSent2 On_chunk_sent p2pTransreqReceived On_transreq_received p2pConnecting On_connecting p2pListening On_listening p2pIdentifying On_identifying p2pTimeout On_timeout p2pByeReceived On_bye_received }
+
+                        foreach { event callback } $handlers {
+                                catch {::Event::unregisterEvent $event all [list $self $callback]}
+                        }
 
 			catch {$session_manager Unregister_session $self}
 			$p2pSession destroy
@@ -417,6 +423,15 @@ namespace eval ::p2p {
 		constructor { args } {
 
 			$self configurelist $args
+
+		}
+
+		destructor { 
+
+			set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed p2pIncomingCompleted Incoming_session_transfer_completed]
+			foreach {event callb} $handles {
+                                catch {::Event::unregisterEvent $event all [list $self $callb]}
+                        }
 
 		}
 

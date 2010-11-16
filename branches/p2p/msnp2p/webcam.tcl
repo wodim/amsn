@@ -182,6 +182,12 @@ namespace eval ::p2p {
 
 		destructor {
 
+			#::Event::fireEvent p2pCallEnded p2pWebcamSession {}
+                        catch {::Event::unregisterEvent p2pTransreqReceived all [list $self On_transreq_received]}
+                        catch {::Event::unregisterEvent p2pOutgoingSessionTransferCompleted all [list $self On_data_blob_received]}
+                        catch {::Event::unregisterEvent p2pAccepted all [list $self On_session_accepted]}
+                        catch {::Event::unregisterEvent p2pRejected all [list $self On_session_rejected]}
+                        catch {::Event::unregisterEvent p2pByeReceived all [list $self On_bye_received]}
 			catch {$session_manager Unregister_session $self}
 			$p2pSession destroy
 
@@ -238,12 +244,6 @@ namespace eval ::p2p {
 			}
 			$self configure -canceled 1
 			after 60000 [list catch [list $self destroy]]
-
-		}
-
-		destructor {
-
-			::Event::fireEvent p2pCallEnded p2pWebcamSession {}
 
 		}
 

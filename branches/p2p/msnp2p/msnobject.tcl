@@ -151,6 +151,8 @@ namespace eval ::p2p {
 
 		destructor {
 
+			catch {::Event::unregisterEvent p2pByeReceived all [list $self On_bye_received]}
+			catch {::Event::unregisterEvent p2pBridgeSelected all [list $self On_bridge_selected]}
 			catch {$session_manager Unregister_session $self}
 			$P2PSession destroy
 

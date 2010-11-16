@@ -11,7 +11,17 @@ namespace eval ::p2p {
 		constructor {args} {
 
 			$self configurelist $args
+
 			#::Event::registerEvent p2pIncomingCompleted all [list $self Incoming_session_transfer_completed]
+
+		}
+
+		destructor {
+
+			set handles [list p2pOnSessionAnswered On_session_answered p2pOnSessionRejected On_session_rejected p2pOutgoingSessionTransferCompleted Outgoing_session_transfer_completed]
+                        foreach {event callb} $handles {
+                                catch {::Event::unregisterEvent $event all [list $self $callb]}
+                        }
 
 		}
 

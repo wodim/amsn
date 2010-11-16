@@ -26,6 +26,11 @@ namespace eval ::p2p {
 
 		destructor {
 
+			catch {after cancel [list $self On_bridge_selected]}
+			catch {::Event::unregisterEvent p2pNewBlob all [list $self On_blob_created]}
+			catch {::Event::unregisterEvent p2pCreated all [list $self Bridge_created]}
+			catch {::Event::unregisterEvent p2pConnected all [list $self Bridge_switched]}
+			catch {::Event::unregisterEvent p2pFailed all [list $self Bridge_failed]}
 			catch {$session_manager Unregister_session $self}
 
 		}

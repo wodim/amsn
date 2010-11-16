@@ -27,6 +27,18 @@ namespace eval ::p2p {
 
 		}
 
+		destructor {
+
+		        set trsign {}
+                        set trsign [lappend trsign p2pChunkReceived On_chunk_received]
+                        set trsign [lappend trsign p2pBlobSent On_blob_sent]
+                        set trsign [lappend trsign p2pBlobReceived On_blob_received]
+                        foreach {event callback} $trsign {
+                                catch {::Event::unregisterEvent $event all [list $self $callback]}
+                        }
+
+		}
+
 		method get_default_transport { } {
 
 			return $supported_transports($options(-default_transport))

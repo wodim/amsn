@@ -61,6 +61,8 @@ namespace eval ::p2p {
 
 		destructor {
 
+			catch {after cancel "$self On_connect_timeout"}
+			catch {after cancel "catch {close $sock};$self On_connect_timeout"}
 			$BaseP2PTransport destroy
 
 		}
