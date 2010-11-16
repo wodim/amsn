@@ -33,12 +33,12 @@ namespace eval ::p2p {
 
 		}
 
-		method close {} {
+		#method close {} {
 
-			BaseP2PTransport close $self
-			::MSN::CloseSB [::MSN::SBFor $peer]
+		#	BaseP2PTransport close $self
+			#::MSN::CloseSB [::MSN::SBFor $peer]
 
-		}
+		#}
 
 		method On_ack { event sb } {
 

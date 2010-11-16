@@ -133,6 +133,17 @@ namespace eval ::p2p {
 
 		}
 
+		method delete_blobs_of_session { peer sid } {
+
+                        set transports [$self cget -transports]
+                        foreach transport $transports {
+                                if { [$transport cget -peer] == $peer } {
+					$transport Del_blobs_of_session $sid
+				}
+			}
+
+		}
+
 		method find_transport { peer } {
 
 			set best ""

@@ -125,12 +125,13 @@ namespace eval ::p2p {
 
 		method close { { message "" } } {
 
-			if { [info exists transport] && $transport != "" } {
-				$transport close
-			}
-
 			status_log "Method close called for $message"
 			$self Remove_connect_timeout
+
+                        if { [info exists transport] && $transport != "" } {
+                                $transport close
+                        }
+
 			$self die $message
 
 		}

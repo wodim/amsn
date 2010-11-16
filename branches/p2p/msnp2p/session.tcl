@@ -31,7 +31,7 @@ namespace eval ::p2p {
 			catch {::Event::unregisterEvent p2pCreated all [list $self Bridge_created]}
 			catch {::Event::unregisterEvent p2pConnected all [list $self Bridge_switched]}
 			catch {::Event::unregisterEvent p2pFailed all [list $self Bridge_failed]}
-			catch {$session_manager Unregister_session $self}
+			$options(-session_manager) Unregister_session $self
 
 		}
 
@@ -269,7 +269,7 @@ namespace eval ::p2p {
 			} else {
 				$self On_data_blob_sent $blob
 			}
-			catch {$blob destroy}
+			#catch {$blob destroy}
 
 		}
 
@@ -329,7 +329,7 @@ namespace eval ::p2p {
 				#status_log "Received a data blob"
 				$self On_data_blob_received $blob
 			}
-			catch {$blob destroy}
+			#catch {$blob destroy}
 
 		}
 

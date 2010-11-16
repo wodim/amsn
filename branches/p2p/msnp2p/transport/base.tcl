@@ -37,7 +37,8 @@ namespace eval ::p2p {
 
 			catch {::Event::unregisterEvent p2pSessionClosed all [list $self On_session_closed]}
 			catch {after cancel [list $self Process_send_queue]}
-			$options(-transport_manager) Unregister_transport $options(-transport)
+			catch {$options(-transport_manager) Unregister_transport $options(-transport)}
+			$options(-transport) destroy
 
 		}
 
@@ -58,8 +59,10 @@ namespace eval ::p2p {
 		}
 
 		method close { } {
-			set trsp [$self cget -transport_manager]
-			list $trsp unregister_transport $options(-transport)
+			#set trsp [$self cget -transport_manager]
+			#list $trsp unregister_transport $options(-transport)
+			#catch {$options(-transport) destroy}
+			#destructor will take care of the above
 			after idle [list catch [list $self destroy]]
 		}
 
@@ -100,6 +103,21 @@ namespace eval ::p2p {
 			::Event::fireEvent p2pBlobSent p2pBaseTransport $blob
 			catch {$blob destroy}
 
+		}
+
+		method Del_blobs_of_session { sid } {
+
+			foreach ack_id [array names pending_blob] {
+				set blob $pending_blob($ack_id)
+				if { [$blob cget -session_id] == $sid } {
+					array unset pending_blob $ack_id
+					if { [info exists pending_ack([$blob cget -id])] } {
+						array unset pending_ack [$blob cget -id]
+					}
+					$blob destroy
+				}
+			}
+	
 		}
 
 		method Del_pending_ack {blob_id {chunk_id 0} } {
