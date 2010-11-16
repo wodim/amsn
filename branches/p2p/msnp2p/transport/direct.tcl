@@ -305,6 +305,7 @@ namespace eval ::p2p {
 			$chunk set_nonce $options(-nonce)
 			status_log "Sending nonce $options(-nonce)"
 			$self Send_data [$chunk toString] ""
+			catch {$chunk destroy}
 
 		}
 

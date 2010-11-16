@@ -148,6 +148,7 @@ namespace eval ::p2p {
 
 				if { $sid == 0 } {
 					status_log "SID shouldn't be 0!!!" black
+					catch {$msg destroy}
 					return
 				}
 				
@@ -172,13 +173,17 @@ namespace eval ::p2p {
 					}
 					if { $session == "" } {
 						status_log "Don't know how to handle [[$msg body] cget -euf_guid]"
+						catch {$msg destroy}
 						return ""
 					}
+					catch {$msg destroy}
 				} elseif { [[$msg body] info type] == "::p2p::SLPSessionRequestBody" } {
 					status_log "Unknown session"
+					catch {$msg destroy}
 					return ""
 				} else {
 					status_log "[$msg info type] : What is this type?"
+					catch {$msg destroy}
 					return ""
 				}
 				catch {$msg destroy}
@@ -209,7 +214,9 @@ namespace eval ::p2p {
 				$message configure -application_id [$blob cget -application_id]
 				set sid [[$message body] cget -session_id]
 				if { $sid == 0 || $sid == "" } {
-					return [$self Search_session_by_call [$message cget -call_id]]
+					set cid [$message cget -call_id]
+					catch {$message destroy}
+					return [$self Search_session_by_call $cid]
 				}
 				catch {$message destroy}
 			}

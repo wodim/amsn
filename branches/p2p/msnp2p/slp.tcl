@@ -56,6 +56,7 @@ namespace eval ::p2p {
 		}
 
 		method setBody { data } {
+			catch {$body destroy}
 			set body $data
 			$self add_header Content-Type [$body cget -content_type]
 			$self add_header Content-Length [string length [$body toString]]

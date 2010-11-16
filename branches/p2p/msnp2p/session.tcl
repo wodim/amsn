@@ -317,8 +317,8 @@ namespace eval ::p2p {
 					} else {
 						status_log "$msg : unknown response blob"
 					}
-					catch {$msg destroy}
 				}
+				catch {$msg destroy}
 				return
 			}
 
@@ -375,7 +375,7 @@ namespace eval ::p2p {
 		method On_data_blob_sent { blob } { 
 
 			::Event::fireEvent p2pIncomingCompleted p2p $self [$blob cget -data]
-			catch [$blob destroy]
+			catch {$blob destroy}
 			#after idle [list catch [list destroy $self]]
 
 		}
@@ -383,7 +383,7 @@ namespace eval ::p2p {
 		method On_data_blob_received { blob } {
 
 			::Event::fireEvent p2pOutgoingSessionTransferCompleted p2p $self [$blob cget -data]
-			catch [$blob destroy]
+			catch {$blob destroy}
 
 		}
 

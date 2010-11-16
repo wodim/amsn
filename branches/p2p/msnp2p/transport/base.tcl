@@ -85,6 +85,7 @@ namespace eval ::p2p {
 				set pending_blob($ack_id) $blob
 			} else {
 				::Event::fireEvent p2pBlobSent p2pBaseTransport $blob
+				catch {$blob destroy}
 			}
 
 		}
@@ -97,6 +98,7 @@ namespace eval ::p2p {
 			set blob $pending_blob($ack_id)
 			array unset pending_blob $ack_id
 			::Event::fireEvent p2pBlobSent p2pBaseTransport $blob
+			catch {$blob destroy}
 
 		}
 
@@ -123,6 +125,7 @@ namespace eval ::p2p {
 				status_log "Will send ACK"
 				set ack_chunk [$chunk create_ack_chunk]
 				$self __Send_chunk $peer $peer_guid $ack_chunk
+				$ack_chunk destroy
 			}
 
 			if { [$chunk is_control_chunk] == 0 } {

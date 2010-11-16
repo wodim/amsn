@@ -146,6 +146,7 @@ namespace eval ::p2p {
 			install P2PSession using P2PSession %AUTO% -euf_guid $::p2p::EufGuid::MSN_OBJECT
 			$self configurelist $args
 			::Event::registerEvent p2pByeReceived all [list $self On_bye_received]
+			::Event::registerEvent p2pOutgoingSessionTransferCompleted all [list $self On_data_blob_received]
 
 		}
 
@@ -153,6 +154,7 @@ namespace eval ::p2p {
 
 			catch {::Event::unregisterEvent p2pByeReceived all [list $self On_bye_received]}
 			catch {::Event::unregisterEvent p2pBridgeSelected all [list $self On_bridge_selected]}
+			catch {::Event::unregisterEvent p2pOutgoingSessionTransferCompleted all [list $self On_data_blob_received]}
 			catch {$session_manager Unregister_session $self}
 			$P2PSession destroy
 
@@ -168,6 +170,14 @@ namespace eval ::p2p {
 			}
 			$P2PSession configure -context $options(-context)
 			::Event::registerEvent p2pBridgeSelected all [list $self On_bridge_selected]
+
+		}
+
+                method On_data_blob_received { event session rcvdata } {
+
+                        if { $session != $P2PSession } { return }
+			$self Close $options(-context) ""
+			after 60000 [list catch [list $self destroy]]
 
 		}
 
@@ -224,6 +234,7 @@ namespace eval ::p2p {
 			if { $data != "" } {
 				$self send
 			}
+			after 60000 [list catch [list $self destroy]]
 		}
 
 	}
