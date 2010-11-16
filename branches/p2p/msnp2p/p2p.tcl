@@ -49,9 +49,11 @@ namespace eval ::p2p {
 				if {[$obj cget -shad] == [$msnobj cget -shad]} {
 					$session accept [$obj cget -data]
 					status_log "Returning session $session!!!!!!"
+					$msnobj destroy
 					return $session
 				}
 			}
+			$msnobj destroy
 			$session reject
 			status_log "No such object, rejecting"
 			return $session
@@ -100,8 +102,14 @@ namespace eval ::p2p {
 		method publish { msnobj } {
 
 			if { [$msnobj cget -data] != "" } {
-				if { [lsearch $published_objects $msnobj] >= 0 } { return }
-				set published_objects [lappend $published_objects $msnobj]
+				foreach obj $published_objects {
+					if {[$obj cget -shad] == [$msnobj cget -shad]} {
+						$msnobj destroy
+                        	                return
+					}
+				}
+
+				set published_objects [lappend published_objects $msnobj]
 			}
 
 		}
@@ -136,9 +144,9 @@ namespace eval ::p2p {
 
 			set type [$msnobj cget -type]
 			if { $type == $::p2p::MSNObjectType::CUSTOM_EMOTICON || $type == $::p2p::MSNObjectType::WINK || $type == $::p2p::MSNObjectType::VOICE_CLIP } {
-				#TODO catch {destroy $msnobj}
+				catch {$msnobj destroy}
 			} elseif { $type == $::p2p::MSNObjectType::DISPLAY_PICTURE } {
-				#TODO catch {destroy $incoming_DPs_by_user([$msnobj cget -creator])}
+				catch {$incoming_DPs_by_user([$msnobj cget -creator]) destroy}
 				set incoming_DPs_by_user([$msnobj cget -creator]) $msnobj
 			}
 
@@ -199,6 +207,10 @@ namespace eval ::p2p {
 			}
 			array unset outgoing_sessions $session
 
+		}
+
+		method get_all_objects { } {
+			return $published_objects
 		}
 
 	}
