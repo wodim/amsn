@@ -16,6 +16,8 @@ namespace eval ::p2p {
 		option -partof -default ""
 		option -fd ""
 
+		variable blobs {}
+
 		#option -cookie "" ;#dummy
 
 		constructor {args} {
@@ -31,6 +33,11 @@ namespace eval ::p2p {
 			catch {::Event::unregisterEvent p2pCreated all [list $self Bridge_created]}
 			catch {::Event::unregisterEvent p2pConnected all [list $self Bridge_switched]}
 			catch {::Event::unregisterEvent p2pFailed all [list $self Bridge_failed]}
+			catch {::Event::unregisterEvent blobConstructed all [list $self On_blob_constructed]}
+			catch {::Event::unregisterEvent blobDestroyed all [list $self On_blob_destroyed]}
+			foreach blob $blobs {
+				catch {$blob destroy}
+			}
 			$options(-session_manager) Unregister_session $self
 
 		}
@@ -52,6 +59,8 @@ namespace eval ::p2p {
 
 			[$self cget -session_manager] Register_session $self
 			::Event::registerEvent p2pNewBlob all [list $self On_blob_created]
+			::Event::registerEvent blobConstructed all [list $self On_blob_constructed]
+			::Event::registerEvent blobDestroyed all [list $self On_blob_destroyed]
 
 		}
 
@@ -257,6 +266,21 @@ namespace eval ::p2p {
 
 		}
 
+		method On_blob_constructed { event blob } {
+
+			if { [$blob cget -session_id] != [$self cget -id] } { return }	
+			set blobs [lappend blobs $blob]
+
+		}
+
+                method On_blob_destroyed { event blob } {
+
+                        if { [$blob cget -session_id] != [$self cget -id] } { return }
+                        set pos [lsearch $blobs $blob]
+			set blobs [lreplace $blobs $pos $pos]
+
+		}
+
 		method On_blob_sent { blob } {
 
 			if { [$blob cget -session_id] == 0 } {
@@ -375,7 +399,7 @@ namespace eval ::p2p {
 		method On_data_blob_sent { blob } { 
 
 			::Event::fireEvent p2pIncomingCompleted p2p $self [$blob cget -data]
-			catch {$blob destroy}
+			#catch {$blob destroy} ;#No, we are waiting for the ack
 			#after idle [list catch [list destroy $self]]
 
 		}
@@ -383,7 +407,7 @@ namespace eval ::p2p {
 		method On_data_blob_received { blob } {
 
 			::Event::fireEvent p2pOutgoingSessionTransferCompleted p2p $self [$blob cget -data]
-			catch {$blob destroy}
+			#catch {$blob destroy}
 
 		}
 

@@ -54,8 +54,8 @@ namespace eval ::p2p {
 			status_log "Unregistering session [$session cget -id]"
 			set sid [$session cget -id]
 			catch {array unset sessions $sid}
-			$trsp_mgr delete_blobs_of_session [$session cget -peer] $sid
-			if { [$self Search_session_by_peer [$session cget -peer]] < 0 } {
+			#$trsp_mgr delete_blobs_of_session [$session cget -peer] $sid
+			if { [$self Search_session_by_peer [$session cget -peer]] == "" } {
 				$trsp_mgr close_transport [$session cget -peer]
 			}
 

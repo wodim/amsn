@@ -38,7 +38,7 @@ namespace eval ::p2p {
 			catch {::Event::unregisterEvent p2pSessionClosed all [list $self On_session_closed]}
 			catch {after cancel [list $self Process_send_queue]}
 			catch {$options(-transport_manager) Unregister_transport $options(-transport)}
-			$options(-transport) destroy
+			#$options(-transport) destroy
 
 		}
 
@@ -63,7 +63,7 @@ namespace eval ::p2p {
 			#list $trsp unregister_transport $options(-transport)
 			#catch {$options(-transport) destroy}
 			#destructor will take care of the above
-			after idle [list catch [list $self destroy]]
+			after idle [list catch [list $options(-transport) destroy]]
 		}
 
 		method Reset { } {
@@ -105,6 +105,7 @@ namespace eval ::p2p {
 
 		}
 
+		# Unused
 		method Del_blobs_of_session { sid } {
 
 			foreach ack_id [array names pending_blob] {

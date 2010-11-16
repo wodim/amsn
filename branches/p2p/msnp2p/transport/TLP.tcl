@@ -32,6 +32,13 @@ namespace eval ::p2p {
 				$self configure -blob_id [::p2p::generate_id]
 			}
 			$self configure -id [$self cget -blob_id]
+			::Event::fireEvent blobConstructed p2pTlp $self
+
+		}
+
+		destructor {
+
+			::Event::fireEvent blobDestroyed p2pTlp $self
 
 		}
 

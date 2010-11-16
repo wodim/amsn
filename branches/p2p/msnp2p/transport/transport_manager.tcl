@@ -60,7 +60,7 @@ namespace eval ::p2p {
 				return
 			}
 
-			lappend transports $transport
+			set transports [lappend transports $transport]
 			$self configure -transports $transports
 
 			if { [info exists transport_signals($transport)] } {
@@ -133,6 +133,7 @@ namespace eval ::p2p {
 
 		}
 
+		# Unused
 		method delete_blobs_of_session { peer sid } {
 
                         set transports [$self cget -transports]
