@@ -145,6 +145,14 @@ namespace eval ::p2p {
 
 			install P2PSession using P2PSession %AUTO% -euf_guid $::p2p::EufGuid::MSN_OBJECT
 			$self configurelist $args
+			::Event::registerEvent p2pByeReceived all [list $self On_bye_received]
+
+		}
+
+		destructor {
+
+			catch {$session_manager Unregister_session $self}
+			$P2PSession destroy
 
 		}
 
@@ -179,6 +187,13 @@ namespace eval ::p2p {
 
 		}
 
+		method On_bye_received { event session } {
+
+			if { $session != $P2PSession } { return }
+			after 60000 [list catch [list $self destroy]]
+
+		}
+
 		method accept { data_file } {
 			set data $data_file
 			$self Respond "200"
@@ -187,6 +202,7 @@ namespace eval ::p2p {
 
 		method reject { } {
 			$self Respond "603"
+			after 60000 [list catch [list $self destroy]]
 		}
 
 		#method invite { context } {

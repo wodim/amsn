@@ -42,9 +42,9 @@ namespace eval ::p2p {
 		method Unregister_session { session } {
 
 			status_log "Unregistering session"
-			puts "Unregistering session"
+			puts "Unregistering session [$session cget -id]"
 			set sid [$session cget -id]
-			array unset sessions $sid
+			catch {array unset sessions $sid}
 			if { [$self Search_session_by_peer [$session cget -peer]] < 0 } {
 				$options(-transport-manager) close_transport [$session cget -peer]
 			}
@@ -89,6 +89,11 @@ namespace eval ::p2p {
 
 			foreach sid [array names sessions] {
 				set session $sessions($sid)
+				if { [info commands $session] == "" } {
+					#Stale session, unregister
+					catch {array unset sessions $sid}
+					continue
+				}
 				if { [$session cget -call_id] == $cid } {
 					return $session
 				} 
@@ -100,6 +105,11 @@ namespace eval ::p2p {
 		method Search_session_by_peer { peer } {
 
 			foreach session [array names sessions] {  
+                               if { [info commands $session] == "" } {
+                                        #Stale session, unregister
+                                        catch {array unset sessions $sid}
+                                        continue
+                                }
 				if { [$session cget -peer] == $peer } {
 					return session
 				}

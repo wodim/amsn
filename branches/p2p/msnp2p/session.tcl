@@ -24,6 +24,12 @@ namespace eval ::p2p {
 
 		}
 
+		destructor {
+
+			catch {$session_manager Unregister_session $self}
+
+		}
+
 		method conf2 { } {
 
 			if { $options(-message) != "" } {
