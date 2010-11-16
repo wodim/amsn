@@ -2661,6 +2661,7 @@ namespace eval ::MSN {
 		} else {
 			#Check if we can kill the SB (clear all related info
 			CheckKill $sb
+			if { [info commands $sb] == "" } { return }
 			if { [$sb cget -killme] != "" } {
 				after cancel [$sb cget -killme]
 				$sb configure -killme ""
