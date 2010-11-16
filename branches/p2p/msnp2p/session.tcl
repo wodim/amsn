@@ -210,7 +210,7 @@ namespace eval ::p2p {
 			$msg conf2
 			$msg setBody $body
 			$self Send_p2p_data $msg
-			after idle [list catch [list $self destroy]]
+			#after idle [list catch [list $self destroy]]
 
 		}
 
@@ -425,7 +425,7 @@ namespace eval ::p2p {
 		method On_bye_received { msg } { 
 
 			::Event::fireEvent p2pByeReceived p2p $self 
-			after idle [list catch [list $self destroy]]
+			#after idle [list catch [list $self destroy]]
 
 		}
 
@@ -433,7 +433,7 @@ namespace eval ::p2p {
 
 		method On_session_rejected { msg } {
 
-			after idle [list catch [list $self destroy]]
+			#after idle [list catch [list $self destroy]]
 
 		}
 

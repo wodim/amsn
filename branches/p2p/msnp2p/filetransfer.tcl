@@ -144,7 +144,7 @@ namespace eval ::p2p {
 			::amsn::RejectFT $chatid "-2" $sid
 			$::ft_handler remove_session $self
                         #$self WinWriteText $chatid [trans filetransfercancelled]
-			after idle [list catch [list $self destroy]]
+			#after idle [list catch [list $self destroy]]
 
 		}
 
@@ -290,7 +290,7 @@ namespace eval ::p2p {
 
 			if { $session != $p2pSession } { return }
                         ::amsn::FTProgress l $self $options(-localpath) 
-			after idle [list catch [list $self destroy]]
+			#after idle [list catch [list $self destroy]]
 
 		}
 
@@ -332,7 +332,7 @@ namespace eval ::p2p {
                         if { $session != $p2pSession } { return }
 			set chatid [$p2pSession cget -peer]
 			SendMessageFIFO [list ::amsn::rejectedFT $chatid "" $options(-filename)] "::amsn::messages_stack($chatid)" "::amsn::messages_flushing($chatid)"
-			after idle [list catch [list $self destroy]]
+			#after idle [list catch [list $self destroy]]
 
 		}
 
@@ -399,7 +399,7 @@ namespace eval ::p2p {
 			set filename [$self cget -localpath]
 			file rename $filename.incomplete $filename
 			$::ft_handler remove_session $self
-			after idle [list catch [list $self destroy]]
+			#after idle [list catch [list $self destroy]]
 
 		}
 

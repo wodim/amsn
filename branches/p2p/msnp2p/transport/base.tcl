@@ -220,7 +220,7 @@ namespace eval ::p2p {
 				after 10 [list $self Process_send_queue]
 			}
 			$self On_chunk_sent $chunk $blob
-			$chunk destroy
+			catch {$chunk destroy}
 			return 1
 
 		}
@@ -248,7 +248,7 @@ namespace eval ::p2p {
 			}
 
 			$options(-transport) Send_chunk $peer $peer_guid $chunk
-			catch {$chunk destroy}
+			#catch {$chunk destroy}
 
 		}
 

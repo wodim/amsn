@@ -63,7 +63,7 @@ namespace eval ::p2p {
 				return
 			}
 			$session On_data_chunk_transferred $chunk $blob
-			catch {$chunk destroy}
+			#catch {$chunk destroy}
 
 		}
 
@@ -72,7 +72,7 @@ namespace eval ::p2p {
 			set sid [$chunk get_field session_id]
 			set session [$self Get_session $sid]
 			::Event::fireEvent p2pChunkReceived2 p2pSessionManager $session $chunk $blob
-			catch {$chunk destroy}
+			#catch {$chunk destroy}
 
 		}
 
