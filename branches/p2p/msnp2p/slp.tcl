@@ -41,6 +41,7 @@ namespace eval ::p2p {
 			}
 			$self add_header Max-Forwards $options(-max_forwards)
 
+			#if { [info exists $body] } { puts "$self configured twice!" }
 			set body [SLPNullBody %AUTO%]
 			$self add_header Content-Type [$body cget -content_type]
 			$self add_header Content-Length [string length [$body toString]]
@@ -189,7 +190,7 @@ namespace eval ::p2p {
 				set reason [string trim [lindex $start_line 2]]
 				status_log "We have a response message"
 				set slp_message [SLPResponseMessage %AUTO% -status $status -reason $reason]
-				$slp_message conf2
+				#$slp_message conf2
 				set type request
 			} else {
 				set method [string trim [lindex $start_line 0]]
