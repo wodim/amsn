@@ -23,6 +23,9 @@ namespace eval ::p2p {
 		constructor {args} {
 
 			$self configurelist $args
+                        ::Event::registerEvent p2pNewBlob all [list $self On_blob_created]
+                        ::Event::registerEvent blobConstructed all [list $self On_blob_constructed]
+                        ::Event::registerEvent blobDestroyed all [list $self On_blob_destroyed]
 
 		}
 
@@ -58,10 +61,6 @@ namespace eval ::p2p {
 			}
 
 			[$self cget -session_manager] Register_session $self
-			::Event::registerEvent p2pNewBlob all [list $self On_blob_created]
-			::Event::registerEvent blobConstructed all [list $self On_blob_constructed]
-			::Event::registerEvent blobDestroyed all [list $self On_blob_destroyed]
-
 		}
 
 		method transport_manager { } {

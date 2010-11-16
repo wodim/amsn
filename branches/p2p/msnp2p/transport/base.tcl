@@ -207,7 +207,7 @@ namespace eval ::p2p {
 				if { [$blob cget -session_id] == $sid } {
 					set queue [lreplace $queue $i $i]
 					set data_blob_queue $queue
-					$blob destroy
+					#$blob destroy
 				} else {
 					incr i
 				}
