@@ -28,7 +28,7 @@ namespace eval ::p2p {
 
 		destructor {
 			
-			destroy $BaseP2PTransport
+			$BaseP2PTransport destroy
 
 		}
 
@@ -92,7 +92,7 @@ namespace eval ::p2p {
 				} else {
 					set queue [lappend $queue [list ::MSN::ChatQueue $chatid [list ::MSN::WriteSBNoNL $sb "MSG" "D $data_len\r\n$data"]]]
 				}
-				catch {destroy $sendme}
+				catch {$sendme destroy}
 			}
 
 			method On_message_received { message} {
@@ -113,7 +113,7 @@ namespace eval ::p2p {
 				}
 				set chunk [MessageChunk parse $version [string range [$message get_body] 0 end-4]]
 				binary scan [string range [$message get_body] end-4 end] iu appid
-				catch {destroy $message}
+				catch {$message destroy}
 				$self On_chunk_received [$self cget -peer] [$self cget -peer_guid] $chunk
 
 			}

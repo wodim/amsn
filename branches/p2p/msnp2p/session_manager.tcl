@@ -63,7 +63,7 @@ namespace eval ::p2p {
 				return
 			}
 			$session On_data_chunk_transferred $chunk $blob
-			catch {destroy $chunk}
+			catch {$chunk destroy}
 
 		}
 
@@ -72,7 +72,7 @@ namespace eval ::p2p {
 			set sid [$chunk get_field session_id]
 			set session [$self Get_session $sid]
 			::Event::fireEvent p2pChunkReceived2 p2pSessionManager $session $chunk $blob
-			catch {destroy $chunk}
+			catch {$chunk destroy}
 
 		}
 
@@ -161,7 +161,7 @@ namespace eval ::p2p {
 					status_log "[$msg info type] : What is this type?"
 					return ""
 				}
-				catch {destroy $msg}
+				catch {$msg destroy}
 			}
 			$session On_blob_received $blob
 
@@ -191,7 +191,7 @@ namespace eval ::p2p {
 				if { $sid == 0 || $sid == "" } {
 					return [$self Search_session_by_call [$message cget -call_id]]
 				}
-				catch {destroy $message}
+				catch {$message destroy}
 			}
 
 			return [$self Get_session $sid]

@@ -182,7 +182,7 @@ namespace eval ::p2p {
 
 		destructor {
 
-			destroy $p2pSession
+			$p2pSession destroy
 
 		}
 
@@ -222,7 +222,7 @@ namespace eval ::p2p {
 			::CAMGUI::InvitationRejected [$p2pSession cget -peer] [$p2pSession cget -id]
 			$p2pSession Respond 603
 			$self configure -canceled 1
-			after idle [list catch [list destroy $self]]
+			after idle [list catch [list $self destroy]]
 
 		}
 
@@ -236,7 +236,7 @@ namespace eval ::p2p {
 				::MSNCAM::CamCanceled $options(-chatid) $self 
 			}
 			$self configure -canceled 1
-			after idle [list catch [list destroy $self]]
+			after idle [list catch [list $self destroy]]
 
 		}
 
@@ -280,7 +280,7 @@ namespace eval ::p2p {
 			if { $session != $p2pSession } { return }
 			$self configure -canceled 1
 			::CAMGUI::CamCanceled $options(-chatid) [$self cget -id]
-			after idle [list catch [list destroy $self]]
+			after idle [list catch [list $self destroy]]
 
 		}
 
@@ -309,7 +309,7 @@ namespace eval ::p2p {
 			::CAMGUI::InvitationDeclined [$p2pSession cget -peer] [$p2pSession cget -id]
 			#::Event::fireEvent p2pCallRejected p2pWebcamSession {}
 			$self configure -canceled 1
-			after idle [list catch [list destroy $self]]
+			after idle [list catch [list $self destroy]]
 
 		}
 
@@ -377,7 +377,7 @@ namespace eval ::p2p {
 			status_log "Sent XML for session $options(-sid)"
 			set message [WebcamSessionMessage %AUTO% -partof $self -id $options(-sid) -producer $options(-producer) -session $options(-session)]
 			$self send_data [$message toString]
-			catch {destroy $message}
+			catch {$message destroy}
 
 		}
 
@@ -391,7 +391,7 @@ namespace eval ::p2p {
 			} else {
 				$self Send_xml
 			}
-			catch {destroy $message}
+			catch {$message destroy}
 
 		}
 

@@ -179,7 +179,7 @@ namespace eval ::p2p {
 				array set session_blobs $data_blobs($session_id)
 				array unset session_blobs $blob_id
 				set data_blobs($session_id) [array get session_blobs]
-				catch {destroy $blob}
+				catch {$blob destroy}
 			} else {
 				status_log "$blob size is [$blob cget -blob_size] and we have [$blob transferred] so not complete"
 			}

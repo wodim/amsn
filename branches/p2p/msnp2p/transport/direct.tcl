@@ -61,7 +61,7 @@ namespace eval ::p2p {
 
 		destructor {
 
-			destroy $BaseP2PTransport
+			$BaseP2PTransport destroy
 
 		}
 
@@ -72,7 +72,7 @@ namespace eval ::p2p {
 			catch { close $options(-sock) }
 			[$self cget -transport_manager] Unregister_transport $self
 			status_log "Error connecting to $options(-ip) $options(-port) : $message"
-			after idle [list catch [list destroy $self]]
+			after idle [list catch [list $self destroy]]
 
 		}
 
@@ -348,9 +348,9 @@ namespace eval ::p2p {
 			}
 			set chunk [MessageChunk parse $version [string range [$message get_body] 0 end-4]]
 			binary scan [string range [$message get_body] end-4 end] iu appid
-			destroy $message
+			$message destroy
 			$self On_chunk_received [$self cget -peer] "" $chunk
-			catch {destroy $chunk}
+			catch {$chunk destroy}
 
 		}
 
@@ -444,7 +444,7 @@ namespace eval ::p2p {
 				}
 				set size 0
 				set buffer ""
-				catch {destroy $chunk}
+				catch {$chunk destroy}
 			}
 
 		}

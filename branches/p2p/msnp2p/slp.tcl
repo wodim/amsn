@@ -24,7 +24,7 @@ namespace eval ::p2p {
 
 		destructor {
 
-			catch {destroy $body}
+			catch {$body destroy}
 
 		}
 
@@ -217,7 +217,7 @@ namespace eval ::p2p {
 		}
 
 		destructor {
-			destroy $SLPMessage
+			$SLPMessage destroy
 		}
 
 		method conf2 { } {
@@ -256,7 +256,7 @@ namespace eval ::p2p {
 
 		destructor {
 
-			destroy $SLPMessage
+			$SLPMessage destroy
 
 		}
 
@@ -441,7 +441,7 @@ namespace eval ::p2p {
 		}
 
 		destructor {
-			destroy $SLPMessageBody
+			$SLPMessageBody destroy
 		}
 	}
 
@@ -459,7 +459,7 @@ namespace eval ::p2p {
 		}
 
                 destructor {
-                        destroy $SLPMessageBody
+                        $SLPMessageBody destroy
                 }
 
 		method conf2 { } {
@@ -514,7 +514,7 @@ namespace eval ::p2p {
 		}
 
                 destructor {
-                        destroy $SLPMessageBody
+                        $SLPMessageBody destroy
                 }
 
 		method bridges { } {
@@ -587,7 +587,7 @@ namespace eval ::p2p {
 		}
 
                 destructor {
-                        destroy $SLPMessageBody
+                        $SLPMessageBody destroy
                 }
 
 		method bridge { } {
@@ -661,7 +661,7 @@ namespace eval ::p2p {
 		}
 
                 destructor {
-                        destroy $SLPMessageBody
+                        $SLPMessageBody destroy
                 }
 
 	}
@@ -677,7 +677,7 @@ namespace eval ::p2p {
 		}
 
                 destructor {
-                        destroy $SLPMessageBody
+                        $SLPMessageBody destroy
                 }
 
 	}

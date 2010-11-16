@@ -58,7 +58,7 @@ namespace eval ::p2p {
 		method close { } {
 			set trsp [$self cget -transport_manager]
 			list $trsp unregister_transport $options(-transport)
-			after idle [list catch [list destroy $self]]
+			after idle [list catch [list $self destroy]]
 		}
 
 		method Reset { } {
@@ -160,7 +160,7 @@ namespace eval ::p2p {
 				status_log "The blob $blob is complete"
 				::Event::fireEvent p2pBlobReceived p2pBaseTransport $blob
 				array unset signaling_blobs $blob_id
-				catch {destroy $blob}
+				catch {$blob destroy}
 			} else {
 				status_log "Waiting for more data"
 			}
@@ -220,7 +220,7 @@ namespace eval ::p2p {
 				after 10 [list $self Process_send_queue]
 			}
 			$self On_chunk_sent $chunk $blob
-			destroy $chunk
+			$chunk destroy
 			return 1
 
 		}
@@ -248,7 +248,7 @@ namespace eval ::p2p {
 			}
 
 			$options(-transport) Send_chunk $peer $peer_guid $chunk
-			catch {destroy $chunk}
+			catch {$chunk destroy}
 
 		}
 
