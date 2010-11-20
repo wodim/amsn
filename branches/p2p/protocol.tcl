@@ -2439,7 +2439,7 @@ namespace eval ::MSN {
 			::MSN::CloseSB $sbn
 			degt_protocol "->$sbn FAILED: $cmd" error
 		}
-		if { [info commands $sb] == "" } { return }
+		if { [info commands $sbn] == "" } { return }
 		if { $sbn != "ns" } {
 			if { [$sbn cget -killme] != "" } {
 				after cancel [$sbn cget -killme]
