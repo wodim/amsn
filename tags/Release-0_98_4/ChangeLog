@@ -1,0 +1,510 @@
+2010-03-07 [r11976]  alexandernst:
+
+	* Fix a bug in TrayBlinkStop causing the trayicon to be changed
+	  after every tabchange, window open/close, etc...
+
+2010-03-07 [r11977]  kakaroto:
+
+	* Updating mac binaries for statusicon and tcl_farsight
+
+2010-03-07 [r11978]  kakaroto:
+
+	* Adding a script for automating release tarballs to ease up on
+	  release time
+
+2010-03-07 [r11979]  alexandernst:
+
+	* Remove trayblink feature for Windows systems until it's properly
+	  implemented.
+
+2010-03-07 [r11982]  kakaroto:
+
+	* finish the script for auto creating tarballs
+
+2010-03-08 [r11986]  kakaroto:
+
+	* Add sasl utils directory to NSIS installer
+
+2010-03-08 [r11987]  kakaroto:
+
+	* oups, revert back my commit, it seems vivia already added sasl
+	  and md4 directories to this script!
+
+2010-03-08 [r11989]  kakaroto:
+
+	* Take the proper tls and tkdnd directories and install them.
+
+2010-03-08 [r11990]  billiob:
+
+	* update galician translation, thanks to Indalecio Freiría Santos.
+
+2010-03-10 [r11991]  billiob:
+
+	* check certificates on ssl connections
+
+2010-03-10 [r11992]  vivia:
+
+	* Added ca-certificates.crt to Makefile.in and NSIS
+
+2010-03-10 [r11993]  billiob:
+
+	* use a global variable to store certificates path so that distro
+	  can patch it easily
+
+2010-03-10 [r11994]  kakaroto:
+
+	* oups, need to enable the use of wanttosharecam if we don't use
+	  farsight, at login time
+
+2010-03-10 [r11995]  billiob:
+
+	* add Microsoft_Internet_Authority.pem and
+	  Microsoft_Secure_Server_Authority.pem
+
+2010-03-11 [r11996]  tjikkun:
+
+	* WIP: better cert handling
+
+2010-03-11 [r11998-11997]  billiob:
+
+	* use CERT_DIR
+
+	* add ca-certs/Microsoft_Internet_Authority.pem and
+	  ca-certs/Microsoft_Secure_Server_Authority.pem
+
+2010-03-11 [r11999]  billiob:
+
+	* check certificates on tls::import
+
+2010-03-11 [r12000]  billiob:
+
+	* add VeriSign_Class3_Extended_Validation_CA.pem and
+	  VeriSign_International_Server_Class_3_CA.pem
+
+2010-03-11 [r12001]  billiob:
+
+	* add the command parameter to tls sockets to show users a UI in
+	  case the certificate is not valid
+
+2010-03-11 [r12002]  vivia:
+
+	* No segfaults/infinite windows please. I have no idea why, but if
+	  we get certificate errors, we get a bunch of little windows
+	  popping up (segfault on desktop integration usage). Silently
+	  ignoring certificate errors for now...
+
+2010-03-12 [r12003]  tjikkun:
+
+	* certs should now all be working
+
+2010-03-17 [r12005]  billiob:
+
+	* update hungarian translation, thanks to rezso
+
+2010-03-18 [r12007]  billiob:
+
+	* fix make install
+
+2010-03-19 [r12008]  billiob:
+
+	* remove status page, no longer exists
+
+2010-03-28 [r12009]  billiob:
+
+	* dutch translation updated, thanks to Ton .
+
+2010-03-28 [r12010]  billiob:
+
+	* update fr_CA translation, thanks to Sguby Bugsy
+
+2010-04-04 [r12011]  billiob:
+
+	* fix translation, thanks Jérôme for spotting this!
+
+2010-04-12 [r12013]  billiob:
+
+	* put in console only failing certs + add TODO
+
+2010-04-15 [r12018]  alexandernst:
+
+	* Trayicon hasn't any name and xwininfo can't "see" it. This patch
+	  will set trayicon to "amsn-tray"
+
+2010-04-16 [r12019]  alexandernst:
+
+	* Fix typo from commit 12018 causing compile warning.
+
+2010-04-25 [r12020]  alexandernst:
+
+	* Fix email not changing in login screen.
+
+2010-05-07 [r12022]  vivia:
+
+	* Drag-and-drop for text should now work
+
+2010-05-07 [r12023]  vivia:
+
+	* darn, that is why it never worked????????
+
+2010-05-07 [r12024]  vivia:
+
+	* I beg it to work, but it never does... ☹
+
+2010-05-07 [r12025]  vivia:
+
+	* More debug in case tkdnd fails for text
+
+2010-05-08 [r12026]  vivia:
+
+	* Now drag and drop for text should work
+
+2010-05-08 [r12027]  vivia:
+
+	* Okay, now we should be able to drag and drop URLs as well :p
+
+2010-05-08 [r12028]  vivia:
+
+	* Take bossmode into account for windows when we just got adde
+
+2010-05-09 [r12029]  vivia:
+
+	* commit_count++
+
+2010-05-10 [r12030]  vivia:
+
+	* More debug output for tkdnd
+
+2010-05-12 [r12031]  billiob:
+
+	* update polish translation. Thanks to Bartosz Dzikowski
+
+2010-05-13 [r12032]  alexandernst:
+
+	* Remove an extra ] at the end of advanced_options list
+
+2010-05-13 [r12033]  kakaroto:
+
+	* Use XDG_DOWNLOAD_DIR for the default download directory on new
+	  profiles. Should fix
+	  https://bugs.launchpad.net/ubuntu/+source/amsn/+bug/407661
+
+2010-05-13 [r12034]  kakaroto:
+
+	* Adding support for tktray instead of our libtray code. If tktray
+	  is not found, it will fallback on using our bundled libtray. The
+	  discovery and initial patch for tktray was from tjikkun. Thanks!
+	  Needs testing. alexandernst will contribute with the testing!
+
+2010-05-15 [r12036]  alexandernst:
+
+	* Fix global var preventing amsn tray to start.
+
+2010-05-16 [r12037]  kakaroto:
+
+	* Revert commit 11860 that added a reference to the status item
+	  causing it to never get destroyed.. causing loads of status icons
+	  to be created, crashing when clicked...
+
+2010-05-20 [r12038]  billiob:
+
+	* add thai translation. Thanks to สล่า หว้าแดง.
+
+2010-05-21 [r12039]  billiob:
+
+	* update thai translation
+
+2010-05-26 [r12041]  alexandernst:
+
+	* Handle already existing mailicon.
+
+2010-05-27 [r12042]  billiob:
+
+	* update thai translation.
+
+2010-05-27 [r12043]  kakaroto:
+
+	* properly set mailicon variable so it can be destroyed later
+
+2010-05-28 [r12045]  kakaroto:
+
+	* Add proper copyright header information and code cleaning to
+	  statusicon
+
+2010-06-07 [r12046]  vivia:
+
+	* Call newcontact only for users on PL, not those in
+	  RL-but-neither-AL-nor-BL
+
+2010-06-10 [r12047]  kakaroto:
+
+	* Fix sending OIMs when using MSNP18 and MPOP. The problem was that
+	  we would receive our x-clientcaps from the other side, which
+	  triggers the handleMSG which assumes "if we receive a MSG then we
+	  have at least one user in the conversation!" so it checked how
+	  many we are and if it's != 1 (in this case it's still zero), then
+	  it thinks we're in a multi chat and tries to change the chatid..
+	  We also need to fix every occurence of ::OIM_GUI::IsOIM and give
+	  it the proper email instead of the chatid since the chatid could
+	  be ::MSN::SBXXX...
+
+2010-06-10 [r12048]  billiob:
+
+	* Update thai translation
+
+2010-06-10 [r12049]  vivia:
+
+	* Increase timeout to fix login on slow connections. Thanks to asdf
+	  on IRC
+
+2010-06-12 [r12052]  vivia:
+
+	* Fixed Portuguese language file
+
+2010-06-17 [r12053]  kakaroto:
+
+	* Force tcl/tk 8.5 as minimal version for aMSN. This is needed for
+	  both tcl-oo (coming soon) objects and for the -cadir option to
+	  work with tls. On 8.4, currently aMSN does not connect at all
+
+2010-06-17 [r12054]  billiob:
+
+	* update spanish translation, thanks to Jesús Vidal Panalés
+
+2010-06-17 [r12055]  kakaroto:
+
+	* I've had this for a while, didn't realize I never committed it..
+	  not much, but more standard at least
+
+2010-06-20 [r12056]  billiob:
+
+	* update italian and french translation. Fix english and spanish
+	  ones. Thanks to Montblanc
+
+2010-06-30 [r12057]  billiob:
+
+	* update dutch translation, thanks to Ton .
+
+2010-07-08 [r12070]  kakaroto:
+
+	* Stupid windows! The documentation clearly says that if we do the
+	  flash STOP flag it will stop flashing... but apparently it only
+	  'stops' flashing for 5 to 10 seconds, then it reflashes it... so
+	  this causes the flash to appear twice per window, which is
+	  annoying...
+
+2010-07-14 [r12079]  vivia:
+
+	* Fixed bug when using socks proxy and getting kicked at a bad
+	  timing
+
+2010-07-14 [r12080]  vivia:
+
+	* Fixed bug where state(sock) could not be read (also sent
+	  upstream)
+
+2010-07-19 [r12084]  vivia:
+
+	* Enable inkdraw by default, no reason to keep it disabled anymore
+
+2010-07-30 [r12103]  vivia:
+
+	* If ABFindAll or FindMembership fails, just use cached CL data and
+	  show a message. Just need to re-test this with MSN servers
+	  working, although it really should still work :)
+
+2010-07-30 [r12104]  vivia:
+
+	* baka... we should delete all contacts BEFORE reloading the real
+	  CL with ABFindAll, not AFTER we do, otherwise the contact list is
+	  empty. also, hopefully SynchronizeDone does not get called too
+	  early, when just one of the two SOAPs fails, causing an empty CL
+	  again, but I cannot test since problems seem fixed.
+
+2010-07-30 [r12105]  vivia:
+
+	* This should work better, though the code is kinda insane!!!
+
+2010-07-31 [r12110]  alexandernst:
+
+	* Don't save home/work/mobile/pager numbers. Sending PRP
+	  PHH/PHW/PHM/MOB will result in 715 always.
+
+2010-08-11 [r12136]  billiob:
+
+	* spanish translation updated, thanks to Jesús Vidal Panalés
+
+2010-08-11 [r12137]  billiob:
+
+	* update french translation
+
+2010-08-15 [r12145]  tjikkun:
+
+	* prevent buffer overflow on long tooltip
+
+2010-08-18 [r12161]  billiob:
+
+	* update dutch translation. Thanks to Ton .
+
+2010-08-23 [r12168]  billiob:
+
+	* add Bosnian translation. Thanks to Semir Hodzic
+
+2010-08-29 [r12170]  billiob:
+
+	* fix CL not updated if filter is removed. Patch by Square87
+
+2010-09-04 [r12180]  billiob:
+
+	* update italian translation, thanks to Montblanc
+
+2010-09-11 [r12181]  alexandernst:
+
+	* Show or hide tray icon according to prefs after saving them.
+
+2010-09-11 [r12182]  alexandernst:
+
+	* Check prefs and show or hide mailicon
+
+2010-09-16 [r12183]  billiob:
+
+	* exec with bash instead of - maybe too restrictive - sh
+
+2010-09-17 [r12184]  billiob:
+
+	* fix issue with audacious in music plugin. Thanks to Pitxyoki for
+	  the patch.
+
+2010-10-12 [r12193]  baaazen:
+
+	* fixing problem in note plugin with unencoded xml chars when
+	  saving a note
+
+2010-10-13 [r12194]  vivia:
+
+	* Fixed /me not working anymore on new WLMs
+
+2010-10-16 [r12196]  baaazen:
+
+	* small hack to fix the latest changes in the oim soap request
+
+2010-10-17 [r12198]  billiob:
+
+	* add arabic translation
+
+2010-10-18 [r12199]  baaazen:
+
+	* fix problems with dp roaming
+
+2010-11-06 [r12201]  vivia:
+
+	* ok alex, this is the proc you ll need to call ☺
+
+2010-11-06 [r12202]  vivia:
+
+	* Killing SBs after 1min of inactivity ☺
+
+2010-11-07 [r12204]  vivia:
+
+	* bugfix
+
+2010-11-07 [r12206]  billiob:
+
+	* update galician translation. Thanks to Indalecio Freiria Santos
+
+2010-11-10 [r12207]  vivia:
+
+	* Not bother about some SB already closed before we closed it
+
+2010-11-11 [r12209]  vivia:
+
+	* do not close multichat, kill one bug
+
+2010-11-11 [r12211]  billiob:
+
+	* fix unknow var
+
+2010-11-11 [r12212]  billiob:
+
+	* be sure chatid is valid --ure his line, and those below, will be
+	  ignored-- M protocol.tcl
+
+2010-11-12 [r12214]  billiob:
+
+	* update estonian translation, thanks to Olavi
+
+2010-11-13 [r12216]  kakaroto:
+
+	* Remove useless prints to the terminal.. we still need to fix the
+	  certificate stuff...
+
+2010-11-16 [r12228]  billiob:
+
+	* update estonian translation, thanks to Olavi
+
+2010-11-16 [r12232]  vivia:
+
+	* Same in trunk
+
+2010-11-20 [r12236]  vivia:
+
+	* trunk
+
+2010-11-20 [r12238]  vivia:
+
+	* oops2
+
+2010-11-21 [r12239]  billiob:
+
+	* reindent
+
+2010-11-21 [r12240]  billiob:
+
+	* reindent
+
+2010-11-21 [r12241]  billiob:
+
+	* wibble
+
+2010-11-21 [r12242]  billiob:
+
+	* fix inks beings cropped when drawn with inkdraw
+
+2010-11-22 [r12243]  billiob:
+
+	* wtf is this?
+
+2010-11-30 [r12244]  kakaroto:
+
+	* Should finally fix that elusive bug #2265. Flush the socket data
+	  when the socket is reconfigured! The problem was that if you got
+	  disconnected while receiving a command that requires a payload,
+	  then on the next connect, it will just append the VER x MSNP15 to
+	  that, then it will think that it requires a payload, but since
+	  MSNP15 is not an int, it will just refuse to read anything.. and
+	  reconnect... forever, and eventually the dataBuffer just keeps
+	  growing forever, never processing the data in it.
+
+2010-12-01 [r12245]  billiob:
+
+	* update catalan translation, thanks to Josep David Capdevila Cano
+
+2010-12-01 [r12246]  baaazen:
+
+	* added missing keys for langde and sorted file with sortlang
+
+2010-12-01 [r12247]  billiob:
+
+	* sort langfiles
+
+2010-12-04 [r12248]  kakaroto:
+
+	* Updating mac binaries
+
+2010-12-05 [r12249]  alexandernst:
+
+	* ISF binaries for 8.5
+
+2010-12-05 [r12250]  vivia:
+
+	* Updated langhu
+
