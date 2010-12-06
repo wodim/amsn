@@ -46,7 +46,6 @@ tar -cjf amsn-$VERSION-full.tar.bz2 $DIR_NAME
 echo "Creating source tarballs"
 cd $DIR_NAME
 rm -rf utils/windows/gnash utils/windows/gstreamer utils/windows/reg1.1 utils/windows/snack2.2 utils/windows/tkdnd/ utils/windows/tkvideo1.3.0/ utils/windows/winico0.6
-rm -rf utils/windows/NSIS/OCSetupHlp.* utils/windows/NSIS/OpenCandy_Why_Is_This_Here.txt
 find . -name "*.dll" | xargs rm -rf
 find . -name "*.exe" | xargs rm -rf
 rm -rf utils/macosx/sndplay utils/macosx/cabextract utils/macosx/QuickTimeTcl3.1 utils/macosx/gstreamer/ utils/macosx/tclAE2.0.4 utils/macosx/tls1.5.0
@@ -74,7 +73,6 @@ find . -name "*.cpp" | xargs rm -rf
 find . -name "*.h" | xargs rm -rf
 rm -rf utils/macosx/tclCarbon/src utils/macosx/aMSN.xcodeproj utils/macosx/statusicon/*.[mh] utils/macosx/sndplay-src utils/macosx/snack2.2/patches utils/macosx/make_dmg utils/macosx/macDock/src utils/macosx/growl1.0/src utils/macosx/*.sh
 rm -rf utils/TkCximage/demos/ utils/TkCximage/src/ utils/asyncresolver/src/ utils/farsight/src/ utils/gupnp utils/libaio utils/tclISF/src utils/tcl_siren/src/ utils/webcamsn/src
-rm -rf utils/windows/NSIS/OCSetupHlp.* utils/windows/NSIS/OpenCandy_Why_Is_This_Here.txt
 cd $RELEASE_DIR
 tar -czf amsn-$VERSION-mac.tar.gz $DIR_NAME
 tar -cjf amsn-$VERSION-mac.tar.bz2 $DIR_NAME
