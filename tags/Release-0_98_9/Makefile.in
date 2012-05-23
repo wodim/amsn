@@ -1,0 +1,426 @@
+.POSIX:
+
+prefix  	:= @prefix@
+exec_prefix	:= @exec_prefix@
+srcdir		:= @srcdir@
+datarootdir	:= @datarootdir@
+dstdir  	:= @datadir@
+slnkdir 	:= @bindir@
+libdir		:= @libdir@
+VPATH		:= $(srcdir)
+
+.SECONDARY:
+
+STATIC		:= @STATIC@
+
+doc_files	:= docs INSTALL CREDITS FAQ GNUGPL HELP README TODO AGREEMENT remote.help
+
+FILES_TO_INSTALL := *.tcl hotmlog.htm amsn amsn-remote amsn-remote-CLI amsn.desktop langlist
+FILES_TO_INSTALL += $(doc_files)
+FILES_TO_INSTALL += desktop-icons lang skins utils/des utils/base64 utils/drawboard utils/framec utils/http
+FILES_TO_INSTALL += utils/pixmapscroll utils/pixmapmenu utils/contentmanager
+FILES_TO_INSTALL += utils/scalable-bg utils/sha1 utils/snit utils/BWidget-1.9.0 utils/dpbrowser
+FILES_TO_INSTALL += plugins utils/sexytile
+FILES_TO_INSTALL += utils/log utils/uri utils/combobox utils/voipcontrols
+FILES_TO_INSTALL += utils/md4 utils/sasl ca-certs
+FILES_TO_INSTALL += msnp2p
+
+FILES_TO_EXCLUDE := lang/genpage.c lang/addkey.tcl lang/lang1.tmpl lang/lang2.tmpl lang/lang3.tmpl lang/langchk.sh lang/complete.pl lang/genlangfiles.c
+
+LIBS_TO_INSTALL := 
+LIBS_WITH_RPATH := 
+
+capture_dir := $(srcdir)/utils/linux/capture
+webcamsn_dir := $(srcdir)/utils/webcamsn
+tcl_siren_dir := $(srcdir)/utils/tcl_siren
+tkcximage_dir := $(srcdir)/utils/TkCximage
+tray_dir := $(srcdir)/utils/linux/traydock
+linflash_dir := $(srcdir)/utils/linux/linflash
+tclISF_dir := $(srcdir)/utils/tclISF
+async_dir := $(srcdir)/utils/asyncresolver
+macosx_dir := $(srcdir)/utils/macosx
+tcl_farsight_dir := $(srcdir)/utils/farsight
+gupnp_dir := $(srcdir)/utils/gupnp
+
+RPATH := $(srcdir)
+LIBDIR := 
+
+# programs
+CC		:= @CC@
+CXX		:= @CXX@
+
+# misc
+PACKAGE		:= @APPNAME@
+BASEVERSION	:= @APPVERSION@
+ifeq (@APPSTABLE@,yes)
+RELEASEVERSION	:= @APPRELEASE@
+else
+RELEASEVERSION  := svn$(shell which svnversion > /dev/null && svnversion ||  true)
+endif
+VERSION		:= $(BASEVERSION)-$(RELEASEVERSION)
+TCL_VERSION     := @TCL_VERSION@
+TK_VERSION      := @TK_VERSION@
+
+# for CFLAGS
+#WARN_FLAGS	:= -Wall -Wmissing-prototypes -Wstrict-prototypes -Wpointer-arith
+WARN_FLAGS	:= -w
+LFS_FLAGS	:= -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+
+# various libraries
+THREAD_LIBS	:= @LIBPTHREAD@
+
+# Directories in which the Tcl core can be found
+TCL_INC_SPEC 	:= @TCL_INC_SPEC@
+TCL_STUB_LIB_SPEC := @TCL_STUB_LIB_SPEC@
+
+# Directories in which the Tk core can be found
+TK_INC_SPEC 	:= @TK_INC_SPEC@
+TK_STUB_LIB_SPEC := @TK_STUB_LIB_SPEC@
+
+# stuff configure has found
+FOUND_X11	:= @FOUND_X11@
+FOUND_OS	:= @FOUND_OS@
+USE_MMX		:= @USE_MMX@
+HAVE_V4L        := @HAVE_V4L@
+HAVE_V4L2       := @HAVE_V4L2@
+HAVE_LIBV4L     := @HAVE_LIBV4L@
+HAVE_FARSTREAM  := @HAVE_FARSTREAM@
+HAVE_FARSIGHT   := @HAVE_FARSIGHT@
+
+ADDITIONAL_FLAGS = $(WARN_FLAGS) $(LFS_FLAGS) ${TCL_INC_SPEC} ${TK_INC_SPEC}
+ifeq (@DEBUG@,no)
+ADDITIONAL_FLAGS   += -O2
+else
+ADDITIONAL_FLAGS   += -g3 -DDEBUG
+endif
+ADDITIONAL_FLAGS   += -DPACKAGE='"$(PACKAGE)"'
+ADDITIONAL_FLAGS   += -DVERSION='"$(VERSION)"'
+
+# shared objects need -fPIC
+ADDITIONAL_FLAGS   += -fPIC
+
+ifeq ($(FOUND_OS),mac)
+  SHARED	:= -dynamiclib -fno-common -Wl,-single_module -shared-libgcc
+else
+  SHARED	:= -shared
+endif
+
+# build final cflags
+CFLAGS   := @CFLAGS@ $(ADDITIONAL_FLAGS)
+
+CXXFLAGS := @CXXFLAGS@ $(ADDITIONAL_FLAGS)
+
+ifeq ($(STATIC),yes)
+CXXFLAGS += -static-libgcc -L.
+endif
+
+# for gcc3
+#CFLAGS   += -std-gnu99
+
+# libraries
+CXX_LIB := @CXX_LIB@
+
+ifeq (@FOUND_OS@,mac)
+  LDLIBS  := @LDLIBS@ -lz -lm
+else
+  LDLIBS  := @LDLIBS@ -lpng -lz -lm -ljpeg
+endif
+LDFLAGS := @LDFLAGS@
+
+ifeq (@FOUND_OS@,mac)
+	SHLIB_EXTENSION := dylib
+else
+	SHLIB_EXTENSION := so
+endif
+
+#ifeq (@DEBUG@,no)
+#  ifneq (@FOUND_OS@,mac)
+#    LDFLAGS += -s
+#  endif
+#endif
+
+# C Flags for X
+ifeq (@FOUND_X11@,yes)
+  X_CFLAGS := @X_CFLAGS@
+endif
+
+X_LIBS  := @X_LIBS@
+
+# Mac uses static libjpeg and libpng
+STATIC_PNG_JPEG := 
+ifeq ($(FOUND_OS),mac)
+  STATIC_PNG_JPEG := $(prefix)/lib/libpng.a $(prefix)/lib/libjpeg.a
+endif
+
+# MORE_LIBS is to include libs for specific target : it must remain empty here
+MORE_LIBS=
+
+# Tcl and Tk libs are used by many libs we compile so we link against them for everything : not the best practice but simpler
+# If the distribution links with --as-needed linker flag these shouldn't get linked in the binary if not needed
+LDLIBS	 += ${TCL_STUB_LIB_SPEC}
+LDLIBS	 += ${TK_STUB_LIB_SPEC}
+
+ifeq (@HAVE_GUPNP@,yes)
+  GUPNP_CFLAGS = @GUPNP_CFLAGS@
+  GUPNP_LIBS = @GUPNP_LIBS@
+  LIBS_TO_INSTALL += utils/gupnp/gupnp.$(SHLIB_EXTENSION) utils/gupnp/pkgIndex.tcl
+endif
+
+ifeq ($(findstring yes,$(HAVE_FARSTREAM)$(HAVE_FARSIGHT)),yes)
+  FARSIGHT2_LIBS  := @GST_LIBS@ @GST_INTERFACES_LIBS@ @FARSIGHT2_LIBS@ @FARSTREAM_LIBS@
+  FARSIGHT2_CFLAGS := @GST_CFLAGS@ @GST_INTERFACES_CFLAGS@ @FARSIGHT2_CFLAGS@ @FARSTREAM_CFLAGS@
+
+  ifeq (@FOUND_OS@,mac)
+    FARSIGHT2_CFLAGS += -ObjC -fobjc-gc
+    FARSIGHT2_LIBS += -framework Cocoa
+  endif
+
+  LIBS_TO_INSTALL += utils/farsight/tcl_farsight.$(SHLIB_EXTENSION) utils/farsight/pkgIndex.tcl 
+endif
+
+#AppMain.tcl is needed by MacOSX : do not try to simplify by moving it outside the ifeq/else.
+ifeq ($(FOUND_OS),linux)
+  LIBS_TO_INSTALL += utils/webcamsn/webcamsn.so utils/webcamsn/pkgIndex.tcl utils/TkCximage/TkCximage.so utils/TkCximage/pkgIndex.tcl utils/linux/capture/capture.so utils/linux/capture/pkgIndex.tcl utils/linux/linflash/flash.so utils/linux/linflash/pkgIndex.tcl utils/linux/traydock/libtray.so utils/linux/traydock/pkgIndex.tcl utils/linux/capture/libng/libng.so utils/linux/capture/libng/plugins/conv-mjpeg.so utils/linux/capture/libng/plugins/sn9c10x.so utils/tcl_siren/tcl_siren.so utils/tcl_siren/pkgIndex.tcl utils/tclISF/tclISF.so utils/tclISF/pkgIndex.tcl utils/asyncresolver/libasyncresolver.so utils/asyncresolver/asyncresolver.tcl utils/asyncresolver/pkgIndex.tcl
+  LIBS_WITH_RPATH += utils/linux/capture/capture.so utils/linux/capture/libng/libng.so utils/linux/capture/libng/plugins/conv-mjpeg.so utils/linux/capture/libng/plugins/sn9c10x.so utils/linux/capture/libng/grab-ng.o
+  ifeq ($(HAVE_V4L2),yes)
+    LIBS_TO_INSTALL += utils/linux/capture/libng/plugins/drv0-v4l2.so
+    LIBS_WITH_RPATH += utils/linux/capture/libng/plugins/drv0-v4l2.so
+  endif
+  ifeq ($(HAVE_V4L),yes)
+    LIBS_TO_INSTALL += utils/linux/capture/libng/plugins/drv1-v4l.so
+    LIBS_WITH_RPATH += utils/linux/capture/libng/plugins/drv0-v4l2.so
+  endif
+  FILES_TO_EXCLUDE += AppMain.tcl
+else 
+  ifeq ($(FOUND_OS),bsd)
+    LIBS_TO_INSTALL += utils/webcamsn/webcamsn.so utils/webcamsn/pkgIndex.tcl utils/TkCximage/TkCximage.so utils/TkCximage/pkgIndex.tcl utils/linux/linflash/flash.so utils/linux/linflash/pkgIndex.tcl utils/linux/traydock/libtray.so utils/linux/traydock/pkgIndex.tcl utils/tcl_siren/tcl_siren.so utils/tcl_siren/pkgIndex.tcl utils/tclISF/tclISF.so utils/tclISF/pkgIndex.tcl utils/asyncresolver/libasyncresolver.so utils/asyncresolver/asyncresolver.tcl utils/asyncresolver/pkgIndex.tcl
+    
+    FILES_TO_EXCLUDE += AppMain.tcl
+  else 
+    ifeq ($(FOUND_OS),solaris)
+      LIBS_TO_INSTALL += utils/webcamsn/webcamsn.so utils/webcamsn/pkgIndex.tcl utils/TkCximage/TkCximage.so utils/TkCximage/pkgIndex.tcl utils/linux/capture/capture.so utils/linux/capture/pkgIndex.tcl utils/linux/capture/libng/libng.so utils/linux/linflash/flash.so utils/linux/linflash/pkgIndex.tcl utils/linux/traydock/libtray.so utils/linux/traydock/pkgIndex.tcl utils/linux/capture/libng/plugins/drv0-v4l2.so utils/linux/capture/libng/plugins/conv-mjpeg.so utils/tcl_siren/tcl_siren.so utils/tcl_siren/pkgIndex.tcl utils/tclISF/tclISF.so utils/tclISF/pkgIndex.tcl utils/asyncresolver/libasyncresolver.so utils/asyncresolver/asyncresolver.tcl utils/asyncresolver/pkgIndex.tcl
+      LIBS_WITH_RPATH += utils/linux/capture/capture.so utils/linux/capture/libng/libng.so utils/linux/capture/libng/plugins/drv0-v4l2.so utils/linux/capture/libng/plugins/conv-mjpeg.so
+ 
+      FILES_TO_EXCLUDE += AppMain.tcl
+    endif
+  endif
+endif
+
+CONFIGURE_ARGS := @CONFIGURE_ARGS@
+
+#########################################################
+# targets
+
+build: all
+
+Makefile: $(srcdir)/Makefile.in $(srcdir)/configure
+	$(srcdir)/configure $(CONFIGURE_ARGS)
+
+$(srcdir)/configure: $(srcdir)/configure.ac
+	(cd $(srcdir); autoreconf -i)
+
+clean::
+	find . -name \*~ -print | xargs rm -f
+	find . -name \*.o -print | xargs rm -f
+	find . -name \*.a -print | xargs rm -f
+	find . -name \*.dep -print | xargs rm -f
+
+
+distclean:: clean
+	-rm -f Makefile Make.config
+	-rm -f config.cache config.h config.log config.status
+
+
+install:: $(FILES_TO_INSTALL) | install_libs
+	rm -Rf $(DESTDIR)$(dstdir)/$(PACKAGE)
+
+	mkdir -p $(DESTDIR)$(dstdir)/$(PACKAGE)
+	mkdir -p $(DESTDIR)$(slnkdir)
+	mkdir -p $(DESTDIR)$(dstdir)/applications/
+	mkdir -p $(DESTDIR)$(dstdir)/pixmaps/
+
+	@for p in $?; do \
+		mkdir -p `dirname $(DESTDIR)$(dstdir)/$(PACKAGE)/$$p`;\
+		cp -Rf $(srcdir)/$$p $(DESTDIR)$(dstdir)/$(PACKAGE)/$$p; \
+	done
+	find $(DESTDIR)$(dstdir)/$(PACKAGE) -name '.svn' -print | xargs rm -Rf
+	@for p in $(FILES_TO_EXCLUDE); do \
+		rm -Rf $(DESTDIR)$(dstdir)/$(PACKAGE)/$$p; \
+	done
+
+	# This doesn't work if the libdir has quotes in it
+	sed -i -e 's#^set lib_path ""$$#set lib_path "$(libdir)/$(PACKAGE)"#' $(DESTDIR)$(dstdir)/$(PACKAGE)/amsn
+
+	ln -sf $(dstdir)/$(PACKAGE)/amsn $(DESTDIR)$(slnkdir)/amsn
+	ln -sf $(dstdir)/$(PACKAGE)/amsn-remote $(DESTDIR)$(slnkdir)/amsn-remote
+	ln -sf $(dstdir)/$(PACKAGE)/amsn-remote-CLI $(DESTDIR)$(slnkdir)/amsn-remote-CLI
+
+	cp $(srcdir)/amsn.desktop $(DESTDIR)$(dstdir)/applications/
+
+	ln -sf $(dstdir)/$(PACKAGE)/desktop-icons/48x48/apps/amsn.png $(DESTDIR)$(dstdir)/pixmaps/
+
+install_libs:: rebuild_libs do_install_libs
+
+do_install_libs:: $(LIBS_TO_INSTALL)
+	rm -Rf $(DESTDIR)$(libdir)/$(PACKAGE)
+	mkdir -p $(DESTDIR)$(libdir)/$(PACKAGE)
+
+	@for p in $?; do \
+		mkdir -p `dirname $(DESTDIR)$(libdir)/$(PACKAGE)/$$p`;\
+		cp -Rf $(srcdir)/$$p $(DESTDIR)$(libdir)/$(PACKAGE)/$$p; \
+	done
+
+# We clean libs to force a rebuild with the good RPATH for installation
+clean_libs::
+	rm -f $(LIBS_WITH_RPATH)
+
+rebuild_libs: RPATH+=$(libdir)/$(PACKAGE)
+rebuild_libs: LIBDIR=$(libdir)/$(PACKAGE)
+rebuild_libs: clean_libs $(LIBS_WITH_RPATH)
+
+uninstall::
+	rm -Rf $(dstdir)/$(PACKAGE)
+	rm -Rf $(libdir)/$(PACKAGE)
+	rm -f $(slnkdir)/amsn
+	rm -f $(slnkdir)/amsn-remote
+	rm -f $(slnkdir)/amsn-remote-CLI
+	rm -f $(dstdir)/applications/amsn.desktop
+	rm -f $(dstdir)/pixmaps/amsn.png
+
+rpm: all
+	mkdir -p ./distrib
+
+	rm -f THIS.TK.SPEC
+	echo "%define _builddir `pwd`" > THIS.AMSN.SPEC
+	echo "%define _rpmdir /tmp/RPMS" >> THIS.AMSN.SPEC
+	echo "%define _prefix $(prefix)" >> THIS.AMSN.SPEC
+	echo "%define _tmppath /tmp" >> THIS.AMSN.SPEC
+	echo "%define _datadir $(dstdir)/$(PACKAGE)" >> THIS.AMSN.SPEC
+	echo "%define _bindir $(slnkdir)" >> THIS.AMSN.SPEC
+	echo "%define _doc_files $(doc_files)" >> THIS.AMSN.SPEC
+	echo "%define _platform `uname -m`" >> THIS.AMSN.SPEC
+	echo "%define _version $(BASEVERSION)" >> THIS.AMSN.SPEC
+	echo "%define __release $(RELEASEVERSION)" >> THIS.AMSN.SPEC
+
+	cat amsn.spec >> THIS.AMSN.SPEC
+	mkdir -p /tmp/RPMS
+	rpmbuild -bb THIS.AMSN.SPEC
+	rm -rf ./distrib/RPMS
+	mv /tmp/RPMS ./distrib
+	rm -rf /tmp/RPMS THIS.AMSN.SPEC
+
+deb: all
+	mkdir -p ./distrib/DEB
+
+	sed "s/#VERSION#/${VERSION}/" debian/changelog.in > debian/changelog
+	sed "s/#TCL_VERSION#/${TCL_VERSION}/" debian/control.in > debian/control.tmp
+	sed "s/#TK_VERSION#/${TK_VERSION}/" debian/control.tmp > debian/control
+	rm debian/control.tmp
+	fakeroot debian/rules clean
+	fakeroot debian/rules binary VERSION=${VERSION}
+
+	rm -f debian/changelog
+	rm -f debian/control
+	rm -rf debian/amsn
+
+.PHONY: build clean distclean do_install_libs install_libs clean_libs rebuild_libs uninstall rpm deb
+
+ifeq ($(FOUND_OS),mac)
+libstdc++.a :
+	ln -s `g++ -print-file-name=libstdc++-static.a` libstdc++.a
+else
+libstdc++.a :
+	ln -s `g++ -print-file-name=libstdc++.a`
+endif
+
+
+#########################################################
+# include stuff
+
+# subdirs
+
+include $(tkcximage_dir)/Rules.mk
+include $(tkcximage_dir)/src/Rules.mk
+include $(tkcximage_dir)/src/CxImage/Rules.mk
+
+include $(webcamsn_dir)/Rules.mk
+include $(webcamsn_dir)/src/Rules.mk
+
+include $(tcl_siren_dir)/Rules.mk
+include $(tcl_siren_dir)/src/Rules.mk
+
+include $(tclISF_dir)/Rules.mk
+include $(tclISF_dir)/src/Rules.mk
+include $(tclISF_dir)/src/libISF/Rules.mk
+include $(tclISF_dir)/src/Rules.mk
+
+include $(async_dir)/Rules.mk
+include $(async_dir)/src/Rules.mk
+
+ifeq ($(findstring yes,@HAVE_FARSTREAM@@HAVE_FARSIGHT@),yes)
+  include $(tcl_farsight_dir)/Rules.mk
+  include $(tcl_farsight_dir)/src/Rules.mk
+endif
+
+ifeq (@HAVE_GUPNP@,yes)
+  include $(gupnp_dir)/Rules.mk
+endif
+
+ifeq ($(FOUND_OS),linux)
+  LIBNG_PLUGINS=sn9c10x
+  ifeq ($(HAVE_V4L2),yes)
+    LIBNG_PLUGINS+=drv0-v4l2
+  endif
+  ifeq ($(HAVE_V4L),yes)
+    LIBNG_PLUGINS+=drv1-v4l
+  endif
+  include $(capture_dir)/Rules.mk
+  include $(capture_dir)/libng/Rules.mk
+  include $(capture_dir)/libng/plugins/Rules.mk
+
+  ifeq ($(FOUND_X11),yes)
+      include $(tray_dir)/Rules.mk
+      include $(linflash_dir)/Rules.mk
+  endif
+else
+  ifeq ($(FOUND_OS),mac)
+	include $(macosx_dir)/sndplay-src/Rules.mk
+	include $(macosx_dir)/growl1.0/Rules.mk
+	include $(macosx_dir)/growl1.0/src/Rules.mk
+	include $(macosx_dir)/tclCarbon/Rules.mk
+	include $(macosx_dir)/tclCarbon/src/Rules.mk
+	include $(macosx_dir)/macDock/Rules.mk
+	include $(macosx_dir)/macDock/src/Rules.mk
+	include $(macosx_dir)/statusicon/Rules.mk
+
+.PHONY: finishbuild
+finishbuild:
+	./utils/macosx/finishbuild.sh
+all:: finishbuild
+
+  endif
+  ifeq ($(FOUND_OS),bsd)
+    LIBNG_PLUGINS=drv0-bsd
+    ifeq ($(FOUND_X11),yes)
+      include $(tray_dir)/Rules.mk
+      include $(linflash_dir)/Rules.mk
+    endif
+  else
+    ifeq ($(FOUND_OS),solaris)
+      LIBNG_PLUGINS=drv0-v4l2
+      include $(capture_dir)/Rules.mk
+      include $(capture_dir)/libng/Rules.mk
+      include $(capture_dir)/libng/plugins/Rules.mk
+
+      ifeq ($(FOUND_X11),yes)
+        include $(tray_dir)/Rules.mk
+        include $(linflash_dir)/Rules.mk
+      endif
+    endif
+  endif
+endif
+
+#########################################################
+# some rules ...
+
+include $(srcdir)/Compile.mk
