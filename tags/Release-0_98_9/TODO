@@ -30,6 +30,7 @@ Contact amsn-devel@lists.sourceforge.net
 	***Bug Fixes and TODO before next release (priority 1)***
 	*********************************************************
 
+-	Have a correct msnp2pv2 implementation.
 -	Make sure everything is installed correctly and FAQ and HELP are in the amsn directory.
 -	Make good RPMs, for Redhat, Suse, Mandrake, etc.
 DONE	Improve font selection (unify with color selection)
