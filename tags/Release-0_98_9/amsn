@@ -78,7 +78,7 @@ set ::env(LC_ALL) "C"
 #	0.98b (after rc1)	0.97.91.svn
 #	0.98				0.98
 
-set version "0.99b"
+set version "0.98.9"
 set rcversion "0.98.09"
 set date "05/23/2012"
 set weburl "http://www.amsn-project.net"
