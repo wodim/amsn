@@ -908,7 +908,6 @@ namespace eval ::MSN {
 		}
 
 		if {[::config::getKey protocol] != 15 &&
-		    [::config::getKey protocol] != 18 &&
 		    [::config::getKey protocoloverride] != 1} {
 			::config::setKey protocol 15
 		}
