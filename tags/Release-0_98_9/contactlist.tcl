@@ -559,7 +559,7 @@ snit::widget contactlist {
 		# Non-empty search pattern
 		} else {
 			set results [$self SearchContacts $pattern]
-			puts "results $results"
+			#puts "results $results"
 			set matches [lindex $results 0]
 			set nonmatches [lindex $results 1]
 			foreach { groupid id } $matches {

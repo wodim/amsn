@@ -141,24 +141,24 @@ namespace eval ::p2p {
 
 		method On_chunk_received { peer peer_guid chunk } {
 			
-			status_log "base.tcl received $chunk"
-			puts "base.tcl received $chunk"
+			#status_log "base.tcl received $chunk"
+			#puts "base.tcl received $chunk"
 			if { [$chunk require_ack] == 1 } {
-				puts "Requires ACK"
-				status_log "Will send ACK"
+				#puts "Requires ACK"
+				#status_log "Will send ACK"
 				set ack_chunk [$chunk create_ack_chunk]
 				$self __Send_chunk $peer $peer_guid $ack_chunk "skip"
 				#$ack_chunk destroy
 			}
 
 			if { [$chunk is_control_chunk] == 0 || [$chunk is_signaling_chunk] == 1 } {
-				puts "No control"
-				status_log "It is not a control chunk"
+				#puts "No control"
+				#status_log "It is not a control chunk"
 				if { [$chunk is_signaling_chunk] == 1 } {
-					status_log "It is a signaling chunk"
+					#status_log "It is a signaling chunk"
 					$self On_signaling_chunk_received $chunk
 				} else {
-					status_log "It is not a signaling chunk either"
+					#status_log "It is not a signaling chunk either"
 					::Event::fireEvent p2pChunkReceived p2pBaseTransport $self $chunk
 				}
 			}
@@ -186,13 +186,13 @@ namespace eval ::p2p {
 
 			$blob append_chunk $chunk
 			if { [$blob is_complete] } {
-				status_log "The blob $blob is complete"
+				#status_log "The blob $blob is complete"
 				::Event::fireEvent p2pBlobReceived p2pBaseTransport $blob
 				array unset signaling_blobs $blob_id
-				status_log "Signaling chunk received, destroying blob"
+				#status_log "Signaling chunk received, destroying blob"
 				catch {$blob destroy}
 			} else {
-				status_log "Waiting for more data"
+				#status_log "Waiting for more data"
 			}
 
 		}
@@ -223,7 +223,7 @@ namespace eval ::p2p {
 
 		method Process_send_queue { } {
 
-			status_log "Processing send queue"
+			#status_log "Processing send queue"
 			if { [llength $data_blob_queue] > 0 } {
 				set queue $data_blob_queue
 			} else {
@@ -236,9 +236,9 @@ namespace eval ::p2p {
 			set blob [lindex [lindex $queue 0] 2]
 			set peer_guid [lindex [lindex $queue 0] 1]
 			set peer [lindex [lindex $queue 0] 0]
-			status_log "Blob $blob for $peer"
+			#status_log "Blob $blob for $peer"
 			if { [$blob is_complete] } {
-				status_log "Not resending a complete blob!"
+				#status_log "Not resending a complete blob!"
 				if { [lindex [lindex $data_blob_queue 0] 2] == $blob } {
 					set data_blob_queue [lreplace $data_blob_queue 0 0]
 
@@ -247,7 +247,7 @@ namespace eval ::p2p {
 			}
 
 			set chunk [$blob get_chunk [$self version] [$self max_chunk_size] $first] 
-			status_log "Sending $chunk"
+			#status_log "Sending $chunk"
 			$self __Send_chunk $peer $peer_guid $chunk $blob
 
 		}
@@ -260,7 +260,7 @@ namespace eval ::p2p {
 
 		method __Send_chunk {peer peer_guid chunk blob} {
 			variable local_chunk_id
-			status_log "Sending chunk $chunk to $peer -- $peer_guid"
+			#status_log "Sending chunk $chunk to $peer -- $peer_guid"
 
 			if { ![info exists local_chunk_id] } {
 				set local_chunk_id [expr {int(1000 + rand() * (1+65540-1000))}]
@@ -273,9 +273,9 @@ namespace eval ::p2p {
 			}
 
 			#puts "Going to send [hexify [$chunk toString]]"
-			puts "Adding command : Send_chunk $peer $peer_guid $chunk"
+			#puts "Adding command : Send_chunk $peer $peer_guid $chunk"
 			set chunk_queue [lappend chunk_queue [list [list $options(-transport) Send_chunk $peer $peer_guid $chunk] $blob]]
-			puts "send $self. Chunk queue: $chunk_queue"
+			#puts "send $self. Chunk queue: $chunk_queue"
 
 			set sock [$options(-transport) get_sock]
 			if { [fileevent $sock writable] == "" } {
@@ -292,11 +292,11 @@ namespace eval ::p2p {
 			fileevent $sock writable ""
 
 			if { [llength $chunk_queue] <= 0 } { return }
-			puts "process $self: Chunk queue: $chunk_queue"
+			#puts "process $self: Chunk queue: $chunk_queue"
 			set command [lindex $chunk_queue 0]
 			set blob [lindex $command 1]
 			set command [lindex $command 0]
-			puts "Calling command : $command"
+			#puts "Calling command : $command"
 			eval $command
 			set chunk_queue [lreplace $chunk_queue 0 0]
 
@@ -310,14 +310,14 @@ namespace eval ::p2p {
 					return
 				}
 				if { [$blob is_complete] } {
-					status_log "Queue says blob $blob is complete with chunk $chunk"
+					#status_log "Queue says blob $blob is complete with chunk $chunk"
 					if { [lindex [lindex $data_blob_queue 0] 2] == $blob } {
 						set data_blob_queue [lreplace $data_blob_queue 0 0]
 					}
-					status_log "New queue: $data_blob_queue"
+					#status_log "New queue: $data_blob_queue"
 					$self Add_pending_blob [$chunk ack_id] $blob
 				 } else {
-					status_log "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
+					#status_log "Blob size is [$blob cget -blob_size] and we have [$blob transferred]"
 					$self Process_send_queue
 				}
 

@@ -67,7 +67,7 @@ namespace eval ::p2pv2 {
 			foreach t [array names data] {
 				set v $data($t)
 				set l [string length $v]
-				puts "T L V: [hexify $t] [hexify $l] [hexify $v]"
+				#puts "T L V: [hexify $t] [hexify $l] [hexify $v]"
 				set app_str [binary format cucu $t $l]
 				append str "$app_str$v"
 			}
@@ -75,7 +75,7 @@ namespace eval ::p2pv2 {
 			if {$padding != 4} {
 				append str [string repeat "\x00" $padding]
 			}
-			puts "Final tlv: [hexify $str]"
+			#puts "Final tlv: [hexify $str]"
 			return $str
 
 		}
@@ -83,25 +83,25 @@ namespace eval ::p2pv2 {
 		method parse { scandata size } {
 
 			set offset 0
-			puts "We are going to scan a TLV"
-			puts "Data is [hexify $scandata]"
+			#puts "We are going to scan a TLV"
+			#puts "Data is [hexify $scandata]"
 			while { $offset < $size } {
-				puts "okay..."
+				#puts "okay..."
 				set scanme [string range $scandata $offset end]
 				binary scan $scanme bcu t l
 				if { $t == 0 } {
-					puts "breaking"
+					#puts "breaking"
 					break
 				}
 				set end [expr {$offset + 2 + $l}]
 				if { $end > $size } {
-					puts ":("
+					#puts ":("
 					#raise some error i guess
 					return
 				}
 				set v [string range $scanme 2 [expr {2 + $l}]]
-				puts "Wow, we scanned a TLV"
-				puts "Scanned tlv [hexify $t] [hexify $l] [hexify $v]"
+				#puts "Wow, we scanned a TLV"
+				#puts "Scanned tlv [hexify $t] [hexify $l] [hexify $v]"
 				set data($t) $v
 				set offset $end
 			}
@@ -270,15 +270,15 @@ namespace eval ::p2pv2 {
 			if { [catch {binary scan [string range $data 0 7] cubSuIu size options(-op_code) options(-chunk_size) options(-chunk_id)} msg]} {
 				return ""
 			}
-			puts "scanned data [hexify [string range $data 0 7]] and got size $options(-chunk_size)"
+			#puts "scanned data [hexify [string range $data 0 7]] and got size $options(-chunk_size)"
 			$options(-tlv) parse [string range $data 8 $size] [expr {$size - 8}]
 			if { $options(-chunk_size) > 0 } {
 				set dph_size [$self parse_data_header [string range $data $size end]]
-				puts "dph size is $dph_size , chunk size is $options(-chunk_size)"
+				#puts "dph size is $dph_size , chunk size is $options(-chunk_size)"
 				set options(-chunk_size) [expr {$options(-chunk_size) - $dph_size}]
 				set size [expr {$size + $dph_size}]
 			}
-			puts "Chunk size $options(-chunk_size) of data [hexify [string range $data 0 7]]"
+			#puts "Chunk size $options(-chunk_size) of data [hexify [string range $data 0 7]]"
 			return $size
 
 		}
@@ -380,7 +380,7 @@ namespace eval ::p2pv2 {
 
 		method ack_id { } {
 
-			puts "chunk id [hexify [$self get_field chunk_id]] and data size [hexify [$options(-header) data_size]]"
+			#puts "chunk id [hexify [$self get_field chunk_id]] and data size [hexify [$options(-header) data_size]]"
 			return [expr {[$self get_field chunk_id] + [$options(-header) data_size]}]
 
 		}
@@ -408,15 +408,15 @@ namespace eval ::p2pv2 {
 			if { [$self get_field first] == 0 } {
 				return 0
 			}
-			puts "Data remaining: [$options(-header) data_remaining] and size: [$self size]"
+			#puts "Data remaining: [$options(-header) data_remaining] and size: [$self size]"
 			return [expr {[$options(-header) data_remaining] + [$self size]}]
 
 		}
 
 		method is_control_chunk { } {
 
-			puts "Is this a control chunk? [expr {[$self is_ack_chunk] || [$self is_nak_chunk] || ([$self require_ack] && [$self size] == 0)}]"
-			puts "Our size is [$self size] and we require ack? [$self require_ack]"
+			#puts "Is this a control chunk? [expr {[$self is_ack_chunk] || [$self is_nak_chunk] || ([$self require_ack] && [$self size] == 0)}]"
+			#puts "Our size is [$self size] and we require ack? [$self require_ack]"
 			return [expr {[$self is_ack_chunk] || [$self is_nak_chunk] || ([$self require_ack] && [$self size] == 0)}]
 
 		}
@@ -453,7 +453,7 @@ namespace eval ::p2pv2 {
 
 		method require_ack { } {
 
-			puts "Requiring ack? [hexify [expr {[$self get_field op_code] & $::p2pv2::TLPFlag::RAK == $::p2pv2::TLPFlag::RAK}]]"
+			#puts "Requiring ack? [hexify [expr {[$self get_field op_code] & $::p2pv2::TLPFlag::RAK == $::p2pv2::TLPFlag::RAK}]]"
 			return [expr {[$self get_field op_code] & $::p2pv2::TLPFlag::RAK == $::p2pv2::TLPFlag::RAK}]
 
 		}

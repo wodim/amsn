@@ -84,7 +84,7 @@ namespace eval ::p2p {
 			}
 
 			method Send_chunk { peer peer_guid chunk } {
-				puts "Sending chunk to $peer -- $peer_guid"
+				#puts "Sending chunk to $peer -- $peer_guid"
 				set content_type "application/x-msnmsgrp2p"
 				set sendme [Message %AUTO%]
 				$sendme add_header MIME-Version 1.0
@@ -102,7 +102,7 @@ namespace eval ::p2p {
 				set data_len [expr [string length $data]]
 				set chatid [::MSN::chatTo $peer]
 				set sb [::MSN::SBFor $chatid]
-				puts "Chat to $chatid - $sb"
+				#puts "Chat to $chatid - $sb"
 				if { [$sb get_unacked] < 10 } {
 					::MSN::ChatQueue $chatid [list ::MSN::WriteSBNoNL $sb "MSG" "D $data_len\r\n$data"]
 				} else {
@@ -139,12 +139,12 @@ namespace eval ::p2p {
 				}
 				if { [catch {set chunk [MessageChunk parse $version [string range [$message get_body] 0 end-4]]} msg] } {
 					status_log "Received erroneous chunk"
-					puts "Received erroneous chunk: $msg"
+					#puts "Received erroneous chunk: $msg"
 					return ""
 				}
-				puts "Received a right chunk"
+				#puts "Received a right chunk"
 				binary scan [string range [$message get_body] end-4 end] iu appid
-				puts "Destroying"
+				#puts "Destroying"
 				catch {$message destroy}
 				$self On_chunk_received [$self cget -peer] [$self cget -peer_guid] $chunk
 				catch {$chunk destroy}
