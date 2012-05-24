@@ -240,7 +240,7 @@ namespace eval ::p2pv2 {
 
 		method set_sync { sync } {
 			if { $sync == 1 } {
-				set options(-op_code) [expr {$::p2pv2::TLPFlag::SYN | $::p2pv2::TLPFlag::RAK}]
+				set options(-op_code) [expr {$::p2pv2::TLPFlag::SYN}]
 				set peer_info [binary format SuSuSuSuIu $::p2p::PeerInfo::PROTOCOL_VERSION $::p2p::PeerInfo::IMPLEMENTATION_ID $::p2p::PeerInfo::VERSION 0 $::p2p::PeerInfo::CAPABILITIES]
 				$self set_peer_info $peer_info
 			} else {
