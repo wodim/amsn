@@ -1,0 +1,489 @@
+2010-12-15 22:58  vivia
+
+	* [r12279] Say something sensible when aMSN is run under tcl/tk <
+	  8.5 . config.tcl is broken against tcl/tk 8.4 in many parts and I
+	  cannot make it work. It was only needed to load the user s
+	  language preference, so we just autodetect the language based on
+	  system language. Known bugs: I could not get to make it work with
+	  non-latin1 chars, but in most languages it should not be a big
+	  problem
+
+2010-12-16 09:07  billiob
+
+	* [r12280] update Thai translation
+
+2011-01-20 08:49  billiob
+
+	* [r12281] music: update infolisten. Thanks to Alexander Godlewski
+
+2011-01-24 14:18  vivia
+
+	* [r12283] In trunk: Re-fixed DP fetching
+
+2011-01-25 03:30  kakaroto
+
+	* [r12284] Wow, how come we never saw this for years? the 'zoomed'
+	  state for windows does not exist on X11...
+	  So if you ever maximize a chatwindow, then try to open a new CW,
+	  aMSN will crash... This fixes it.
+
+2011-01-25 22:18  vivia
+
+	* [r12285] Fixed bug with SB thought to be inactive when sending
+	  file through it :)
+
+2011-01-28 14:21  vivia
+
+	* [r12286] Added the snits from branch, this is first part of
+	  merge. Second part will be a manual diff I m afraid. Trunk still
+	  using old stack
+
+2011-01-29 16:19  alexandernst
+
+	* [r12287] Set tray class hint
+
+2011-01-29 18:01  billiob
+
+	* [r12288] Update thai translation thanks to T. Chomphuming
+
+2011-01-29 18:42  alexandernst
+
+	* [r12289] Set tray hint to the ID of our tray instead of the tray
+	  manager. Fix by ale`
+
+2011-02-08 07:47  kakaroto
+
+	* [r12290] Some code cleaning, removes warnings at compilation
+
+2011-02-08 07:49  kakaroto
+
+	* [r12291] Fix a possible bug on mac, after renaming toplevel, use
+	  'catch' to avoid unnecessary errors..
+	  Reported here :
+	  http://www.amsn-project.net/forums/index.php?topic=8135.msg47770#msg47770
+
+2011-02-08 11:02  billiob
+
+	* [r12292] Update danish translation, thanks to Kenneth Buchwald
+
+2011-02-14 20:52  vivia
+
+	* [r12293] THIS IS THE
+	  MERGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+2011-02-14 21:25  vivia
+
+	* [r12294] Minor bugfixes. Confirmed that cancel DOES work, added a
+	  status_log debug in case it doesnt
+
+2011-02-14 22:17  vivia
+
+	* [r12295] Fixed SB files getting sent faster than the SB can
+	  handle. We still see the wrong speed, cannot fix that
+
+2011-02-15 13:52  baaazen
+
+	* [r12296] a little speedup for the login process: always use the
+	  cached abook and sync abook from the server in the background
+	  after login like wlm does. in the case no abook cache is found
+	  (i.e. new profile) the traditional way is chosen: sync abook
+	  before login. seems all to work fine, but please re-check :)
+
+2011-02-15 14:23  baaazen
+
+	* [r12297] a small fix for newer webcams: some of them only support
+	  resolutions of 640x480 and higher that made amsn crop the image.
+	  now we select the lowest resolution above 320x240 in the case
+	  320x240 isn't available and resize the image to 320x240 before
+	  processing it.
+
+2011-02-15 21:56  alexandernst
+
+	* [r12298] Save as on FT was not showing the filename. Also,
+	  hitting the cancel button on the save as dialog would accept the
+	  file anyway.
+
+2011-02-16 01:33  alexandernst
+
+	* [r12299] Stop using _GetSystemTray() instead of the actual window
+	  in the tray.
+
+2011-02-16 16:52  alexandernst
+
+	* [r12300] Revert last commit, looks like it does not work with
+	  libtktray, but only with our tray code.
+
+2011-02-17 20:37  billiob
+
+	* [r12301] update thai translation. Thanks to T. Chomphuming
+
+2011-02-18 19:55  vivia
+
+	* [r12302] that is why we were sending stale msnp2p data to the
+	  wrong sb!!!!!! :))) anyway it will be gone when bug#1 is fixed,
+	  but that should fix many tk bugs for now
+
+2011-02-18 20:20  vivia
+
+	* [r12303] fixed wrong line :(
+
+2011-02-19 17:10  vivia
+
+	* [r12304] is this the real ugly hack before the real fix?
+
+2011-02-19 21:07  vivia
+
+	* [r12305] fix of the fix of the fix of the ugly hack
+
+2011-02-24 22:11  billiob
+
+	* [r12306] update estonian translation, thanks to Olavi
+
+2011-03-16 17:03  alexandernst
+
+	* [r12307] Fix detecting artist when playing music with Amarok 2.
+	  Thanks to arucard
+
+2011-03-17 00:23  alexandernst
+
+	* [r12308] Update NSIS installer script.
+
+2011-03-17 00:24  alexandernst
+
+	* [r12309] I forgot to change the plugininfo.xml file after
+	  changing infoamarok2 script.
+
+2011-03-21 19:46  vivia
+
+	* [r12310] Do not wait for ACK when we send USR, CAL or typing
+	  notifications, otherwise p2p data get clogged and never get sent
+	  unless we type something in the chat...
+
+2011-03-23 19:29  vivia
+
+	* [r12311] Added me, phil and alex to Help - About
+
+2011-04-08 17:08  billiob
+
+	* [r12314] update finnish translation. thanks to peeaivo.
+
+2011-04-12 00:20  alexandernst
+
+	* [r12315] Check for V4L before trying to compile it.
+
+2011-04-12 00:23  alexandernst
+
+	* [r12316] Fix a typo.
+
+2011-04-12 00:43  alexandernst
+
+	* [r12317] Detect V4L and V4L2 as different things.
+
+2011-04-12 01:08  alexandernst
+
+	* [r12318] Last typo.
+
+2011-04-21 17:45  billiob
+
+	* [r12319] update hungarian translation. Thanks to Páder Rezső.
+	  Also patch BWidget to
+	  add a missing translation
+
+2011-04-28 00:52  baaazen
+
+	* [r12320] fixing problems with the log viewer
+
+2011-04-30 00:08  vivia
+
+	* [r12321] Commit by kkrt: Fix a bug where amsn could crash when
+	  parsing the msnobj of a user. The retreive method would only
+	  check for a quote at the end of the element, so the last element
+	  in the xml wouldn't get modified and return with "/> appended to
+	  it, breaking the base64::decode
+
+2011-05-07 11:27  billiob
+
+	* [r12322] update thai translation. Thanks to T. Chomphuming
+
+2011-05-17 12:21  vivia
+
+	* [r12323] Do not crash when we cannot load the display picture -
+	  nopic.gif does not exist, nopic.png exists instead, if nopic.gif
+	  is not found, we try to fetch file skins/blabla/displaypic/null
+	  which does not exist
+
+2011-05-17 12:33  vivia
+
+	* [r12324] Revert - extension is ignored anyway
+
+2011-05-17 20:33  vivia
+
+	* [r12325] If the null pixmap is not gfound (the magical bug where
+	  aliens abduct it...), create an empty one
+
+2011-05-22 21:22  vivia
+
+	* [r12326] Fixed a bug in the lockexists check. Should stop default
+	  profile from writing abook.xml
+
+2011-05-24 16:30  vivia
+
+	* [r12327] I found why SOAPs were destroyed too early!! timeout on
+	  DC would destroy the object while data was transferring over
+	  SB!!!!!!! now it uses up more memory in some cases but at least
+	  no tk bugs :D
+
+2011-06-07 20:50  billiob
+
+	* [r12328] update langtr. thanks to devrim dogan
+
+2011-07-23 12:05  billiob
+
+	* [r12329] update thai translation, thanks to T. Chomphuming
+
+2011-08-10 20:50  billiob
+
+	* [r12332] update portuguese translation thanks to Helder Martins
+
+2011-08-24 23:28  vivia
+
+	* [r12333] Correctly count unacked SB messages
+
+2011-08-25 02:31  vivia
+
+	* [r12334] FINALLY using fileevent to determine whether we can send
+	  more data on the SB or DC rather than counting unacked MSGs!!
+	  This also fixes the file progress - it is now telling the truth
+	  about the speed. Wow, never thought SB could reach 20KB/s!!!!
+
+2011-08-25 02:37  vivia
+
+	* [r12335] Removed noack argument (aka ugly hack) to WriteSB and
+	  WriteSBNoNL and removed it from the calling procs
+
+2011-08-25 10:29  vivia
+
+	* [r12336] Oops, I had removed this line for debugging purposes and
+	  forgot to reenable it, we don t really need that memleak!
+
+2011-08-26 20:18  vivia
+
+	* [r12337] Do not use cached abook if on default profile (might be
+	  the abook of some other user!)
+
+2011-08-26 20:41  vivia
+
+	* [r12338] Dont crash if we cant retrieve a blobs SID
+
+2011-08-26 21:28  vivia
+
+	* [r12339] We shouldnt remove a user from AL anymore when blocking,
+	  just directly add to BL... but unblocking didnt need a change...
+	  oh well. Thanks to Daz and tegeatis on the forums
+
+2011-09-14 00:58  vivia
+
+	* [r12340] Added parentheses to url regexps, so we wont have to
+	  copy-paste links containing parentheses (e.g. Wikipedia!) to the
+	  browser...
+
+2011-09-24 09:12  billiob
+
+	* [r12341] update brazilian portuguese translation, thanks to
+	  Camilo Leite de Hollanda
+
+2011-09-25 08:46  billiob
+
+	* [r12342] update brazilian portuguese translation, thanks to Tiago
+	  Santos Zanon
+
+2011-12-04 16:17  alexandernst
+
+	* [r12346] Fix OIMs not working. Stop sendimg them with SOAP, use
+	  UUM instead.
+
+2012-01-01 22:59  kakaroto
+
+	* [r12354] Fix the chatid SB naming when using mpop.
+	  We should set the right chatid depending on who joins/leaves the
+	  chat, not on who sends the first MSG.
+	  With mpop, you may be the one sending the first message and the
+	  other amsn instance will get confused.
+
+2012-01-01 23:07  kakaroto
+
+	* [r12355] Added option to user properties to allow enable/disable
+	  logs for a specific contact (overrides global config)
+
+2012-01-14 15:27  alexandernst
+
+	* [r12356] Add support for Clementine player in Music plugin.
+	  Thanks to c_jay and cylverback from forums.
+
+2012-01-24 21:21  billiob
+
+	* [r12357] make cximage compile with libpng1.5 (should still work
+	  with libpng1.x)
+
+2012-02-02 19:43  vivia
+
+	* [r12358] Do not crash if MSNP2P data received is invalid (or if
+	  we received a P2Pv2 header on P2Pv1)
+
+2012-02-25 16:14  billiob
+
+	* [r12359] fix compilation with libpng1.2
+
+2012-03-03 06:21  kakaroto
+
+	* [r12360] Fix a chat window color issue on OSX 10.7 where colors
+	  were 48 bits instead of 24 bits
+	  Thanks to L551 from IRC for reporting and helping track down the
+	  bug.
+
+2012-03-09 23:31  vivia
+
+	* [r12361] User@Hotmail.Com and user@hotmail.com are exactly the
+	  same address -> convert email to lowercase after user types it
+
+2012-03-09 23:48  vivia
+
+	* [r12362] Reverting - not sure I want to break compatibility with
+	  users who possibly already have a capital profile...
+
+2012-03-10 15:08  vivia
+
+	* [r12363] Updated as new agreement spelling of Portuguese
+	  language. Credits to Felipe Miranda
+
+2012-05-15 20:28  billiob
+
+	* [r12364] fix black png issue
+
+2012-05-16 19:47  vivia
+
+	* [r12365] First p2pv2 attempt \o/ What we send seems correct, but
+	  is falsely identified as v1 because peer-guid is missing, and
+	  then gets discarded. No bugs, we just send one single packet and
+	  then stop there. Possible bugs when parsing incoming packets.
+	  TODO: get a list of all peer-guids available and send initial
+	  packets to each one of them separately. Also: YATTA, I had a
+	  small p2pv2 conversation with WLM, it must have been just junk
+	  back and forth (too lazy to debug), but I received two
+	  somethings, sent an INVITE, and received something that looked
+	  like an ack!!
+
+2012-05-17 19:37  kakaroto
+
+	* [r12366] fix p2pv2 typo in direct FT
+
+2012-05-17 20:44  vivia
+
+	* [r12367] YATTA, I just ... ALMOST had a p2pv2 conversation
+	  between the two accounts! INVITE, 200 OK, and some data... Too
+	  tired to debug further for today :( (Please bear with my puts,
+	  they are way too many, I promise to remove them when it all
+	  works)
+
+2012-05-18 11:45  lephilousophe
+
+	* [r12368] Big cleanup of build files : needs to be tested
+	  The modifications shouldn't have broken anything... but we never
+	  now...
+	  - Removed all variations on link_so
+	  - Modified Farsight extension to use Farstream when available :
+	  thanks to Tom Callaway for his Fedora patch
+	  - Fixed libng problem for loading plugins due to Tcl/Tk changing
+	  their dlopen from RTLD_GLOBAL to RTLD_LOCAL
+	  - Split libng from webcamsn to let plugins link only on libng
+	  (and libng beginning by lib is much more handy to link with)
+	  - Removed many useless flags from global variables to apply them
+	  only where it's needed
+
+2012-05-18 15:31  lephilousophe
+
+	* [r12369] - make install now installs in the libdir the arch
+	  dependent librairies
+	  - fix problems due to last commit : gcc used in place of g++ to
+	  link TkCxImage and missing RPATH for capture.so
+
+2012-05-18 19:25  vivia
+
+	* [r12370] Catching a bug where a blob gets destroyed a bit too
+	  early
+
+2012-05-18 19:28  lephilousophe
+
+	* [r12371] Forgot DESTDIR
+
+2012-05-18 19:29  lephilousophe
+
+	* [r12372] Verbose is too verbose
+
+2012-05-18 19:42  lephilousophe
+
+	* [r12373] Should fix a misinitialization of some converters :
+	  don't double load static ones
+
+2012-05-18 19:45  kakaroto
+
+	* [r12374] Do not use AC_PREFIX_PROGRAM and leave the default
+	  prefix to /usr/local
+
+2012-05-18 20:03  vivia
+
+	* [r12375] Making sure the webcam grabber STAYS closed after we
+	  cancel a call
+
+2012-05-18 21:11  kakaroto
+
+	* [r12376] I have no idea why I did this.. maybe there was a bug
+	  somewhere because of this?
+
+2012-05-20 02:23  kakaroto
+
+	* [r12377] Slightly better p2pv2 support. Acks look correct at
+	  least, but the switchboard P2P-Dest is wrong.
+
+2012-05-23 19:17  billiob
+
+	* [r12378] .: releasing amsn-0.98.9
+
+2012-05-23 19:18  billiob
+
+	* [r12379] TODO, amsn: updating amsn/TODO for release
+
+2012-05-23 19:21  billiob
+
+	* [r12380] autopackage/default.apspec, configure, configure.ac:
+	  update configure and autopackage
+
+2012-05-23 20:28  vivia
+
+	* [r12381] configure: autoreconf...
+
+2012-05-23 20:35  vivia
+
+	* [r12382] protocol.tcl: Force p15 on 0.98.9 unless
+	  [::config::setKey protocoloverride] == 1
+
+2012-05-23 21:04  vivia
+
+	* [r12383] amsn: Version is 0.98.9 . Really. It is!
+
+2012-05-23 21:31  alexandernst
+
+	* [r12384] utils/windows/NSIS/aMSN.nsi: Add msnp2p to NSIS script.
+	  Add the version to the NSIS script in 0.98.9 tag
+
+2012-05-24 05:43  kakaroto
+
+	* [r12385] contactlist.tcl, msnp2p/transport/TLPv2.tcl,
+	  msnp2p/transport/base.tcl, msnp2p/transport/switchboard.tcl:
+	  Remove p2p debug messages
+
+2012-05-24 19:05  vivia
+
+	* [r12387] msnp2p/transport/TLPv2.tcl, protocol.tcl: Fixed p15/p18
+	  interoperability in tag too
+
